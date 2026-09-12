@@ -386,6 +386,29 @@ Both planted files were run through `javac -proc:none` and produce an error list
 
 ---
 
+---
+
+## Prompt variants: named and natural
+
+Every task runs in two variants with the same answer key. **Named** prompts, shown above in each task section, give the file path, which isolates the decision the hook intercepts once the file is known. **Natural** prompts are what a developer would type, with no path, so the session has to find the file first. That is where a search subagent would be used in stock Claude Code, and where the shunt arm has to locate the file before the hook can block it.
+
+Because a natural run can land on the wrong file, every run is also checked for whether the target file was read, grepped, or delegated (from the transcript). A run that never touched the target is scored as a miss regardless of its answer text. Cost and request count are split at the first touch into a **finding phase** and an **answering phase**; the finding phase includes the first request's fixed system-prompt cache write, so compare it across arms, not against zero.
+
+| Id | Natural prompt |
+|---|---|
+| R1 | How does the broker lifecycle manager in the Kafka server move between broker states? List every event class it handles, which BrokerState each one sets if any, and what enqueues it. What state does it start in? |
+| R2 | What are all the broker configuration keys for Kafka's remote log manager (tiered storage), with the type and default of each? Also tell me whether any remote log manager config constants are declared in that config class but never actually registered with the ConfigDef. |
+| R3 | When Kafka's group coordinator shard replays records from the log, which record types does it handle, which manager (group metadata or offset metadata) each one goes to, and which of the record helper methods build each record type? Note which record types have no helper. |
+| R4 | Which public methods of the Raft BatchAccumulator class does its unit test never exercise? List all of its public methods and say whether each is called from the test. |
+| W1 | Add a new Kafka Connect single message transform called TruncateField that truncates string fields to a maximum length. Follow the same pattern the existing MaskField transform uses, including Key and Value variants. Config: `fields` (list, required) and `max.length` (int, default 255, must be at least 1). Only string values longer than the limit get truncated; everything else passes through unchanged. Don't write tests or change existing files. |
+| W2 | Add a SinkNodeMetrics registry to Kafka Streams next to the existing node-level metrics classes, following the conventions of the processor node metrics class. It needs three DEBUG-level node sensors: records-sent (invocation rate and count), bytes-sent (rate of sum and sum), and send-latency (avg and max). Don't write tests or change existing files. |
+| W3 | Add a RemoteLogDeletionConfig class next to Kafka's remote log manager config, following that class's conventions (PROP/DOC/DEFAULT constants, a static configDef(), a wrapped AbstractConfig, one typed getter per key). Four settings: remote.log.deletion.enable (boolean, default false), remote.log.deletion.thread.pool.size (int, default 2, at least 1), remote.log.deletion.batch.size (int, default 100, at least 1), remote.log.deletion.retry.backoff.ms (long, default 500, at least 0). Each needs a doc string. Don't write tests or change existing files. |
+| E1 | In the broker's share partition manager, when a share session is released but it isn't in the cache, we log "Share session error for {}: no such share session found" at error level. That case should be a warning. The same message is logged in a couple of other places; leave those exactly as they are. |
+| E2 | In the Kafka client's NetworkClient, the rebootstrap handler loops over nodes using `node` and `nodeId` as names, while the rebootstrap branch of the API-versions response handler already uses `nodeToClose` and `nodeToCloseId`. Make the rebootstrap handler use the same names. Don't touch the API-versions handler, any other method that has a `nodeId`, or the log message text. |
+| E3 | In the local log's segment roll logic there's a special case for rolling when the active segment already has the same base offset and is empty (the KAFKA-6388 case). The "Rolled new log segment" message in that branch should be logged at warn instead of info. The same message on the normal roll path should stay at info. Nothing else should change. |
+| D1 | Can you review how Kafka Streams locks and unlocks task state directories for thread-safety problems? Name the method and lines involved and explain any race you find. |
+| D2 | Can you review the Kafka producer's record accumulator, the part that appends records into batches per partition, for thread-safety problems? Name the method and lines involved and explain any race you find. |
+
 ## Self-test before the grid
 
 Each grader runs once against the answer key text (must pass) and once against a deliberately wrong answer built from its own false-positive or decoy list (must fail). Results go in `tasks/<id>.selftest.json`. A grader that passes the wrong answer is a bug in the grader, not a finding.

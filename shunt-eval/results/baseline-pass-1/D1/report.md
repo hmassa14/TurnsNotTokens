@@ -1,6 +1,6 @@
 # Run report: `D1__stock__r1__20260912-160919`
 
-Task **D1** (planted-bug), arm **stock**, model `claude-sonnet-5`, Claude Code 2.1.269 (Claude Code), Kafka `0ffb4f5dd5`, started 2026-09-12T16:09:20.500006+00:00.
+Task **D1** (planted-bug), prompt variant **named**, arm **stock**, model `claude-sonnet-5`, Claude Code 2.1.269 (Claude Code), Kafka `0ffb4f5dd5`, started 2026-09-12T16:09:20.500006+00:00.
 
 ## 1. Headline numbers
 
@@ -10,6 +10,9 @@ Task **D1** (planted-bug), arm **stock**, model `claude-sonnet-5`, Claude Code 2
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.1253** | sum |
 | Grade | score 1.0 , pass = True | grade.json (bug_report) |
+| Target file found | True via Read (content entered context):StateDirectory.java | transcript tool calls |
+| Finding phase | 1 requests, $0.0285 | requests before the first touch of the target file |
+| Answering phase | 1 requests, $0.0967 | requests from the first touch onward |
 | Wall clock | 52757 ms (harness), 50651 ms (CLI) | meta.json / result.json |
 | Time waiting on API | 50410 ms | result.json `duration_api_ms` |
 | Turns | 2 | result.json |
@@ -120,7 +123,23 @@ Per-request `api_request` events:
   "close()",
   "cleanRemovedTasksCalledByCleanerThread"
  ],
- "grader": "bug_report"
+ "grader": "bug_report",
+ "content_score": 1.0,
+ "content_pass": true,
+ "target_found": true,
+ "target_files_found": [
+  "StateDirectory.java"
+ ],
+ "target_files_missing": [],
+ "found_via": [
+  "Read (content entered context):StateDirectory.java"
+ ],
+ "first_target_touch_ts": "2026-09-12T16:09:25.465Z",
+ "finding_requests": 1,
+ "finding_cost_usd": 0.0285,
+ "answering_requests": 1,
+ "answering_cost_usd": 0.0967,
+ "other_files_read": []
 }
 ```
 

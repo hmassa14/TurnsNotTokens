@@ -30,7 +30,7 @@ shunt-eval/
     runs.jsonl       one row per run after grading
 ```
 
-Run id is `<task-id>__<arm>__r<rep>__<yyyymmdd-hhmmss>`.
+Run id is `<task-id>__<variant>__<arm>__r<rep>__<yyyymmdd-hhmmss>`, where variant is `named` (prompt gives the file path) or `natural` (the question a developer would type, no path). `run.py --variant natural` selects it.
 
 ## 2. One run, step by step
 
@@ -106,6 +106,8 @@ Field names in `results/runs.jsonl`. Source in brackets.
 
 **Quality**
 - `score` in [0, 1], `pass` boolean, `grader_notes` [grade.json]
+- `target_found`, `found_via`, `other_files_read` [transcript tool calls matched against the task's files]. A run that never read, grepped, or delegated the target file is scored 0 and fails, whatever its text says.
+- `finding_requests`, `finding_cost_usd`, `answering_requests`, `answering_cost_usd` [requests split at the first touch of the target file]. The finding phase is the cost of locating the file; the answering phase is the cost of reading and reasoning about it.
 
 ## 4. Grader specs
 

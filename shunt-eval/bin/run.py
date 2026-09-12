@@ -45,6 +45,8 @@ def main():
     ap.add_argument("--task", required=True)
     ap.add_argument("--arm", required=True)
     ap.add_argument("--rep", type=int, default=1)
+    ap.add_argument("--variant", default="named", choices=["named", "natural"],
+                    help="named: prompt gives the file path. natural: the question a developer would type, no path")
     ap.add_argument("--model", required=True)
     ap.add_argument("--repo", required=True, help="pristine shallow clone to copy")
     ap.add_argument("--runs-dir", default=os.path.join(ROOT, "runs"))
@@ -59,8 +61,9 @@ def main():
     args = ap.parse_args()
 
     task = json.load(open(args.task))
+    prompt = task["prompts"][args.variant] if "prompts" in task else task["prompt"]
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
-    run_id = f"{task['id']}__{args.arm}__r{args.rep}__{stamp}"
+    run_id = f"{task['id']}__{args.variant}__{args.arm}__r{args.rep}__{stamp}"
     run_dir = os.path.join(args.runs_dir, run_id)
     os.makedirs(run_dir, exist_ok=True)
     work_root = args.work_root or os.path.join(args.runs_dir, "_ws")
@@ -85,9 +88,9 @@ def main():
     version = sh(["claude", "--version"]).stdout.strip()
     meta = {
         "run_id": run_id, "task_id": task["id"], "category": task["category"], "arm": args.arm,
-        "rep": args.rep, "main_model": args.model, "claude_code_version": version,
-        "kafka_commit": kafka_commit, "session_id": session_id, "workspace": ws,
-        "started_at": datetime.now(timezone.utc).isoformat(), "prompt": task["prompt"],
+        "rep": args.rep, "variant": args.variant, "main_model": args.model, "claude_code_version": version,
+        "kafka_commit": kafka_commit, "session_id": session_id, "workspace": ws, "target_files": task.get("files", []),
+        "started_at": datetime.now(timezone.utc).isoformat(), "prompt": prompt,
     }
     json.dump(meta, open(os.path.join(run_dir, "meta.json"), "w"), indent=2)
 
@@ -109,7 +112,7 @@ def main():
     os.makedirs(os.path.join(run_dir, "worker"), exist_ok=True)
 
     # 3. Execute.
-    cmd = ["claude", "-p", task["prompt"], "--model", args.model, "--session-id", session_id,
+    cmd = ["claude", "-p", prompt, "--model", args.model, "--session-id", session_id,
            "--permission-mode", args.permission_mode, "--allowedTools", args.allowed_tools,
            "--max-turns", str(args.max_turns), "--output-format", "json"]
     meta["command"] = cmd

@@ -1,0 +1,21 @@
+diff --git a/clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java b/clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java
+index 735ff8d..3de488c 100644
+--- a/clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java
++++ b/clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java
+@@ -326,12 +326,12 @@ public class RecordAccumulator {
+                     // After taking the lock, validate that the partition hasn't changed and retry.
+                     if (partitionChanged(topic, topicInfo, partitionInfo, dq, nowMs, cluster))
+                         continue;
+-
+-                    RecordAppendResult appendResult = tryAppend(timestamp, key, value, headers, callbacks, dq, nowMs);
+-                    if (appendResult.appended())
+-                        return updatePartitionInfoOnAppend(appendResult, topicInfo, partitionInfo, dq, cluster);
+                 }
+ 
++                RecordAppendResult tryResult = tryAppend(timestamp, key, value, headers, callbacks, dq, nowMs);
++                if (tryResult.appended())
++                    return updatePartitionInfoOnAppend(tryResult, topicInfo, partitionInfo, dq, cluster);
++
+                 if (buffer == null) {
+                     int size = Math.max(this.batchSize, AbstractRecords.estimateSizeInBytesUpperBound(
+                             RecordBatch.CURRENT_MAGIC_VALUE, compression.type(), key, value, headers));

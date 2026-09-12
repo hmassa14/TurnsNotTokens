@@ -1,0 +1,34 @@
+{
+  "id": "W2",
+  "name": "streams-sink-node-metrics",
+  "category": "code-write",
+  "files": [
+    "streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/ProcessorNodeMetrics.java"
+  ],
+  "prompts": {
+    "named": "Create `streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/SinkNodeMetrics.java`, a new node-level metrics registry following the structure of `streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/ProcessorNodeMetrics.java` exactly (same package, license header, `final` class with private constructor, constants for metric names and descriptions, static sensor factories taking `threadId, taskId, processorNodeId, streamsMetrics`). Spec: (1) `recordsSentSensor(...)`: sensor `records-sent`, `RecordingLevel.DEBUG`, registered with `StreamsMetricsImpl.addInvocationRateAndCountToSensor` in `PROCESSOR_NODE_LEVEL_GROUP` with the node-level tag map (rate description \"The average number of records sent per second\", total \"The total number of records sent\"). (2) `bytesSentSensor(...)`: sensor `bytes-sent`, DEBUG, registered with `addRateOfSumAndSumMetricsToSensor`. (3) `sendLatencySensor(...)`: sensor `send-latency`, DEBUG, registered with `addAvgAndMaxToSensor` producing `send-latency-avg` and `send-latency-max`. (4) Build names and descriptions from `private static final String` constants, reusing `TOTAL_DESCRIPTION`, `RATE_DESCRIPTION_PREFIX`, `RATE_DESCRIPTION_SUFFIX`, `AVG_LATENCY_DESCRIPTION`, `MAX_LATENCY_DESCRIPTION`, `LATENCY_SUFFIX` from `StreamsMetricsImpl` where they fit. (5) Include a private `throughputSensor(...)` helper mirroring ProcessorNodeMetrics and use it for `recordsSentSensor`. Do not write tests and do not modify any existing file.",
+    "natural": "Add a SinkNodeMetrics registry to Kafka Streams next to the existing node-level metrics classes, following the conventions of the processor node metrics class. It needs three DEBUG-level node sensors: records-sent (invocation rate and count), bytes-sent (rate of sum and sum), and send-latency (avg and max). Don't write tests or change existing files."
+  },
+  "grader": {
+    "type": "compile_and_checklist",
+    "gradle_module": ":streams",
+    "required_regex": [
+      "class SinkNodeMetrics",
+      "private SinkNodeMetrics\\(\\)",
+      "public static Sensor recordsSentSensor\\(",
+      "public static Sensor bytesSentSensor\\(",
+      "public static Sensor sendLatencySensor\\(",
+      "\"records-sent\"",
+      "\"bytes-sent\"",
+      "\"send-latency\"",
+      "PROCESSOR_NODE_LEVEL_GROUP",
+      "nodeLevelSensor\\(",
+      "nodeLevelTagMap\\(",
+      "RecordingLevel.DEBUG",
+      "addInvocationRateAndCountToSensor\\(",
+      "addRateOfSumAndSumMetricsToSensor\\(",
+      "addAvgAndMaxToSensor\\("
+    ]
+  },
+  "output_file": "streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/SinkNodeMetrics.java"
+}

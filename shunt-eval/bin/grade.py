@@ -95,6 +95,71 @@ def compile_and_checklist(run_dir, g):
             "failed_checks": [p for p, ok in {**checks, **counts_ok}.items() if not ok]}
 
 
+RATES = {"haiku": (1.00, 5.00), "sonnet-5": (2.00, 10.00), "opus": (5.00, 25.00), "fable": (10.00, 50.00)}
+
+
+def request_cost(model, u):
+    r = next((v for k, v in RATES.items() if k in (model or "")), None)
+    if not r:
+        return 0.0
+    i, o = r
+    ttl = u.get("cache_creation") or {}
+    w5 = ttl.get("ephemeral_5m_input_tokens", 0)
+    w1 = ttl.get("ephemeral_1h_input_tokens", u.get("cache_creation_input_tokens", 0) - w5)
+    cr = 0.025 if "fable" in (model or "") else 0.10
+    return (u.get("input_tokens", 0) * i + w5 * i * 1.25 + w1 * i * 2 + u.get("cache_read_input_tokens", 0) * i * cr + u.get("output_tokens", 0) * o) / 1e6
+
+
+def target_file_check(run_dir, files):
+    """Did the session ever read, grep, or delegate the target file(s)? Splits cost/time into finding vs answering."""
+    tp_path = os.path.join(run_dir, "transcript_parsed.json")
+    if not os.path.isfile(tp_path):
+        subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "parse_transcript.py"), run_dir],
+                       stdout=subprocess.DEVNULL, check=False)
+    if not os.path.isfile(tp_path) or not files:
+        return {"target_found": None}
+    tp = json.load(open(tp_path))
+    names = [os.path.basename(f) for f in files]
+    hits = []  # (ts, via, name)
+    for t in tp["tool_calls"]:
+        inp, name = t.get("input", {}), t["name"]
+        blob = ""
+        if name == "Read":
+            blob = inp.get("file_path", "")
+        elif name in ("Grep", "Glob"):
+            blob = " ".join(str(inp.get(k, "")) for k in ("path", "pattern", "glob"))
+        elif name == "Bash":
+            blob = inp.get("command", "")
+        elif name == "Agent":
+            blob = inp.get("prompt", "") + " " + inp.get("description", "")
+        elif name == "Skill":
+            blob = str(inp.get("args", ""))
+        for n in names:
+            if n in blob:
+                via = name if t.get("agent", "main") == "main" else f"{name}@{t['agent']}"
+                if name == "Read" and not t.get("is_error"):
+                    via += " (content entered context)"
+                hits.append((t.get("ts_use") or "", via, n))
+    found_names = sorted({h[2] for h in hits})
+    all_found = len(found_names) == len(names)
+    first_ts = min((h[0] for h in hits), default=None)
+    # phase split: requests whose first_ts precedes the first target touch are "finding"
+    find_cost = ans_cost = 0.0
+    find_reqs = ans_reqs = 0
+    for r in tp["requests"]:
+        c = request_cost(r.get("model"), r.get("usage") or {})
+        if first_ts and (r.get("first_ts") or "") < first_ts:
+            find_cost += c; find_reqs += 1
+        else:
+            ans_cost += c; ans_reqs += 1
+    read_other = sorted({os.path.basename(t["input"].get("file_path", "")) for t in tp["tool_calls"] if t["name"] == "Read"} - set(names))
+    return {"target_found": all_found, "target_files_found": found_names, "target_files_missing": sorted(set(names) - set(found_names)),
+            "found_via": [f"{v}:{n}" for _, v, n in hits[:6]], "first_target_touch_ts": first_ts,
+            "finding_requests": find_reqs, "finding_cost_usd": round(find_cost, 4),
+            "answering_requests": ans_reqs, "answering_cost_usd": round(ans_cost, 4),
+            "other_files_read": read_other[:10]}
+
+
 def main():
     run_dir, task_path = sys.argv[1], sys.argv[2]
     task = json.load(open(task_path))
@@ -111,6 +176,15 @@ def main():
     else:
         raise SystemExit("unknown grader " + kind)
     res["grader"] = kind
+    res["content_score"] = res.get("score")
+    res["content_pass"] = res.get("pass")
+    tf = target_file_check(run_dir, task.get("files", []))
+    res.update(tf)
+    if tf.get("target_found") is False:
+        # Never located the file: the answer cannot be grounded, whatever the text says.
+        res["pass"] = False
+        res["score"] = 0.0
+        res["note"] = "target file never read, grepped, or delegated; scored as a miss"
     json.dump(res, open(os.path.join(run_dir, "grade.json"), "w"), indent=2)
     print(json.dumps(res, indent=1))
 

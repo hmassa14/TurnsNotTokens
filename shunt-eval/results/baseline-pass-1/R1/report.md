@@ -1,6 +1,6 @@
 # Run report: `R1__stock__r1__20260912-160841`
 
-Task **R1** (bulk-read), arm **stock**, model `claude-sonnet-5`, Claude Code 2.1.269 (Claude Code), Kafka `0ffb4f5dd5`, started 2026-09-12T16:08:42.347473+00:00.
+Task **R1** (bulk-read), prompt variant **named**, arm **stock**, model `claude-sonnet-5`, Claude Code 2.1.269 (Claude Code), Kafka `0ffb4f5dd5`, started 2026-09-12T16:08:42.347473+00:00.
 
 ## 1. Headline numbers
 
@@ -10,6 +10,9 @@ Task **R1** (bulk-read), arm **stock**, model `claude-sonnet-5`, Claude Code 2.1
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.2017** | sum |
 | Grade | score 1.0 , pass = True | grade.json (key_list) |
+| Target file found | True via Bash:BrokerLifecycleManager.java, Read (content entered context):BrokerLifecycleManager.java | transcript tool calls |
+| Finding phase | 1 requests, $0.1190 | requests before the first touch of the target file |
+| Answering phase | 2 requests, $0.0827 | requests from the first touch onward |
 | Wall clock | 37437 ms (harness), 35485 ms (CLI) | meta.json / result.json |
 | Time waiting on API | 34666 ms | result.json `duration_api_ms` |
 | Turns | 3 | result.json |
@@ -124,7 +127,24 @@ Per-request `api_request` events:
   "states: 5/5",
   "initial_state: 1/1"
  ],
- "grader": "key_list"
+ "grader": "key_list",
+ "content_score": 1.0,
+ "content_pass": true,
+ "target_found": true,
+ "target_files_found": [
+  "BrokerLifecycleManager.java"
+ ],
+ "target_files_missing": [],
+ "found_via": [
+  "Bash:BrokerLifecycleManager.java",
+  "Read (content entered context):BrokerLifecycleManager.java"
+ ],
+ "first_target_touch_ts": "2026-09-12T16:08:47.567Z",
+ "finding_requests": 1,
+ "finding_cost_usd": 0.119,
+ "answering_requests": 2,
+ "answering_cost_usd": 0.0827,
+ "other_files_read": []
 }
 ```
 
