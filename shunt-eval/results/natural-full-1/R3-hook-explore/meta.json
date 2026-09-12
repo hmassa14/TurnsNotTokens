@@ -1,0 +1,40 @@
+{
+  "run_id": "R3__natural__hook-explore__r1__20260912-172728",
+  "task_id": "R3",
+  "category": "bulk-read",
+  "arm": "hook-explore",
+  "rep": 1,
+  "variant": "natural",
+  "main_model": "claude-sonnet-5",
+  "claude_code_version": "2.1.269 (Claude Code)",
+  "kafka_commit": "0ffb4f5dd57c6af206e3d9f97a433dd15ebb6dfc",
+  "session_id": "7f47fc8b-3607-44fd-8d4c-01816f81ac5c",
+  "workspace": "/home/user/WackyWords/shunt-eval/runs/_ws/R3__natural__hook-explore__r1__20260912-172728",
+  "target_files": [
+    "group-coordinator/src/main/java/org/apache/kafka/coordinator/group/GroupCoordinatorShard.java",
+    "group-coordinator/src/main/java/org/apache/kafka/coordinator/group/GroupCoordinatorRecordHelpers.java"
+  ],
+  "started_at": "2026-09-12T17:27:32.053521+00:00",
+  "prompt": "When Kafka's group coordinator shard replays records from the log, which record types does it handle, which manager (group metadata or offset metadata) each one goes to, and which of the record helper methods build each record type? Note which record types have no helper.",
+  "command": [
+    "claude",
+    "-p",
+    "When Kafka's group coordinator shard replays records from the log, which record types does it handle, which manager (group metadata or offset metadata) each one goes to, and which of the record helper methods build each record type? Note which record types have no helper.",
+    "--model",
+    "claude-sonnet-5",
+    "--session-id",
+    "7f47fc8b-3607-44fd-8d4c-01816f81ac5c",
+    "--permission-mode",
+    "acceptEdits",
+    "--allowedTools",
+    "Read,Grep,Glob,Bash,Edit,Write,MultiEdit,Agent,Skill,TodoWrite,TaskCreate,TaskUpdate",
+    "--max-turns",
+    "40",
+    "--output-format",
+    "json"
+  ],
+  "wall_ms": 92584,
+  "exit_code": 0,
+  "timeout": false,
+  "finished_at": "2026-09-12T17:29:04.638758+00:00"
+}

@@ -84,13 +84,11 @@
       }
     ],
     "deny": [
-      "newStreamsGroupMetadataRecord",
-      "newStreamsGroupMemberMetadataRecord",
-      "newStreamsGroupTopologyRecord",
       "newConsumerGroupRegularExpressionTombstoneRecord"
     ],
     "penalty": 0.03,
     "pass_recall": 0.9,
-    "max_invented": 1
+    "max_invented": 1,
+    "note": "Streams-group helpers exist in streams/StreamsCoordinatorRecordHelpers.java; the named prompt scopes to GroupCoordinatorRecordHelpers only, the natural prompt does not, so they are not penalized."
   }
 }

@@ -1,0 +1,817 @@
+{
+ "summary": {
+  "metric_names": {
+   "claude_code.session.count": 1,
+   "claude_code.cost.usage": 8,
+   "claude_code.token.usage": 8,
+   "claude_code.lines_of_code.count": 1,
+   "claude_code.code_edit_tool.decision": 1,
+   "claude_code.active_time.total": 1
+  },
+  "tokens_by_model_type": {
+   "claude-sonnet-5|input": 16.0,
+   "claude-sonnet-5|output": 3551.0,
+   "claude-sonnet-5|cacheRead": 263829.0,
+   "claude-sonnet-5|cacheCreation": 19315.0
+  },
+  "cost_by_model_usd": {
+   "claude-sonnet-5": 0.16556780000000004
+  },
+  "event_counts": {
+   "hook_registered": 2,
+   "user_prompt": 1,
+   "tool_decision": 7,
+   "api_request": 8,
+   "tool_result": 6,
+   "hook_execution_start": 4,
+   "hook_execution_complete": 4,
+   "assistant_response": 3
+  },
+  "api_requests": 8,
+  "api_latency_ms_p50": 4108.0,
+  "api_latency_ms_max": 16496.0,
+  "tool_decisions": [
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "reject",
+    "source": "hook"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Write",
+    "decision": "accept",
+    "source": "config"
+   }
+  ],
+  "span_counts": {},
+  "hook_ms_total": 0
+ },
+ "events": [
+  {
+   "event": "hook_registered",
+   "ts": "1789234983532000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-12T17:43:03.532Z",
+    "event.sequence": 0,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "projectSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Read"
+   }
+  },
+  {
+   "event": "hook_registered",
+   "ts": "1789234983532000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-12T17:43:03.532Z",
+    "event.sequence": 1,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "projectSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Bash"
+   }
+  },
+  {
+   "event": "user_prompt",
+   "ts": "1789234984408000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "user_prompt",
+    "event.timestamp": "2026-09-12T17:43:04.407Z",
+    "event.sequence": 2,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "prompt_length": "554",
+    "prompt": "<REDACTED>",
+    "message.uuid": "67ddfd3e-a0b6-474d-ad79-246c013fcd8f"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789234986677000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:43:06.677Z",
+    "event.sequence": 3,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_018qRUpW3J7jUdhmMkaU8DPg",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789234986700000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:43:06.700Z",
+    "event.sequence": 4,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 122,
+    "cache_read_tokens": 23824,
+    "cache_creation_tokens": 5517,
+    "cost_usd": 0.0280568,
+    "cost_usd_micros": 28057,
+    "duration_ms": 2235,
+    "ttft_ms": 1275,
+    "request_id": "req_011CeyxaZdUk1BRCnAiRJecN",
+    "client_request_id": "39cd3de7-17cf-49dc-b917-52cda5cf75e3",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789234986720000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T17:43:06.720Z",
+    "event.sequence": 5,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_018qRUpW3J7jUdhmMkaU8DPg",
+    "success": "true",
+    "duration_ms": "41",
+    "tool_input": "{\"pattern\":\"class RemoteLogManagerConfig\",\"output_mode\":\"files_with_matches\"}",
+    "tool_input_size_bytes": "77",
+    "tool_result_size_bytes": "203"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789234989273000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T17:43:09.273Z",
+    "event.sequence": 6,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789234989286000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:43:09.286Z",
+    "event.sequence": 7,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 136,
+    "cache_read_tokens": 29341,
+    "cache_creation_tokens": 261,
+    "cost_usd": 0.008276200000000001,
+    "cost_usd_micros": 8276,
+    "duration_ms": 2548,
+    "ttft_ms": 1149,
+    "request_id": "req_011CeyxajMsmDjLnQ1C38Xpc",
+    "client_request_id": "a29e9e17-7e1e-4219-8181-62d6615d4564",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789234989308000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T17:43:09.308Z",
+    "event.sequence": 8,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "1",
+    "num_non_blocking_error": "0",
+    "num_cancelled": "0",
+    "total_duration_ms": "34",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789234989309000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:43:09.309Z",
+    "event.sequence": 9,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "decision": "reject",
+    "source": "hook",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01LyjXGMmXcz8LoZHkT7mUjT",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789234992144000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T17:43:12.144Z",
+    "event.sequence": 10,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789234992167000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:43:12.167Z",
+    "event.sequence": 11,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 216,
+    "cache_read_tokens": 29602,
+    "cache_creation_tokens": 263,
+    "cost_usd": 0.0091364,
+    "cost_usd_micros": 9136,
+    "duration_ms": 2843,
+    "ttft_ms": 1092,
+    "request_id": "req_011CeyxavMR8ZDvYLZk3qTAX",
+    "client_request_id": "637c99e9-a344-407a-b165-7887009f4342",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789234992171000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T17:43:12.171Z",
+    "event.sequence": 12,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "27",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789234992175000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:43:12.175Z",
+    "event.sequence": 13,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_018QGMdrh3ve2qk2j717eR5N",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789234992180000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T17:43:12.180Z",
+    "event.sequence": 14,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_018QGMdrh3ve2qk2j717eR5N",
+    "success": "true",
+    "duration_ms": "4",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/W3__natural__hook-explore__r1__20260912-174259/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\",\"limit\":120}",
+    "tool_input_size_bytes": "209",
+    "tool_result_size_bytes": "9856"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789234996749000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:43:16.749Z",
+    "event.sequence": 15,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01MbMLv8KhW3bAQBmMiCJ9W4",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789234996760000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T17:43:16.760Z",
+    "event.sequence": 16,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01MbMLv8KhW3bAQBmMiCJ9W4",
+    "success": "true",
+    "duration_ms": "9",
+    "tool_input": "{\"pattern\":\"configDef\\\\(\\\\)|CONFIG_DEF|AbstractConfig|public RemoteLogManagerConfig|public boolean|public int|public long|private final AbstractConfig|new ConfigDef|define\\\\(\",\"path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/W3__natural__hook-explore__r1__20260912-174259/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\",\"output_mode\":\"content\",\"-n\":true}",
+    "tool_input_size_bytes": "401",
+    "tool_result_size_bytes": "4158"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789234996768000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:43:16.768Z",
+    "event.sequence": 17,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 298,
+    "cache_read_tokens": 29865,
+    "cache_creation_tokens": 4538,
+    "cost_usd": 0.027109,
+    "cost_usd_micros": 27109,
+    "duration_ms": 4558,
+    "ttft_ms": 1246,
+    "request_id": "req_011Ceyxb8hKfYPQVqbKQVYjP",
+    "client_request_id": "fff66e69-c96c-4bbf-a03c-3e8efc7821b7",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789235001201000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T17:43:21.201Z",
+    "event.sequence": 18,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789235001215000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:43:21.215Z",
+    "event.sequence": 19,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 209,
+    "cache_read_tokens": 34403,
+    "cache_creation_tokens": 2478,
+    "cost_usd": 0.018886600000000003,
+    "cost_usd_micros": 18887,
+    "duration_ms": 4432,
+    "ttft_ms": 1365,
+    "request_id": "req_011CeyxbUFoTqwa6rpEKV5rM",
+    "client_request_id": "14885eb5-4325-4888-bae8-864a2054447e",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789235001215000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-12T17:43:21.215Z",
+    "event.sequence": 20,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "response_length": 93,
+    "response": "<REDACTED>",
+    "request_id": "req_011CeyxbUFoTqwa6rpEKV5rM",
+    "message.uuid": "2ffb1937-11b6-43be-a8fe-3ed41a494c19",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789235001229000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T17:43:21.229Z",
+    "event.sequence": 21,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "27",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789235001232000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:43:21.232Z",
+    "event.sequence": 22,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01VdEoifPS9QNwwWRhswAo46",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789235001236000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T17:43:21.236Z",
+    "event.sequence": 23,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01VdEoifPS9QNwwWRhswAo46",
+    "success": "true",
+    "duration_ms": "2",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/W3__natural__hook-explore__r1__20260912-174259/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\",\"offset\":234,\"limit\":80}",
+    "tool_input_size_bytes": "221",
+    "tool_result_size_bytes": "4359"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789235005340000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T17:43:25.339Z",
+    "event.sequence": 24,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789235005365000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T17:43:25.365Z",
+    "event.sequence": 25,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "25",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789235005368000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:43:25.368Z",
+    "event.sequence": 26,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01DMeBLLmRNHKMqdKweq9uoc",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789235005373000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T17:43:25.373Z",
+    "event.sequence": 27,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01DMeBLLmRNHKMqdKweq9uoc",
+    "success": "true",
+    "duration_ms": "3",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/W3__natural__hook-explore__r1__20260912-174259/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\",\"offset\":430,\"limit\":70}",
+    "tool_input_size_bytes": "221",
+    "tool_result_size_bytes": "2690"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789235005376000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:43:25.376Z",
+    "event.sequence": 28,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 180,
+    "cache_read_tokens": 36881,
+    "cache_creation_tokens": 2304,
+    "cost_usd": 0.0183962,
+    "cost_usd_micros": 18396,
+    "duration_ms": 4108,
+    "ttft_ms": 1559,
+    "request_id": "req_011CeyxboSy73uYMJSK8JQyc",
+    "client_request_id": "059203d9-c5c3-461c-95c9-bd7ba3805ef5",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789235021878000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:43:41.878Z",
+    "event.sequence": 29,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Write",
+    "tool_use_id": "toolu_015ArbWGMtoKMETbNwSPV7Xb",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789235021890000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T17:43:41.890Z",
+    "event.sequence": 30,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "tool_name": "Write",
+    "tool_use_id": "toolu_015ArbWGMtoKMETbNwSPV7Xb",
+    "success": "true",
+    "duration_ms": "11",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/W3__natural__hook-explore__r1__20260912-174259/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogDeletionConfig.java\",\"content\":\"/*\\n * Licensed to the Apache Software Foundation (ASF) under one or more\\n * contributor license agreements. See the NOTICE file \u2026[4641 chars]\"}",
+    "tool_input_size_bytes": "4968",
+    "tool_result_size_bytes": "278"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789235021896000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:43:41.896Z",
+    "event.sequence": 31,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 2252,
+    "cache_read_tokens": 39185,
+    "cache_creation_tokens": 1543,
+    "cost_usd": 0.036533,
+    "cost_usd_micros": 36533,
+    "duration_ms": 16496,
+    "ttft_ms": 2205,
+    "request_id": "req_011Ceyxc79LDGFXKEdtAA4Ac",
+    "client_request_id": "d2116684-ee05-40c6-92c1-47b14553e929",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789235021896000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-12T17:43:41.896Z",
+    "event.sequence": 32,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "response_length": 126,
+    "response": "<REDACTED>",
+    "request_id": "req_011Ceyxc79LDGFXKEdtAA4Ac",
+    "message.uuid": "2c948e4b-8257-45e4-9ef9-65ade71aaff0",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789235024338000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:43:44.338Z",
+    "event.sequence": 33,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 138,
+    "cache_read_tokens": 40728,
+    "cache_creation_tokens": 2411,
+    "cost_usd": 0.0191736,
+    "cost_usd_micros": 19174,
+    "duration_ms": 2427,
+    "ttft_ms": 1524,
+    "request_id": "req_011CeyxdKj9s2hYaYdXk7Yua",
+    "client_request_id": "a01e05b2-fc7c-4b63-beb3-a5d9549ec768",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789235024338000000",
+   "attrs": {
+    "run.id": "W3__natural__hook-explore__r1__20260912-174259",
+    "session.id": "a39bf383-7208-4f32-8c6b-04720218fec5",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-12T17:43:44.338Z",
+    "event.sequence": 34,
+    "prompt.id": "a59c2930-5f1e-4923-a176-63c9d03775e7",
+    "response_length": 314,
+    "response": "<REDACTED>",
+    "request_id": "req_011CeyxdKj9s2hYaYdXk7Yua",
+    "message.uuid": "d02adf36-9619-46c8-a8fc-363465e8989e",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  }
+ ],
+ "spans": []
+}
