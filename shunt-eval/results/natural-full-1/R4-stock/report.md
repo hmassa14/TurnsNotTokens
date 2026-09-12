@@ -10,7 +10,7 @@ Task **R4** (bulk-read), prompt variant **natural**, arm **stock**, model `claud
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.1352** | sum |
 | Grade | score 1.0 , pass = True | grade.json (key_list) |
-| Target file found | True via Read (content entered context):BatchAccumulator.java, Read (content entered context):BatchAccumulatorTest.java, Grep:BatchAccumulatorTest.java | transcript tool calls |
+| Target file found | True via Grep:BatchAccumulator.java, Grep:BatchAccumulatorTest.java, Read (content entered context):BatchAccumulator.java | transcript tool calls |
 | Finding phase | 1 requests, $0.0286 | requests before the first touch of the target file |
 | Answering phase | 4 requests, $0.1067 | requests from the first touch onward |
 | Wall clock | 25390 ms (harness), 23658 ms (CLI) | meta.json / result.json |
@@ -144,11 +144,13 @@ Per-request `api_request` events:
  ],
  "target_files_missing": [],
  "found_via": [
+  "Grep:BatchAccumulator.java",
+  "Grep:BatchAccumulatorTest.java",
   "Read (content entered context):BatchAccumulator.java",
   "Read (content entered context):BatchAccumulatorTest.java",
   "Grep:BatchAccumulatorTest.java"
  ],
- "first_target_touch_ts": "2026-09-12T17:29:15.724Z",
+ "first_target_touch_ts": "2026-09-12T17:29:13.193Z",
  "finding_requests": 1,
  "finding_cost_usd": 0.0286,
  "answering_requests": 4,

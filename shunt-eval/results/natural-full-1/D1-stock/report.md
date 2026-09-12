@@ -10,7 +10,7 @@ Task **D1** (planted-bug), prompt variant **natural**, arm **stock**, model `cla
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.1838** | sum |
 | Grade | score 1.0 , pass = True | grade.json (bug_report) |
-| Target file found | True via Read (content entered context):StateDirectory.java | transcript tool calls |
+| Target file found | True via Grep:StateDirectory.java, Read (content entered context):StateDirectory.java | transcript tool calls |
 | Finding phase | 3 requests, $0.0517 | requests before the first touch of the target file |
 | Answering phase | 3 requests, $0.1321 | requests from the first touch onward |
 | Wall clock | 70309 ms (harness), 68240 ms (CLI) | meta.json / result.json |
@@ -149,9 +149,10 @@ Per-request `api_request` events:
  ],
  "target_files_missing": [],
  "found_via": [
+  "Grep:StateDirectory.java",
   "Read (content entered context):StateDirectory.java"
  ],
- "first_target_touch_ts": "2026-09-12T17:13:52.270Z",
+ "first_target_touch_ts": "2026-09-12T17:13:50.200Z",
  "finding_requests": 3,
  "finding_cost_usd": 0.0517,
  "answering_requests": 3,

@@ -10,7 +10,7 @@ Task **R1** (bulk-read), prompt variant **natural**, arm **hook-explore**, model
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.1690** | sum |
 | Grade | score 1.0 , pass = True | grade.json (key_list) |
-| Target file found | True via Read:BrokerLifecycleManager.java, Agent:BrokerLifecycleManager.java, Read@subagent:agent-aa07b79d5e0fe76ba (content entered context):BrokerLifecycleManager.java | transcript tool calls |
+| Target file found | True via Grep:BrokerLifecycleManager.java, Read:BrokerLifecycleManager.java, Agent:BrokerLifecycleManager.java | transcript tool calls |
 | Finding phase | 3 requests, $0.0502 | requests before the first touch of the target file |
 | Answering phase | 8 requests, $0.0913 | requests from the first touch onward |
 | Wall clock | 100150 ms (harness), 14784 ms (CLI) | meta.json / result.json |
@@ -170,11 +170,12 @@ Per-request `api_request` events:
  ],
  "target_files_missing": [],
  "found_via": [
+  "Grep:BrokerLifecycleManager.java",
   "Read:BrokerLifecycleManager.java",
   "Agent:BrokerLifecycleManager.java",
   "Read@subagent:agent-aa07b79d5e0fe76ba (content entered context):BrokerLifecycleManager.java"
  ],
- "first_target_touch_ts": "2026-09-12T17:12:10.568Z",
+ "first_target_touch_ts": "2026-09-12T17:12:07.370Z",
  "finding_requests": 3,
  "finding_cost_usd": 0.0502,
  "answering_requests": 8,

@@ -10,9 +10,9 @@ Task **E1** (precise-edit), prompt variant **natural**, arm **stock**, model `cl
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.0757** | sum |
 | Grade | score 1.0 , pass = True | grade.json (exact_diff) |
-| Target file found | True via Read (content entered context):SharePartitionManager.java | transcript tool calls |
-| Finding phase | 2 requests, $0.0372 | requests before the first touch of the target file |
-| Answering phase | 2 requests, $0.0385 | requests from the first touch onward |
+| Target file found | True via Grep:SharePartitionManager.java, Read (content entered context):SharePartitionManager.java, Edit:SharePartitionManager.java | transcript tool calls |
+| Finding phase | 1 requests, $0.0284 | requests before the first touch of the target file |
+| Answering phase | 3 requests, $0.0473 | requests from the first touch onward |
 | Wall clock | 12876 ms (harness), 11166 ms (CLI) | meta.json / result.json |
 | Time waiting on API | 11014 ms | result.json `duration_api_ms` |
 | Turns | 4 | result.json |
@@ -135,13 +135,15 @@ Per-request `api_request` events:
  ],
  "target_files_missing": [],
  "found_via": [
-  "Read (content entered context):SharePartitionManager.java"
+  "Grep:SharePartitionManager.java",
+  "Read (content entered context):SharePartitionManager.java",
+  "Edit:SharePartitionManager.java"
  ],
- "first_target_touch_ts": "2026-09-12T17:43:57.650Z",
- "finding_requests": 2,
- "finding_cost_usd": 0.0372,
- "answering_requests": 2,
- "answering_cost_usd": 0.0385,
+ "first_target_touch_ts": "2026-09-12T17:43:54.991Z",
+ "finding_requests": 1,
+ "finding_cost_usd": 0.0284,
+ "answering_requests": 3,
+ "answering_cost_usd": 0.0473,
  "other_files_read": [],
  "spotify_style_tokens_avoided": 0
 }

@@ -30,8 +30,8 @@ Runs per arm: A · stock = 12, B · shunt = 12, C · hook + Explore = 12
 | Total, list price ($) | 0.161 | 0.177 | 0.177 |
 | Main model ($) | 0.161 | 0.177 | 0.161 |
 | Worker or subagent ($) | 0.000 | 0.000 | 0.017 |
-| Finding phase ($) | 0.034 | 0.036 | 0.038 |
-| Answering phase ($) | 0.127 | 0.140 | 0.134 |
+| Finding phase ($) | 0.033 | 0.034 | 0.037 |
+| Answering phase ($) | 0.129 | 0.143 | 0.134 |
 | Input tokens, uncached | 14 | 18 | 15 |
 | Cache write tokens | 22,165 | 20,053 | 17,973 |
 | Cache read tokens | 238,859 | 316,989 | 266,351 |
@@ -137,8 +137,8 @@ Runs per arm: A · stock = 12, B · shunt = 12, C · hook + Explore = 12
 | Total, list price ($) | 0.076 | 0.078 | 0.078 |
 | Main model ($) | 0.076 | 0.078 | 0.078 |
 | Worker or subagent ($) | 0.000 | 0.000 | 0.000 |
-| Finding phase ($) | 0.037 | 0.038 | 0.037 |
-| Answering phase ($) | 0.038 | 0.040 | 0.041 |
+| Finding phase ($) | 0.028 | 0.029 | 0.028 |
+| Answering phase ($) | 0.047 | 0.049 | 0.050 |
 | Input tokens, uncached | 8 | 8 | 8 |
 | Cache write tokens | 11,580 | 11,681 | 11,583 |
 | Cache read tokens | 118,086 | 118,271 | 117,528 |
@@ -242,8 +242,8 @@ Runs per arm: A · stock = 12, B · shunt = 12, C · hook + Explore = 12
 | Total, list price ($) | 0.113 | 0.204 | 0.169 |
 | Main model ($) | 0.113 | 0.204 | 0.120 |
 | Worker or subagent ($) | 0.000 | 0.000 | 0.049 |
-| Finding phase ($) | 0.039 | 0.062 | 0.050 |
-| Answering phase ($) | 0.073 | 0.142 | 0.091 |
+| Finding phase ($) | 0.031 | 0.050 | 0.050 |
+| Answering phase ($) | 0.082 | 0.154 | 0.091 |
 | Input tokens, uncached | 6 | 22 | 2 |
 | Cache write tokens | 19,453 | 21,967 | 5,375 |
 | Cache read tokens | 83,119 | 372,647 | 33,584 |
@@ -347,8 +347,8 @@ Runs per arm: A · stock = 12, B · shunt = 12, C · hook + Explore = 12
 | Total, list price ($) | 0.135 | 0.122 | 0.209 |
 | Main model ($) | 0.135 | 0.122 | 0.060 |
 | Worker or subagent ($) | 0.000 | 0.000 | 0.149 |
-| Finding phase ($) | 0.029 | 0.038 | 0.032 |
-| Answering phase ($) | 0.107 | 0.084 | 0.138 |
+| Finding phase ($) | 0.029 | 0.029 | 0.032 |
+| Answering phase ($) | 0.107 | 0.092 | 0.138 |
 | Input tokens, uncached | 10 | 18 | 2 |
 | Cache write tokens | 28,862 | 10,927 | 2,455 |
 | Cache read tokens | 174,118 | 278,877 | 30,173 |

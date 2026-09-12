@@ -10,7 +10,7 @@ Task **W1** (code-write), prompt variant **natural**, arm **hook-explore**, mode
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.1169** | sum |
 | Grade | score 1.0 , pass = True | grade.json (compile_and_checklist) |
-| Target file found | True via Read (content entered context):MaskField.java | transcript tool calls |
+| Target file found | True via Grep:MaskField.java, Read (content entered context):MaskField.java | transcript tool calls |
 | Finding phase | 1 requests, $0.0275 | requests before the first touch of the target file |
 | Answering phase | 5 requests, $0.0894 | requests from the first touch onward |
 | Wall clock | 30364 ms (harness), 28708 ms (CLI) | meta.json / result.json |
@@ -143,9 +143,10 @@ Per-request `api_request` events:
  ],
  "target_files_missing": [],
  "found_via": [
+  "Grep:MaskField.java",
   "Read (content entered context):MaskField.java"
  ],
- "first_target_touch_ts": "2026-09-12T17:35:50.479Z",
+ "first_target_touch_ts": "2026-09-12T17:35:48.974Z",
  "finding_requests": 1,
  "finding_cost_usd": 0.0275,
  "answering_requests": 5,

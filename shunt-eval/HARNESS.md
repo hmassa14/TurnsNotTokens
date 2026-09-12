@@ -15,6 +15,8 @@ shunt-eval/
     stock/           empty .claude/ (control)
     shunt/           Spotify's plugin verbatim + swapped aika.sh (Haiku worker)
     hook-explore/    same two hooks, deny reason points at Explore; .claude/agents/Explore.md pinned to haiku
+    shunt-strict/    shunt with the offset/limit allow rule removed: big files cannot be Read from the main agent
+    hook-explore-strict/  hook-explore with the same rule removed
   bin/
     run.py           runs one (task, arm, rep), writes runs/<run-id>/
     grid.py          schedules the full grid, interleaved across arms

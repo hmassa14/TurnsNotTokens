@@ -10,9 +10,9 @@ Task **R1** (bulk-read), prompt variant **natural**, arm **stock**, model `claud
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.1125** | sum |
 | Grade | score 1.0 , pass = True | grade.json (key_list) |
-| Target file found | True via Read (content entered context):BrokerLifecycleManager.java | transcript tool calls |
-| Finding phase | 2 requests, $0.0393 | requests before the first touch of the target file |
-| Answering phase | 1 requests, $0.0732 | requests from the first touch onward |
+| Target file found | True via Grep:BrokerLifecycleManager.java, Read (content entered context):BrokerLifecycleManager.java | transcript tool calls |
+| Finding phase | 1 requests, $0.0308 | requests before the first touch of the target file |
+| Answering phase | 2 requests, $0.0817 | requests from the first touch onward |
 | Wall clock | 39108 ms (harness), 37366 ms (CLI) | meta.json / result.json |
 | Time waiting on API | 37150 ms | result.json `duration_api_ms` |
 | Turns | 3 | result.json |
@@ -136,13 +136,14 @@ Per-request `api_request` events:
  ],
  "target_files_missing": [],
  "found_via": [
+  "Grep:BrokerLifecycleManager.java",
   "Read (content entered context):BrokerLifecycleManager.java"
  ],
- "first_target_touch_ts": "2026-09-12T17:09:59.857Z",
- "finding_requests": 2,
- "finding_cost_usd": 0.0393,
- "answering_requests": 1,
- "answering_cost_usd": 0.0732,
+ "first_target_touch_ts": "2026-09-12T17:09:56.672Z",
+ "finding_requests": 1,
+ "finding_cost_usd": 0.0308,
+ "answering_requests": 2,
+ "answering_cost_usd": 0.0817,
  "other_files_read": [],
  "spotify_style_tokens_avoided": 0
 }

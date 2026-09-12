@@ -134,6 +134,11 @@ def target_file_check(run_dir, files):
             blob = inp.get("prompt", "") + " " + inp.get("description", "")
         elif name == "Skill":
             blob = str(inp.get("args", ""))
+        elif name in ("Edit", "Write", "MultiEdit"):
+            blob = inp.get("file_path", "")
+        if name in ("Grep", "Glob", "Bash"):
+            # a grep across the repo that returns hits in the target file has found it
+            blob += " " + (t.get("result_head") or "")
         for n in names:
             if n in blob:
                 via = name if t.get("agent", "main") == "main" else f"{name}@{t['agent']}"

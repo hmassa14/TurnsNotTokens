@@ -10,7 +10,7 @@ Task **R3** (bulk-read), prompt variant **natural**, arm **hook-explore**, model
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.3595** | sum |
 | Grade | score 0.85 , pass = True | grade.json (key_list) |
-| Target file found | True via Grep:GroupCoordinatorShard.java, Grep:GroupCoordinatorShard.java, Read (content entered context):GroupCoordinatorShard.java | transcript tool calls |
+| Target file found | True via Grep:GroupCoordinatorShard.java, Grep:GroupCoordinatorShard.java, Grep:GroupCoordinatorShard.java | transcript tool calls |
 | Finding phase | 2 requests, $0.0395 | requests before the first touch of the target file |
 | Answering phase | 15 requests, $0.3200 | requests from the first touch onward |
 | Wall clock | 92584 ms (harness), 90827 ms (CLI) | meta.json / result.json |
@@ -205,12 +205,12 @@ Per-request `api_request` events:
  "found_via": [
   "Grep:GroupCoordinatorShard.java",
   "Grep:GroupCoordinatorShard.java",
+  "Grep:GroupCoordinatorShard.java",
   "Read (content entered context):GroupCoordinatorShard.java",
   "Grep:GroupCoordinatorRecordHelpers.java",
-  "Grep:GroupCoordinatorRecordHelpers.java",
-  "Read (content entered context):GroupCoordinatorRecordHelpers.java"
+  "Grep:GroupCoordinatorRecordHelpers.java"
  ],
- "first_target_touch_ts": "2026-09-12T17:27:42.170Z",
+ "first_target_touch_ts": "2026-09-12T17:27:40.262Z",
  "finding_requests": 2,
  "finding_cost_usd": 0.0395,
  "answering_requests": 15,

@@ -141,7 +141,8 @@ Per-request `api_request` events:
  "found_via": [
   "Grep:NetworkClient.java",
   "Grep:NetworkClient.java",
-  "Grep:NetworkClient.java"
+  "Grep:NetworkClient.java",
+  "Edit:NetworkClient.java"
  ],
  "first_target_touch_ts": "2026-09-12T17:44:53.488Z",
  "finding_requests": 1,

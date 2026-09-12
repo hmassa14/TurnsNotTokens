@@ -10,9 +10,9 @@ Task **R1** (bulk-read), prompt variant **natural**, arm **shunt**, model `claud
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.2035** | sum |
 | Grade | score 1.0 , pass = True | grade.json (key_list) |
-| Target file found | True via Read:BrokerLifecycleManager.java, Grep:BrokerLifecycleManager.java, Read (content entered context):BrokerLifecycleManager.java | transcript tool calls |
-| Finding phase | 4 requests, $0.0617 | requests before the first touch of the target file |
-| Answering phase | 7 requests, $0.1418 | requests from the first touch onward |
+| Target file found | True via Bash:BrokerLifecycleManager.java, Read:BrokerLifecycleManager.java, Grep:BrokerLifecycleManager.java | transcript tool calls |
+| Finding phase | 3 requests, $0.0499 | requests before the first touch of the target file |
+| Answering phase | 8 requests, $0.1536 | requests from the first touch onward |
 | Wall clock | 77769 ms (harness), 75931 ms (CLI) | meta.json / result.json |
 | Time waiting on API | 73312 ms | result.json `duration_api_ms` |
 | Turns | 11 | result.json |
@@ -168,18 +168,18 @@ Per-request `api_request` events:
  ],
  "target_files_missing": [],
  "found_via": [
+  "Bash:BrokerLifecycleManager.java",
   "Read:BrokerLifecycleManager.java",
   "Grep:BrokerLifecycleManager.java",
   "Read (content entered context):BrokerLifecycleManager.java",
   "Read (content entered context):BrokerLifecycleManager.java",
-  "Read (content entered context):BrokerLifecycleManager.java",
-  "Grep:BrokerLifecycleManager.java"
+  "Read (content entered context):BrokerLifecycleManager.java"
  ],
- "first_target_touch_ts": "2026-09-12T17:10:53.024Z",
- "finding_requests": 4,
- "finding_cost_usd": 0.0617,
- "answering_requests": 7,
- "answering_cost_usd": 0.1418,
+ "first_target_touch_ts": "2026-09-12T17:10:47.224Z",
+ "finding_requests": 3,
+ "finding_cost_usd": 0.0499,
+ "answering_requests": 8,
+ "answering_cost_usd": 0.1536,
  "other_files_read": [],
  "spotify_style_tokens_avoided": 0
 }

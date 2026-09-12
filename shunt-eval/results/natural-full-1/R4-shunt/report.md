@@ -10,9 +10,9 @@ Task **R4** (bulk-read), prompt variant **natural**, arm **shunt**, model `claud
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.1217** | sum |
 | Grade | score 1.0 , pass = True | grade.json (key_list) |
-| Target file found | True via Read:BatchAccumulator.java, Read:BatchAccumulatorTest.java, Grep:BatchAccumulator.java | transcript tool calls |
-| Finding phase | 2 requests, $0.0381 | requests before the first touch of the target file |
-| Answering phase | 7 requests, $0.0836 | requests from the first touch onward |
+| Target file found | True via Grep:BatchAccumulator.java, Grep:BatchAccumulatorTest.java, Read:BatchAccumulator.java | transcript tool calls |
+| Finding phase | 1 requests, $0.0295 | requests before the first touch of the target file |
+| Answering phase | 8 requests, $0.0922 | requests from the first touch onward |
 | Wall clock | 30660 ms (harness), 28743 ms (CLI) | meta.json / result.json |
 | Time waiting on API | 28254 ms | result.json `duration_api_ms` |
 | Turns | 10 | result.json |
@@ -162,18 +162,18 @@ Per-request `api_request` events:
  ],
  "target_files_missing": [],
  "found_via": [
+  "Grep:BatchAccumulator.java",
+  "Grep:BatchAccumulatorTest.java",
   "Read:BatchAccumulator.java",
   "Read:BatchAccumulatorTest.java",
   "Grep:BatchAccumulator.java",
-  "Grep:BatchAccumulator.java",
-  "Bash:BatchAccumulatorTest.java",
-  "Grep:BatchAccumulatorTest.java"
+  "Grep:BatchAccumulator.java"
  ],
- "first_target_touch_ts": "2026-09-12T17:29:44.868Z",
- "finding_requests": 2,
- "finding_cost_usd": 0.0381,
- "answering_requests": 7,
- "answering_cost_usd": 0.0836,
+ "first_target_touch_ts": "2026-09-12T17:29:43.276Z",
+ "finding_requests": 1,
+ "finding_cost_usd": 0.0295,
+ "answering_requests": 8,
+ "answering_cost_usd": 0.0922,
  "other_files_read": [],
  "spotify_style_tokens_avoided": 0
 }

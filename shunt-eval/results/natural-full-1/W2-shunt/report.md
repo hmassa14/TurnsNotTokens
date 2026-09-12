@@ -10,7 +10,7 @@ Task **W2** (code-write), prompt variant **natural**, arm **shunt**, model `clau
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.2515** | sum |
 | Grade | score 0.933 , pass = False | grade.json (compile_and_checklist) |
-| Target file found | True via Read (content entered context):ProcessorNodeMetrics.java | transcript tool calls |
+| Target file found | True via Grep:ProcessorNodeMetrics.java, Read (content entered context):ProcessorNodeMetrics.java | transcript tool calls |
 | Finding phase | 1 requests, $0.0295 | requests before the first touch of the target file |
 | Answering phase | 14 requests, $0.2220 | requests from the first touch onward |
 | Wall clock | 95228 ms (harness), 93404 ms (CLI) | meta.json / result.json |
@@ -181,9 +181,10 @@ Per-request `api_request` events:
  ],
  "target_files_missing": [],
  "found_via": [
+  "Grep:ProcessorNodeMetrics.java",
   "Read (content entered context):ProcessorNodeMetrics.java"
  ],
- "first_target_touch_ts": "2026-09-12T17:38:24.596Z",
+ "first_target_touch_ts": "2026-09-12T17:38:22.218Z",
  "finding_requests": 1,
  "finding_cost_usd": 0.0295,
  "answering_requests": 14,

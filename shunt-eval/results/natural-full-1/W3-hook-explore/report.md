@@ -10,7 +10,7 @@ Task **W3** (code-write), prompt variant **natural**, arm **hook-explore**, mode
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.1656** | sum |
 | Grade | score 1.0 , pass = True | grade.json (compile_and_checklist) |
-| Target file found | True via Read:RemoteLogManagerConfig.java, Read (content entered context):RemoteLogManagerConfig.java, Grep:RemoteLogManagerConfig.java | transcript tool calls |
+| Target file found | True via Grep:RemoteLogManagerConfig.java, Read:RemoteLogManagerConfig.java, Read (content entered context):RemoteLogManagerConfig.java | transcript tool calls |
 | Finding phase | 1 requests, $0.0281 | requests before the first touch of the target file |
 | Answering phase | 7 requests, $0.1375 | requests from the first touch onward |
 | Wall clock | 41559 ms (harness), 39956 ms (CLI) | meta.json / result.json |
@@ -151,13 +151,14 @@ Per-request `api_request` events:
  ],
  "target_files_missing": [],
  "found_via": [
+  "Grep:RemoteLogManagerConfig.java",
   "Read:RemoteLogManagerConfig.java",
   "Read (content entered context):RemoteLogManagerConfig.java",
   "Grep:RemoteLogManagerConfig.java",
   "Read (content entered context):RemoteLogManagerConfig.java",
   "Read (content entered context):RemoteLogManagerConfig.java"
  ],
- "first_target_touch_ts": "2026-09-12T17:43:09.270Z",
+ "first_target_touch_ts": "2026-09-12T17:43:06.668Z",
  "finding_requests": 1,
  "finding_cost_usd": 0.0281,
  "answering_requests": 7,

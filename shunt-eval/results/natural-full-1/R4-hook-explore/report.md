@@ -10,7 +10,7 @@ Task **R4** (bulk-read), prompt variant **natural**, arm **hook-explore**, model
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.2092** | sum |
 | Grade | score 1.0 , pass = True | grade.json (key_list) |
-| Target file found | True via Agent:BatchAccumulator.java, Agent:BatchAccumulatorTest.java, Read@subagent:agent-a048ab4260626e4be (content entered context):BatchAccumulator.java | transcript tool calls |
+| Target file found | True via Agent:BatchAccumulator.java, Agent:BatchAccumulatorTest.java, Bash@subagent:agent-a048ab4260626e4be:BatchAccumulatorTest.java | transcript tool calls |
 | Finding phase | 1 requests, $0.0318 | requests before the first touch of the target file |
 | Answering phase | 28 requests, $0.1377 | requests from the first touch onward |
 | Wall clock | 100556 ms (harness), 6597 ms (CLI) | meta.json / result.json |
@@ -244,9 +244,9 @@ Per-request `api_request` events:
  "found_via": [
   "Agent:BatchAccumulator.java",
   "Agent:BatchAccumulatorTest.java",
+  "Bash@subagent:agent-a048ab4260626e4be:BatchAccumulatorTest.java",
   "Read@subagent:agent-a048ab4260626e4be (content entered context):BatchAccumulator.java",
   "Read@subagent:agent-a048ab4260626e4be (content entered context):BatchAccumulatorTest.java",
-  "Grep@subagent:agent-a048ab4260626e4be:BatchAccumulatorTest.java",
   "Grep@subagent:agent-a048ab4260626e4be:BatchAccumulatorTest.java"
  ],
  "first_target_touch_ts": "2026-09-12T17:30:25.035Z",

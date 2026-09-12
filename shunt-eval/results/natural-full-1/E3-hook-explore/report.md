@@ -10,7 +10,7 @@ Task **E3** (precise-edit), prompt variant **natural**, arm **hook-explore**, mo
 | Cost, worker calls | $0.0000 (0 calls) | worker/*.json |
 | **Cost, total** | **$0.0658** | sum |
 | Grade | score 1.0 , pass = True | grade.json (exact_diff) |
-| Target file found | True via Read (content entered context):LocalLog.java | transcript tool calls |
+| Target file found | True via Grep:LocalLog.java, Read (content entered context):LocalLog.java, Edit:LocalLog.java | transcript tool calls |
 | Finding phase | 1 requests, $0.0278 | requests before the first touch of the target file |
 | Answering phase | 3 requests, $0.0381 | requests from the first touch onward |
 | Wall clock | 15836 ms (harness), 14254 ms (CLI) | meta.json / result.json |
@@ -135,9 +135,11 @@ Per-request `api_request` events:
  ],
  "target_files_missing": [],
  "found_via": [
-  "Read (content entered context):LocalLog.java"
+  "Grep:LocalLog.java",
+  "Read (content entered context):LocalLog.java",
+  "Edit:LocalLog.java"
  ],
- "first_target_touch_ts": "2026-09-12T17:47:01.233Z",
+ "first_target_touch_ts": "2026-09-12T17:46:57.331Z",
  "finding_requests": 1,
  "finding_cost_usd": 0.0278,
  "answering_requests": 3,

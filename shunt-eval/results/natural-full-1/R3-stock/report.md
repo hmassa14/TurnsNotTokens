@@ -210,7 +210,7 @@ Per-request `api_request` events:
   "Bash:GroupCoordinatorShard.java",
   "Read (content entered context):GroupCoordinatorShard.java",
   "Grep:GroupCoordinatorRecordHelpers.java",
-  "Bash:GroupCoordinatorRecordHelpers.java"
+  "Grep:GroupCoordinatorRecordHelpers.java"
  ],
  "first_target_touch_ts": "2026-09-12T17:24:31.949Z",
  "finding_requests": 3,
