@@ -11,9 +11,15 @@ import sys
 from collections import Counter, defaultdict
 
 
+# Account identifiers Claude Code stamps on every record; dropped so parsed output can be committed.
+REDACT = {"user.email", "user.id", "user.account_id", "user.account_uuid", "organization.id", "ccr.session.id"}
+
+
 def attrs(lst):
     out = {}
     for a in lst or []:
+        if a.get("key") in REDACT:
+            continue
         v = a.get("value", {})
         out[a.get("key")] = next(iter(v.values())) if v else None
     return out
