@@ -4,7 +4,7 @@ Status: plan, not yet run. Dated 2026-09-12. Everything under "What I verified" 
 
 ## 1. The question
 
-Spotify's post claims a PreToolUse hook that blocks `Read` on files over 350 lines and redirects to a cheap worker cut Claude Code token usage by 90%, measured as "tokens Claude would have read" vs "tokens in the summary it got". The Reddit and Hacker News pushback was that Claude Code already does this by default via subagents. Nobody in that argument measured anything.
+Spotify's post claims a PreToolUse hook that blocks `Read` on files over 350 lines and redirects to a cheap worker cut Claude Code token usage by 90%. The shunt README's benchmark table, verified from the public `spotify/portal-ai-plugins` repo, is the whole basis for that number: a 162K-line Java monorepo, three bulk-read scenarios (33,684 to 5,737 tokens, 82%; 75,990 to 4,148, 94%; 16,221 to 821, 94%) and one code-write scenario with no percentage. The 90% is the mean of the three bulk-read rows. Tokens are estimated as characters divided by four (`evals/benchmarks.json`: "chars / 4 (conservative approximation for code)"), the worker's own tokens are not tabulated, and no dollar figure or task success rate appears in the repo. The Reddit and Hacker News pushback was that Claude Code already does this by default via subagents. Nobody in that argument measured anything.
 
 The test asks three things, in order of how much they matter:
 
@@ -50,12 +50,16 @@ All arms run the same Claude Code version, same main model, same permission mode
 | Arm | What it is | What it tests |
 |---|---|---|
 | A. Stock | Claude Code as installed. Explore and general-purpose available, model inherit. | The "it already does this" claim. Also gives the delegation rate. |
-| B. Shunt rebuild | Two PreToolUse hooks (350-line Read block, bash cat/head/tail block with pipe pass-through), `bulk-read` and `code-write` bash scripts, two skills. Worker is `claude -p --model haiku` with the same prompts Spotify's modes use, temperature not settable so noted. | Spotify's architecture with the Portal dependency swapped for a Haiku worker. Worker cost logged separately by the scripts. |
+| B. Shunt rebuild | Spotify's actual shunt plugin, verbatim: the `check-file-size` and `check-bash-read` hooks, the `bulk-read` and `code-write` scripts, and both skills, all Apache 2.0 in `spotify/portal-ai-plugins`. The only change is `scripts/lib/aika.sh`, which is swapped from `portal-cli actions aika:invoke-chat` to `claude -p --model haiku` using the two mode instruction prompts from the README (both modes run at temperature 0.2 on Portal; Claude Code cannot set temperature, so that is noted). | Spotify's architecture with the Portal dependency swapped for a Haiku worker. Worker cost logged separately by the scripts. |
 | C. Hook + Haiku Explore | Same two hooks as B, but the deny message points Claude at the Explore subagent, and a project-level `Explore.md` pins it to Haiku. No bash worker. | The five-line version from the HN thread: enforcement plus a cheap model, no outside system. |
 
 Optional D if budget allows: same hooks but the hook rewrites the Read call to `limit: 350` via `updatedInput` instead of denying. Tests whether narrowing beats redirecting.
 
 The worker in B is Haiku, not Gemini 2.5 Flash. That is a deliberate substitution and the write-up says so. Portal's AiKA modes are not reproducible outside Spotify.
+
+**What the hooks actually do, from source.** Both are bash scripts that read the hook JSON from stdin, pull fields with `jq`, and count lines with `wc -l`. The threshold is `SHUNT_MIN_LINES`, default 350, and the block condition is strictly greater than 350. `check-file-size` allows any Read that sets `offset` or `limit` ("Claude already knows what it needs"), and its own evals document that `limit: 0` is a known bypass. `check-bash-read` only inspects commands starting with `cat`, `head`, `tail`, `less`, or `more`, lets anything containing a pipe or a redirect through, and still blocks `head -100 bigfile`. It does not catch `grep`. The block returns the older top-level JSON form, `{"decision": "block", "reason": "File is N lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly. If you need exact content for editing, re-read with an offset/limit for just the section you need."}`, not exit code 2 or `hookSpecificOutput.permissionDecision`. The plugin's own delegation timeout is 180 seconds (`SHUNT_TIMEOUT_SECONDS`), not the 30-second Portal cap the post mentions.
+
+Two consequences for the design. First, the offset/limit allow rule means stock Claude Code's own gates can route around the hook: the 25k-token partial view and the 256 KB refusal both tell Claude to retry with offset and limit, and that retry passes the hook untouched. The harness counts these "hook bypass via paging" events. Second, the older `decision`/`reason` output form has to be confirmed to still block in v2.1.269 before the grid runs, since the docs now describe `hookSpecificOutput.permissionDecision`.
 
 ## 4. Target repo
 
@@ -91,10 +95,11 @@ Three repetitions per task per arm. 12 tasks x 3 arms x 3 reps = 108 runs, plus 
 
 - **Cost in USD**, total, from `total_cost_usd` in arm A and C, and `total_cost_usd` plus the sum of worker-run `total_cost_usd` values in arm B. This is the headline.
 - **Main-model input tokens** split into uncached, cache creation, and cache read, from `modelUsage`. This is the number Spotify's 90% is closest to, reported so the two can be compared.
+- **Spotify-style estimate**, computed the way the shunt README does it: characters divided by four for the files Claude would have read, against characters divided by four for what actually entered context. Reported next to the ledger number for the same runs so the gap between the two methods is itself a result.
 - **Worker tokens and cost**, arm B and C, from the worker's own JSON output and the subagent transcripts.
 - **Latency**: wall clock `duration_ms`, API time `duration_api_ms`, and per-call latency from OTel `api_request` events, plus hook execution time from `claude_code.hook` spans in B and C.
 - **Turns**: `num_turns`.
-- **Behavior counts** from the transcript: Read calls, Read calls with `offset`/`limit`, hook-denied reads, Agent spawns and their model, worker invocations, bash reads, re-reads of a file after a delegation for it (the "did not trust the summary" signal), and files that hit the stock 256 KB or 25k-token gate.
+- **Behavior counts** from the transcript: Read calls, Read calls with `offset`/`limit`, hook-denied reads, hook bypasses via paging (a denied or gated read followed by an offset/limit read of the same file), Agent spawns and their model, worker invocations, bash reads, re-reads of a file after a delegation for it (the "did not trust the summary" signal), and files that hit the stock 256 KB or 25k-token gate.
 - **Quality**: task grader score, and pass^3 across the three repetitions.
 
 Stats: Wilcoxon signed-rank on paired cost and latency, sign test on paired quality, bootstrap confidence intervals on the mean cost difference. Report per-category breakdowns since the expected result differs by category.
@@ -142,6 +147,16 @@ Smoke run reference: a two-turn Haiku session on Kafka cost $0.016 and took 6 se
 - Whether to include arm D.
 - Budget ceiling. Pilot alone is about $10.
 
-## 13. What would make the result publishable either way
+## 13. Source verification status
+
+What could be read as primary source from this environment, and what could not. The network policy here blocks engineering.atspotify.com, news.ycombinator.com, reddit.com, blog.jetbrains.com and the archive mirrors, so the post itself was only reachable through domain-restricted search excerpts.
+
+- **Verified verbatim** from the `spotify/portal-ai-plugins` repo: hook source and behavior, the 350 default and env var, the benchmark table and its chars/4 method, both mode prompts including "Output only the code, no explanations, no markdown fences unless asked", temperature 0.2 for both modes, the 180-second plugin timeout, and the "Editing: Claude needs exact content in context" limitation. Both shunt commits are by Dimitri Mazmanov, dated 2026-08-14.
+- **Partially verified** (search excerpts attributed to the post's domain, page not viewed): author's title as Principal Product Manager, the September 3 date, Gemini 2.5 Flash as the example worker model, the "advisory, not enforced" CLAUDE.md first version, the thread-safety bug the worker missed, the 10 to 30 second latency and 30-second Portal cap.
+- **Not verified**: the Hacker News comment claiming 5 to 7% savings on replayed sessions and 5.9% of unique reads qualifying; anything about the r/ClaudeAI thread; the JetBrains trial count and spend (excerpts conflict between about 240 trials at $106 and 425 at $320). The JetBrains headline result did surface from its own domain: rtk advertised 60 to 90%, measured +7.6% more expensive at low effort and flat at high effort, quality unchanged, with cached re-reads billed at a tenth of the price as the explanation.
+
+Before publishing, open the post, the HN thread, and the Reddit thread from a machine that can reach them and confirm the partial items on the page.
+
+## 14. What would make the result publishable either way
 
 If B or C wins on cost with no quality loss, the post is a copyable pattern with numbers behind it and no Portal dependency. If A wins or ties, the post corrects a story that got a Hacker News front page, and the correction comes with the specific mechanisms above: the 256 KB gate, the 25k-token page, re-read dedupe, and microcompaction. The strongest version of the second outcome is showing that stock Claude Code's own gates were doing most of the work Spotify credited to the hook.
