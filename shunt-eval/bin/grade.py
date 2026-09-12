@@ -160,6 +160,29 @@ def target_file_check(run_dir, files):
             "other_files_read": read_other[:10]}
 
 
+def spotify_style_avoided(run_dir, files):
+    """Spotify's benchmark method: (chars of the delegated file / 4) - (chars of the summary that entered context / 4),
+    summed over delegations (worker calls, Agent spawns) that name a target file. Zero when nothing was delegated."""
+    tp_path = os.path.join(run_dir, "transcript_parsed.json")
+    meta = json.load(open(os.path.join(run_dir, "meta.json")))
+    ws = meta.get("workspace", "")
+    if not os.path.isfile(tp_path) or not files:
+        return 0
+    tp = json.load(open(tp_path))
+    names = {os.path.basename(f): f for f in files}
+    total = 0
+    for t in tp["tool_calls"]:
+        if t.get("agent", "main") != "main" or not ({"worker_call", "agent_spawn"} & set(t.get("flags", []))):
+            continue
+        blob = t["input"].get("command", "") + " " + t["input"].get("prompt", "") + " " + t["input"].get("description", "")
+        for n, rel in names.items():
+            if n in blob:
+                path = os.path.join(ws, rel)
+                size = os.path.getsize(path) if os.path.isfile(path) else 0
+                total += max(0, size // 4 - t.get("result_chars", 0) // 4)
+    return total
+
+
 def main():
     run_dir, task_path = sys.argv[1], sys.argv[2]
     task = json.load(open(task_path))
@@ -180,6 +203,7 @@ def main():
     res["content_pass"] = res.get("pass")
     tf = target_file_check(run_dir, task.get("files", []))
     res.update(tf)
+    res["spotify_style_tokens_avoided"] = spotify_style_avoided(run_dir, task.get("files", []))
     if tf.get("target_found") is False:
         # Never located the file: the answer cannot be grounded, whatever the text says.
         res["pass"] = False

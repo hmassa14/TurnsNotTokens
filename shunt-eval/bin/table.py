@@ -54,6 +54,8 @@ def load_run(run_dir):
         "tool_calls": tp.get("tool_calls_total", 0),
         "reads_whole": tp.get("reads_whole_file", 0), "reads_targeted": tp.get("reads_targeted", 0),
         "reads_blocked": tp.get("reads_blocked_by_hook", 0),
+        "bypass": tp.get("hook_bypass_via_paging", 0),
+        "lines_sub": tp.get("lines_entered_subagents", 0),
         "delegations": tp.get("agent_spawns", 0) + tp.get("worker_calls", 0),
         "reread": tp.get("reread_after_delegation", 0),
         # latency
@@ -79,9 +81,9 @@ def main_model_key(res, meta):
 ROWS = [
     ("Performance", None),
     ("Score", "score", "{:.2f}"), ("Pass rate", "pass", "{:.0%}"), ("Found target file", "found", "{:.0%}"),
-    ("Lines of target in main context", "lines_in_context", "{:,.0f}"), ("Tool calls", "tool_calls", "{:.1f}"),
+    ("Lines read into main context", "lines_in_context", "{:,.0f}"), ("Lines read by subagent or worker", "lines_sub", "{:,.0f}"), ("Tool calls", "tool_calls", "{:.1f}"),
     ("Reads, whole file", "reads_whole", "{:.1f}"), ("Reads, targeted", "reads_targeted", "{:.1f}"),
-    ("Reads blocked by hook", "reads_blocked", "{:.1f}"), ("Subagent or worker calls", "delegations", "{:.1f}"),
+    ("Reads blocked by hook", "reads_blocked", "{:.1f}"), ("Hook bypassed via offset/limit", "bypass", "{:.1f}"), ("Subagent or worker calls", "delegations", "{:.1f}"),
     ("Re-read after delegation", "reread", "{:.1f}"),
     ("Latency", None),
     ("Wall clock (s)", "wall_s", "{:.1f}"), ("API requests", "api_requests", "{:.1f}"), ("Longest API call (s)", "longest_api_s", "{:.1f}"),

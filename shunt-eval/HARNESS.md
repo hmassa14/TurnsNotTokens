@@ -138,21 +138,9 @@ jq -r .result "$SHUNT_RUN_DIR/worker/..."
 
 with `MODE_INSTRUCTIONS` set to the bulk-reader or code-writer prompt from the shunt README, verbatim. `CLAUDECODE` and `CLAUDE_CODE_ENTRYPOINT` are unset inside the script. The 180-second `SHUNT_TIMEOUT_SECONDS` default is kept. Verified once by hand before the grid: a Read on a 400-line file returns the block reason to Claude, and Claude then invokes the skill.
 
-**C. hook-explore.** Same two hook scripts with one string change in the block reason: "Use the Explore subagent (Agent tool, subagent_type Explore) to answer your question about this file instead of reading it directly." Plus `.claude/agents/Explore.md`:
+**C. hook-explore.** Same two hook scripts with two changes. The block message becomes "Use the Agent tool with subagent_type Explore to ask your question about this file instead of reading it directly." And reads that originate inside a subagent are allowed through: Claude Code runs PreToolUse hooks inside subagents too, so without this rule the hook blocked Explore's own whole-file read and told it to spawn Explore, which it cannot do (verified on the first hand test; Explore coped by grepping and paging with offset/limit). The hook detects a subagent from `agent_type`/`agent_id` in the hook input or a `subagents/` segment in `transcript_path`. Plus `.claude/agents/Explore.md` pinned to `model: haiku` with the bulk-reader instructions as its prompt. Verified: the project-level Explore overrides the built-in one, the subagent transcript shows `claude-haiku-4-5`, and the main session's `modelUsage` carries a second key for it.
 
-```
----
-name: Explore
-description: Fast read-only search agent for large files. Reads files and reports findings; never edits.
-model: haiku
-tools: Read, Grep, Glob, Bash
----
-You are a file search specialist. Answer the caller's question about the named files in terse bullets. Quote exact identifiers. Do not modify anything.
-```
-
-No bulk-read script. Skills are not needed; the Agent tool is already in the main prompt.
-
-The hooks in B and C both allow offset/limit reads through. That is Spotify's rule and it stays, because the point is to test their design as shipped.
+**Worker overhead in B, measured.** One bulk-read call on the 770-line R1 file cost $0.058 and 12.8 s: 25,380 cache-write tokens on Haiku for a file that is about 8,400 tokens. The rest is headless Claude Code's own tool definitions, which ride along even with `--system-prompt` replacing the system prompt and `--max-turns 1`. A raw API call to Haiku would carry only the file. That overhead is part of what the shunt arm pays per delegation in this rebuild and is reported, not hidden; a follow-up arm could swap the worker to a direct API call to isolate it.
 
 ## 6. Telemetry receiver
 

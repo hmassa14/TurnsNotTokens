@@ -11,11 +11,13 @@ Runs per arm: A · stock = 2, B · shunt = 0, C · hook + Explore = 0
 | Pass rate | 100% |  |  |
 | Pass^k (all reps passed) | yes (k=2) |  |  |
 | Found target file | 100% |  |  |
-| Lines of target in main context | 896 |  |  |
+| Lines read into main context | 896 |  |  |
+| Lines read by subagent or worker | 0 |  |  |
 | Tool calls | 1.5 |  |  |
 | Reads, whole file | 1.0 |  |  |
 | Reads, targeted | 0.0 |  |  |
 | Reads blocked by hook | 0.0 |  |  |
+| Hook bypassed via offset/limit | 0.0 |  |  |
 | Subagent or worker calls | 0.0 |  |  |
 | Re-read after delegation | 0.0 |  |  |
 | **Latency** | | | |
@@ -46,11 +48,13 @@ Runs per arm: A · stock = 2, B · shunt = 0, C · hook + Explore = 0
 | Score | 1.00 |  |  |
 | Pass rate | 100% |  |  |
 | Found target file | 100% |  |  |
-| Lines of target in main context | 1,020 |  |  |
+| Lines read into main context | 1,020 |  |  |
+| Lines read by subagent or worker | 0 |  |  |
 | Tool calls | 1.0 |  |  |
 | Reads, whole file | 1.0 |  |  |
 | Reads, targeted | 0.0 |  |  |
 | Reads blocked by hook | 0.0 |  |  |
+| Hook bypassed via offset/limit | 0.0 |  |  |
 | Subagent or worker calls | 0.0 |  |  |
 | Re-read after delegation | 0.0 |  |  |
 | **Latency** | | | |
@@ -79,11 +83,13 @@ Runs per arm: A · stock = 2, B · shunt = 0, C · hook + Explore = 0
 | Score | 1.00 |  |  |
 | Pass rate | 100% |  |  |
 | Found target file | 100% |  |  |
-| Lines of target in main context | 771 |  |  |
+| Lines read into main context | 771 |  |  |
+| Lines read by subagent or worker | 0 |  |  |
 | Tool calls | 2.0 |  |  |
 | Reads, whole file | 1.0 |  |  |
 | Reads, targeted | 0.0 |  |  |
 | Reads blocked by hook | 0.0 |  |  |
+| Hook bypassed via offset/limit | 0.0 |  |  |
 | Subagent or worker calls | 0.0 |  |  |
 | Re-read after delegation | 0.0 |  |  |
 | **Latency** | | | |

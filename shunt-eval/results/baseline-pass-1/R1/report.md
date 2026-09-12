@@ -144,7 +144,8 @@ Per-request `api_request` events:
  "finding_cost_usd": 0.119,
  "answering_requests": 2,
  "answering_cost_usd": 0.0827,
- "other_files_read": []
+ "other_files_read": [],
+ "spotify_style_tokens_avoided": 0
 }
 ```
 
