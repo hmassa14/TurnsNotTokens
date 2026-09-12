@@ -1,0 +1,16 @@
+{
+  "id": "D1",
+  "name": "statedirectory-lock-unsynchronized",
+  "category": "planted-bug",
+  "files": ["streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java"],
+  "setup_patch": "tasks/D1.setup.patch",
+  "prompt": "Review `streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java` for thread-safety problems. Name the method and the lines involved and explain the race.",
+  "grader": {
+    "type": "bug_report",
+    "methods": ["lock(", "StateDirectory.lock", "`lock`", " lock "],
+    "line_range": [504, 525],
+    "line_tolerance": 10,
+    "race_keywords": ["both", "two threads", "not atomic", "putIfAbsent", "synchronized", "check-then-act", "check then act", "race"],
+    "false_positive_methods": ["lockOwner(", "close()", "getOrCreateDirectoryForTask", "hasStartupTasks", "cleanRemovedTasksCalledByCleanerThread", "cleanStateAndTaskDirectoriesCalledByUser"]
+  }
+}
