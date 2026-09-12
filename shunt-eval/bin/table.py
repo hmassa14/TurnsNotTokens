@@ -14,8 +14,8 @@ import os
 import statistics
 from collections import defaultdict
 
-ARMS_DEFAULT = ["stock", "shunt", "hook-explore"]
-ARM_LABEL = {"stock": "A · stock", "shunt": "B · shunt", "hook-explore": "C · hook + Explore"}
+ARMS_DEFAULT = ["stock", "shunt", "hook-explore", "shunt-strict", "hook-explore-strict"]
+ARM_LABEL = {"stock": "A · stock", "shunt": "B · shunt", "hook-explore": "C · hook + Explore", "shunt-strict": "B' · shunt strict", "hook-explore-strict": "C' · Explore strict"}
 
 
 def load_run(run_dir):

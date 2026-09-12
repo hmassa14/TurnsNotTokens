@@ -1,0 +1,42 @@
+#!/bin/bash
+# Block full-file reads on large files, redirect to /bulk-reader skill
+# Self-contained: all routing logic lives here, no CLAUDE.md needed
+
+MIN_LINES="${SHUNT_MIN_LINES:-350}"
+case "$MIN_LINES" in ''|*[!0-9]*) MIN_LINES=350 ;; esac
+
+input=$(cat)
+
+# Arm C only: the hook must not fire inside the Explore subagent, whose job is to read the
+# whole file on the main agent's behalf. Claude Code marks subagent hook calls with agent_type /
+# agent_id and writes their transcript under a subagents/ directory.
+agent_marker=$(echo "$input" | jq -r '(.agent_type // .agent_id // empty)')
+transcript=$(echo "$input" | jq -r '.transcript_path // empty')
+if [ -n "$agent_marker" ] || [[ "$transcript" == */subagents/* ]]; then
+  echo '{"decision": "allow"}'
+  exit 0
+fi
+
+file_path=$(echo "$input" | jq -r '.tool_input.file_path // empty')
+offset=$(echo "$input" | jq -r '.tool_input.offset // empty')
+limit=$(echo "$input" | jq -r '.tool_input.limit // empty')
+
+# STRICT VARIANT (evaluation arm): Spotify's hook allows any Read that sets offset or limit.
+# In the natural-prompt grid that exception was used to page around every block, so this arm
+# removes it. A file over the threshold cannot be Read at all from the main agent; the only
+# routes to its content are grep and the delegated reader.
+
+# Allow if file doesn't exist or path is empty
+if [ -z "$file_path" ] || [ ! -f "$file_path" ]; then
+  echo '{"decision": "allow"}'
+  exit 0
+fi
+
+# Allow small files — delegation overhead isn't worth it
+lines=$(wc -l < "$file_path" 2>/dev/null | tr -d ' ' || echo "0")
+if [ "$lines" -le "$MIN_LINES" ]; then
+  echo '{"decision": "allow"}'
+  exit 0
+fi
+
+echo "{\"decision\": \"block\", \"reason\": \"File is ${lines} lines (threshold: ${MIN_LINES}). Use the Agent tool with subagent_type Explore to ask your question about this file instead of reading it directly. Reads with offset/limit are also blocked for this file; use grep for exact lines.\"}"
