@@ -19,16 +19,21 @@ def load_result_text(run_dir):
         return ""
 
 
+def has(text, ident):
+    """Case-insensitive match of an identifier on word boundaries (so BeginControlledShutdownEvent does not match ControlledShutdownEvent)."""
+    return re.search(r"(?<![A-Za-z0-9_])" + re.escape(ident.strip()) + r"(?![A-Za-z0-9_])", text, re.I) is not None
+
+
 def key_list(text, g):
     low = text.lower()
-    found = [k for k in g["required"] if k.lower() in low]
-    missing = [k for k in g["required"] if k.lower() not in low]
-    invented = [k for k in g.get("deny", []) if k.lower() in low]
+    found = [k for k in g["required"] if has(text, k)]
+    missing = [k for k in g["required"] if not has(text, k)]
+    invented = [k for k in g.get("deny", []) if has(text, k)]
     recall = len(found) / len(g["required"])
     extra = 0.0
     extra_notes = []
     for grp in g.get("weighted_groups", []):
-        hits = [k for k in grp["items"] if k.lower() in low]
+        hits = [k for k in grp["items"] if has(text, k)]
         extra += grp["weight"] * len(hits) / len(grp["items"])
         extra_notes.append(f"{grp['name']}: {len(hits)}/{len(grp['items'])}")
     base_w = g.get("required_weight", 1.0)

@@ -49,7 +49,7 @@ What each field feeds:
 - `total_cost_usd` is `cost_usd_main`. It is computed locally at list price (`costBasis: "list"`), so it is the same number whether the account is on a subscription or API billing.
 - `modelUsage` is the per-model breakdown. In arm C the Haiku Explore subagent shows up here as a second key, so main-vs-worker cost in arm C comes straight from this object. In arm B it does not, because the worker is a separate process.
 - `usage` splits input into three buckets that are priced differently (section 4).
-- `cache_creation.ephemeral_1h_input_tokens` tells you which cache TTL Claude Code used. On this version it uses the 1-hour TTL for the main session, which matters for pricing.
+- `cache_creation.ephemeral_1h_input_tokens` and `ephemeral_5m_input_tokens` split cache writes by TTL. Claude Code writes the system prompt and tools with the 1-hour TTL and the conversation body (file contents, tool results) with the 5-minute TTL. The two are priced differently, so the split is needed to recompute cost (section 4).
 - `subagent_stats.by_type` gives Agent spawns per subagent type; `spawned` and `completed` give counts.
 - `permission_denials` lists tool calls a permission rule denied. Hook denials do not appear here; they show up in the transcript as tool results (section 3.4).
 - `result` is the final answer text. This is what the `key_list` and `bug_report` graders read.
@@ -143,19 +143,24 @@ Rate card, Anthropic first-party list price per million tokens. Cache write is 1
 Cost of one request:
 
 ```
-cost = input_tokens               * input_rate
-     + cache_creation_input_tokens * cache_write_rate   (2x input on Claude Code's 1h TTL)
-     + cache_read_input_tokens     * cache_read_rate    (0.1x input)
-     + output_tokens               * output_rate
+cost = input_tokens                      * input_rate
+     + cache_write_tokens_1h_ttl         * 2.00 * input_rate
+     + cache_write_tokens_5m_ttl         * 1.25 * input_rate
+     + cache_read_input_tokens           * 0.10 * input_rate   (0.025 on Fable 5.1)
+     + output_tokens                     * output_rate
 ```
 
-Check against a real run. Haiku smoke run: input 10, cache write 5,162 (all `ephemeral_1h`), cache read 27,808, output 43.
+The TTL split comes from `usage.cache_creation.ephemeral_1h_input_tokens` and `ephemeral_5m_input_tokens`. Claude Code writes the system prompt and tool definitions with the 1-hour TTL and the conversation body (file contents, tool results) with the 5-minute TTL, and the two are priced differently. Ignoring the split overstates cost: on the R1 baseline run the naive all-at-2x formula gave $0.2224 against a reported $0.2017; with the split it gives $0.2017 exactly.
 
-```
-10 * 1.00/1e6 + 5162 * 2.00/1e6 + 27808 * 0.10/1e6 + 43 * 5.00/1e6 = 0.013330
-```
+Check against real runs:
 
-Claude Code reported `total_cost_usd: 0.0133298`. Same number. So `total_cost_usd` can be trusted as "list price at the 1-hour cache write rate", and the harness can recompute it from tokens for any run where the JSON is missing.
+| Run | Model | Input | Write 1h | Write 5m | Read | Output | Recomputed | Reported |
+|---|---|---|---|---|---|---|---|---|
+| smoke | haiku-4-5 | 10 | 5,162 | 0 | 27,808 | 43 | $0.013330 | $0.0133298 |
+| R1 stock | sonnet-5 | 6 | 29,487 | 13,771 | 59,364 | 3,744 | $0.2017 | $0.2017 |
+| D1 stock | sonnet-5 | 4 | 5,577 | 17,954 | 53,225 | 4,741 | $0.1253 | $0.1253 |
+
+So `total_cost_usd` is "list price with the correct TTL multipliers", and the harness recomputes it from tokens as a check on every run.
 
 Why this matters for the experiment: a big file read in Claude Code is paid **twice the input rate** the first time (cache write) and **a tenth of the input rate** on every later turn that carries it (cache read). Spotify's characters / 4 estimate prices every token at 1x. That mismatch is the JetBrains finding in miniature and the harness reports both numbers side by side.
 
