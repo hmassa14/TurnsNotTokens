@@ -1,0 +1,25 @@
+{
+  "id": "R1",
+  "name": "broker-lifecycle-events",
+  "category": "bulk-read",
+  "files": ["server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java"],
+  "prompt": "In `server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java`, list every inner class that implements `EventQueue.Event`. For each one, state (a) which `BrokerState` value(s) it assigns to the `state` field, or \"none\" if it never assigns `state`, and (b) the name of the public method (or the event class) that enqueues it. Also state the initial value of `state`. Give the answer as a table with one row per event class.",
+  "grader": {
+    "type": "key_list",
+    "required": [
+      "ResendBrokerRegistrationEvent", "BeginControlledShutdownEvent", "SetReadyToUnfenceEvent",
+      "OfflineDirEvent", "OfflineDirBrokerFailureEvent", "CordonedDirEvent", "StartupEvent",
+      "BrokerRegistrationResponseEvent", "BrokerHeartbeatResponseEvent", "RegistrationTimeoutEvent",
+      "CommunicationEvent", "ShutdownEvent"
+    ],
+    "required_weight": 0.5,
+    "weighted_groups": [
+      {"name": "states", "weight": 0.4, "items": ["PENDING_CONTROLLED_SHUTDOWN", "STARTING", "RECOVERY", "RUNNING", "SHUTTING_DOWN"]},
+      {"name": "initial_state", "weight": 0.1, "items": ["NOT_RUNNING"]}
+    ],
+    "deny": ["BrokerRegistrationEvent ", "HeartbeatEvent ", "FenceEvent", "UnfenceEvent", "ControlledShutdownEvent "],
+    "penalty": 0.05,
+    "pass_recall": 0.9,
+    "max_invented": 1
+  }
+}
