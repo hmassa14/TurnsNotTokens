@@ -137,7 +137,7 @@ def main():
     args = ap.parse_args()
     arms = args.arms.split(",")
     rows = [r for r in (load_run(d) for d in sorted(glob.glob(os.path.join(args.runs_dir, "*__*")))) if r]
-    rows = [r for r in rows if r["task"] != "SMOKE" and (args.variant == "all" or r["variant"] == args.variant)]
+    rows = [r for r in rows if not r["task"].endswith("SMOKE") and (args.variant == "all" or r["variant"] == args.variant)]
     if not rows:
         print("no graded runs found"); return
     by_arm = defaultdict(list)

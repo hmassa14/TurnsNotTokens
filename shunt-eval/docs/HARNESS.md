@@ -6,11 +6,15 @@ Companion to `PLAN.md`. This describes what gets built: directory layout, how a 
 
 ```
 shunt-eval/
-  PLAN.md            experiment design
-  HARNESS.md         this file
-  TASKS.md           task set with answer keys, human readable
+  README.md          start here: why Kafka, setup, metrics, results
+  docs/
+    PLAN.md          experiment design
+    HARNESS.md       this file
+    METRICS.md       where every number comes from
+    TASKS.md         task set with answer keys, human readable
   tasks/
-    <task-id>.json   one file per task: prompt, category, files, grader spec
+    <task-id>.json   one file per task: named and natural prompts, files, grader spec
+    smoke/           two tiny tasks used to verify the pipeline and the Explore pin
   arms/
     stock/           empty .claude/ (control)
     shunt/           Spotify's plugin verbatim + swapped aika.sh (Haiku worker)
@@ -30,6 +34,7 @@ shunt-eval/
     <run-id>/        one directory per run (gitignored)
   results/
     runs.jsonl       one row per run after grading
+    0N-<pass>/       per-pass write-up, tables, and per-run artifacts
 ```
 
 Run id is `<task-id>__<variant>__<arm>__r<rep>__<yyyymmdd-hhmmss>`, where variant is `named` (prompt gives the file path) or `natural` (the question a developer would type, no path). `run.py --variant natural` selects it.

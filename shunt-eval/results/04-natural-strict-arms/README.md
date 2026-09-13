@@ -1,6 +1,6 @@
 # Strict arms: the hook with the offset/limit exception closed
 
-Date 2026-09-12. Same setup as `natural-full-1`: Claude Code 2.1.269, Sonnet 5 main, Haiku worker and Explore, Kafka `0ffb4f5`, natural prompts, one run per cell. Two new arms, twelve tasks each, 24 runs in 27.7 minutes. This folder holds those 24 runs; `tables.md` has all five arms side by side.
+Date 2026-09-12. Same setup as `03-natural-three-arms`: Claude Code 2.1.269, Sonnet 5 main, Haiku worker and Explore, Kafka `0ffb4f5`, natural prompts, one run per cell. Two new arms, twelve tasks each, 24 runs in 27.7 minutes. This folder holds those 24 runs; `tables.md` has all five arms side by side.
 
 The strict hooks are Spotify's `check-file-size` with one block removed: the rule that allows any Read carrying `offset` or `limit`. In strict arms a file over 350 lines cannot be Read from the main agent at all. Grep is still allowed, as in Spotify's design. Arm C strict keeps the rule that lets the Explore subagent read whole files.
 
