@@ -45,17 +45,17 @@
 
 <p>Every few weeks another Claude Code plugin promises some large, round token-savings number, and I've learned not to trust it until I've seen the bill. Spotify's stopped me mid-scroll: a hook that blocks the model from reading big files and hands the read to a cheaper model instead, claiming a 90% cut in tokens. So I rebuilt it and ran it myself.</p>
 
-<p>I ran the same hook against stock Claude Code on twelve real tasks on a real repo — twenty-four sessions for that head-to-head, plus two earlier variants that shaped how I built it, more on those below — checking every dollar figure against three independent sources before trusting it. The short version is in the title: the 90% is real on Spotify's own metric, and the dollar cost of getting it went up 35%. Here's the problem Spotify was solving, and the solution they built for it.</p>
+<p>I ran the same hook against stock Claude Code on twelve real tasks on a real repo — twenty-four sessions for that head-to-head, plus two earlier variants that shaped how I built it, more on those below — checking every dollar figure against three independent sources before trusting it. The short version is in the title: the 90% is real on Spotify's own metric, and the dollar cost of getting it went up 35%. Here's what they built, why, and how I copied it to check.</p>
 
-<h2>The problem Spotify was solving</h2>
+<h2>What Spotify built, and why</h2>
 
-<p>Dimitri Mazmanov, the Spotify engineer who wrote <a href="https://engineering.atspotify.com/2026/9/portal-by-spotify-cut-my-claude-code-token-usage-by-90">the post</a>, frames it as a pricing problem before anything else: most of what a coding agent spends tokens on isn't reasoning, it's I/O — reading files, copying patterns, generating boilerplate — and every one of those tokens still gets billed at the frontier model's reasoning price, whether any reasoning happened or not.</p>
+<p>Dimitri Mazmanov, the Spotify engineer who wrote <a href="https://engineering.atspotify.com/2026/9/portal-by-spotify-cut-my-claude-code-token-usage-by-90">the post</a>, frames it as a pricing problem before anything else: inside a large monorepo, most of what a coding agent spends tokens on isn't reasoning, it's I/O — reading files, copying patterns, generating boilerplate, just figuring out what's already there — and every one of those tokens still gets billed at the frontier model's reasoning price, whether any reasoning happened or not.</p>
 
-<p>That's concrete in Claude Code specifically: every tool result becomes part of the conversation, and the conversation gets resent, in full, on every request after it. Reading a whole 700-line file to answer a question about forty lines of it is the single biggest case of this. On one file it's a rounding error. Multiplied across every large file an org's agents touch in a day, it's a real cost lever — and it's the exact one Spotify's hook is built to pull.</p>
+<p>That's concrete in Claude Code specifically: every tool result becomes part of the conversation, and the conversation gets resent, in full, on every request after it. Reading a whole 700-line file to answer a question about forty lines of it is the single biggest case of this. On one file it's a rounding error. Multiplied across every large file an org's agents touch in a day inside one monorepo, it's a real cost lever — and it's the exact one Spotify built a hook to pull.</p>
 
-<h2>Spotify's solution</h2>
+<h3>What they built</h3>
 
-<p>A <em>PreToolUse hook</em> is a script Claude Code runs before it lets a tool call through — it can allow the call, block it, or swap in a different instruction, and the model never knows the difference between a hook's message and a tool's real result. Spotify's hook, called <a href="https://github.com/spotify/portal-ai-plugins">shunt</a>, uses that to intercept any <code>Read</code> over 350 lines before the reasoning model ever sees the bytes, and route the file to a cheaper worker model instead, which reads it and sends back a summary.</p>
+<p>A <em>PreToolUse hook</em> is a script Claude Code runs before it lets a tool call through — it can allow the call, block it, or swap in a different instruction, and the model never knows the difference between a hook's message and a tool's real result. Spotify's hook, called <a href="https://github.com/spotify/portal-ai-plugins">shunt</a>, uses that to intercept any <code>Read</code> over 350 lines before the reasoning model ever sees the bytes, and route the file to a cheaper worker model instead. It ships two modes for the two workflows Mazmanov identifies as the bulk of the I/O: a bulk-reader for exactly this, and a code-writer that hands off generating boilerplate the same way.</p>
 
 <p>Their post measured the win as the file's size in characters divided by four, minus the summary that came back — tokens the frontier model never had to touch, with the worker's own tokens left out of the count entirely. By the ordinary logic of token pricing, that reads as a 90% cost cut: fewer tokens sent to the expensive model, a proportionally smaller bill. That equivalence, a token avoided is a dollar saved, is the exact thing the rest of this post tests.</p>
 
@@ -64,26 +64,28 @@
   <figcaption>Figure A · where the hook sits</figcaption>
 </figure>
 
-<p>That design rests on one assumption: that when the model is refused a read, it does what the hook's message tells it to do. Nothing about a <code>PreToolUse</code> hook enforces that. The hook can stop one tool call. It can't stop the model from trying something else on its next turn, and it has no say over what that something else is. Whether the plugin saves anything comes down entirely to what the model reaches for once it's been told no, and that turned out to be the whole story.</p>
+<p>That design rests on one assumption: that when the model is refused a read, it does what the hook's message tells it to do. Nothing about a <code>PreToolUse</code> hook enforces that — it can stop one tool call, but it can't stop the model from trying something else on its next turn, and it has no say over what that something else is. Whether the plugin saves anything comes down entirely to what the model reaches for once it's been told no. I wanted to find out, on a real repo, doing real work.</p>
 
-<h2>My experiment: does token consolidation lead to a cost benefit?</h2>
+<h2>Our experiment: a framework to copy theirs</h2>
 
-<p>The test is the same twelve tasks on the same repo, once under stock Claude Code and once under Spotify's hook, scored on the three things that actually decide whether a technique like this belongs in a real deployment: <b>performance</b> (did it get the right answer), <b>latency</b> (how long that took), and <b>cost</b> (what it cost). Building that comparison meant a repo with enough large files for the hook's threshold to ever fire, a harness that runs the same task under both configurations and records everything a real session actually does, and a way to grade whether the answer that came back was correct rather than just cheap.</p>
+<p><em>Does cutting tokens actually cut cost?</em> That's what this tests, on the three things that actually decide whether a technique like this belongs in a real deployment: <b>performance</b> (did it get the right answer), <b>latency</b> (how long that took), and <b>cost</b> (what it cost). Getting a fair answer meant reproducing Spotify's setup as closely as an outsider reading a blog post can: their kind of repo, their hook, their two workflows, run against the plain baseline they're implicitly compared to.</p>
 
-<h3>Why Kafka</h3>
+<h3>Finding an open-source monorepo</h3>
 
 <p>Per his post, Mazmanov built and tested shunt against a large Java monorepo. I wanted a public, reproducible stand-in for that: an open-source Java codebase big enough to have plenty of real files in the 350-line-to-25,000-token band the hook actually cares about. Apache Kafka, at a pinned commit, fit: 17% of its source files are over 350 lines, holding 64% of all the code, against 7.5% and 38% on a comparable TypeScript monorepo I considered and rejected for being too thin in exactly that band.</p>
 
-<p>Twelve tasks, four categories, each with a mechanically checkable answer key and asked the way a developer actually would — no file path in the prompt, so the session has to find the target file itself before it can do anything with it. The first two categories are the same two workflows shunt itself ships modes for; the other two go after the limits Spotify's own post names for the approach:</p>
+<h3>Simulating their tasks</h3>
+
+<p>Twelve tasks, four categories, each with a mechanically checkable answer key and asked the way a developer actually would — no file path in the prompt, so the session has to find the target file itself before it can do anything with it. The first two categories simulate shunt's own two workflows; the other two go after the limits Spotify's own post names for the approach:</p>
 
 <ul>
-<li><b>Bulk-read</b> (four tasks): the workflow shunt's bulk-reader skill targets — answer a question that requires reading most of one or two large files, like tracing every state a class's state machine can enter.</li>
-<li><b>Code-write</b> (three tasks): the workflow shunt's code-writer skill targets — write a new class or config from a reference file, graded on compiling plus a checklist.</li>
+<li><b>Bulk-read</b> (four tasks): the workflow the bulk-reader mode targets — answer a question that requires reading most of one or two large files, like tracing every state a class's state machine can enter.</li>
+<li><b>Code-write</b> (three tasks): the workflow the code-writer mode targets — write a new class or config from a reference file, graded on compiling plus a checklist.</li>
 <li><b>Precise edit</b> (three tasks): the limit Spotify's own post names for editing — a summary isn't exact content — make one small, targeted change where the same text appears in several places and only some of it should change.</li>
 <li><b>Planted bug</b> (two tasks): the other named limit, that a delegated read can't reason about what it found — find a concurrency bug I introduced myself, such as a removed <code>synchronized</code> keyword, and name the method and the race.</li>
 </ul>
 
-<h3>Setting up the eval harness</h3>
+<h3>Building our eval harness</h3>
 
 <p>The harness itself is five small pieces of Python, all in this repo:</p>
 
@@ -95,18 +97,17 @@
 <li><b>The rollup</b> (<code>table.py</code>): averages every run into the comparison tables the numbers in this post come from.</li>
 </ul>
 
-<p>Every session in this evaluation, across the head-to-head and the two variants in the sidebars below, went through the same five scripts, and I checked the orchestrator's own summary against both parsers on every single one before trusting a number. They agreed to four decimal places throughout.</p>
+<p>Every session in this evaluation, across the head-to-head and the two variants below, went through the same five scripts, and I checked the orchestrator's own summary against both parsers on every single one before trusting a number. They agreed to four decimal places throughout.</p>
 
-<h3>How a run works</h3>
+<h3>Defining the baseline</h3>
 
-<p>One run, start to finish:</p>
+<p>One run, start to finish, is the same regardless of arm: copy an untouched Kafka clone into a scratch directory — nothing ever runs against the real checkout — run <code>claude -p</code> with the task's prompt in a brand-new session, with a fixed tool allowlist and a turn cap, then grade the answer against the key above and separately check the transcript for whether the target file was ever read, grepped, or handed off at all. Getting the right answer without ever finding the real file doesn't count as a pass, because that's a lucky guess wearing a right answer.</p>
 
-<ul>
-<li><b>Copy.</b> An untouched Kafka clone gets copied into a scratch directory; nothing ever runs against the real checkout.</li>
-<li><b>Configure.</b> One <code>.claude/</code> folder gets dropped in — the only difference between arms. Stock's folder is empty. The hook arm's is Spotify's plugin verbatim, except its internal model-routing call becomes a direct call to Haiku, so the worker's own cost shows up in the ledger instead of disappearing into someone else's infrastructure.</li>
-<li><b>Run.</b> <code>claude -p</code> runs the task's prompt in a brand-new session, with a fixed tool allowlist and a turn cap.</li>
-<li><b>Grade.</b> The answer, or the diff for an editing task, goes to the grader above; the transcript is checked separately for whether the target file was ever read, grepped, or handed off at all — getting the right answer without ever finding the real file doesn't count as a pass, because that's a lucky guess wearing a right answer.</li>
-</ul>
+<p>The baseline, <code>stock</code>, adds nothing to that at all: Claude Code exactly as installed, with only its own default read limits and prompt caching doing whatever they'd do anyway.</p>
+
+<h3>Recreating Spotify's implementation</h3>
+
+<p>The <code>hook</code> arm drops Spotify's plugin in verbatim, with two differences worth naming. The first is the worker: shunt's own routing call goes through Spotify's internal Portal system, which other coverage of the post points to Gemini 2.5 Flash — I don't have access to Portal, so I substituted a direct call to Haiku running the same mode prompts, which puts the worker's own cost in the ledger instead of hiding it behind someone else's infrastructure. The second is the exception in the sidebar below, which I closed so the hook would actually enforce the block it's supposed to make.</p>
 
 <figure>
   <img src="figures/post/B-setup.png" alt="Diagram: one run copies a fresh Kafka checkout, adds one .claude folder, runs claude -p with the question in a new session, collects three records, and grades the answer. The two .claude folders are stock, an empty settings file, and Spotify's hook with its Portal call replaced by a call to Haiku.">
@@ -122,7 +123,11 @@
 <p>That's a bug in the exception, not a finding about delegation, so I closed it — a file over 350 lines simply cannot be <code>Read</code> by the main model at all, offset or no offset — and ran everything past this point against that version. Every number from here on is the hook doing what the post says it does.</p>
 </div>
 
-<h2>One question, request by request</h2>
+<h2>Results: the same token savings, a higher cost</h2>
+
+<p>Run head to head, the hook arm delivers Spotify's own metric faithfully and costs more anyway. Here's that shape one task at a time, then across all twelve.</p>
+
+<h3>One question, traced</h3>
 
 <p>Everything an agent does happens as a sequence of <em>requests</em>: one call to the model, carrying the entire conversation so far plus whatever new thing just happened — a tool result, a hook's message — and getting back either another tool call or a final answer. I'll call each of these a <em>turn</em>. A three-turn task and an eleven-turn task can answer the exact same question; what differs is how many times the whole conversation gets resent, and Claude Code serves nearly all of that resend from a prompt cache at a tenth of the normal input price. That distinction — cheap to resend, not free to re-derive — turns out to be the entire mechanism behind the result, so I want to walk through one real task before showing the totals.</p>
 
@@ -140,7 +145,7 @@
   <figcaption>Figure E · the same question, as bars</figcaption>
 </figure>
 
-<h2>Where the money actually goes</h2>
+<h3>Where the money goes</h3>
 
 <p>Claude Code writes tool results and file content to its prompt cache once, at a rate 1.25 to 2 times the price of a fresh input token depending on how long the cache entry needs to live, and reads them back on every later turn at a tenth the input price. That's the bucket the hook targets, and in the R1 run it's nearly a wash: ten grep results add up to about as many characters as the file would have cost to write once. The bucket the hook has no opinion on, because it never looks past the tool call in front of it, is the one that scales with the number of turns — the entire conversation, resent from cache on every single request, plus a fresh round of the model's own thinking at the end of each one, priced fifty times higher than a cache read. Stock paid for that bucket three times. The hook paid for it sixteen times.</p>
 
@@ -151,7 +156,7 @@
 
 <p>The read the hook refused would have cost about three cents to write to cache. Working around it added roughly twenty-five cents of re-sent conversation and fresh output, because refusing the read didn't remove the need to know what was in the file — it just made the model ask for the same information across sixteen turns instead of one.</p>
 
-<h2>The result, across twelve tasks</h2>
+<h3>Across twelve tasks</h3>
 
 <p>Averaged over all twelve tasks, one run per cell, same model on both arms:</p>
 
@@ -167,12 +172,23 @@
 <p>One objection to all of this: Spotify's worker script is unfamiliar precisely because it's an external shell script behind a plugin, and Claude Code already ships something built for exactly this — the <code>Explore</code> subagent, a second, disposable conversation with its own context and read-only tools, which the main model can call any time it wants to hand off a search. So I ran the same hook again, with its refusal message pointing at Explore instead of at Spotify's script, and pinned Explore to Haiku the way the worker was supposed to run. It changed the arithmetic only slightly: Explore got called in 2 of 12 tasks, the model grepped through the rest, and the run came in at $2.31 against the plain hook's $2.61 — cheaper, but still nowhere near stock's $1.94, and still not the behavior either design assumes. Making the fallback something the model already knows how to call helped a little. It didn't change what the model actually reached for.</p>
 </div>
 
-<h2>What I'd measure instead</h2>
+<h2>Findings</h2>
+
+<ul>
+<li><b>The published hook doesn't enforce the block it claims to make.</b> Its own offset/limit exception lets the model page around every refusal, which is a bug in what shipped, not evidence about delegation one way or the other.</li>
+<li><b>Enforced, the hook does what the post says.</b> Target-file lines in the expensive model's context fell 87%. Spotify's number is real.</li>
+<li><b>The worker goes uncalled, and swapping in Claude Code's own subagent barely changes that.</b> Zero of twenty-four hook runs used the bulk-reader script; Explore got used in two of twelve when it was the fallback instead.</li>
+<li><b>The bill went up because of turns, not tokens.</b> Every block that turned into a grep-your-way-through added a full resent-conversation cycle, and those cycles are what the extra 35% actually paid for.</li>
+</ul>
 
 <p>Spotify's metric — file size avoided, in characters, divided by four — measures a real thing: it's exactly how many tokens a whole-file read would have cost, and the hook, once it actually enforces the block, delivers that reduction faithfully. What it doesn't measure is the response to the block. A refusal is not the same event as a delegation; it's an instruction, and the metric that matters is what the model does with it, not what the hook intended. In this evaluation, across twenty-four enforced-hook runs between the two variants I tried, that instruction was followed exactly zero times.</p>
 
+<h2>What I'd do differently</h2>
+
 <p>The more useful number, if I were designing this again, is turns per task against tokens saved per turn: does the fallback the hook points to cost fewer resent-conversation cycles than just reading the file would have, at whatever the model actually does next — not at whatever the plugin's author hoped it would do. On four of the twelve tasks here, the forced grep did win outright, including finding a planted race condition from fifty lines of a thousand-line file instead of the whole thing. A hook that shapes how a model searches, rather than assuming it will delegate, is a real lever. It's just a different claim than the one that got made, and it's the one I'd want the next version of this test to be honest about measuring.</p>
 
-<p>One run per cell means the ranking among hook variants — $2.61 against $2.31 against wherever a second run would land — is a direction, not a proof; a single different search path moves either number by half again. What isn't a direction is the shape underneath it: tokens written to a cache once are nearly free to revisit. A turn, which is the unit every extra tool call actually costs, is not, and no hook that only watches the tool call in front of it can tell the difference.</p>
+<p>One run per cell means the ranking among hook variants — $2.61 against $2.31 against wherever a second run would land — is a direction, not a proof; a single different search path moves either number by half again. And the worker substitution is a real gap, not just a footnote: if Spotify's Portal call is faster or cheaper per token than a headless call to Haiku, or routes to a model that's better at holding onto instructions across a plugin's lifetime, their number and mine can both be honest and still point in different directions. A 90% cut in tokens sent to the frontier model is not automatically a 90% cut in the bill on any stack, including theirs — that's the whole argument here — but exactly how their bill moved is a question only Spotify's own telemetry can answer.</p>
+
+<p>What isn't a direction, on either stack: tokens written to a cache once are nearly free to revisit. A turn, which is the unit every extra tool call actually costs, is not, and no hook that only watches the tool call in front of it can tell the difference.</p>
 
 </main>
