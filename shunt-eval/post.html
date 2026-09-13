@@ -70,15 +70,39 @@
 
 <h3>Why Kafka</h3>
 
-<p>The hook only matters on files between roughly 350 lines and the point where Claude Code's own limits take over, so the test repo needed to be full of files in that band, in a language close to the one Spotify's own benchmark used. I used Apache Kafka at a pinned commit: 17% of its source files are over 350 lines, and together they hold 64% of all the code, against 7.5% and 38% on a comparable TypeScript monorepo I considered instead and rejected for being too thin in exactly the band that matters. Twelve tasks, four kinds — read a file to answer a question, write new code from a reference, make a precise edit, find a planted concurrency bug — each with a mechanically checkable answer key and asked the way a developer actually would, with no file path in the prompt, so the session has to find the target file itself before it can do anything with it.</p>
+<p>The hook only matters on files between roughly 350 lines and the point where Claude Code's own limits take over, so the test repo needed to be full of files in that band, in a language close to the one Spotify's own benchmark used. Apache Kafka, at a pinned commit, fit: 17% of its source files are over 350 lines, holding 64% of all the code, against 7.5% and 38% on a comparable TypeScript monorepo I considered and rejected for being too thin in exactly that band. Twelve tasks, four categories, each with a mechanically checkable answer key and asked the way a developer actually would — no file path in the prompt, so the session has to find the target file itself before it can do anything with it:</p>
+
+<ul>
+<li><b>Bulk-read</b> (four tasks): answer a question that requires reading most of one or two large files, like tracing every state a class's state machine can enter.</li>
+<li><b>Code-write</b> (three tasks): write a new class or config from a reference file, graded on compiling plus a checklist.</li>
+<li><b>Precise edit</b> (three tasks): make one small, targeted change — a log level, a rename — where the same text appears in several places and only some of them should change.</li>
+<li><b>Planted bug</b> (two tasks): find a concurrency bug I introduced myself, such as a removed <code>synchronized</code> keyword, and name the method and the race.</li>
+</ul>
+
+<h3>Setting up the eval harness</h3>
+
+<p>The harness itself is five small pieces of Python, all in this repo:</p>
+
+<ul>
+<li><b>The orchestrator</b> (<code>run.py</code>): copies the repo, drops in the arm's <code>.claude/</code> folder, launches the headless session, and collects everything it produces.</li>
+<li><b>The telemetry receiver</b> (<code>otlp_receiver.py</code>): a small local HTTP server that catches Claude Code's OpenTelemetry export so nothing has to leave the machine.</li>
+<li><b>The parsers</b> (<code>parse_transcript.py</code>, <code>parse_otel.py</code>): turn the raw transcript and OTel dump into one structured record per request — tokens, tool calls, hook decisions — so separate runs are actually comparable.</li>
+<li><b>The grader</b> (<code>grade.py</code>): checks the answer against a key built by hand from the real code, and separately checks whether the target file was ever actually found.</li>
+<li><b>The rollup</b> (<code>table.py</code>): averages every run into the comparison tables the numbers in this post come from.</li>
+</ul>
+
+<p>All sixty-two sessions went through the same five scripts, and I checked the orchestrator's own summary against both parsers on every single one before trusting a number. They agreed to four decimal places throughout.</p>
 
 <h3>How a run works</h3>
 
-<p>Each run is one fresh, headless Claude Code session, orchestrated by a small harness. It copies an untouched Kafka clone into a scratch directory, drops in the one <code>.claude/</code> folder that defines the arm under test, and runs <code>claude -p</code> with the task's prompt, a fixed tool allowlist, and a turn cap, with OpenTelemetry pointed at a local collector. When the session ends, the harness pulls three independent records of what happened: the JSON summary Claude Code itself prints (cost, tokens, turns, the final answer), the full transcript it writes to disk (every tool call and every request's token usage), and the OpenTelemetry export (per-call metrics and events). I checked all three against each other on every one of the sixty-two runs before trusting a single number, and they agreed to four decimal places throughout. The answer, or the diff for an editing task, then gets graded against a key built by hand from the real code, and the transcript gets checked separately for whether the target file was ever read, grepped, or handed to another model at all — answering correctly without ever finding the actual file doesn't count as a pass, because that's a lucky guess wearing a right answer.</p>
+<p>One run, start to finish:</p>
 
-<h3>The two arms</h3>
-
-<p>Two arms, differing only in that one folder: <code>stock</code>, Claude Code exactly as installed, and the <code>hook</code> arm, Spotify's plugin verbatim except for one substitution — their internal model-routing call becomes a direct call to Haiku, so the worker's own cost shows up in the ledger instead of disappearing into someone else's infrastructure.</p>
+<ul>
+<li><b>Copy.</b> An untouched Kafka clone gets copied into a scratch directory; nothing ever runs against the real checkout.</li>
+<li><b>Configure.</b> One <code>.claude/</code> folder gets dropped in — the only difference between arms. Stock's folder is empty. The hook arm's is Spotify's plugin verbatim, except its internal model-routing call becomes a direct call to Haiku, so the worker's own cost shows up in the ledger instead of disappearing into someone else's infrastructure.</li>
+<li><b>Run.</b> <code>claude -p</code> runs the task's prompt in a brand-new session, with a fixed tool allowlist and a turn cap.</li>
+<li><b>Grade.</b> The answer, or the diff for an editing task, goes to the grader above; the transcript is checked separately for whether the target file was ever read, grepped, or handed off at all — getting the right answer without ever finding the real file doesn't count as a pass, because that's a lucky guess wearing a right answer.</li>
+</ul>
 
 <figure>
   <img src="figures/post/B-setup.png" alt="Diagram: one run copies a fresh Kafka checkout, adds one .claude folder, runs claude -p with the question in a new session, collects three records, and grades the answer. The two .claude folders are stock, an empty settings file, and Spotify's hook with its Portal call replaced by a call to Haiku.">
