@@ -26,7 +26,7 @@
 </style>
 <main>
   <h1>Figures for the shunt write-up</h1>
-  <p class="lede">Four drawings: where the hook sits in Claude Code's loop and the three ways out of a block; what one request is, using every request of the R1 task; the same trace as bars; and where the money went in each.</p>
+  <p class="lede">Four drawings: where the hook sits in Claude Code's loop and the three ways out of a block; one task step by step, every request with what was sent, decided and returned; the same trace as bars; and where the money went in each.</p>
 
   <!-- ============ FIGURE 1 ============ -->
   <figure>
@@ -89,107 +89,180 @@
     <figcaption><b>Where the hook sits, and the three ways out.</b> A PreToolUse hook runs between the model's tool call and the tool. On allow, the file comes back whole. On block, only the hook's message comes back, and the model chooses its next call. Spotify's design assumes that choice is the worker script. In 24 runs it never was: with the shipped hook the model re-read the file in slices, which the hook permits; with the exception closed it grepped instead.</figcaption>
   </figure>
 
-  <!-- ============ FIGURE 2 · anatomy ============ -->
+  <!-- ============ FIGURE 2 · storyboard ============ -->
   <figure>
     <span class="fig-n">Figure 2</span>
-    <svg viewBox="0 0 900 812" role="img" aria-label="Every API request in the R1 task under stock and under Spotify's hook, drawn as bars. Each bar is the full conversation sent to the model on that request: a pale part already cached and billed at a tenth of the input price, a solid part new that request, and an outline for the model's reply. Stock: three requests. Hook: eleven, growing from thirty to forty-six thousand tokens each, because every request re-sends everything before it.">
-<text x="20" y="22" font-weight="600">One task, request by request: R1 under stock, then under Spotify's hook</text>
-<text x="20" y="40" class="small">Each row is one API request inside the same session. The bar is what Claude Code sent: pale = already cached (billed at a tenth), solid = new this request (written to cache).</text>
-<text x="20" y="55" class="small">The outlined box is what the model wrote back, drawn 4× wide so it is visible.</text>
-<text x="20" y="78" font-weight="600" fill="var(--stock)">A · stock · 3 requests · $0.113</text>
-<text x="20" y="148" class="small mono">#1</text>
-<rect x="54.0" y="134" width="269.3" height="16" class="stock" opacity="0.28"/>
-<rect x="323.3" y="134" width="63.0" height="16" class="stock" opacity="0.95"/>
-<rect x="392.4" y="134" width="16.9" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="415.3" y="148" class="small mono">29k sent · 374 out</text>
-<text x="54" y="166" class="small">new this request: <tspan font-weight="600">system prompt + tools + the question</tspan>   →   model replied: <tspan font-weight="600">Grep for class BrokerLifecycleM…</tspan></text>
-<text x="20" y="206" class="small mono">#2</text>
-<rect x="54.0" y="192" width="332.4" height="16" class="stock" opacity="0.28"/>
-<rect x="386.4" y="192" width="5.6" height="16" class="stock" opacity="0.95"/>
-<rect x="397.9" y="192" width="6.2" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="410.1" y="206" class="small mono">29k sent · 137 out</text>
-<text x="54" y="224" class="small">new this request: <tspan font-weight="600">grep hits, 157 chars</tspan>   →   model replied: <tspan font-weight="600">Read the whole file</tspan></text>
-<text x="20" y="264" class="small mono">#3</text>
-<rect x="54.0" y="250" width="337.9" height="16" class="stock" opacity="0.28"/>
-<rect x="391.9" y="250" width="151.3" height="16" class="stock" opacity="0.95"/>
-<rect x="549.2" y="250" width="152.8" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="708.0" y="264" class="small mono">43k sent · 3379 out</text>
-<text x="54" y="282" class="small">new this request: <tspan font-weight="600">the whole file, 771 lines</tspan>   →   model replied: <tspan font-weight="600">the answer</tspan></text>
-<line x1="20" y1="298" x2="880" y2="298" stroke="currentColor" stroke-width="0.6" opacity="0.35"/>
-<text x="20" y="328" font-weight="600" fill="var(--hook)">B · Spotify's hook · 11 requests · $0.204</text>
-<text x="20" y="374" class="small mono">#1</text>
-<rect x="54.0" y="360" width="269.3" height="16" class="hook" opacity="0.28"/>
-<rect x="323.3" y="360" width="64.4" height="16" class="hook" opacity="0.95"/>
-<rect x="393.7" y="360" width="12.5" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="412.2" y="374" class="small mono">29k sent · 276 out</text>
-<text x="54" y="386" class="small">new this request: <tspan font-weight="600">system prompt + tools + the question</tspan>   →   model replied: <tspan font-weight="600">Bash: find / -maxdepth 6 -iname …</tspan></text>
-<text x="20" y="408" class="small mono">#2</text>
-<rect x="54.0" y="394" width="333.7" height="16" class="hook" opacity="0.28"/>
-<rect x="387.7" y="394" width="3.7" height="16" class="hook" opacity="0.95"/>
-<rect x="397.4" y="394" width="8.6" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="412.0" y="408" class="small mono">29k sent · 190 out</text>
-<text x="54" y="420" class="small">new this request: <tspan font-weight="600">command output, 31 chars</tspan>   →   model replied: <tspan font-weight="600">Bash: find / -maxdepth 8 -iname …</tspan></text>
-<text x="20" y="442" class="small mono">#3</text>
-<rect x="54.0" y="428" width="337.4" height="16" class="hook" opacity="0.28"/>
-<rect x="391.4" y="428" width="6.5" height="16" class="hook" opacity="0.95"/>
-<rect x="403.9" y="428" width="16.2" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="426.1" y="442" class="small mono">30k sent · 358 out</text>
-<text x="54" y="454" class="small">new this request: <tspan font-weight="600">command output, 547 chars</tspan>   →   model replied: <tspan font-weight="600">Bash: find /tmp/claude-0/-home-u…</tspan></text>
-<text x="20" y="476" class="small mono">#4</text>
-<rect x="54.0" y="462" width="343.9" height="16" class="hook" opacity="0.28"/>
-<rect x="397.9" y="462" width="6.7" height="16" class="hook" opacity="0.95"/>
-<rect x="410.6" y="462" width="19.0" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="435.6" y="476" class="small mono">31k sent · 420 out</text>
-<text x="54" y="488" class="small">new this request: <tspan font-weight="600">command output, 323 chars</tspan>   →   model replied: <tspan font-weight="600">Read the whole file</tspan></text>
-<text x="20" y="510" class="small mono">#5</text>
-<rect x="54.0" y="496" width="350.6" height="16" class="hook" opacity="0.28"/>
-<rect x="404.6" y="496" width="6.2" height="16" class="hook" opacity="0.95"/>
-<rect x="416.7" y="496" width="13.1" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="435.8" y="510" class="small mono">31k sent · 289 out</text>
-<text x="54" y="522" class="small">new this request: <tspan font-weight="600">the hook&#x27;s message: &quot;File is 770 lines… use /bulk-reader&quot;</tspan>   →   model replied: <tspan font-weight="600">Grep for class \w+Event|BrokerS…</tspan></text>
-<text x="20" y="544" class="small mono">#6</text>
-<rect x="54.0" y="530" width="356.7" height="16" class="hook" opacity="0.28"/>
-<rect x="410.7" y="530" width="13.5" height="16" class="hook" opacity="0.95"/>
-<rect x="430.2" y="530" width="10.7" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="446.9" y="544" class="small mono">32k sent · 237 out</text>
-<text x="54" y="556" class="small">new this request: <tspan font-weight="600">grep hits, 2119 chars</tspan>   →   model replied: <tspan font-weight="600">Read lines 255–435</tspan></text>
-<text x="20" y="578" class="small mono">#7</text>
-<rect x="54.0" y="564" width="370.2" height="16" class="hook" opacity="0.28"/>
-<rect x="424.2" y="564" width="31.5" height="16" class="hook" opacity="0.95"/>
-<rect x="461.7" y="564" width="11.1" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="478.8" y="578" class="small mono">35k sent · 246 out</text>
-<text x="54" y="590" class="small">new this request: <tspan font-weight="600">180 lines of the file</tspan>   →   model replied: <tspan font-weight="600">Read lines 436–736</tspan></text>
-<text x="20" y="612" class="small mono">#8</text>
-<rect x="54.0" y="598" width="401.7" height="16" class="hook" opacity="0.28"/>
-<rect x="455.7" y="598" width="71.8" height="16" class="hook" opacity="0.95"/>
-<rect x="533.5" y="598" width="10.8" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="550.2" y="612" class="small mono">41k sent · 238 out</text>
-<text x="54" y="624" class="small">new this request: <tspan font-weight="600">300 lines of the file</tspan>   →   model replied: <tspan font-weight="600">Read lines 732–772</tspan></text>
-<text x="20" y="646" class="small mono">#9</text>
-<rect x="54.0" y="632" width="473.5" height="16" class="hook" opacity="0.28"/>
-<rect x="527.5" y="632" width="11.1" height="16" class="hook" opacity="0.95"/>
-<rect x="544.5" y="632" width="18.5" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="569.1" y="646" class="small mono">42k sent · 410 out</text>
-<text x="54" y="658" class="small">new this request: <tspan font-weight="600">40 lines of the file</tspan>   →   model replied: <tspan font-weight="600">Grep for ShutdownEvent|new Kafk…</tspan></text>
-<text x="20" y="680" class="small mono">#10</text>
-<rect x="54.0" y="666" width="484.5" height="16" class="hook" opacity="0.28"/>
-<rect x="538.5" y="666" width="6.5" height="16" class="hook" opacity="0.95"/>
-<rect x="551.0" y="666" width="11.6" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="568.6" y="680" class="small mono">43k sent · 256 out</text>
-<text x="54" y="692" class="small">new this request: <tspan font-weight="600">grep hits, 306 chars</tspan>   →   model replied: <tspan font-weight="600">Read lines 125–260</tspan></text>
-<text x="20" y="714" class="small mono">#11</text>
-<rect x="54.0" y="700" width="491.0" height="16" class="hook" opacity="0.28"/>
-<rect x="545.0" y="700" width="26.6" height="16" class="hook" opacity="0.95"/>
-<rect x="577.6" y="700" width="164.0" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
-<text x="747.7" y="714" class="small mono">45k sent · 3628 out</text>
-<text x="54" y="726" class="small">new this request: <tspan font-weight="600">135 lines of the file</tspan>   →   model replied: <tspan font-weight="600">the answer</tspan></text>
-<rect x="20" y="742" width="40" height="12" class="stock" opacity="0.28"/><text x="66" y="752" class="small">re-sent from cache: 20¢ per million tokens</text>
-<rect x="330" y="742" width="40" height="12" class="stock" opacity="0.95"/><text x="376" y="752" class="small">new, written to cache once: $2.50 or $4 per million</text>
-<rect x="680" y="742" width="40" height="12" fill="none" stroke="currentColor"/><text x="726" y="752" class="small">model output: $10 per million</text>
-<text x="20" y="778" class="small">The pale part is the whole conversation so far, sent again. Cheap per token, and it grows every request.</text>
-<text x="20" y="793" class="small">Stock paid for it 3 times. The hook run paid for it 11 times, and thought 11 times.</text>
-    </svg>
-    <figcaption><b>What "a request" is.</b> The model keeps nothing between calls. Every time it wants a tool, the conversation ends, Claude Code runs the tool, appends the result, and sends the entire transcript again. Caching makes the re-sent part cheap per token; it does not make it free, and it does nothing for the thinking the model does at the start of every request. Stock read the file once and needed three requests. The hook run needed eleven, and 655 of the 770 lines still went in, as slices. Numbers from the two transcripts.</figcaption>
+    <p style="margin:0 0 10px;font-weight:600">One task, step by step: the same question under stock Claude Code and under Spotify's hook</p>
+    <p class="small" style="margin:0 0 12px;color:var(--ink-2)">Every numbered row is one API request. Left: what the model was given. Middle: what it decided to do. Right: what came back. Costs are approximate, at Sonnet 5 list price.</p>
+
+<style>
+.sb { font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: 13px; color: var(--ink, #1B1F1D); }
+.sb .run { border: 1px solid var(--line, #D6DAD3); border-radius: 8px; padding: 14px 16px; margin: 0 0 22px; background: var(--surface, #fff); }
+.sb h3 { margin: 0 0 10px; font-size: 1rem; }
+.sb .arm { font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .06em; font-size: .78rem; padding: 2px 8px; border-radius: 999px; margin-right: 8px; }
+.sb .run.stock .arm { background: #DCEFEC; color: #0F6E6A; } .sb .run.hook .arm { background: #F5E3D8; color: #A94F2A; }
+.sb .prompt { background: var(--soft, #ECEEE9); border-radius: 6px; padding: 10px 12px; margin-bottom: 14px; font-size: .92rem; }
+.sb .lbl { display: block; font-family: "IBM Plex Mono", monospace; font-size: .68rem; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3, #7B857F); margin-bottom: 3px; }
+.sb .step { display: grid; grid-template-columns: 28px 1fr; gap: 0 10px; padding: 10px 0; border-top: 1px solid var(--line, #D6DAD3); }
+.sb .n { font-family: "IBM Plex Mono", monospace; font-weight: 600; color: var(--ink-3, #7B857F); padding-top: 2px; }
+.sb .cols { display: grid; grid-template-columns: 1.1fr 1.1fr 1.4fr; gap: 12px; }
+.sb .col { min-width: 0; }
+.sb .col.hook-hit { background: #F5E3D8; border-radius: 6px; padding: 8px 10px; margin: -8px -10px; }
+.sb .quote { font-family: "IBM Plex Mono", monospace; font-size: .74rem; background: var(--soft, #ECEEE9); border-radius: 4px; padding: 6px 8px; margin-top: 4px; white-space: pre-wrap; word-break: break-word; max-height: 72px; overflow: hidden; }
+.sb .meta { color: var(--ink-3, #7B857F); font-size: .78rem; margin-top: 3px; }
+.sb .cost { grid-column: 2; font-family: "IBM Plex Mono", monospace; font-size: .76rem; color: var(--ink-2, #4A5350); margin-top: 6px; }
+@media (max-width: 720px) { .sb .cols { grid-template-columns: 1fr; } }
+</style>
+
+<div class="sb">
+<section class="run stock">
+<h3><span class="arm">stock</span> 3 requests · $0.113 · 39 s · pass</h3>
+<div class="prompt"><span class="lbl">The question, exactly as sent</span>How does the broker lifecycle manager in the Kafka server move between broker states? List every event class it handles, which BrokerState each one sets if any, and what enqueues it. What state does it start in?</div>
+<div class="step">
+<div class="n">1</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>system prompt (about 24k tokens of instructions and tool definitions) + the question<div class="meta">29,403 tokens in total, of which 23,824 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Grep for `class BrokerLifecycleManager`<div class="meta">374 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">Found 2 files
+server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java
+core/src/test/scala/unit/kafka/server/BrokerLifecycleManagerTest.scala</div><div class="meta">157 chars, 58 ms</div></div>
+</div>
+<div class="cost">≈ 3.1¢ this request · 3.1¢ so far</div>
+</div>
+<div class="step">
+<div class="n">2</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result<div class="meta">29,896 tokens in total, of which 29,401 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Read `BrokerLifecycleManager.java`, the whole file<div class="meta">137 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">771 numbered lines of the file</div><div class="meta">36,294 chars, 115 ms</div></div>
+</div>
+<div class="cost">≈ 0.8¢ this request · 3.9¢ so far</div>
+</div>
+<div class="step">
+<div class="n">3</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Read result<div class="meta">43,279 tokens in total, of which 29,894 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) write the answer<div class="meta">3379 output tokens</div></div>
+<div class="col"><span class="lbl">The answer begins</span><div class="quote">## BrokerLifecycleManager state machine  `BrokerLifecycleManager` (`server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java`) is built on a single-threaded `KafkaEventQueue`. All mutation of `state` happens inside `EventQueue.Event.run()` impl…</div></div>
+</div>
+<div class="cost">≈ 7.3¢ this request · 11.3¢ so far</div>
+</div>
+</section>
+<section class="run hook">
+<h3><span class="arm">shunt</span> 11 requests · $0.204 · 78 s · pass</h3>
+<div class="prompt"><span class="lbl">The question, exactly as sent</span>How does the broker lifecycle manager in the Kafka server move between broker states? List every event class it handles, which BrokerState each one sets if any, and what enqueues it. What state does it start in?</div>
+<div class="step">
+<div class="n">1</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>system prompt (about 24k tokens of instructions and tool definitions) + the question<div class="meta">29,523 tokens in total, of which 23,824 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Bash: `find / -maxdepth 6 -iname &quot;BrokerLifecycleManager*&quot; 2&gt;/dev/null`<div class="meta">276 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">(Bash completed with no output)</div><div class="meta">31 chars, 1101 ms</div></div>
+</div>
+<div class="cost">≈ 3.0¢ this request · 3.0¢ so far</div>
+</div>
+<div class="step">
+<div class="n">2</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Bash result<div class="meta">29,853 tokens in total, of which 29,521 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Bash: `find / -maxdepth 8 -iname &quot;*kafka*&quot; -type d 2&gt;/dev/null | grep -v -E &quot;node_modules|\.cache`<div class="meta">190 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">/root/.claude/projects/-tmp-claude-0--home-user-WackyWords-dcaa2de8-6489-574c-aeef-bb9a81f8414e-scratchpad-kafka
+/tmp/claude-0/-home-user-WackyWords/dcaa2de8-6489-574c-aeef-bb9a81f8414e/scratchpad/kafka
+/tmp/claude-0/-home-user-WackyWords/d</div><div class="meta">547 chars, 1296 ms</div></div>
+</div>
+<div class="cost">≈ 0.9¢ this request · 3.9¢ so far</div>
+</div>
+<div class="step">
+<div class="n">3</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Bash result<div class="meta">30,424 tokens in total, of which 29,851 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Bash: `find /tmp/claude-0/-home-user-WackyWords/dcaa2de8-6489-574c-aeef-bb9a81f8414e/scratchpad/k`<div class="meta">358 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">/tmp/claude-0/-home-user-WackyWords/dcaa2de8-6489-574c-aeef-bb9a81f8414e/scratchpad/kafka/server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java
+/tmp/claude-0/-home-user-WackyWords/dcaa2de8-6489-574c-aeef-bb9a81f8414e/scra</div><div class="meta">323 chars, 91 ms</div></div>
+</div>
+<div class="cost">≈ 1.1¢ this request · 5.0¢ so far</div>
+</div>
+<div class="step">
+<div class="n">4</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Bash result<div class="meta">31,013 tokens in total, of which 30,422 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Read `BrokerLifecycleManager.java`, the whole file<div class="meta">420 output tokens</div></div>
+<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read. The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly. If you need exact content for editing, re-read with an offset/limit for just the section you need.</div></div>
+</div>
+<div class="cost">≈ 1.2¢ this request · 6.2¢ so far</div>
+</div>
+<div class="step">
+<div class="n">5</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + the hook&#x27;s message<div class="meta">31,558 tokens in total, of which 31,011 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Grep for `class \w+Event|BrokerState\.\w+|initialState|state =|eventQu` in `BrokerLifecycleManager.java`<div class="meta">289 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">131:    private volatile BrokerState state = BrokerState.NOT_RUNNING;
+267:        eventQueue.append(new StartupEvent(highestMetadataOffsetProvider,
+272:        eventQueue.append(new SetReadyToUnfenceEvent());
+282:        eventQueue.append(n</div><div class="meta">2,119 chars, 23 ms</div></div>
+</div>
+<div class="cost">≈ 1.0¢ this request · 7.2¢ so far</div>
+</div>
+<div class="step">
+<div class="n">6</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result<div class="meta">32,752 tokens in total, of which 31,556 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Read `BrokerLifecycleManager.java` lines 255 to 435<div class="meta">237 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">180 numbered lines of the file</div><div class="meta">6,654 chars, 32 ms</div></div>
+</div>
+<div class="cost">≈ 1.2¢ this request · 8.4¢ so far</div>
+</div>
+<div class="step">
+<div class="n">7</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Read result<div class="meta">35,536 tokens in total, of which 32,750 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java` lines 436 to 736<div class="meta">246 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">300 numbered lines of the file</div><div class="meta">17,157 chars, 29 ms</div></div>
+</div>
+<div class="cost">≈ 1.6¢ this request · 10.0¢ so far</div>
+</div>
+<div class="step">
+<div class="n">8</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Read result<div class="meta">41,885 tokens in total, of which 35,534 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java` lines 732 to 772<div class="meta">238 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">40 numbered lines of the file</div><div class="meta">1,589 chars, 29 ms</div></div>
+</div>
+<div class="cost">≈ 2.5¢ this request · 12.5¢ so far</div>
+</div>
+<div class="step">
+<div class="n">9</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Read result<div class="meta">42,863 tokens in total, of which 41,883 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Grep for `ShutdownEvent|new KafkaEventQueue|EventQueue\(&quot; ` in `BrokerLifecycleManager.java`<div class="meta">410 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">243:        this.eventQueue = new KafkaEventQueue(
+247:                new ShutdownEvent());
+335:    private class BeginControlledShutdownEvent implements EventQueue.Event {
+361:        eventQueue.append(new BeginControlledShutdownEvent());</div><div class="meta">306 chars, 15 ms</div></div>
+</div>
+<div class="cost">≈ 1.5¢ this request · 14.0¢ so far</div>
+</div>
+<div class="step">
+<div class="n">10</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result<div class="meta">43,436 tokens in total, of which 42,861 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java` lines 125 to 260<div class="meta">256 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">135 numbered lines of the file</div><div class="meta">5,826 chars, 29 ms</div></div>
+</div>
+<div class="cost">≈ 1.3¢ this request · 15.3¢ so far</div>
+</div>
+<div class="step">
+<div class="n">11</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Read result<div class="meta">45,793 tokens in total, of which 43,434 already cached</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) write the answer<div class="meta">3628 output tokens</div></div>
+<div class="col"><span class="lbl">The answer begins</span><div class="quote">## `BrokerLifecycleManager` state machine  `BrokerLifecycleManager` (`server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java`) is a single-threaded state machine: all transitions run on its private `KafkaEventQueue` thread, driven by `EventQu…</div></div>
+</div>
+<div class="cost">≈ 5.1¢ this request · 20.4¢ so far</div>
+</div>
+</section>
+</div>
+
+    <figcaption><b>What happens in each step.</b> The model never keeps anything between requests, so the left column grows: each request carries every earlier result. Stock found the file with one grep, read it whole, and answered on request 3. Under the hook, request 4's read was refused and the model got a sentence instead of the file; it then grepped and read the file in four slices the hook allows, so 655 of 770 lines entered context anyway, across eight more requests. Both answers were correct. Every quote is from the transcripts in <code>results/03-natural-three-arms</code>.</figcaption>
   </figure>
 
   <!-- ============ FIGURE 3 (trace bars) ============ -->
