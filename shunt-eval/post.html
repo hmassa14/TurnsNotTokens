@@ -41,11 +41,11 @@
 <p class="kicker">Field dispatch</p>
 <h1>Tokens Are Cheap, Turns Are Not</h1>
 <p class="dek">Spotify published a Claude Code plugin that blocks the model from reading big files and hands them to a cheap worker instead, claiming a 90% cut in tokens. I rebuilt it on a real repo and measured the bill. The number they reported is real. The bill went up anyway.</p>
-<p class="byline">Sixty-two headless Claude Code sessions, one Java monorepo, three independent sources of telemetry per run.</p>
+<p class="byline">Twelve tasks, two Claude Code configurations, one Java monorepo, three independent sources of telemetry per run.</p>
 
 <p>Every few weeks another Claude Code plugin promises some large, round token-savings number, and I've learned not to trust it until I've seen the bill. Spotify's stopped me mid-scroll: a hook that blocks the model from reading big files and hands the read to a cheaper model instead, claiming a 90% cut in tokens. So I rebuilt it and ran it myself.</p>
 
-<p>I ran the same hook against stock Claude Code on twelve real tasks on a real repo, sixty-two sessions, checking every dollar figure against three independent sources before trusting it. The short version is in the title: the 90% is real on Spotify's own metric, and the dollar cost of getting it went up 35%. Here's the problem Spotify was solving, and the solution they built for it.</p>
+<p>I ran the same hook against stock Claude Code on twelve real tasks on a real repo — twenty-four sessions for that head-to-head, plus two earlier variants that shaped how I built it, more on those below — checking every dollar figure against three independent sources before trusting it. The short version is in the title: the 90% is real on Spotify's own metric, and the dollar cost of getting it went up 35%. Here's the problem Spotify was solving, and the solution they built for it.</p>
 
 <h2>The problem Spotify was solving</h2>
 
@@ -66,19 +66,21 @@
 
 <p>That design rests on one assumption: that when the model is refused a read, it does what the hook's message tells it to do. Nothing about a <code>PreToolUse</code> hook enforces that. The hook can stop one tool call. It can't stop the model from trying something else on its next turn, and it has no say over what that something else is. Whether the plugin saves anything comes down entirely to what the model reaches for once it's been told no, and that turned out to be the whole story.</p>
 
-<h2>The experiment</h2>
+<h2>My experiment: does token consolidation lead to a cost benefit?</h2>
 
-<p>Testing that idea meant building three things: a repo with enough large files for the hook's threshold to ever fire, a harness that runs the same task under different Claude Code configurations and records everything a real session actually does, and a way to grade whether the answer that came back was correct rather than just cheap.</p>
+<p>The test is the same twelve tasks on the same repo, once under stock Claude Code and once under Spotify's hook, scored on the three things that actually decide whether a technique like this belongs in a real deployment: <b>performance</b> (did it get the right answer), <b>latency</b> (how long that took), and <b>cost</b> (what it cost). Building that comparison meant a repo with enough large files for the hook's threshold to ever fire, a harness that runs the same task under both configurations and records everything a real session actually does, and a way to grade whether the answer that came back was correct rather than just cheap.</p>
 
 <h3>Why Kafka</h3>
 
-<p>The hook only matters on files between roughly 350 lines and the point where Claude Code's own limits take over, so the test repo needed to be full of files in that band, in a language close to the one Spotify's own benchmark used. Apache Kafka, at a pinned commit, fit: 17% of its source files are over 350 lines, holding 64% of all the code, against 7.5% and 38% on a comparable TypeScript monorepo I considered and rejected for being too thin in exactly that band. Twelve tasks, four categories, each with a mechanically checkable answer key and asked the way a developer actually would — no file path in the prompt, so the session has to find the target file itself before it can do anything with it:</p>
+<p>Per his post, Mazmanov built and tested shunt against a large Java monorepo. I wanted a public, reproducible stand-in for that: an open-source Java codebase big enough to have plenty of real files in the 350-line-to-25,000-token band the hook actually cares about. Apache Kafka, at a pinned commit, fit: 17% of its source files are over 350 lines, holding 64% of all the code, against 7.5% and 38% on a comparable TypeScript monorepo I considered and rejected for being too thin in exactly that band.</p>
+
+<p>Twelve tasks, four categories, each with a mechanically checkable answer key and asked the way a developer actually would — no file path in the prompt, so the session has to find the target file itself before it can do anything with it. The first two categories are the same two workflows shunt itself ships modes for; the other two go after the limits Spotify's own post names for the approach:</p>
 
 <ul>
-<li><b>Bulk-read</b> (four tasks): answer a question that requires reading most of one or two large files, like tracing every state a class's state machine can enter.</li>
-<li><b>Code-write</b> (three tasks): write a new class or config from a reference file, graded on compiling plus a checklist.</li>
-<li><b>Precise edit</b> (three tasks): make one small, targeted change — a log level, a rename — where the same text appears in several places and only some of them should change.</li>
-<li><b>Planted bug</b> (two tasks): find a concurrency bug I introduced myself, such as a removed <code>synchronized</code> keyword, and name the method and the race.</li>
+<li><b>Bulk-read</b> (four tasks): the workflow shunt's bulk-reader skill targets — answer a question that requires reading most of one or two large files, like tracing every state a class's state machine can enter.</li>
+<li><b>Code-write</b> (three tasks): the workflow shunt's code-writer skill targets — write a new class or config from a reference file, graded on compiling plus a checklist.</li>
+<li><b>Precise edit</b> (three tasks): the limit Spotify's own post names for editing — a summary isn't exact content — make one small, targeted change where the same text appears in several places and only some of it should change.</li>
+<li><b>Planted bug</b> (two tasks): the other named limit, that a delegated read can't reason about what it found — find a concurrency bug I introduced myself, such as a removed <code>synchronized</code> keyword, and name the method and the race.</li>
 </ul>
 
 <h3>Setting up the eval harness</h3>
@@ -93,7 +95,7 @@
 <li><b>The rollup</b> (<code>table.py</code>): averages every run into the comparison tables the numbers in this post come from.</li>
 </ul>
 
-<p>All sixty-two sessions went through the same five scripts, and I checked the orchestrator's own summary against both parsers on every single one before trusting a number. They agreed to four decimal places throughout.</p>
+<p>Every session in this evaluation, across the head-to-head and the two variants in the sidebars below, went through the same five scripts, and I checked the orchestrator's own summary against both parsers on every single one before trusting a number. They agreed to four decimal places throughout.</p>
 
 <h3>How a run works</h3>
 
