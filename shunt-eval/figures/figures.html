@@ -26,7 +26,7 @@
 </style>
 <main>
   <h1>Figures for the shunt write-up</h1>
-  <p class="lede">Three drawings: where the hook sits in Claude Code's loop and the three ways out of a block; the R1 trace under stock and under Spotify's hook, request by request, from the real transcripts; and where the money went in each.</p>
+  <p class="lede">Four drawings: where the hook sits in Claude Code's loop and the three ways out of a block; what one request is, using every request of the R1 task; the same trace as bars; and where the money went in each.</p>
 
   <!-- ============ FIGURE 1 ============ -->
   <figure>
@@ -89,9 +89,112 @@
     <figcaption><b>Where the hook sits, and the three ways out.</b> A PreToolUse hook runs between the model's tool call and the tool. On allow, the file comes back whole. On block, only the hook's message comes back, and the model chooses its next call. Spotify's design assumes that choice is the worker script. In 24 runs it never was: with the shipped hook the model re-read the file in slices, which the hook permits; with the exception closed it grepped instead.</figcaption>
   </figure>
 
-  <!-- ============ FIGURE 2 ============ -->
+  <!-- ============ FIGURE 2 · anatomy ============ -->
   <figure>
     <span class="fig-n">Figure 2</span>
+    <svg viewBox="0 0 900 812" role="img" aria-label="Every API request in the R1 task under stock and under Spotify's hook, drawn as bars. Each bar is the full conversation sent to the model on that request: a pale part already cached and billed at a tenth of the input price, a solid part new that request, and an outline for the model's reply. Stock: three requests. Hook: eleven, growing from thirty to forty-six thousand tokens each, because every request re-sends everything before it.">
+<text x="20" y="22" font-weight="600">One task, request by request: R1 under stock, then under Spotify's hook</text>
+<text x="20" y="40" class="small">Each row is one API request inside the same session. The bar is what Claude Code sent: pale = already cached (billed at a tenth), solid = new this request (written to cache).</text>
+<text x="20" y="55" class="small">The outlined box is what the model wrote back, drawn 4× wide so it is visible.</text>
+<text x="20" y="78" font-weight="600" fill="var(--stock)">A · stock · 3 requests · $0.113</text>
+<text x="20" y="148" class="small mono">#1</text>
+<rect x="54.0" y="134" width="269.3" height="16" class="stock" opacity="0.28"/>
+<rect x="323.3" y="134" width="63.0" height="16" class="stock" opacity="0.95"/>
+<rect x="392.4" y="134" width="16.9" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="415.3" y="148" class="small mono">29k sent · 374 out</text>
+<text x="54" y="166" class="small">new this request: <tspan font-weight="600">system prompt + tools + the question</tspan>   →   model replied: <tspan font-weight="600">Grep for class BrokerLifecycleM…</tspan></text>
+<text x="20" y="206" class="small mono">#2</text>
+<rect x="54.0" y="192" width="332.4" height="16" class="stock" opacity="0.28"/>
+<rect x="386.4" y="192" width="5.6" height="16" class="stock" opacity="0.95"/>
+<rect x="397.9" y="192" width="6.2" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="410.1" y="206" class="small mono">29k sent · 137 out</text>
+<text x="54" y="224" class="small">new this request: <tspan font-weight="600">grep hits, 157 chars</tspan>   →   model replied: <tspan font-weight="600">Read the whole file</tspan></text>
+<text x="20" y="264" class="small mono">#3</text>
+<rect x="54.0" y="250" width="337.9" height="16" class="stock" opacity="0.28"/>
+<rect x="391.9" y="250" width="151.3" height="16" class="stock" opacity="0.95"/>
+<rect x="549.2" y="250" width="152.8" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="708.0" y="264" class="small mono">43k sent · 3379 out</text>
+<text x="54" y="282" class="small">new this request: <tspan font-weight="600">the whole file, 771 lines</tspan>   →   model replied: <tspan font-weight="600">the answer</tspan></text>
+<line x1="20" y1="298" x2="880" y2="298" stroke="currentColor" stroke-width="0.6" opacity="0.35"/>
+<text x="20" y="328" font-weight="600" fill="var(--hook)">B · Spotify's hook · 11 requests · $0.204</text>
+<text x="20" y="374" class="small mono">#1</text>
+<rect x="54.0" y="360" width="269.3" height="16" class="hook" opacity="0.28"/>
+<rect x="323.3" y="360" width="64.4" height="16" class="hook" opacity="0.95"/>
+<rect x="393.7" y="360" width="12.5" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="412.2" y="374" class="small mono">29k sent · 276 out</text>
+<text x="54" y="386" class="small">new this request: <tspan font-weight="600">system prompt + tools + the question</tspan>   →   model replied: <tspan font-weight="600">Bash: find / -maxdepth 6 -iname …</tspan></text>
+<text x="20" y="408" class="small mono">#2</text>
+<rect x="54.0" y="394" width="333.7" height="16" class="hook" opacity="0.28"/>
+<rect x="387.7" y="394" width="3.7" height="16" class="hook" opacity="0.95"/>
+<rect x="397.4" y="394" width="8.6" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="412.0" y="408" class="small mono">29k sent · 190 out</text>
+<text x="54" y="420" class="small">new this request: <tspan font-weight="600">command output, 31 chars</tspan>   →   model replied: <tspan font-weight="600">Bash: find / -maxdepth 8 -iname …</tspan></text>
+<text x="20" y="442" class="small mono">#3</text>
+<rect x="54.0" y="428" width="337.4" height="16" class="hook" opacity="0.28"/>
+<rect x="391.4" y="428" width="6.5" height="16" class="hook" opacity="0.95"/>
+<rect x="403.9" y="428" width="16.2" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="426.1" y="442" class="small mono">30k sent · 358 out</text>
+<text x="54" y="454" class="small">new this request: <tspan font-weight="600">command output, 547 chars</tspan>   →   model replied: <tspan font-weight="600">Bash: find /tmp/claude-0/-home-u…</tspan></text>
+<text x="20" y="476" class="small mono">#4</text>
+<rect x="54.0" y="462" width="343.9" height="16" class="hook" opacity="0.28"/>
+<rect x="397.9" y="462" width="6.7" height="16" class="hook" opacity="0.95"/>
+<rect x="410.6" y="462" width="19.0" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="435.6" y="476" class="small mono">31k sent · 420 out</text>
+<text x="54" y="488" class="small">new this request: <tspan font-weight="600">command output, 323 chars</tspan>   →   model replied: <tspan font-weight="600">Read the whole file</tspan></text>
+<text x="20" y="510" class="small mono">#5</text>
+<rect x="54.0" y="496" width="350.6" height="16" class="hook" opacity="0.28"/>
+<rect x="404.6" y="496" width="6.2" height="16" class="hook" opacity="0.95"/>
+<rect x="416.7" y="496" width="13.1" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="435.8" y="510" class="small mono">31k sent · 289 out</text>
+<text x="54" y="522" class="small">new this request: <tspan font-weight="600">the hook&#x27;s message: &quot;File is 770 lines… use /bulk-reader&quot;</tspan>   →   model replied: <tspan font-weight="600">Grep for class \w+Event|BrokerS…</tspan></text>
+<text x="20" y="544" class="small mono">#6</text>
+<rect x="54.0" y="530" width="356.7" height="16" class="hook" opacity="0.28"/>
+<rect x="410.7" y="530" width="13.5" height="16" class="hook" opacity="0.95"/>
+<rect x="430.2" y="530" width="10.7" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="446.9" y="544" class="small mono">32k sent · 237 out</text>
+<text x="54" y="556" class="small">new this request: <tspan font-weight="600">grep hits, 2119 chars</tspan>   →   model replied: <tspan font-weight="600">Read lines 255–435</tspan></text>
+<text x="20" y="578" class="small mono">#7</text>
+<rect x="54.0" y="564" width="370.2" height="16" class="hook" opacity="0.28"/>
+<rect x="424.2" y="564" width="31.5" height="16" class="hook" opacity="0.95"/>
+<rect x="461.7" y="564" width="11.1" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="478.8" y="578" class="small mono">35k sent · 246 out</text>
+<text x="54" y="590" class="small">new this request: <tspan font-weight="600">180 lines of the file</tspan>   →   model replied: <tspan font-weight="600">Read lines 436–736</tspan></text>
+<text x="20" y="612" class="small mono">#8</text>
+<rect x="54.0" y="598" width="401.7" height="16" class="hook" opacity="0.28"/>
+<rect x="455.7" y="598" width="71.8" height="16" class="hook" opacity="0.95"/>
+<rect x="533.5" y="598" width="10.8" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="550.2" y="612" class="small mono">41k sent · 238 out</text>
+<text x="54" y="624" class="small">new this request: <tspan font-weight="600">300 lines of the file</tspan>   →   model replied: <tspan font-weight="600">Read lines 732–772</tspan></text>
+<text x="20" y="646" class="small mono">#9</text>
+<rect x="54.0" y="632" width="473.5" height="16" class="hook" opacity="0.28"/>
+<rect x="527.5" y="632" width="11.1" height="16" class="hook" opacity="0.95"/>
+<rect x="544.5" y="632" width="18.5" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="569.1" y="646" class="small mono">42k sent · 410 out</text>
+<text x="54" y="658" class="small">new this request: <tspan font-weight="600">40 lines of the file</tspan>   →   model replied: <tspan font-weight="600">Grep for ShutdownEvent|new Kafk…</tspan></text>
+<text x="20" y="680" class="small mono">#10</text>
+<rect x="54.0" y="666" width="484.5" height="16" class="hook" opacity="0.28"/>
+<rect x="538.5" y="666" width="6.5" height="16" class="hook" opacity="0.95"/>
+<rect x="551.0" y="666" width="11.6" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="568.6" y="680" class="small mono">43k sent · 256 out</text>
+<text x="54" y="692" class="small">new this request: <tspan font-weight="600">grep hits, 306 chars</tspan>   →   model replied: <tspan font-weight="600">Read lines 125–260</tspan></text>
+<text x="20" y="714" class="small mono">#11</text>
+<rect x="54.0" y="700" width="491.0" height="16" class="hook" opacity="0.28"/>
+<rect x="545.0" y="700" width="26.6" height="16" class="hook" opacity="0.95"/>
+<rect x="577.6" y="700" width="164.0" height="16" fill="none" stroke="currentColor" stroke-width="1"/>
+<text x="747.7" y="714" class="small mono">45k sent · 3628 out</text>
+<text x="54" y="726" class="small">new this request: <tspan font-weight="600">135 lines of the file</tspan>   →   model replied: <tspan font-weight="600">the answer</tspan></text>
+<rect x="20" y="742" width="40" height="12" class="stock" opacity="0.28"/><text x="66" y="752" class="small">re-sent from cache: 20¢ per million tokens</text>
+<rect x="330" y="742" width="40" height="12" class="stock" opacity="0.95"/><text x="376" y="752" class="small">new, written to cache once: $2.50 or $4 per million</text>
+<rect x="680" y="742" width="40" height="12" fill="none" stroke="currentColor"/><text x="726" y="752" class="small">model output: $10 per million</text>
+<text x="20" y="778" class="small">The pale part is the whole conversation so far, sent again. Cheap per token, and it grows every request.</text>
+<text x="20" y="793" class="small">Stock paid for it 3 times. The hook run paid for it 11 times, and thought 11 times.</text>
+    </svg>
+    <figcaption><b>What "a request" is.</b> The model keeps nothing between calls. Every time it wants a tool, the conversation ends, Claude Code runs the tool, appends the result, and sends the entire transcript again. Caching makes the re-sent part cheap per token; it does not make it free, and it does nothing for the thinking the model does at the start of every request. Stock read the file once and needed three requests. The hook run needed eleven, and 655 of the 770 lines still went in, as slices. Numbers from the two transcripts.</figcaption>
+  </figure>
+
+  <!-- ============ FIGURE 3 (trace bars) ============ -->
+  <figure>
+    <span class="fig-n">Figure 3</span>
     <svg viewBox="0 0 900 560" role="img" aria-label="Two request-by-request traces of the same R1 task. Stock Claude Code: three API requests, each re-sending about thirty thousand cached tokens, total 83 thousand cache-read tokens and 11 cents. Under Spotify's hook: eleven requests, the fourth blocked, followed by grep and four sliced reads, context growing from 24 to 43 thousand tokens per request, total 373 thousand cache-read tokens and 20 cents.">
       <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
       <!-- title row -->
@@ -175,10 +278,10 @@
 
   <!-- ============ FIGURE 3 ============ -->
   <figure>
-    <span class="fig-n">Figure 3</span>
+    <span class="fig-n">Figure 4</span>
     <svg viewBox="0 0 900 420" role="img" aria-label="Cost breakdown of the two R1 runs in cents, stacked by price bucket. Stock: 2.2 cents system prompt cache write, 3.5 cents file and tool results written to cache, 1.7 cents cache re-reads, 3.9 cents output, 11.3 cents total. Hook: 2.3, 4.1, 7.5, 6.5, total 20.4 cents. The file bucket barely moved; re-reads quadrupled and output nearly doubled. Sonnet 5 prices per million tokens: input 2 dollars, cache write 2.50 or 4 dollars, cache read 20 cents, output 10 dollars.">
       <text x="20" y="22" font-weight="600">Where the money went, R1, in cents at Sonnet 5 list price</text>
-      <text x="20" y="40" class="small">Same two runs as Figure 2. Each bar is the run's total cost, stacked by what the tokens were billed as.</text>
+      <text x="20" y="40" class="small">Same two runs as Figures 2 and 3. Each bar is the run's total cost, stacked by what the tokens were billed as.</text>
       <!-- scale: 1 cent = 10px ; baseline y=330 -->
       <text x="130" y="82" text-anchor="middle" font-weight="600" fill="var(--stock)">A · stock</text>
       <text x="130" y="98" text-anchor="middle" class="small mono">11.3¢ · 3 requests</text>
