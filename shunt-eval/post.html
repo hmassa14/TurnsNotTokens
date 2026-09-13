@@ -1,0 +1,134 @@
+<title>Tokens Are Cheap, Turns Are Not</title>
+<meta name="description" content="Spotify published a Claude Code plugin that blocks big file reads and hands them to a cheap model, claiming a 90% token cut. I rebuilt it on Kafka and measured the bill instead of the tokens.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root { --bg:#F5F6F3; --surface:#FFFFFF; --ink:#1B1F1D; --ink-2:#4A5350; --ink-3:#7B857F; --line:#D6DAD3; --stock:#0A9385; --hook:#B84E28; --soft:#ECEEE9; --tip:#EDF3EC; --tip-b:#5B8A6B; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#141816; --surface:#1C211E; --ink:#E6E9E4; --ink-2:#B4BBB5; --ink-3:#7F8882; --line:#313834; --stock:#1E9A8C; --hook:#C97440; --soft:#232925; --tip:#1B2420; --tip-b:#4E8760; } }
+  :root[data-theme="dark"] { --bg:#141816; --surface:#1C211E; --ink:#E6E9E4; --ink-2:#B4BBB5; --ink-3:#7F8882; --line:#313834; --stock:#1E9A8C; --hook:#C97440; --soft:#232925; --tip:#1B2420; --tip-b:#4E8760; }
+  * { box-sizing: border-box; }
+  body { background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans",system-ui,sans-serif; font-size:17px; line-height:1.65; padding-block:44px 90px; padding-inline:20px; }
+  main { max-width:700px; margin:0 auto; }
+  .kicker { font-family:"IBM Plex Mono",monospace; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-3); margin:0 0 10px; }
+  h1 { font-size:2.1rem; line-height:1.2; margin:0 0 6px; letter-spacing:-0.01em; }
+  .dek { font-size:1.15rem; color:var(--ink-2); margin:0 0 36px; max-width:56ch; }
+  h2 { font-size:1.5rem; margin:56px 0 16px; letter-spacing:-0.005em; }
+  h3 { font-size:1.1rem; margin:28px 0 10px; }
+  p { margin:0 0 20px; }
+  a { color:var(--hook); text-decoration-thickness: 1px; }
+  em { font-style: italic; }
+  .lede-em { font-style: normal; font-weight: 600; }
+  code { font-family:"IBM Plex Mono",monospace; font-size:0.88em; background:var(--soft); padding:0.1em 0.35em; border-radius:4px; }
+  figure { margin:32px 0; }
+  figure img { width:100%; display:block; border:1px solid var(--line); border-radius:8px; background:var(--surface); }
+  figcaption { font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-3); margin-top:10px; }
+  .callout { border-left:3px solid var(--tip-b); background:var(--tip); border-radius:0 8px 8px 0; padding:16px 20px; margin:28px 0; }
+  .callout .label { font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--tip-b); display:block; margin-bottom:8px; font-weight:600; }
+  .callout p:last-child { margin-bottom:0; }
+  .callout.hook { border-left-color:var(--hook); }
+  .callout.hook .label { color:var(--hook); }
+  blockquote.tldr { border:none; margin:24px 0; padding:0 0 0 18px; border-left:2px solid var(--line); font-style:italic; color:var(--ink-2); }
+  ul { padding-left: 1.3em; margin: 0 0 20px; }
+  li { margin-bottom: 10px; }
+  li b { color: var(--ink); }
+  .terms b { font-family:"IBM Plex Mono",monospace; font-weight:600; background:none; }
+  hr.sec { border:none; border-top:1px solid var(--line); margin:48px 0; }
+  .byline { color:var(--ink-3); font-size:0.9rem; margin: -16px 0 40px; }
+  @media (max-width: 480px) { h1 { font-size: 1.7rem; } h2 { font-size: 1.3rem; } body { font-size: 16px; } }
+</style>
+
+<main>
+
+<p class="kicker">Field dispatch</p>
+<h1>Tokens Are Cheap, Turns Are Not</h1>
+<p class="dek">Spotify published a Claude Code plugin that blocks the model from reading big files and hands them to a cheap worker instead, claiming a 90% cut in tokens. I rebuilt it on a real repo and measured the bill. The number they reported is real. The bill went up anyway.</p>
+<p class="byline">Sixty-two headless Claude Code sessions, one Java monorepo, three independent sources of telemetry per run.</p>
+
+<p>A <em>PreToolUse hook</em> is a script Claude Code runs before it lets a tool call through. It sees exactly what the model is about to do and can allow it, block it, or swap in a different instruction, and the model never knows the difference between a hook's message and a tool's real result. Spotify's engineering team built one for Claude Code called <a href="https://github.com/spotify/portal-ai-plugins">shunt</a>: whenever the model tries to read a file over 350 lines, the hook refuses and tells it to hand the read to a cheaper model instead, which reads the file and sends back a summary. Their post reported a 90% reduction in tokens the expensive model would otherwise have consumed, measured as the file's size in characters divided by four, minus the size of the summary that came back. The worker's own tokens weren't in that number.</p>
+
+<p>I wanted to know if that 90% translates into a smaller bill. So I rebuilt their plugin, pointed the same hook at Apache Kafka, and ran it against stock Claude Code on twelve real tasks, one run each, with every request's tokens pulled from three sources that had to agree before I trusted a number: the CLI's own summary, the session transcript, and OpenTelemetry. They did agree, to four decimal places. The short version is in the title. The 90% is real on Spotify's own metric. The dollar cost of getting it went up 35%. Here's why, one request at a time.</p>
+
+<h2>What the hook claims to do</h2>
+
+<p>Claude's <code>Read</code> tool takes a file path and, by default, returns the whole file up to a limit Claude Code itself already enforces (25,000 tokens, then a hard refusal past 256 KB). Spotify's hook sits in front of that tool and asks a narrower question first: is this file over 350 lines? If yes, it blocks the read and returns a message instead of the file, naming a skill that hands the job to a worker model. If no, the read goes through untouched.</p>
+
+<figure>
+  <img src="figures/post/A-hook-in-the-loop.png" alt="Diagram: the model calls Read, a PreToolUse hook checks the line count, and either allows the read or blocks it and returns a message. After a block, the model can call the worker script, page through the file with an offset, or grep it. In this evaluation the model never called the worker.">
+  <figcaption>Figure A · where the hook sits</figcaption>
+</figure>
+
+<p>That design rests on one assumption: that when the model is refused a read, it does what the hook's message tells it to do. Nothing about a <code>PreToolUse</code> hook enforces that. The hook can stop one tool call. It can't stop the model from trying something else on its next turn, and it has no say over what that something else is. Whether the plugin saves anything comes down entirely to what the model reaches for once it's been told no, and that turned out to be the whole story.</p>
+
+<h2>The setup</h2>
+
+<p>The hook only matters on files between roughly 350 lines and the point where Claude Code's own limits take over, so the test repo needed to be full of files in that band. I used Apache Kafka at a pinned commit: 17% of its source files are over 350 lines, and together they hold 64% of all the code, against 7.5% and 38% on a comparable TypeScript monorepo I considered instead. Twelve tasks, four kinds — read a file to answer a question, write new code from a reference, make a precise edit, find a planted concurrency bug — each with a mechanically checkable answer key and asked the way a developer actually would, with no file path in the prompt, so the session has to find the file itself before it can do anything with it.</p>
+
+<p>Every run is one fresh headless Claude Code session on an untouched copy of the repo. Two arms, differing only in one folder: <code>stock</code>, Claude Code exactly as installed, and the <code>hook</code> arm, Spotify's plugin verbatim except for one substitution — their internal model-routing call becomes a direct call to Haiku, so the worker's own cost shows up in the ledger instead of disappearing into someone else's infrastructure.</p>
+
+<figure>
+  <img src="figures/post/B-setup.png" alt="Diagram: one run copies a fresh Kafka checkout, adds one .claude folder, runs claude -p with the question in a new session, collects three records, and grades the answer. The two .claude folders are stock, an empty settings file, and Spotify's hook with its Portal call replaced by a call to Haiku.">
+  <figcaption>Figure B · the setup</figcaption>
+</figure>
+
+<div class="callout hook">
+<span class="label">Sidebar: the rule I had to remove first</span>
+<p>The plugin as Spotify published it has an exception: a <code>Read</code> call with an offset or a line limit is allowed through even on a file over 350 lines, no matter how big the file actually is. I ran the pilot with that exception intact, and it broke the test before the test could start. Every one of the nine blocks the hook made was followed, on the model's very next call, by a read with an offset — the hook does nothing to that, because from the hook's point of view it isn't the same request. By the end of the run, 655 of the file's 770 lines had entered context anyway, four slices at a time, and the worker was never touched.</p>
+<figure style="margin:16px 0 4px;">
+  <img src="figures/post/C-callout-published-hook.png" alt="Storyboard: under Spotify's published hook, the model's read is blocked, then it greps the file, then it reads the file with an offset of 255 and a limit of 180, which the hook allows.">
+</figure>
+<p>That's a bug in the exception, not a finding about delegation, so I closed it — a file over 350 lines simply cannot be <code>Read</code> by the main model at all, offset or no offset — and ran everything past this point against that version. Every number from here on is the hook doing what the post says it does.</p>
+</div>
+
+<h2>One question, request by request</h2>
+
+<p>Everything an agent does happens as a sequence of <em>requests</em>: one call to the model, carrying the entire conversation so far plus whatever new thing just happened — a tool result, a hook's message — and getting back either another tool call or a final answer. I'll call each of these a <em>turn</em>. A three-turn task and an eleven-turn task can answer the exact same question; what differs is how many times the whole conversation gets resent, and Claude Code serves nearly all of that resend from a prompt cache at a tenth of the normal input price. That distinction — cheap to resend, not free to re-derive — turns out to be the entire mechanism behind the result, so I want to walk through one real task before showing the totals.</p>
+
+<p>Task R1 asks, with no file path given: <em>how does the broker lifecycle manager move between states?</em> The answer lives in <code>BrokerLifecycleManager.java</code>, 770 lines. Under stock, the session greps for the class name, reads the whole file on its second turn, and answers on its third. Three turns, $0.113, and every line of the file sits in context exactly once.</p>
+
+<figure>
+  <img src="figures/post/D-one-question-request-by-request.png" alt="Storyboard comparing stock and the enforced hook on the same question. Stock reads the file whole on request 2 of 3. Under the hook, request 4's read is refused, and the model greps its way through the file across the following turns instead of calling the worker.">
+  <figcaption>Figure D · one question, request by request</figcaption>
+</figure>
+
+<p>Under the hook, the same read on the same turn gets refused, and the model receives one sentence naming a skill it has never once used in this evaluation. It does not use it now either. It greps the file, ten times, twice with the pattern <code>.</code> and an offset — which is a paged read wearing a different tool's name — then reads a second, smaller file whole, and answers. Sixteen turns, $0.285. Both answers are correct. Neither is more correct than the other. The only thing that changed is how many times the model had to ask again.</p>
+
+<figure>
+  <img src="figures/post/E-requests-as-bars.png" alt="Bar chart: each bar is one API request in the R1 task, height is context resent. Stock has 3 bars around 29-43 thousand tokens. The enforced hook has 16 bars climbing from 30 to 49 thousand tokens, the fourth marked blocked.">
+  <figcaption>Figure E · the same question, as bars</figcaption>
+</figure>
+
+<h2>Where the money actually goes</h2>
+
+<p>Claude Code writes tool results and file content to its prompt cache once, at a rate 1.25 to 2 times the price of a fresh input token depending on how long the cache entry needs to live, and reads them back on every later turn at a tenth the input price. That's the bucket the hook targets, and in the R1 run it's nearly a wash: ten grep results add up to about as many characters as the file would have cost to write once. The bucket the hook has no opinion on, because it never looks past the tool call in front of it, is the one that scales with the number of turns — the entire conversation, resent from cache on every single request, plus a fresh round of the model's own thinking at the end of each one, priced fifty times higher than a cache read. Stock paid for that bucket three times. The hook paid for it sixteen times.</p>
+
+<figure>
+  <img src="figures/post/F-where-the-money-went.png" alt="Stacked bar chart in cents. Stock: 2.2 system prompt, 3.5 cached tool results, 1.7 re-sent conversation, 3.9 output, total 11.3 cents. Enforced hook: 2.3, 7.9, 12.0, 6.3, total 28.5 cents. The re-sent-conversation bucket grew the most.">
+  <figcaption>Figure F · where the money went</figcaption>
+</figure>
+
+<p>The read the hook refused would have cost about three cents to write to cache. Working around it added roughly twenty-five cents of re-sent conversation and fresh output, because refusing the read didn't remove the need to know what was in the file — it just made the model ask for the same information across sixteen turns instead of one.</p>
+
+<h2>The result, across twelve tasks</h2>
+
+<p>Averaged over all twelve tasks, one run per cell, same model on both arms:</p>
+
+<figure>
+  <img src="figures/post/G-headline.png" alt="Three small-multiple bar charts, stock against the enforced hook: target-file lines in context, 7,111 down to 893; API requests, 82 up to 132; cost, $1.94 up to $2.61.">
+  <figcaption>Figure G · the result</figcaption>
+</figure>
+
+<p>Every one of Spotify's claims about the mechanism held up under an enforced version of their own hook. Lines of the target file that ever reached the expensive model's context fell 87%. The worker script was invoked zero times across every hook run in this evaluation — not because the routing was broken, but because a model refused a read reaches for the tool it already knows, and Sonnet 5 knows <code>grep</code> far better than it knows a bash script named in a one-line refusal message. Blocked from reading, it searched instead, at a rate of 7.4 grep calls per run against 2.4 under stock, and each of those extra calls is a full turn: the whole conversation resent, a fresh round of thinking, repeated. Across twelve tasks that added fifty API requests and raised the bill 35%, for a pass rate that moved from eleven of twelve to twelve of twelve — which is itself informative, but it's one extra task solved, not thirty extra cents' worth of value.</p>
+
+<div class="callout">
+<span class="label">Sidebar: what if the worker were Claude Code's own subagent?</span>
+<p>One objection to all of this: Spotify's worker script is unfamiliar precisely because it's an external shell script behind a plugin, and Claude Code already ships something built for exactly this — the <code>Explore</code> subagent, a second, disposable conversation with its own context and read-only tools, which the main model can call any time it wants to hand off a search. So I ran the same hook again, with its refusal message pointing at Explore instead of at Spotify's script, and pinned Explore to Haiku the way the worker was supposed to run. It changed the arithmetic only slightly: Explore got called in 2 of 12 tasks, the model grepped through the rest, and the run came in at $2.31 against the plain hook's $2.61 — cheaper, but still nowhere near stock's $1.94, and still not the behavior either design assumes. Making the fallback something the model already knows how to call helped a little. It didn't change what the model actually reached for.</p>
+</div>
+
+<h2>What I'd measure instead</h2>
+
+<p>Spotify's metric — file size avoided, in characters, divided by four — measures a real thing: it's exactly how many tokens a whole-file read would have cost, and the hook, once it actually enforces the block, delivers that reduction faithfully. What it doesn't measure is the response to the block. A refusal is not the same event as a delegation; it's an instruction, and the metric that matters is what the model does with it, not what the hook intended. In this evaluation, across twenty-four enforced-hook runs between the two variants I tried, that instruction was followed exactly zero times.</p>
+
+<p>The more useful number, if I were designing this again, is turns per task against tokens saved per turn: does the fallback the hook points to cost fewer resent-conversation cycles than just reading the file would have, at whatever the model actually does next — not at whatever the plugin's author hoped it would do. On four of the twelve tasks here, the forced grep did win outright, including finding a planted race condition from fifty lines of a thousand-line file instead of the whole thing. A hook that shapes how a model searches, rather than assuming it will delegate, is a real lever. It's just a different claim than the one that got made, and it's the one I'd want the next version of this test to be honest about measuring.</p>
+
+<p>One run per cell means the ranking among hook variants — $2.61 against $2.31 against wherever a second run would land — is a direction, not a proof; a single different search path moves either number by half again. What isn't a direction is the shape underneath it: tokens written to a cache once are nearly free to revisit. A turn, which is the unit every extra tool call actually costs, is not, and no hook that only watches the tool call in front of it can tell the difference.</p>
+
+</main>
