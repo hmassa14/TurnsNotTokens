@@ -69,7 +69,7 @@ def main():
     p = out.append
 
     p(f"# Run report: `{meta['run_id']}`\n")
-    p(f"Task **{meta['task_id']}** ({meta['category']}), arm **{meta['arm']}**, model `{meta['main_model']}`, Claude Code {meta['claude_code_version']}, Kafka `{meta['kafka_commit'][:10]}`, started {meta['started_at']}.\n")
+    p(f"Task **{meta['task_id']}** ({meta['category']}), prompt variant **{meta.get('variant', 'named')}**, arm **{meta['arm']}**, model `{meta['main_model']}`, Claude Code {meta['claude_code_version']}, Kafka `{meta['kafka_commit'][:10]}`, started {meta['started_at']}.\n")
 
     p("## 1. Headline numbers\n")
     p("| Metric | Value | Source |\n|---|---|---|")
@@ -84,6 +84,9 @@ def main():
     p(f"| Cost, worker calls | ${worker_cost:.4f} ({len(worker_files)} calls) | worker/*.json |")
     p(f"| **Cost, total** | **${res.get('total_cost_usd', 0) + worker_cost:.4f}** | sum |")
     p(f"| Grade | score {grade.get('score')} , pass = {grade.get('pass')} | grade.json ({grade.get('grader')}) |")
+    p(f"| Target file found | {grade.get('target_found')} via {', '.join(grade.get('found_via', [])[:3])} | transcript tool calls |")
+    p(f"| Finding phase | {grade.get('finding_requests', 0)} requests, ${grade.get('finding_cost_usd', 0):.4f} | requests before the first touch of the target file |")
+    p(f"| Answering phase | {grade.get('answering_requests', 0)} requests, ${grade.get('answering_cost_usd', 0):.4f} | requests from the first touch onward |")
     p(f"| Wall clock | {meta.get('wall_ms')} ms (harness), {res.get('duration_ms')} ms (CLI) | meta.json / result.json |")
     p(f"| Time waiting on API | {res.get('duration_api_ms')} ms | result.json `duration_api_ms` |")
     p(f"| Turns | {res.get('num_turns')} | result.json |")

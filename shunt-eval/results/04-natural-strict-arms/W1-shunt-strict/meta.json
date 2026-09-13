@@ -1,0 +1,39 @@
+{
+  "run_id": "W1__natural__shunt-strict__r1__20260912-182003",
+  "task_id": "W1",
+  "category": "code-write",
+  "arm": "shunt-strict",
+  "rep": 1,
+  "variant": "natural",
+  "main_model": "claude-sonnet-5",
+  "claude_code_version": "2.1.269 (Claude Code)",
+  "kafka_commit": "0ffb4f5dd57c6af206e3d9f97a433dd15ebb6dfc",
+  "session_id": "1bb09932-0cee-4210-9d5c-0c8b8c00ff72",
+  "workspace": "/home/user/WackyWords/shunt-eval/runs/_ws/W1__natural__shunt-strict__r1__20260912-182003",
+  "target_files": [
+    "connect/transforms/src/main/java/org/apache/kafka/connect/transforms/MaskField.java"
+  ],
+  "started_at": "2026-09-12T18:20:06.980301+00:00",
+  "prompt": "Add a new Kafka Connect single message transform called TruncateField that truncates string fields to a maximum length. Follow the same pattern the existing MaskField transform uses, including Key and Value variants. Config: `fields` (list, required) and `max.length` (int, default 255, must be at least 1). Only string values longer than the limit get truncated; everything else passes through unchanged. Don't write tests or change existing files.",
+  "command": [
+    "claude",
+    "-p",
+    "Add a new Kafka Connect single message transform called TruncateField that truncates string fields to a maximum length. Follow the same pattern the existing MaskField transform uses, including Key and Value variants. Config: `fields` (list, required) and `max.length` (int, default 255, must be at least 1). Only string values longer than the limit get truncated; everything else passes through unchanged. Don't write tests or change existing files.",
+    "--model",
+    "claude-sonnet-5",
+    "--session-id",
+    "1bb09932-0cee-4210-9d5c-0c8b8c00ff72",
+    "--permission-mode",
+    "acceptEdits",
+    "--allowedTools",
+    "Read,Grep,Glob,Bash,Edit,Write,MultiEdit,Agent,Skill,TodoWrite,TaskCreate,TaskUpdate",
+    "--max-turns",
+    "40",
+    "--output-format",
+    "json"
+  ],
+  "wall_ms": 41902,
+  "exit_code": 0,
+  "timeout": false,
+  "finished_at": "2026-09-12T18:20:48.884585+00:00"
+}

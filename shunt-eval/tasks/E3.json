@@ -1,0 +1,25 @@
+{
+  "id": "E3",
+  "name": "locallog-roll-kafka6388-loglevel",
+  "category": "precise-edit",
+  "files": [
+    "storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java"
+  ],
+  "prompts": {
+    "named": "In `storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java`, the method `roll(Long expectedNextOffset)` logs `\"Rolled new log segment at offset {} in {} ms.\"` at `info` level in two places. Change only the one in the branch that handles an already-existing, empty active segment with the same base offset (the branch guarded by `activeSegment.baseOffset() == newOffset && activeSegment.size() == 0`, with the KAFKA-6388 comment) from `logger.info` to `logger.warn`. Leave the `logger.info` on the normal roll path unchanged. Make no other edits.",
+    "natural": "In the local log's segment roll logic there's a special case for rolling when the active segment already has the same base offset and is empty (the KAFKA-6388 case). The \"Rolled new log segment\" message in that branch should be logged at warn instead of info. The same message on the normal roll path should stay at info. Nothing else should change."
+  },
+  "grader": {
+    "type": "exact_diff",
+    "expected_removed": [
+      "                        logger.info(\"Rolled new log segment at offset {} in {} ms.\", newOffset, time.hiResClockMs() - start);"
+    ],
+    "expected_added": [
+      "                        logger.warn(\"Rolled new log segment at offset {} in {} ms.\", newOffset, time.hiResClockMs() - start);"
+    ],
+    "target_line": 609,
+    "decoy_lines": [
+      645
+    ]
+  }
+}

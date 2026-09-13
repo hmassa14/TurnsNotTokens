@@ -1,0 +1,46 @@
+{
+  "id": "D2",
+  "name": "recordaccumulator-tryappend-outside-lock",
+  "category": "planted-bug",
+  "files": [
+    "clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java"
+  ],
+  "prompts": {
+    "named": "Review `clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java` for thread-safety problems. Name the method and the lines involved and explain the race.",
+    "natural": "Can you review the Kafka producer's record accumulator, the part that appends records into batches per partition, for thread-safety problems? Name the method and lines involved and explain any race you find."
+  },
+  "grader": {
+    "type": "bug_report",
+    "methods": [
+      "append(",
+      "RecordAccumulator.append",
+      "`append`",
+      " append "
+    ],
+    "line_range": [
+      325,
+      333
+    ],
+    "line_tolerance": 10,
+    "race_keywords": [
+      "outside",
+      "without holding",
+      "not under",
+      "lock",
+      "synchronized",
+      "race",
+      "drain",
+      "concurrent"
+    ],
+    "false_positive_methods": [
+      "nextBatchExpiryTimeMs",
+      "nodesDrainIndex",
+      "muted",
+      "abortBatches",
+      "abortUndrainedBatches",
+      "appendsInProgress",
+      "flushesInProgress"
+    ]
+  },
+  "setup_patch": "tasks/D2.setup.patch"
+}

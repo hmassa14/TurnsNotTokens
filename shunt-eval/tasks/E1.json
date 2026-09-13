@@ -1,0 +1,27 @@
+{
+  "id": "E1",
+  "name": "share-session-release-loglevel",
+  "category": "precise-edit",
+  "files": [
+    "core/src/main/java/kafka/server/share/SharePartitionManager.java"
+  ],
+  "prompts": {
+    "named": "In `core/src/main/java/kafka/server/share/SharePartitionManager.java`, inside the `releaseSession` method, the log statement with the message `\"Share session error for {}: no such share session found\"` is logged at `error` level. Change that one call to `warn`. The same message is also logged elsewhere in the file (in `newContext` and `acknowledgeSessionUpdate`); leave those untouched. Make no other changes.",
+    "natural": "In the broker's share partition manager, when a share session is released but it isn't in the cache, we log \"Share session error for {}: no such share session found\" at error level. That case should be a warning. The same message is logged in a couple of other places; leave those exactly as they are."
+  },
+  "grader": {
+    "type": "exact_diff",
+    "expected_removed": [
+      "            log.error(\"Share session error for {}: no such share session found\", key);"
+    ],
+    "expected_added": [
+      "            log.warn(\"Share session error for {}: no such share session found\", key);"
+    ],
+    "target_line": 426,
+    "decoy_lines": [
+      534,
+      568,
+      608
+    ]
+  }
+}

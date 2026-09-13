@@ -1,0 +1,1399 @@
+{
+ "summary": {
+  "metric_names": {
+   "claude_code.session.count": 1,
+   "claude_code.cost.usage": 16,
+   "claude_code.token.usage": 16,
+   "claude_code.active_time.total": 1
+  },
+  "tokens_by_model_type": {
+   "claude-sonnet-5|input": 32.0,
+   "claude-sonnet-5|output": 6269.0,
+   "claude-sonnet-5|cacheRead": 601342.0,
+   "claude-sonnet-5|cacheCreation": 25459.0
+  },
+  "cost_by_model_usd": {
+   "claude-sonnet-5": 0.28485840000000007
+  },
+  "event_counts": {
+   "hook_registered": 2,
+   "user_prompt": 1,
+   "hook_execution_start": 4,
+   "api_request": 16,
+   "hook_execution_complete": 4,
+   "tool_decision": 15,
+   "tool_result": 14,
+   "assistant_response": 4
+  },
+  "api_requests": 16,
+  "api_latency_ms_p50": 3866.0,
+  "api_latency_ms_max": 17007.0,
+  "tool_decisions": [
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "reject",
+    "source": "hook"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Glob",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   }
+  ],
+  "span_counts": {},
+  "hook_ms_total": 0
+ },
+ "events": [
+  {
+   "event": "hook_registered",
+   "ts": "1789236543172000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-12T18:09:03.172Z",
+    "event.sequence": 0,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "projectSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Read"
+   }
+  },
+  {
+   "event": "hook_registered",
+   "ts": "1789236543172000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-12T18:09:03.172Z",
+    "event.sequence": 1,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "projectSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Bash"
+   }
+  },
+  {
+   "event": "user_prompt",
+   "ts": "1789236544088000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "user_prompt",
+    "event.timestamp": "2026-09-12T18:09:04.088Z",
+    "event.sequence": 2,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "prompt_length": "211",
+    "prompt": "<REDACTED>",
+    "message.uuid": "fb8a3292-aa03-487e-bbef-db0fddb80adb"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789236547363000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T18:09:07.363Z",
+    "event.sequence": 3,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236547378000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:07.378Z",
+    "event.sequence": 4,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 257,
+    "cache_read_tokens": 23824,
+    "cache_creation_tokens": 5700,
+    "cost_usd": 0.0301388,
+    "cost_usd_micros": 30139,
+    "duration_ms": 3201,
+    "ttft_ms": 680,
+    "request_id": "req_011CeyzZY99PPZj8AyRgc1Bu",
+    "client_request_id": "a0a65d4e-a0fe-43a9-8599-1cf5a0f29864",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789236547384000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T18:09:07.384Z",
+    "event.sequence": 5,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "21",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236547394000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:07.394Z",
+    "event.sequence": 6,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01NbnqwmssJ37vpxwMU8DBz2",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -maxdepth 6 -iname \\\"*kafka*\\\" -type d 2>/dev/null | grep -v proc | head -50\",\"description\":\"Search for Kafka source directories on the system\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236548209000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:08.209Z",
+    "event.sequence": 7,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01NbnqwmssJ37vpxwMU8DBz2",
+    "success": "true",
+    "duration_ms": "814",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -maxdepth 6 -iname \\\"*kafka*\\\" -type d 2>/dev/null | grep -v proc | head -50\",\"description\":\"Search for Kafka source directories on the system\"}",
+    "tool_input": "{\"command\":\"find / -maxdepth 6 -iname \\\"*kafka*\\\" -type d 2>/dev/null | grep -v proc | head -50\",\"description\":\"Search for Kafka source directories on the system\"}",
+    "tool_input_size_bytes": "163",
+    "tool_result_size_bytes": "202"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789236550600000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T18:09:10.600Z",
+    "event.sequence": 8,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236550616000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:10.616Z",
+    "event.sequence": 9,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 223,
+    "cache_read_tokens": 29524,
+    "cache_creation_tokens": 427,
+    "cost_usd": 0.009846800000000001,
+    "cost_usd_micros": 9847,
+    "duration_ms": 2388,
+    "ttft_ms": 730,
+    "request_id": "req_011CeyzZqMVCCh5sEiKHxNTF",
+    "client_request_id": "da357a2a-1618-4fc3-9de4-53141de1116f",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789236550619000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T18:09:10.619Z",
+    "event.sequence": 10,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "18",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236550630000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:10.630Z",
+    "event.sequence": 11,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_019K29wXW2XnuwgSQhXQpW64",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"ls\",\"full_command\":\"ls -la /tmp/claude-0/-home-user-WackyWords/dcaa2de8-6489-574c-aeef-bb9a81f8414e/scratchpad/kafka 2>/dev/null | head -50; echo \\\"---\\\"; pwd; ls\",\"description\":\"Inspect scratchpad kafka directory and current working directory\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236550666000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:10.666Z",
+    "event.sequence": 12,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_019K29wXW2XnuwgSQhXQpW64",
+    "success": "true",
+    "duration_ms": "35",
+    "tool_parameters": "{\"bash_command\":\"ls\",\"full_command\":\"ls -la /tmp/claude-0/-home-user-WackyWords/dcaa2de8-6489-574c-aeef-bb9a81f8414e/scratchpad/kafka 2>/dev/null | head -50; echo \\\"---\\\"; pwd; ls\",\"description\":\"Inspect scratchpad kafka directory and current working directory\"}",
+    "tool_input": "{\"command\":\"ls -la /tmp/claude-0/-home-user-WackyWords/dcaa2de8-6489-574c-aeef-bb9a81f8414e/scratchpad/kafka 2>/dev/null | head -50; echo \\\"---\\\"; pwd; ls\",\"description\":\"Inspect scratchpad kafka directory and current working directory\"}",
+    "tool_input_size_bytes": "237",
+    "tool_result_size_bytes": "3278"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236552543000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:12.543Z",
+    "event.sequence": 13,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01YGxkMFiKqF4XH6D3uLbx3w",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236552565000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:12.565Z",
+    "event.sequence": 14,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 120,
+    "cache_read_tokens": 29951,
+    "cache_creation_tokens": 2186,
+    "cost_usd": 0.0159382,
+    "cost_usd_micros": 15938,
+    "duration_ms": 1882,
+    "ttft_ms": 842,
+    "request_id": "req_011Ceyza1qX8fJPg38wtkoVp",
+    "client_request_id": "39302fb7-f0bc-4ddb-b5f1-8bf2c607c24c",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789236552565000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-12T18:09:12.565Z",
+    "event.sequence": 15,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "response_length": 92,
+    "response": "<REDACTED>",
+    "request_id": "req_011Ceyza1qX8fJPg38wtkoVp",
+    "message.uuid": "141d7fb5-4619-421c-b4a1-097c42ad2756",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236552590000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:12.590Z",
+    "event.sequence": 16,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01YGxkMFiKqF4XH6D3uLbx3w",
+    "success": "true",
+    "duration_ms": "47",
+    "tool_input": "{\"pattern\":\"class BrokerLifecycleManager\",\"output_mode\":\"files_with_matches\"}",
+    "tool_input_size_bytes": "77",
+    "tool_result_size_bytes": "157"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789236554083000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T18:09:14.083Z",
+    "event.sequence": 17,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236554097000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:14.097Z",
+    "event.sequence": 18,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 127,
+    "cache_read_tokens": 32137,
+    "cache_creation_tokens": 240,
+    "cost_usd": 0.0086614,
+    "cost_usd_micros": 8661,
+    "duration_ms": 1493,
+    "ttft_ms": 913,
+    "request_id": "req_011CeyzaA3tAoiz8DU6Cn4ud",
+    "client_request_id": "99485e65-2559-42b4-a7aa-9b5a00b7cf92",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789236554107000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T18:09:14.107Z",
+    "event.sequence": 19,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "1",
+    "num_non_blocking_error": "0",
+    "num_cancelled": "0",
+    "total_duration_ms": "24",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236554108000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:14.108Z",
+    "event.sequence": 20,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "reject",
+    "source": "hook",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01TUCr7dgiFg3MgQxeKES63a",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236558094000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:18.094Z",
+    "event.sequence": 21,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01VwevaRJyisjZtxdpoFLAcF",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236558105000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:18.105Z",
+    "event.sequence": 22,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01VwevaRJyisjZtxdpoFLAcF",
+    "success": "true",
+    "duration_ms": "11",
+    "tool_input": "{\"pattern\":\"class \\\\w+Event|extends EventQueue.Event|BrokerState\\\\.|private class|setState\\\\(|state = BrokerState\",\"path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__shunt-strict__r1__20260912-180859/server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java\",\"output_mode\":\"content\",\"-n\":true}",
+    "tool_input_size_bytes": "320",
+    "tool_result_size_bytes": "1653"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236558114000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:18.114Z",
+    "event.sequence": 23,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 358,
+    "cache_read_tokens": 32377,
+    "cache_creation_tokens": 252,
+    "cost_usd": 0.011067400000000002,
+    "cost_usd_micros": 11067,
+    "duration_ms": 3994,
+    "ttft_ms": 789,
+    "request_id": "req_011CeyzaGZJMVkhaphpTY9io",
+    "client_request_id": "bf686f3b-dca4-4886-bd10-7d1db80d79a4",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236561163000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:21.163Z",
+    "event.sequence": 24,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_013NmDQPKf3uZ3gLPKiVj6VL",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236561176000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:21.176Z",
+    "event.sequence": 25,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_013NmDQPKf3uZ3gLPKiVj6VL",
+    "success": "true",
+    "duration_ms": "12",
+    "tool_input": "{\"pattern\":\"private class \\\\w+Event|append\\\\(new |scheduleDeferred|enqueue\\\\(new |scheduleDeferredEvent\\\\(\",\"path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__shunt-strict__r1__20260912-180859/server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java\",\"output_mode\":\"content\",\"-n\":true}",
+    "tool_input_size_bytes": "313",
+    "tool_result_size_bytes": "1570"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236561256000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:21.256Z",
+    "event.sequence": 26,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 252,
+    "cache_read_tokens": 32629,
+    "cache_creation_tokens": 1056,
+    "cost_usd": 0.0132738,
+    "cost_usd_micros": 13274,
+    "duration_ms": 3128,
+    "ttft_ms": 702,
+    "request_id": "req_011CeyzaZhvffF3t6586sVbG",
+    "client_request_id": "c73bf259-528b-48f2-9e9e-bae9ac004c49",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789236561256000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-12T18:09:21.256Z",
+    "event.sequence": 27,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "response_length": 56,
+    "response": "<REDACTED>",
+    "request_id": "req_011CeyzaZhvffF3t6586sVbG",
+    "message.uuid": "a54ba390-8ce6-4a97-9992-1206c03f9dd3",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236565118000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:25.118Z",
+    "event.sequence": 28,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01VTMxtFvoE7gnFcZFthkRqG",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236565126000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:25.126Z",
+    "event.sequence": 29,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01VTMxtFvoE7gnFcZFthkRqG",
+    "success": "true",
+    "duration_ms": "7",
+    "tool_input": "{\"pattern\":\"new ShutdownEvent|new RegistrationTimeoutEvent|new OfflineDirBrokerFailureEvent|new BrokerRegistrationResponseEvent|new BrokerHeartbeatResponseEvent|beginShutdown|scheduleInitialRegistrationTimeout\",\"path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__shunt-strict__r1__20260912-180859/server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java\",\"output_mode\":\"content\",\"-C\":2,\"-n\":true}",
+    "tool_input_size_bytes": "423",
+    "tool_result_size_bytes": "2899"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236565136000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:25.136Z",
+    "event.sequence": 30,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 472,
+    "cache_read_tokens": 33685,
+    "cache_creation_tokens": 926,
+    "cost_usd": 0.015164999999999998,
+    "cost_usd_micros": 15165,
+    "duration_ms": 3866,
+    "ttft_ms": 752,
+    "request_id": "req_011Ceyzao6LTstikVdnRFgKh",
+    "client_request_id": "dbc7e2df-051f-48f9-b695-31e954bc34d9",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236571061000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:31.061Z",
+    "event.sequence": 31,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01Uavr5NsWa5tVmx6ExSk7w9",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236571073000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:31.073Z",
+    "event.sequence": 32,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01Uavr5NsWa5tVmx6ExSk7w9",
+    "success": "true",
+    "duration_ms": "12",
+    "tool_input": "{\"pattern\":\"private class ResendBrokerRegistrationEvent|private class BeginControlledShutdownEvent|private class SetReadyToUnfenceEvent|private class OfflineDirEvent|private class OfflineDirBrokerFailureEvent|private class CordonedDirEvent|private class StartupEvent|private class BrokerRegistrationResponseEvent|private class BrokerHeartbeatResponseEvent|private class RegistrationTimeoutEvent|private class CommunicationEvent|private class ShutdownEvent\",\"path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__shunt-strict__r1__20260912-180859/server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java\",\"output_mode\":\"content\",\"-A\":25,\"-n\":true}",
+    "tool_input_size_bytes": "670",
+    "tool_result_size_bytes": "9497"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236571082000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:31.082Z",
+    "event.sequence": 33,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 528,
+    "cache_read_tokens": 34611,
+    "cache_creation_tokens": 1562,
+    "cost_usd": 0.0184542,
+    "cost_usd_micros": 18454,
+    "duration_ms": 5932,
+    "ttft_ms": 724,
+    "request_id": "req_011Ceyzb5hULDxzmqaNYx89e",
+    "client_request_id": "694182f5-4aa8-4d78-8842-42c144e0207f",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236575759000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:35.759Z",
+    "event.sequence": 34,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_015Q5FMb22PvT3i2uqfnraqX",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236575768000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:35.768Z",
+    "event.sequence": 35,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_015Q5FMb22PvT3i2uqfnraqX",
+    "success": "true",
+    "duration_ms": "7",
+    "tool_input": "{\"pattern\":\"state = BrokerState|state ==|BrokerState\\\\.[A-Z_]+\",\"path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__shunt-strict__r1__20260912-180859/server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java\",\"output_mode\":\"content\",\"-B\":8,\"-A\":2,\"-n\":true}",
+    "tool_input_size_bytes": "283",
+    "tool_result_size_bytes": "4512"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236575773000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:35.773Z",
+    "event.sequence": 36,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 353,
+    "cache_read_tokens": 36173,
+    "cache_creation_tokens": 4090,
+    "cost_usd": 0.0271286,
+    "cost_usd_micros": 27129,
+    "duration_ms": 4677,
+    "ttft_ms": 924,
+    "request_id": "req_011CeyzbX9RHJmE4YZy9eF5e",
+    "client_request_id": "aac2d8eb-91c8-41fc-9680-f5b87955c82d",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236580055000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:40.055Z",
+    "event.sequence": 37,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_017BEN8b2ku9QjQN9yh7A8TZ",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236580085000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:40.085Z",
+    "event.sequence": 38,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_017BEN8b2ku9QjQN9yh7A8TZ",
+    "success": "true",
+    "duration_ms": "30",
+    "tool_input": "{\"pattern\":\".\",\"path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__shunt-strict__r1__20260912-180859/server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java\",\"output_mode\":\"content\",\"-n\":true,\"offset\":544}",
+    "tool_input_size_bytes": "233",
+    "tool_result_size_bytes": "8671"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236580105000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:40.105Z",
+    "event.sequence": 39,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 317,
+    "cache_read_tokens": 40263,
+    "cache_creation_tokens": 2025,
+    "cost_usd": 0.0193266,
+    "cost_usd_micros": 19327,
+    "duration_ms": 4320,
+    "ttft_ms": 616,
+    "request_id": "req_011Ceyzbs5yTVBWFFCWa5UJ2",
+    "client_request_id": "06efb3b6-3798-40d2-8e48-30977ac577b9",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236584097000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:44.097Z",
+    "event.sequence": 40,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01MopDBvBk8BBzHjRxGPx1di",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236584113000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:44.113Z",
+    "event.sequence": 41,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 296,
+    "cache_read_tokens": 42288,
+    "cache_creation_tokens": 3205,
+    "cost_usd": 0.024241600000000002,
+    "cost_usd_micros": 24242,
+    "duration_ms": 3996,
+    "ttft_ms": 825,
+    "request_id": "req_011CeyzcBjtenabdCLmQZr6X",
+    "client_request_id": "7c033d82-b40e-4832-abb4-539d6ab2666d",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236584128000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:44.128Z",
+    "event.sequence": 42,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01MopDBvBk8BBzHjRxGPx1di",
+    "success": "true",
+    "duration_ms": "31",
+    "tool_input": "{\"pattern\":\".\",\"path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__shunt-strict__r1__20260912-180859/server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java\",\"output_mode\":\"content\",\"-n\":true,\"head_limit\":1,\"offset\":544}",
+    "tool_input_size_bytes": "248",
+    "tool_result_size_bytes": "76"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236588824000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:48.824Z",
+    "event.sequence": 43,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01JS41EaqhtyLrfHG3jCnrQh",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236588831000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:48.831Z",
+    "event.sequence": 44,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01JS41EaqhtyLrfHG3jCnrQh",
+    "success": "true",
+    "duration_ms": "6",
+    "tool_input": "{\"pattern\":\"registered = true|brokerEpoch =|initialRegistrationSucceeded|BrokerRegistrationResponse message\",\"path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__shunt-strict__r1__20260912-180859/server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java\",\"output_mode\":\"content\",\"-B\":3,\"-A\":3,\"-n\":true}",
+    "tool_input_size_bytes": "328",
+    "tool_result_size_bytes": "2103"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236588843000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:48.843Z",
+    "event.sequence": 45,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 471,
+    "cache_read_tokens": 45493,
+    "cache_creation_tokens": 368,
+    "cost_usd": 0.015284599999999999,
+    "cost_usd_micros": 15285,
+    "duration_ms": 4702,
+    "ttft_ms": 668,
+    "request_id": "req_011CeyzcUtmTFJcALDqx9JWg",
+    "client_request_id": "84db3784-0112-4ab0-8d25-ea777bab5b36",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236592575000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:52.575Z",
+    "event.sequence": 46,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01EdpQmZycLb27s9XUyxwPWV",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236592578000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:52.578Z",
+    "event.sequence": 47,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01EdpQmZycLb27s9XUyxwPWV",
+    "success": "false",
+    "duration_ms": "1",
+    "error_type": "TelemetrySafeError",
+    "error": "Path does not exist: /home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__shunt-strict__r1__20260912-180859/server/common/src/main/java/org/apache/kafka/server/common/BrokerState.java. Note: your current working directory is /home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__shunt-strict__r1__20260912-180859.",
+    "tool_input": "{\"pattern\":\"enum BrokerState|NOT_RUNNING|STARTING|RECOVERY|RUNNING|PENDING_CONTROLLED_SHUTDOWN|SHUTTING_DOWN|UNKNOWN\",\"path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__shunt-strict__r1__20260912-180859/server/common/src/main/java/org/apache/kafka/server/common/BrokerState.java\",\"output_mode\":\"content\",\"-n\":true}",
+    "tool_input_size_bytes": "326"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236592593000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:52.593Z",
+    "event.sequence": 48,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 383,
+    "cache_read_tokens": 45861,
+    "cache_creation_tokens": 1219,
+    "cost_usd": 0.0178822,
+    "cost_usd_micros": 17882,
+    "duration_ms": 3738,
+    "ttft_ms": 712,
+    "request_id": "req_011CeyzcqGs49AQizao3F5AK",
+    "client_request_id": "c0cbf2c6-35e3-43c4-925f-49be1d08ff34",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789236592593000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-12T18:09:52.593Z",
+    "event.sequence": 49,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "response_length": 312,
+    "response": "<REDACTED>",
+    "request_id": "req_011CeyzcqGs49AQizao3F5AK",
+    "message.uuid": "de293569-e749-4e4e-abb9-60d94a3c4b5c",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236593651000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:53.651Z",
+    "event.sequence": 50,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Glob",
+    "tool_use_id": "toolu_01NiWcCRb6CDDkmahjo2ezBv",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236593672000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:53.672Z",
+    "event.sequence": 51,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Glob",
+    "tool_use_id": "toolu_01NiWcCRb6CDDkmahjo2ezBv",
+    "success": "true",
+    "duration_ms": "21",
+    "tool_input": "{\"pattern\":\"**/BrokerState.java\"}",
+    "tool_input_size_bytes": "33",
+    "tool_result_size_bytes": "65"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236593676000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:53.676Z",
+    "event.sequence": 52,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 57,
+    "cache_read_tokens": 47080,
+    "cache_creation_tokens": 577,
+    "cost_usd": 0.012298,
+    "cost_usd_micros": 12298,
+    "duration_ms": 1070,
+    "ttft_ms": 800,
+    "request_id": "req_011Ceyzd74dapdREsomRLARb",
+    "client_request_id": "91ac7ad3-5850-4183-9549-fff21023cd68",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789236595201000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T18:09:55.201Z",
+    "event.sequence": 53,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236595225000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:09:55.225Z",
+    "event.sequence": 54,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 125,
+    "cache_read_tokens": 47657,
+    "cache_creation_tokens": 132,
+    "cost_usd": 0.011313400000000001,
+    "cost_usd_micros": 11313,
+    "duration_ms": 1536,
+    "ttft_ms": 779,
+    "request_id": "req_011CeyzdBnPruyyR7egJvxSk",
+    "client_request_id": "4645f41c-9350-463e-a10e-d29afcce6ab8",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789236595228000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T18:09:55.227Z",
+    "event.sequence": 55,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "25",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789236595231000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T18:09:55.231Z",
+    "event.sequence": 56,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01LGaaAZ9HuxaxVjAANf6R73",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789236595236000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T18:09:55.236Z",
+    "event.sequence": 57,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01LGaaAZ9HuxaxVjAANf6R73",
+    "success": "true",
+    "duration_ms": "4",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__shunt-strict__r1__20260912-180859/metadata/src/main/java/org/apache/kafka/metadata/BrokerState.java\"}",
+    "tool_input_size_bytes": "170",
+    "tool_result_size_bytes": "3054"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789236612268000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T18:10:12.268Z",
+    "event.sequence": 58,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 1930,
+    "cache_read_tokens": 47789,
+    "cache_creation_tokens": 1494,
+    "cost_usd": 0.0348378,
+    "cost_usd_micros": 34838,
+    "duration_ms": 17007,
+    "ttft_ms": 703,
+    "request_id": "req_011CeyzdJWDWzetiGQgYZ1Si",
+    "client_request_id": "5645a40f-63ba-4ecc-84bd-e1fa2c312c25",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789236612268000000",
+   "attrs": {
+    "run.id": "R1__natural__shunt-strict__r1__20260912-180859",
+    "session.id": "a161ab2a-c09f-4158-86e7-6a71d2907377",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-12T18:10:12.268Z",
+    "event.sequence": 59,
+    "prompt.id": "2410a543-f794-4ca2-9f6a-ffffd61b869a",
+    "response_length": 4356,
+    "response": "<REDACTED>",
+    "request_id": "req_011CeyzdJWDWzetiGQgYZ1Si",
+    "message.uuid": "619da34e-9e29-4189-9eba-4338203cc637",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  }
+ ],
+ "spans": []
+}

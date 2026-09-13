@@ -1,0 +1,1097 @@
+{
+ "summary": {
+  "metric_names": {
+   "claude_code.session.count": 1,
+   "claude_code.cost.usage": 10,
+   "claude_code.token.usage": 10,
+   "claude_code.active_time.total": 2
+  },
+  "tokens_by_model_type": {
+   "claude-sonnet-5|input": 14.0,
+   "claude-sonnet-5|output": 3147.0,
+   "claude-sonnet-5|cacheRead": 212064.0,
+   "claude-sonnet-5|cacheCreation": 15135.0,
+   "claude-haiku-4-5-20251001|input": 34.0,
+   "claude-haiku-4-5-20251001|output": 5518.0,
+   "claude-haiku-4-5-20251001|cacheRead": 47854.0,
+   "claude-haiku-4-5-20251001|cacheCreation": 13412.0
+  },
+  "cost_by_model_usd": {
+   "claude-sonnet-5": 0.1197973,
+   "claude-haiku-4-5-20251001": 0.04917440000000001
+  },
+  "event_counts": {
+   "hook_registered": 2,
+   "user_prompt": 2,
+   "hook_execution_start": 6,
+   "api_request": 11,
+   "hook_execution_complete": 6,
+   "tool_decision": 8,
+   "tool_result": 7,
+   "assistant_response": 4,
+   "subagent_completed": 1
+  },
+  "api_requests": 11,
+  "api_latency_ms_p50": 3145.0,
+  "api_latency_ms_max": 49473.0,
+  "tool_decisions": [
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "reject",
+    "source": "hook"
+   },
+   {
+    "tool": "Agent",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   }
+  ],
+  "span_counts": {},
+  "hook_ms_total": 0
+ },
+ "events": [
+  {
+   "event": "hook_registered",
+   "ts": "1789233114256000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-12T17:11:54.255Z",
+    "event.sequence": 0,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "projectSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Read"
+   }
+  },
+  {
+   "event": "hook_registered",
+   "ts": "1789233114256000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-12T17:11:54.256Z",
+    "event.sequence": 1,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "projectSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Bash"
+   }
+  },
+  {
+   "event": "user_prompt",
+   "ts": "1789233115137000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "user_prompt",
+    "event.timestamp": "2026-09-12T17:11:55.137Z",
+    "event.sequence": 2,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "prompt_length": "211",
+    "prompt": "<REDACTED>",
+    "message.uuid": "5a9e8449-eb77-4b87-bd3f-b86b11cd2a65"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789233120808000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T17:12:00.808Z",
+    "event.sequence": 3,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789233120830000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:12:00.830Z",
+    "event.sequence": 4,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 301,
+    "cache_read_tokens": 23824,
+    "cache_creation_tokens": 5366,
+    "cost_usd": 0.0292428,
+    "cost_usd_micros": 29243,
+    "duration_ms": 5590,
+    "ttft_ms": 2182,
+    "request_id": "req_011CeyvCmvooW4BTbbbNacfB",
+    "client_request_id": "70e526f7-9cce-40a8-957c-cd03d8f91ecb",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789233120838000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T17:12:00.838Z",
+    "event.sequence": 5,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "30",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789233120847000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:12:00.847Z",
+    "event.sequence": 6,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01LqkyrYWo55UqvGyaVe2mcs",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -maxdepth 6 -iname \\\"*BrokerLifecycleManager*\\\" 2>/dev/null\",\"description\":\"Search filesystem for BrokerLifecycleManager source file\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789233121295000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T17:12:01.295Z",
+    "event.sequence": 7,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01LqkyrYWo55UqvGyaVe2mcs",
+    "success": "true",
+    "duration_ms": "447",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -maxdepth 6 -iname \\\"*BrokerLifecycleManager*\\\" 2>/dev/null\",\"description\":\"Search filesystem for BrokerLifecycleManager source file\"}",
+    "tool_input": "{\"command\":\"find / -maxdepth 6 -iname \\\"*BrokerLifecycleManager*\\\" 2>/dev/null\",\"description\":\"Search filesystem for BrokerLifecycleManager source file\"}",
+    "tool_input_size_bytes": "153",
+    "tool_result_size_bytes": "0"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789233124613000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T17:12:04.613Z",
+    "event.sequence": 8,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789233124637000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:12:04.637Z",
+    "event.sequence": 9,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 162,
+    "cache_read_tokens": 29190,
+    "cache_creation_tokens": 355,
+    "cost_usd": 0.008349500000000001,
+    "cost_usd_micros": 8350,
+    "duration_ms": 3318,
+    "ttft_ms": 1813,
+    "request_id": "req_011CeyvDDsGyQ2ZVkxXkckss",
+    "client_request_id": "a037b990-76f7-410a-b9d1-2b10277ca28b",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789233124640000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T17:12:04.640Z",
+    "event.sequence": 10,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "27",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789233124654000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:12:04.654Z",
+    "event.sequence": 11,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01EutxFHoKEagpignB1YDskR",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"pwd\",\"full_command\":\"pwd && ls -la && echo \\\"---git---\\\" && git remote -v 2>/dev/null && git log --oneline -5 2>/dev/null\",\"description\":\"Inspect current repo contents and git info\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789233124699000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T17:12:04.699Z",
+    "event.sequence": 12,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01EutxFHoKEagpignB1YDskR",
+    "success": "true",
+    "duration_ms": "45",
+    "tool_parameters": "{\"bash_command\":\"pwd\",\"full_command\":\"pwd && ls -la && echo \\\"---git---\\\" && git remote -v 2>/dev/null && git log --oneline -5 2>/dev/null\",\"description\":\"Inspect current repo contents and git info\"}",
+    "tool_input": "{\"command\":\"pwd && ls -la && echo \\\"---git---\\\" && git remote -v 2>/dev/null && git log --oneline -5 2>/dev/null\",\"description\":\"Inspect current repo contents and git info\"}",
+    "tool_input_size_bytes": "173",
+    "tool_result_size_bytes": "3338"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789233127379000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:12:07.378Z",
+    "event.sequence": 13,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01S4mhfStZxrZtcBZjpAcQAs",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789233127390000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:12:07.390Z",
+    "event.sequence": 14,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 119,
+    "cache_read_tokens": 29545,
+    "cache_creation_tokens": 2185,
+    "cost_usd": 0.0125655,
+    "cost_usd_micros": 12566,
+    "duration_ms": 2671,
+    "ttft_ms": 1660,
+    "request_id": "req_011CeyvDURse7N6s5VUCD43D",
+    "client_request_id": "b5c551a6-76b3-411e-8240-6aacd79680df",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789233127390000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-12T17:12:07.390Z",
+    "event.sequence": 15,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "response_length": 79,
+    "response": "<REDACTED>",
+    "request_id": "req_011CeyvDURse7N6s5VUCD43D",
+    "message.uuid": "a8ea2ff1-1f49-4373-a8bf-4ce8be838cfe",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789233127428000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T17:12:07.428Z",
+    "event.sequence": 16,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01S4mhfStZxrZtcBZjpAcQAs",
+    "success": "true",
+    "duration_ms": "48",
+    "tool_input": "{\"pattern\":\"class BrokerLifecycleManager\",\"output_mode\":\"files_with_matches\"}",
+    "tool_input_size_bytes": "77",
+    "tool_result_size_bytes": "157"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789233130571000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T17:12:10.571Z",
+    "event.sequence": 17,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789233130593000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:12:10.593Z",
+    "event.sequence": 18,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 126,
+    "cache_read_tokens": 31730,
+    "cache_creation_tokens": 239,
+    "cost_usd": 0.008207500000000001,
+    "cost_usd_micros": 8208,
+    "duration_ms": 3145,
+    "ttft_ms": 1847,
+    "request_id": "req_011CeyvDg6bgda4mBnMz5FGw",
+    "client_request_id": "4e815909-4987-4c6c-b5f6-0e877ace8258",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789233130601000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T17:12:10.601Z",
+    "event.sequence": 19,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "1",
+    "num_non_blocking_error": "0",
+    "num_cancelled": "0",
+    "total_duration_ms": "30",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789233130602000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:12:10.602Z",
+    "event.sequence": 20,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "decision": "reject",
+    "source": "hook",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01X4CFQnQMLVMgNRX7Qr4Fz4",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789233142487000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:12:22.487Z",
+    "event.sequence": 21,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Agent",
+    "tool_use_id": "toolu_016gdhPFDVkZHrmvbNSwU9Z7",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"subagent_type\":\"Explore\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789233142495000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T17:12:22.495Z",
+    "event.sequence": 22,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "tool_name": "Agent",
+    "tool_use_id": "toolu_016gdhPFDVkZHrmvbNSwU9Z7",
+    "success": "true",
+    "duration_ms": "7",
+    "tool_parameters": "{\"subagent_type\":\"Explore\"}",
+    "tool_input": "{\"description\":\"Analyze BrokerLifecycleManager event handling\",\"prompt\":\"Read the file server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java in this Apache Kafka repo (path relative \u2026[2327 chars]\",\"subagent_type\":\"Explore\"}",
+    "tool_input_size_bytes": "2455",
+    "tool_result_size_bytes": "1143"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789233142566000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:12:22.566Z",
+    "event.sequence": 23,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 910,
+    "cache_read_tokens": 31969,
+    "cache_creation_tokens": 253,
+    "cost_usd": 0.0161303,
+    "cost_usd_micros": 16130,
+    "duration_ms": 11949,
+    "ttft_ms": 1857,
+    "request_id": "req_011CeyvDuVzufX76vDfUSHqM",
+    "client_request_id": "b9dd704c-3921-4ff5-871b-d6f67bec3859",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789233144569000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T17:12:24.569Z",
+    "event.sequence": 24,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789233144585000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T17:12:24.585Z",
+    "event.sequence": 25,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "14",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789233144589000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:12:24.589Z",
+    "event.sequence": 26,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01Pu2H2wt9DBV2r1VkNXjDiE",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789233144596000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:12:24.596Z",
+    "event.sequence": 27,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "model": "claude-haiku-4-5-20251001",
+    "input_tokens": 10,
+    "output_tokens": 206,
+    "cache_read_tokens": 5514,
+    "cache_creation_tokens": 1657,
+    "cost_usd": 0.00366265,
+    "cost_usd_micros": 3663,
+    "duration_ms": 2083,
+    "ttft_ms": 539,
+    "request_id": "req_011CeyvEnSNjtn2vSrM8BHJW",
+    "client_request_id": "7849e702-e797-44e4-b9e1-7ad9ace49ed3",
+    "speed": "normal",
+    "query_source": "agent:custom",
+    "agent.name": "custom"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789233144693000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T17:12:24.693Z",
+    "event.sequence": 28,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01Pu2H2wt9DBV2r1VkNXjDiE",
+    "success": "true",
+    "duration_ms": "103",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__hook-explore__r1__20260912-171152/server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java\"}",
+    "tool_input_size_bytes": "177",
+    "tool_result_size_bytes": "36294"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789233144931000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:12:24.931Z",
+    "event.sequence": 29,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 43,
+    "cache_read_tokens": 32222,
+    "cache_creation_tokens": 1362,
+    "cost_usd": 0.010283400000000002,
+    "cost_usd_micros": 10283,
+    "duration_ms": 2347,
+    "ttft_ms": 1697,
+    "request_id": "req_011CeyvEnphCGVaV9F8h1LNw",
+    "client_request_id": "725030a7-63d4-4e4c-9388-bf6dece97168",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789233144931000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-12T17:12:24.931Z",
+    "event.sequence": 30,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "response_length": 145,
+    "response": "<REDACTED>",
+    "request_id": "req_011CeyvEnphCGVaV9F8h1LNw",
+    "message.uuid": "14e1890a-0a97-4595-9d5b-4f2540103982",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789233147152000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T17:12:27.152Z",
+    "event.sequence": 31,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789233147165000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:12:27.165Z",
+    "event.sequence": 32,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "model": "claude-haiku-4-5-20251001",
+    "input_tokens": 8,
+    "output_tokens": 137,
+    "cache_read_tokens": 7171,
+    "cache_creation_tokens": 10292,
+    "cost_usd": 0.014275100000000002,
+    "cost_usd_micros": 14275,
+    "duration_ms": 2449,
+    "ttft_ms": 715,
+    "request_id": "req_011CeyvEwnwwNikgasJMyP8u",
+    "client_request_id": "7275075a-b888-4ea3-8d3e-ea0cf826c886",
+    "speed": "normal",
+    "query_source": "agent:custom",
+    "agent.name": "custom"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789233147168000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T17:12:27.168Z",
+    "event.sequence": 33,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "15",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789233147173000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:12:27.173Z",
+    "event.sequence": 34,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01UeQGXaXeAum2zXNj82CWzD",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find /home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__hook-explore__r1__20260912-171152 -name \\\"BrokerState.java\\\" 2>/dev/null\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789233147227000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T17:12:27.227Z",
+    "event.sequence": 35,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01UeQGXaXeAum2zXNj82CWzD",
+    "success": "true",
+    "duration_ms": "54",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find /home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__hook-explore__r1__20260912-171152 -name \\\"BrokerState.java\\\" 2>/dev/null\"}",
+    "tool_input": "{\"command\":\"find /home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__hook-explore__r1__20260912-171152 -name \\\"BrokerState.java\\\" 2>/dev/null\"}",
+    "tool_input_size_bytes": "146",
+    "tool_result_size_bytes": "154"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789233148776000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-12T17:12:28.776Z",
+    "event.sequence": 36,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789233148790000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:12:28.790Z",
+    "event.sequence": 37,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "model": "claude-haiku-4-5-20251001",
+    "input_tokens": 8,
+    "output_tokens": 134,
+    "cache_read_tokens": 17463,
+    "cache_creation_tokens": 243,
+    "cost_usd": 0.00272805,
+    "cost_usd_micros": 2728,
+    "duration_ms": 1551,
+    "ttft_ms": 550,
+    "request_id": "req_011CeyvF8fYXqr6W14WaaBZ5",
+    "client_request_id": "8cbb372e-c7e8-4aac-84ea-73bfca12d963",
+    "speed": "normal",
+    "query_source": "agent:custom",
+    "agent.name": "custom"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789233148793000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-12T17:12:28.793Z",
+    "event.sequence": 38,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "17",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789233148796000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-12T17:12:28.796Z",
+    "event.sequence": 39,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01WYRyPoVYfE9UdKUkqMw12Y",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789233148800000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-12T17:12:28.800Z",
+    "event.sequence": 40,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01WYRyPoVYfE9UdKUkqMw12Y",
+    "success": "true",
+    "duration_ms": "3",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/R1__natural__hook-explore__r1__20260912-171152/metadata/src/main/java/org/apache/kafka/metadata/BrokerState.java\"}",
+    "tool_input_size_bytes": "170",
+    "tool_result_size_bytes": "3054"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789233198294000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:13:18.294Z",
+    "event.sequence": 41,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "model": "claude-haiku-4-5-20251001",
+    "input_tokens": 8,
+    "output_tokens": 5041,
+    "cache_read_tokens": 17706,
+    "cache_creation_tokens": 1220,
+    "cost_usd": 0.028508600000000002,
+    "cost_usd_micros": 28509,
+    "duration_ms": 49473,
+    "ttft_ms": 679,
+    "request_id": "req_011CeyvFFQMP5obFpxW5iyUm",
+    "client_request_id": "6acf6010-9efd-468e-ac1c-2d29db43bb25",
+    "speed": "normal",
+    "query_source": "agent:custom",
+    "agent.name": "custom"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789233198295000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-12T17:13:18.295Z",
+    "event.sequence": 42,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "response_length": 10943,
+    "response": "<REDACTED>",
+    "request_id": "req_011CeyvFFQMP5obFpxW5iyUm",
+    "message.uuid": "00de5944-4c04-4eee-8b70-a0fb0fe29b46",
+    "model": "claude-haiku-4-5-20251001",
+    "query_source": "agent:custom"
+   }
+  },
+  {
+   "event": "subagent_completed",
+   "ts": "1789233198299000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "subagent_completed",
+    "event.timestamp": "2026-09-12T17:13:18.299Z",
+    "event.sequence": 43,
+    "prompt.id": "bd955190-6f24-4a58-b483-499d5881bb50",
+    "agent_type": "Explore",
+    "agent.source": "projectSettings",
+    "is_built_in": false,
+    "is_async": true,
+    "total_tokens": 23975,
+    "total_tool_uses": 3,
+    "duration_ms": 55811,
+    "model": "claude-haiku-4-5-20251001",
+    "final_model": "claude-haiku-4-5-20251001",
+    "model_swapped": false
+   }
+  },
+  {
+   "event": "user_prompt",
+   "ts": "1789233198388000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "user_prompt",
+    "event.timestamp": "2026-09-12T17:13:18.388Z",
+    "event.sequence": 44,
+    "prompt.id": "ece9456d-e68b-4024-b1fa-e2839193bb07",
+    "prompt_length": "11737",
+    "prompt": "<REDACTED>",
+    "message.uuid": "2f3fdae5-dcad-4d13-b0c4-0200cac0ec5b"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789233213166000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-12T17:13:33.166Z",
+    "event.sequence": 45,
+    "prompt.id": "ece9456d-e68b-4024-b1fa-e2839193bb07",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 1486,
+    "cache_read_tokens": 33584,
+    "cache_creation_tokens": 5375,
+    "cost_usd": 0.0350183,
+    "cost_usd_micros": 35018,
+    "duration_ms": 14761,
+    "ttft_ms": 2316,
+    "request_id": "req_011CeyvJuU9v5TDkq7q4hTsJ",
+    "client_request_id": "b4970040-2315-4760-8ec4-1f2edc79f1f1",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789233213166000000",
+   "attrs": {
+    "run.id": "R1__natural__hook-explore__r1__20260912-171152",
+    "session.id": "5bebb5f2-1fd6-4948-b308-61987a0707ed",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-12T17:13:33.166Z",
+    "event.sequence": 46,
+    "prompt.id": "ece9456d-e68b-4024-b1fa-e2839193bb07",
+    "response_length": 3251,
+    "response": "<REDACTED>",
+    "request_id": "req_011CeyvJuU9v5TDkq7q4hTsJ",
+    "message.uuid": "453071c1-65c9-4942-bceb-095642ec6244",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  }
+ ],
+ "spans": []
+}

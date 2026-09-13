@@ -1,0 +1,44 @@
+{
+  "id": "W3",
+  "name": "remote-log-deletion-config",
+  "category": "code-write",
+  "files": [
+    "storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java"
+  ],
+  "prompts": {
+    "named": "Create `storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogDeletionConfig.java`, a configuration class following the conventions of `storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java` (same package and license header; `*_PROP`, `*_DOC` and `DEFAULT_*` public constants; a `public static ConfigDef configDef()` that chains `.define(...)`; a `private final AbstractConfig config` field set by `public RemoteLogDeletionConfig(AbstractConfig config)`; one public getter per key delegating to the wrapped config). Spec: (1) `remote.log.deletion.enable`, BOOLEAN, default false, MEDIUM, getter `isRemoteLogDeletionEnabled()`. (2) `remote.log.deletion.thread.pool.size`, INT, default 2, `atLeast(1)`, MEDIUM, getter `remoteLogDeletionThreadPoolSize()`. (3) `remote.log.deletion.batch.size`, INT, default 100, `atLeast(1)`, LOW, getter `remoteLogDeletionBatchSize()`. (4) `remote.log.deletion.retry.backoff.ms`, LONG, default 500L, `atLeast(0)`, LOW, getter `remoteLogDeletionRetryBackoffMs()`. (5) Every key has a non-empty `*_DOC` passed to `.define(...)`. Do not write tests and do not modify any existing file.",
+    "natural": "Add a RemoteLogDeletionConfig class next to Kafka's remote log manager config, following that class's conventions (PROP/DOC/DEFAULT constants, a static configDef(), a wrapped AbstractConfig, one typed getter per key). Four settings: remote.log.deletion.enable (boolean, default false), remote.log.deletion.thread.pool.size (int, default 2, at least 1), remote.log.deletion.batch.size (int, default 100, at least 1), remote.log.deletion.retry.backoff.ms (long, default 500, at least 0). Each needs a doc string. Don't write tests or change existing files."
+  },
+  "grader": {
+    "type": "compile_and_checklist",
+    "gradle_module": ":storage",
+    "required_regex": [
+      "class RemoteLogDeletionConfig",
+      "public static ConfigDef configDef\\(\\)",
+      "public RemoteLogDeletionConfig\\(AbstractConfig config\\)",
+      "private final AbstractConfig config",
+      "\"remote\\.log\\.deletion\\.enable\"",
+      "\"remote\\.log\\.deletion\\.thread\\.pool\\.size\"",
+      "\"remote\\.log\\.deletion\\.batch\\.size\"",
+      "\"remote\\.log\\.deletion\\.retry\\.backoff\\.ms\"",
+      "REMOTE_LOG_DELETION_ENABLE_PROP",
+      "REMOTE_LOG_DELETION_THREAD_POOL_SIZE_PROP",
+      "REMOTE_LOG_DELETION_BATCH_SIZE_PROP",
+      "REMOTE_LOG_DELETION_RETRY_BACKOFF_MS_PROP",
+      "_DOC",
+      "isRemoteLogDeletionEnabled\\(\\)",
+      "remoteLogDeletionThreadPoolSize\\(\\)",
+      "remoteLogDeletionBatchSize\\(\\)",
+      "remoteLogDeletionRetryBackoffMs\\(\\)",
+      "config\\.getBoolean\\(",
+      "config\\.getInt\\(",
+      "config\\.getLong\\("
+    ],
+    "min_counts": {
+      "\\.define\\(": 4,
+      "atLeast\\(1\\)": 2,
+      "atLeast\\(0": 1
+    }
+  },
+  "output_file": "storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogDeletionConfig.java"
+}

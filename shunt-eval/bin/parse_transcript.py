@@ -140,7 +140,15 @@ def main():
             delegated.update(re.findall(r"--paths\s+(\S+)", row["input"].get("command", "")))
         if "agent_spawn" in row["flags"]:
             delegated.update(re.findall(r"[\w/.-]+\.(?:java|scala|ts|py|go)", row["input"].get("prompt", "")))
-    reread_after_delegation = sum(1 for f in read_files if f and any(f.endswith(d) or d.endswith(os.path.basename(f)) for d in delegated))
+    # re-read after delegation: a MAIN-agent Read of a delegated file that happens after the delegation call
+    deleg_ts = min((row.get("ts_use") or "" for row in all_tools if "worker_call" in row["flags"] or "agent_spawn" in row["flags"]), default=None)
+    reread_after_delegation = 0
+    if deleg_ts:
+        for row in all_tools:
+            if row["agent"] == "main" and row["name"] == "Read" and (row.get("ts_use") or "") > deleg_ts and not row.get("is_error"):
+                f = row["input"].get("file_path") or ""
+                if any(f.endswith(d) or d.endswith(os.path.basename(f)) for d in delegated):
+                    reread_after_delegation += 1
     # hook bypass via paging: blocked/gated read of F then targeted read of F within next 3 tool calls
     bypass = 0
     for i, row in enumerate(all_tools):
@@ -150,7 +158,8 @@ def main():
                 if later["name"] == "Read" and later["input"].get("file_path") == f and "read_targeted" in later["flags"]:
                     bypass += 1
                     break
-    lines_entered = sum(row.get("result_lines", 0) for row in all_tools if row["name"] == "Read" and not row.get("is_error"))
+    lines_entered = sum(row.get("result_lines", 0) for row in all_tools if row["name"] == "Read" and not row.get("is_error") and row["agent"] == "main")
+    lines_entered_subagents = sum(row.get("result_lines", 0) for row in all_tools if row["name"] == "Read" and not row.get("is_error") and row["agent"] != "main")
     agent_models = sorted({r["model"] for r in all_req.values() if r["agent"] != "main"})
 
     # api latency approximation: gap between a tool_result ts and the next request's first assistant ts
@@ -185,6 +194,8 @@ def main():
         "reread_after_delegation": reread_after_delegation,
         "edits": flags.get("edit", 0),
         "lines_entered_context": lines_entered,
+        "lines_entered_subagents": lines_entered_subagents,
+        "tool_calls_main": sum(1 for row in all_tools if row["agent"] == "main"),
         "files_read": sorted({os.path.basename(f) for f in read_files if f}),
         "tool_latency_ms": {n: int(sum(r.get("latency_ms") or 0 for r in all_tools if r["name"] == n) / max(1, tool_mix[n])) for n in tool_mix},
         "api_gap_ms_p50": sorted(api_gaps)[len(api_gaps) // 2] if api_gaps else None,

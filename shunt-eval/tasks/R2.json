@@ -1,0 +1,78 @@
+{
+  "id": "R2",
+  "name": "remote-log-config-keys",
+  "category": "bulk-read",
+  "files": [
+    "storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java"
+  ],
+  "prompts": {
+    "named": "Read `storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java`. List every configuration key (the actual string value, e.g. `remote.log.storage.system.enable`) that is registered with `.define(` inside `configDef()`, together with its `ConfigDef.Type` and its default value (resolve constants to literal values; write `null` if the default is the literal null). Do not include `*_PROP` constants that are declared in the file but are not passed to `.define(`; list those separately under a heading \"declared but not defined\".",
+    "natural": "What are all the broker configuration keys for Kafka's remote log manager (tiered storage), with the type and default of each? Also tell me whether any remote log manager config constants are declared in that config class but never actually registered with the ConfigDef."
+  },
+  "grader": {
+    "type": "key_list",
+    "required": [
+      "remote.log.storage.system.enable",
+      "remote.log.storage.manager.impl.prefix",
+      "remote.log.metadata.manager.impl.prefix",
+      "remote.log.storage.manager.class.name",
+      "remote.log.storage.manager.class.path",
+      "remote.log.metadata.manager.class.name",
+      "remote.log.metadata.manager.class.path",
+      "remote.log.metadata.manager.listener.name",
+      "remote.log.metadata.custom.metadata.max.bytes",
+      "remote.log.index.file.cache.total.size.bytes",
+      "remote.log.manager.thread.pool.size",
+      "remote.log.manager.copier.thread.pool.size",
+      "remote.log.manager.expiration.thread.pool.size",
+      "remote.log.manager.follower.thread.pool.size",
+      "remote.log.manager.task.interval.ms",
+      "remote.log.reader.threads",
+      "remote.log.reader.max.pending.tasks",
+      "log.local.retention.ms",
+      "log.local.retention.bytes",
+      "log.remote.copy.lag.ms",
+      "log.remote.copy.lag.bytes",
+      "remote.log.manager.copy.max.bytes.per.second",
+      "remote.log.manager.copy.quota.window.num",
+      "remote.log.manager.copy.quota.window.size.seconds",
+      "remote.log.manager.fetch.max.bytes.per.second",
+      "remote.log.manager.fetch.quota.window.num",
+      "remote.log.manager.fetch.quota.window.size.seconds",
+      "remote.fetch.max.wait.ms",
+      "remote.list.offsets.request.timeout.ms"
+    ],
+    "required_weight": 0.6,
+    "weighted_groups": [
+      {
+        "name": "undefined_keys",
+        "weight": 0.1,
+        "items": [
+          "remote.log.index.file.cache.ttl.ms",
+          "remote.log.manager.task.retry.backoff.ms",
+          "remote.log.manager.task.retry.backoff.max.ms",
+          "remote.log.manager.task.retry.jitter"
+        ]
+      },
+      {
+        "name": "defaults_spotcheck",
+        "weight": 0.3,
+        "items": [
+          "rsm.config.",
+          "rlmm.config.",
+          "TopicBasedRemoteLogMetadataManager",
+          "128",
+          "1073741824",
+          "30000",
+          "-2",
+          "500"
+        ]
+      }
+    ],
+    "deny": [],
+    "penalty": 0.03,
+    "pass_recall": 0.9,
+    "max_invented": 1,
+    "note": "defaults are spot-checked by literal presence; a stricter per-row default check is a known gap"
+  }
+}

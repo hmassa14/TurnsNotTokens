@@ -1,0 +1,222 @@
+{
+ "summary": {
+  "requests_total": 3,
+  "requests_main": 3,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 3,
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 9382,
+    "cache_read_input_tokens": 85814,
+    "output_tokens": 492
+   }
+  },
+  "tool_mix": {
+   "Grep": 1,
+   "Edit": 1
+  },
+  "tool_calls_total": 2,
+  "reads_total": 0,
+  "reads_whole_file": 0,
+  "reads_targeted": 0,
+  "reads_blocked_by_hook": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 1,
+  "lines_entered_context": 0,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 2,
+  "files_read": [],
+  "tool_latency_ms": {
+   "Grep": 61,
+   "Edit": 53
+  },
+  "api_gap_ms_p50": 1392,
+  "api_gap_ms_max": 1392,
+  "final_text_chars": 237
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cez22GRhi8Ygr8DWDy8LZ",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5388,
+    "cache_read_input_tokens": 23824,
+    "output_tokens": 159,
+    "output_tokens_details": {
+     "thinking_tokens": 37
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 5388,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 159,
+      "cache_read_input_tokens": 23824,
+      "cache_creation_input_tokens": 5388,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 0,
+       "ephemeral_1h_input_tokens": 5388
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-12T18:28:15.287Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cez22ShbHX1R9gF2sz5B3",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 3566,
+    "cache_read_input_tokens": 29212,
+    "output_tokens": 280,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 3566,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 280,
+      "cache_read_input_tokens": 29212,
+      "cache_creation_input_tokens": 3566,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 0,
+       "ephemeral_1h_input_tokens": 3566
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-12T18:28:17.406Z",
+   "blocks": [
+    "text",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cez22hovuqbS3kEZkaK9i",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 428,
+    "cache_read_input_tokens": 32778,
+    "output_tokens": 53,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 428,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 53,
+      "cache_read_input_tokens": 32778,
+      "cache_creation_input_tokens": 428,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 0,
+       "ephemeral_1h_input_tokens": 428
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-12T18:28:20.694Z",
+   "blocks": [
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01FmGHbbFiddqjJPQ3yK84NW",
+   "name": "Grep",
+   "input": {
+    "pattern": "no such share session found",
+    "output_mode": "content",
+    "-n": true,
+    "-C": 8
+   },
+   "ts_use": "2026-09-12T18:28:15.952Z",
+   "request_id": "req_011Cez22GRhi8Ygr8DWDy8LZ",
+   "agent": "main",
+   "ts_result": "2026-09-12T18:28:16.013Z",
+   "is_error": false,
+   "result_head": "core/src/main/java/kafka/server/share/SharePartitionManager.java-418-        String memberId\ncore/src/main/java/kafka/server/share/SharePartitionManager.java-419-    ) {\ncore/src/main/java/kafka/server/share/SharePartitionManager.java-420-        log.trace(\"Release session request for groupId: {}, m",
+   "result_chars": 8581,
+   "result_lines": 0,
+   "latency_ms": 61,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01BGPonJLi3KqCUECU7fjYo4",
+   "name": "Edit",
+   "input": {
+    "replace_all": false,
+    "file_path": "/home/user/WackyWords/shunt-eval/runs/_ws/E1__natural__hook-explore-strict__r1__20260912-182809/core/src/main/java/kafka/server/share/SharePartitionManager.java",
+    "old_string": "        if (cache.remove(key) == null) {\n            log.error(\"Share session error for {}: no such share session found\", key);",
+    "new_string": "        if (cache.remove(key) == null) {\n            log.warn(\"Share session error for {}: no such share session found\", key);"
+   },
+   "ts_use": "2026-09-12T18:28:19.512Z",
+   "request_id": "req_011Cez22ShbHX1R9gF2sz5B3",
+   "agent": "main",
+   "ts_result": "2026-09-12T18:28:19.566Z",
+   "is_error": false,
+   "result_head": "The file /home/user/WackyWords/shunt-eval/runs/_ws/E1__natural__hook-explore-strict__r1__20260912-182809/core/src/main/java/kafka/server/share/SharePartitionManager.java has been updated successfully. (file state is current in your context \u2014 no need to Read it back)",
+   "result_chars": 266,
+   "result_lines": 0,
+   "latency_ms": 53,
+   "flags": [
+    "edit"
+   ]
+  }
+ ]
+}
