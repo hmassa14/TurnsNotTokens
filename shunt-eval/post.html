@@ -43,11 +43,9 @@
 <p class="dek">Spotify published a Claude Code plugin that blocks the model from reading big files and hands them to a cheap worker instead, claiming a 90% cut in tokens. I rebuilt it on a real repo and measured the bill. The number they reported is real. The bill went up anyway.</p>
 <p class="byline">Twelve tasks, two Claude Code configurations, one Java monorepo, three independent sources of telemetry per run.</p>
 
-<p><em>Tokenomics</em> has turned into one of those words everyone in AI engineering has learned and started overusing — cache hit rates, price per million tokens, the vocabulary of running these things at scale — without much of it translating into a bill anyone's actually checked. So when I saw Spotify's team building token optimizers on top of Claude Code, I wanted to look under the hood of the one claiming the biggest number.</p>
+<p>I've been thinking a lot about <em>tokenomics</em> lately — cache hit rates, price per million tokens, the vocabulary of running these things at scale — and how rarely any of it gets checked against an actual bill. Spotify's team building token optimizers on top of Claude Code caught my eye for exactly that reason: a hook that blocks the model from reading big files and hands the read to a cheaper model instead, claiming a 90% cut in tokens. I wanted to look under the hood.</p>
 
-<p>Every few weeks another Claude Code plugin promises some large, round token-savings number, and I've learned not to trust it until I've seen the bill. Spotify's stopped me mid-scroll: a hook that blocks the model from reading big files and hands the read to a cheaper model instead, claiming a 90% cut in tokens. So I rebuilt it and ran it myself.</p>
-
-<p>I ran the same hook against stock Claude Code on twelve real tasks on a real repo — twenty-four sessions for that head-to-head, plus two earlier variants that shaped how I built it, more on those below — checking every dollar figure against three independent sources before trusting it. The short version is in the title: the 90% is real on Spotify's own metric, and the dollar cost of getting it went up 35%. Here's what they built, why, and how I copied it to check.</p>
+<p>So I rebuilt it and ran the same hook against stock Claude Code on twelve real tasks on a real repo — twenty-four sessions for the head-to-head, plus two earlier variants that shaped how I built it, more on those below — checking every dollar figure against three independent sources before trusting it. The short version is in the title: the 90% is real on Spotify's own metric, and the dollar cost of getting it went up 35%. Here's what they built, why, and how I copied it to check.</p>
 
 <h2>What Spotify built, and why</h2>
 
