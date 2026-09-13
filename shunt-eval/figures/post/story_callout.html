@@ -1,0 +1,36 @@
+<div class="sb">
+<section class="run hook">
+<h3><span class="arm">Spotify&#x27;s hook, as published</span> 11 requests · $0.204 · 78 s · pass</h3>
+<div class="step">
+<div class="n">4</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Bash result</div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Read `BrokerLifecycleManager.java`, the whole file<div class="meta">420 output tokens</div></div>
+<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read. The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly. If you need exact content for editing, re-read with an offset/limit for just the section you need.</div></div>
+</div>
+<div class="cost">running cost ≈ 6.2¢</div>
+</div>
+<div class="step">
+<div class="n">5</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + the hook&#x27;s message</div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Grep for `class \w+Event|BrokerState\.\w+|initialState|state =|eventQu` in `BrokerLifecycleManager.java`<div class="meta">289 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">131:    private volatile BrokerState state = BrokerState.NOT_RUNNING;
+267:        eventQueue.append(new StartupEvent(highestMetadataOffsetProvider,
+272:        eventQueue.append(new SetReadyToUnfenceEvent());
+282:        eventQueue.append(n</div><div class="meta">2,119 chars, 23 ms</div></div>
+</div>
+<div class="cost">running cost ≈ 7.2¢</div>
+</div>
+<div class="step">
+<div class="n">6</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Read `BrokerLifecycleManager.java` lines 255 to 435<div class="meta">237 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">180 numbered lines of the file</div><div class="meta">6,654 chars, 32 ms</div></div>
+</div>
+<div class="cost">running cost ≈ 8.4¢</div>
+</div>
+<div class="skip">… request 11 skipped … running total 20.4¢</div>
+</section>
+</div>

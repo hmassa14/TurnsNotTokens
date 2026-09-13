@@ -1,12 +1,25 @@
 <div class="sb">
+<section class="run stock">
+<h3><span class="arm">A · stock</span> 3 requests · $0.113 · 39 s · pass</h3>
+<div class="step">
+<div class="n">2</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Read `BrokerLifecycleManager.java`, the whole file<div class="meta">137 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">771 numbered lines of the file</div><div class="meta">36,294 chars, 115 ms</div></div>
+</div>
+<div class="cost">running cost ≈ 3.9¢</div>
+</div>
+<div class="skip">… request 3 skipped … running total 11.3¢</div>
+</section>
 <section class="run hook">
-<h3><span class="arm">Spotify&#x27;s hook, exception closed</span> 16 requests · $0.285 · 70 s · pass</h3>
+<h3><span class="arm">B · Spotify&#x27;s hook, enforced</span> 16 requests · $0.285 · 70 s · pass</h3>
 <div class="step">
 <div class="n">4</div>
 <div class="cols">
 <div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
 <div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java`, the whole file<div class="meta">127 output tokens</div></div>
-<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read (paged reads refused too in this arm). The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly. Reads with offset/limit are also blocked for this file; use grep for exact lines.</div></div>
+<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read. The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly. Reads with offset/limit are also blocked for this file; use grep for exact lines.</div></div>
 </div>
 <div class="cost">running cost ≈ 6.0¢</div>
 </div>

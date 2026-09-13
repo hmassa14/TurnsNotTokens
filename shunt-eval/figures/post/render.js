@@ -4,7 +4,7 @@ const { chromium } = require(require('path').join(require('child_process').execS
 const src = fs.readFileSync('post-figures.html', 'utf8');
 const head = src.slice(0, src.indexOf('<main>'));
 const figs = src.match(/<figure[^>]*>[\s\S]*?<\/figure>/g);
-const names = ['A-hook-in-the-loop','B-setup','C-block-then-paged-read','D-strict-then-grep','E-requests-as-bars','F-where-the-money-went','G-headline','H-explore-subagent'];
+const names = ['A-hook-in-the-loop','B-setup','C-callout-published-hook','D-one-question-request-by-request','E-requests-as-bars','F-where-the-money-went','G-headline'];
 if (figs.length !== names.length) throw new Error(`${figs.length} figures vs ${names.length} names`);
 (async () => {
   const b = await chromium.launch();

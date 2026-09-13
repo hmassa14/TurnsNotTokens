@@ -1,35 +1,38 @@
 # Figures
 
-Hand-drawn SVG plus storyboards generated from the transcripts. Numbers come from the R1 runs in `results/03-natural-three-arms` (stock and shunt), the strict R1 run in `results/04-natural-strict-arms`, and the per-arm totals in `results/03` and `04`.
+Hand-drawn SVG plus storyboards generated from the transcripts. Numbers come from the R1 stock run in `results/03-natural-three-arms` and the R1 run under the enforced hook in `results/04-natural-strict-arms` (arm `shunt-strict`), plus the twelve-task means in both.
 
 ## For the post: `post/`
 
-Eight figures in the order the post uses them. Source is `post/post-figures.html` (one page, all eight); `post/render.js` splits it into one page per figure and exports each at 2x with Playwright. Palette validated with the dataviz checks: stock teal `#0A9385`, hook rust `#B84E28` (dark mode `#1E9A8C` / `#C97440`).
+Seven figures in the order the post uses them. Source is `post/post-figures.html` (one page, all seven, built by `post/build_post.py` from the transcripts); `post/render.js` splits it into one page per figure and exports each at 2x with Playwright. Palette validated with the dataviz checks: stock teal `#0A9385`, hook rust `#B84E28` (dark mode `#1E9A8C` / `#C97440`).
+
+The post compares two arms only: stock, and Spotify's hook with the offset/limit exception removed (arm `shunt-strict` in the results, called simply "the hook" in the post). The published hook without that fix is not a third arm here — it is the subject of the call-out in figure C, which is the evidence for why the fix was necessary before the comparison could mean anything.
 
 | File | Section | What it shows |
 |---|---|---|
-| `A-hook-in-the-loop.png` | What a hook is, and the claim | Where a PreToolUse hook sits in the tool loop, and the three calls the model made after a block: worker 0 of 24, paged read 9 of 9 under the shipped hook, grep under the strict hook. |
-| `B-setup.png` | Setup | One run is one fresh session on a pinned Kafka copy; the only difference between arms is the `.claude/` folder. The five folders side by side. |
-| `C-block-then-paged-read.png` | Finding 1, the shipped hook is not enforcement | R1 request 2 under stock (read whole) next to requests 4 to 6 under the shipped hook (blocked, grep, read lines 255 to 435). Real excerpts from the transcripts. |
-| `D-strict-then-grep.png` | Finding 2, enforce it and the worker is still unused | R1 under the strict hook: the block, then ten greps including two with pattern `.` and an offset, then a read of the small `BrokerState.java`. |
-| `E-requests-as-bars.png` | Finding 3, why stock was cheapest | R1 as bars, one per API request, height is cached context re-sent. Stock 3 requests and 83k tokens; hook 11 requests and 373k. |
-| `F-where-the-money-went.png` | Finding 3, what caching provides | The same two runs in cents, stacked by price bucket. The file bucket barely moved; re-reads and output grew with the request count. |
-| `G-headline.png` | Where it helped | Two small multiples across the five arms: target-file lines in the main context (7,111 down to 893) and cost of the twelve tasks ($1.94 up to $2.61). |
-| `H-explore-subagent.png` | Sidebar: what Explore is | The main conversation and the Explore subagent as two boxes; what crosses between them and what stays behind. |
+| `A-hook-in-the-loop.png` | What the hook claims to do | Where a PreToolUse hook sits in the tool loop, and what the model did after a block: never Spotify's worker, grep on every enforced run, a paged read on every block before the exception was closed. |
+| `B-setup.png` | The setup | One run is one fresh session on a pinned Kafka copy; the only difference between the two arms is the `.claude/` folder. |
+| `C-callout-published-hook.png` | Call-out, inside the setup section | R1 under the hook exactly as Spotify published it: the block, then a read with an offset, which the published rule allows. This is why the comparison uses the hook with that rule removed. |
+| `D-one-question-request-by-request.png` | One question, traced | R1 under stock (one request) and under the enforced hook (five of sixteen requests): what the model was given, what it decided, what came back. Real excerpts from the transcripts. |
+| `E-requests-as-bars.png` | Same question, as bars | All of R1's requests as bars, height is context re-sent. Stock: 3 requests, 83k tokens. Hook: 16 requests, 601k. |
+| `F-where-the-money-went.png` | Where the money goes | The same two runs in cents, stacked by price bucket. The file bucket barely moved; re-sends and output grew with the request count. |
+| `G-headline.png` | The result | Three small multiples, stock against the hook, over twelve tasks: target-file lines in context, API requests, and cost. |
 
-`post/story_finding1.html` and `post/story_finding2.html` are the storyboard fragments C and D are built from:
+`post/story_callout.html` and `post/story_main.html` are the storyboard fragments figures C and D are built from:
 
 ```
-bin/storyboard.py --no-tokens --no-css results/03-natural-three-arms/R1-stock:2:stock \
-    results/03-natural-three-arms/R1-shunt:4-6:"Spotify's hook, as shipped"
-bin/storyboard.py --no-tokens --no-css results/04-natural-strict-arms/R1-shunt-strict:4-5,10-11,15:"Spotify's hook, exception closed"
+bin/storyboard.py --no-tokens --no-css "results/03-natural-three-arms/R1-shunt:4-6:Spotify's hook, as published"
+bin/storyboard.py --no-tokens --no-css results/03-natural-three-arms/R1-stock:2:"A · stock" \
+    "results/04-natural-strict-arms/R1-shunt-strict:4-5,10-11,15:B · Spotify's hook, enforced"
 ```
+
+`post/build_post.py` assembles the seven figures from these fragments plus hand-drawn SVG for A, B and G; run it after regenerating the storyboards to rebuild `post-figures.html`.
 
 ## Earlier set
 
-Source in `figures.html`, exported at 2x.
+Source in `figures.html`, exported at 2x. Superseded by `post/` for the write-up; kept for reference.
 
-1. `fig1-hook-and-three-exits.png`: same as post figure A.
-2. `fig2-one-task-step-by-step.png`: the R1 question and every API request under stock (3) and under the hook (11), uncropped, with token counts. Generated by `bin/storyboard.py`.
-3. `fig3-r1-trace-stock-vs-hook.png`: same as post figure E.
-4. `fig4-where-the-money-went.png`: same as post figure F.
+1. `fig1-hook-and-three-exits.png`: an earlier, five-arm version of figure A.
+2. `fig2-one-task-step-by-step.png`: the R1 question under stock and the shipped (unenforced) hook, uncropped, with token counts.
+3. `fig3-r1-trace-stock-vs-hook.png`: an earlier version of figure E, against the shipped hook rather than the enforced one.
+4. `fig4-where-the-money-went.png`: an earlier version of figure F, same pairing as fig3.
