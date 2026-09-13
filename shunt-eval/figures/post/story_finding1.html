@@ -1,0 +1,70 @@
+
+<style>
+.sb { font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: 13px; color: var(--ink, #1B1F1D); }
+.sb .run { border: 1px solid var(--line, #D6DAD3); border-radius: 8px; padding: 14px 16px; margin: 0 0 22px; background: var(--surface, #fff); }
+.sb h3 { margin: 0 0 10px; font-size: 1rem; }
+.sb .arm { font-family: "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .06em; font-size: .78rem; padding: 2px 8px; border-radius: 999px; margin-right: 8px; }
+.sb .run.stock .arm { background: #DCEFEC; color: #0A9385; } .sb .run.hook .arm { background: #F5E3D8; color: #B84E28; }
+.sb .prompt { background: var(--soft, #ECEEE9); border-radius: 6px; padding: 10px 12px; margin-bottom: 14px; font-size: .92rem; }
+.sb .lbl { display: block; font-family: "IBM Plex Mono", monospace; font-size: .68rem; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3, #7B857F); margin-bottom: 3px; }
+.sb .step { display: grid; grid-template-columns: 28px 1fr; gap: 0 10px; padding: 10px 0; border-top: 1px solid var(--line, #D6DAD3); }
+.sb .n { font-family: "IBM Plex Mono", monospace; font-weight: 600; color: var(--ink-3, #7B857F); padding-top: 2px; }
+.sb .cols { display: grid; grid-template-columns: 1.1fr 1.1fr 1.4fr; gap: 12px; }
+.sb .col { min-width: 0; }
+.sb .col.hook-hit { background: #F5E3D8; border-radius: 6px; padding: 8px 10px; margin: -8px -10px; }
+.sb .quote { font-family: "IBM Plex Mono", monospace; font-size: .74rem; background: var(--soft, #ECEEE9); border-radius: 4px; padding: 6px 8px; margin-top: 4px; white-space: pre-wrap; word-break: break-word; max-height: 72px; overflow: hidden; }
+.sb .meta { color: var(--ink-3, #7B857F); font-size: .78rem; margin-top: 3px; }
+.sb .skip { font-family: "IBM Plex Mono", monospace; font-size: .76rem; color: var(--ink-3, #7B857F); padding: 8px 0 8px 38px; border-top: 1px dashed var(--line, #D6DAD3); }
+.sb .cost { grid-column: 2; font-family: "IBM Plex Mono", monospace; font-size: .76rem; color: var(--ink-2, #4A5350); margin-top: 6px; }
+@media (max-width: 720px) { .sb .cols { grid-template-columns: 1fr; } }
+</style>
+
+<div class="sb">
+<section class="run stock">
+<h3><span class="arm">stock</span> 3 requests · $0.113 · 39 s · pass</h3>
+<div class="step">
+<div class="n">2</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Read `BrokerLifecycleManager.java`, the whole file<div class="meta">137 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">771 numbered lines of the file</div><div class="meta">36,294 chars, 115 ms</div></div>
+</div>
+<div class="cost">running cost ≈ 3.9¢</div>
+</div>
+<div class="skip">… request 3 skipped … running total 11.3¢</div>
+</section>
+<section class="run hook">
+<h3><span class="arm">Spotify&#x27;s hook, as shipped</span> 11 requests · $0.204 · 78 s · pass</h3>
+<div class="step">
+<div class="n">4</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Bash result</div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Read `BrokerLifecycleManager.java`, the whole file<div class="meta">420 output tokens</div></div>
+<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read. The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly. If you need exact content for editing, re-read with an offset/limit for just the section you need.</div></div>
+</div>
+<div class="cost">running cost ≈ 6.2¢</div>
+</div>
+<div class="step">
+<div class="n">5</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + the hook&#x27;s message</div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Grep for `class \w+Event|BrokerState\.\w+|initialState|state =|eventQu` in `BrokerLifecycleManager.java`<div class="meta">289 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">131:    private volatile BrokerState state = BrokerState.NOT_RUNNING;
+267:        eventQueue.append(new StartupEvent(highestMetadataOffsetProvider,
+272:        eventQueue.append(new SetReadyToUnfenceEvent());
+282:        eventQueue.append(n</div><div class="meta">2,119 chars, 23 ms</div></div>
+</div>
+<div class="cost">running cost ≈ 7.2¢</div>
+</div>
+<div class="step">
+<div class="n">6</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Read `BrokerLifecycleManager.java` lines 255 to 435<div class="meta">237 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">180 numbered lines of the file</div><div class="meta">6,654 chars, 32 ms</div></div>
+</div>
+<div class="cost">running cost ≈ 8.4¢</div>
+</div>
+<div class="skip">… request 11 skipped … running total 20.4¢</div>
+</section>
+</div>

@@ -165,7 +165,8 @@ README.md            this file
 docs/                design (PLAN), build spec (HARNESS), metric sources (METRICS), tasks and keys (TASKS)
 tasks/               one JSON per task with both prompts and the grader; setup patches for planted bugs; smoke/
 arms/                one .claude/ directory per arm
-bin/                 run.py, grid.py, otlp_receiver.py, parse_transcript.py, parse_otel.py, grade.py, report.py, table.py
+bin/                 run.py, grid.py, otlp_receiver.py, parse_transcript.py, parse_otel.py, grade.py, report.py, table.py, storyboard.py
 results/             one folder per pass: README, tables, per-run report/result/transcript/otel/grade; runs.jsonl
+figures/             SVG source and PNG exports; figures/post/ is the eight-figure set for the write-up, in post order
 runs/                gitignored: raw run directories and OTLP dumps
 ```
