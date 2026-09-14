@@ -18,6 +18,9 @@
   em { font-style: italic; }
   .lede-em { font-style: normal; font-weight: 600; }
   code { font-family:"IBM Plex Mono",monospace; font-size:0.88em; background:var(--soft); padding:0.1em 0.35em; border-radius:4px; }
+  pre.code { background:var(--soft); border-radius:8px; padding:14px 18px; overflow-x:auto; font-family:"IBM Plex Mono",monospace; font-size:0.82em; line-height:1.6; margin:8px 0 20px; color:var(--ink); }
+  pre.code code { background:none; padding:0; font-size:1em; }
+  pre.code .c { color:var(--ink-3); }
   figure { margin:32px 0; }
   figure img { width:100%; display:block; border:1px solid var(--line); border-radius:8px; background:var(--surface); }
   figcaption { font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-3); margin-top:10px; }
@@ -100,14 +103,93 @@
 
 <blockquote class="tldr">TLDR; Spotify's own evals never run Claude Code. One suite checks the hook's allow/block arithmetic in isolation; the other times a deterministic script call and calls the difference tokens saved. The one non-deterministic step in the whole design — what the model does after it's told no — never appears in either one.</blockquote>
 
-<h3>The rule I followed, and the three places I broke it</h3>
+<h3>How one run gets kicked off</h3>
 
-<p>The rule going in was simple: run Spotify's plugin verbatim, and deviate only where there's a stated, specific design flaw — never a stylistic preference, never a guess at what they "probably meant." Every deviation gets written down, with the reason, so a reader can decide for themselves whether it's fair.</p>
+<p>Every one of the 114 sessions starts the same way, and none of it is interactive. The harness is a Python script that copies a pristine Kafka checkout into a fresh directory, drops in one <code>.claude</code> folder, and calls Claude Code in headless mode with the task's prompt as the argument. Claude Code answers, writes its transcript, exits, and the script grades what's left behind. Nobody types anything; there's no terminal session to nudge. What differs between the two arms is only what's inside that <code>.claude</code> folder.</p>
 
 <figure>
   <img src="figures/post/B-setup.png" alt="Diagram: one run copies a fresh Kafka checkout, adds one .claude folder, runs claude -p with the question in a new session, collects three records, and grades the answer. The two .claude folders are stock, an empty settings file, and Spotify's hook with its Portal call replaced by a call to Haiku.">
   <figcaption>Figure B · the setup</figcaption>
 </figure>
+
+<p>Here's the layout of the two folders. The stock arm's <code>.claude</code> is a single empty settings file, so Claude Code runs exactly as installed. The hook arm's <code>.claude</code> is Spotify's plugin, copied in as a project-level config instead of a plugin install so the paths resolve inside a throwaway workspace:</p>
+
+<pre class="code">arms/stock/.claude/
+└── settings.json                <span class="c"># contains {}</span>
+
+arms/shunt-strict/.claude/
+├── settings.json                <span class="c"># the two PreToolUse hooks, below</span>
+├── shunt/
+│   ├── hooks/check-file-size    <span class="c"># Spotify's, minus the offset exception</span>
+│   ├── hooks/check-bash-read    <span class="c"># Spotify's, byte-identical</span>
+│   ├── scripts/bulk-read        <span class="c"># Spotify's, byte-identical</span>
+│   ├── scripts/code-write       <span class="c"># Spotify's, byte-identical</span>
+│   └── scripts/lib/aika.sh      <span class="c"># the Portal call, swapped for Haiku</span>
+└── skills/
+    ├── bulk-reader/SKILL.md     <span class="c"># Spotify's, script path only</span>
+    └── code-writer/SKILL.md     <span class="c"># Spotify's, script path only</span></pre>
+
+<p>The hook arm's <code>settings.json</code> is Spotify's <code>hooks.json</code> with the plugin-root variable swapped for the project-dir one. This is the entire wiring. Two matchers, one script each; Claude Code runs the script before every <code>Read</code> and every <code>Bash</code> call and reads its JSON answer:</p>
+
+<pre class="code">{ "hooks": { "PreToolUse": [
+  { "matcher": "Read",
+    "hooks": [ { "type": "command",
+      "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/shunt/hooks/check-file-size"
+    } ] },
+  { "matcher": "Bash",
+    "hooks": [ { "type": "command",
+      "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/shunt/hooks/check-bash-read"
+    } ] }
+] } }</pre>
+
+<p>And the hook script itself, comments trimmed and the block message wrapped for the page, is short enough to read in full. It gets the proposed tool call on stdin, counts lines, and answers <code>allow</code> or <code>block</code>. The block carries the message the model will see as the tool's result. The only line of Spotify's I removed is the one that said "allow if offset or limit is set" (the sidebar below has why):</p>
+
+<pre class="code">#!/bin/bash
+MIN_LINES="${SHUNT_MIN_LINES:-350}"
+input=$(cat)
+file_path=$(echo "$input" | jq -r '.tool_input.file_path // empty')
+
+if [ -z "$file_path" ] || [ ! -f "$file_path" ]; then
+  echo '{"decision": "allow"}'; exit 0
+fi
+
+lines=$(wc -l &lt; "$file_path" | tr -d ' ')
+if [ "$lines" -le "$MIN_LINES" ]; then
+  echo '{"decision": "allow"}'; exit 0
+fi
+
+reason="File is ${lines} lines (threshold: ${MIN_LINES}). \
+Use the /bulk-reader skill to delegate this read to AiKA \
+instead of reading it directly."
+echo "{\"decision\": \"block\", \"reason\": \"${reason}\"}"</pre>
+
+<p>Then the call. This is the exact command the harness runs, from inside the workspace, for both arms. The prompt is the task's question, verbatim; the session id is a fresh UUID so nothing carries over from a previous run; permissions are pre-granted so no run ever stalls on a "may I?" prompt; and the JSON output format is what gives back the billed cost and token counts at the end:</p>
+
+<pre class="code">cd "$WORKSPACE"   <span class="c"># fresh Kafka copy at one pinned commit + one .claude folder</span>
+
+CLAUDE_CODE_ENABLE_TELEMETRY=1 \
+OTEL_LOGS_EXPORTER=otlp OTEL_METRICS_EXPORTER=otlp OTEL_TRACES_EXPORTER=otlp \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 OTEL_LOG_TOOL_DETAILS=1 \
+CLAUDE_CODE_PROMPT_CACHE_TTL=5m CLAUDE_CODE_SUBAGENT_PROMPT_CACHE_TTL=5m \
+SHUNT_RUN_DIR="$RUN_DIR" \
+claude -p "$PROMPT" \
+  --model claude-sonnet-5 \
+  --session-id "$(uuidgen)" \
+  --permission-mode acceptEdits \
+  --allowedTools "Read,Grep,Glob,Bash,Edit,Write,MultiEdit,Agent,Skill,\
+TodoWrite,TaskCreate,TaskUpdate" \
+  --max-turns 40 \
+  --output-format json</pre>
+
+<p>Three of those environment variables matter to the numbers. The <code>OTEL_*</code> block turns on Claude Code's built-in OpenTelemetry export and points it at a tiny local receiver, which is where the per-request latency and token counts come from. The two <code>CACHE_TTL</code> variables pin the prompt-cache write to the 5-minute rate for the main model, any subagent it spawns, and the worker, so both arms pay one rate (there's a whole paragraph below on why). And <code>SHUNT_RUN_DIR</code> is mine, not Spotify's: it tells the swapped-in worker where to save its own usage JSON so the worker's tokens and dollars end up in the same ledger as the main model's.</p>
+
+<p>When the process exits, the harness collects three things. The JSON on stdout has the final answer, the billed cost, and total token usage. The transcript Claude Code writes under <code>~/.claude/projects</code> has every request and every tool call, including the hook's block messages. The receiver has the OpenTelemetry events. It then diffs the workspace against the pinned commit, so an edit task's changes are captured exactly, and hands everything to the grader. The workspace is deleted. The next run starts from the clean copy again, on the other arm.</p>
+
+<p>If you wanted to try this without any of the harness, the shortest version is: put Spotify's plugin files in a <code>.claude</code> folder at the root of a big repo, add the two hook entries above to <code>.claude/settings.json</code>, and run <code>claude -p "your question" --output-format json</code>. The <code>total_cost_usd</code> field at the end of the output is the number this whole piece is about.</p>
+
+<h3>The rule I followed, and the three places I broke it</h3>
+
+<p>The rule going in was simple: run Spotify's plugin verbatim, and deviate only where there's a stated, specific design flaw — never a stylistic preference, never a guess at what they "probably meant." Every deviation gets written down, with the reason, so a reader can decide for themselves whether it's fair.</p>
 
 <div style="overflow-x:auto; margin:24px 0;">
 <table style="width:100%; border-collapse:collapse; font-size:0.92em; line-height:1.5;">
