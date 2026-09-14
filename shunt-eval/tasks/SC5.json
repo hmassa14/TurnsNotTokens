@@ -1,0 +1,32 @@
+{
+  "id": "SC5",
+  "old_id": null,
+  "name": "filter-test-from-timestampconverter-pattern",
+  "category": "spotify-shape-scaled",
+  "cell": "their row 4 scaled: 739-line test reference, hook fires on the reference; skill-uptake test",
+  "files": [
+    "connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java",
+    "connect/transforms/src/main/java/org/apache/kafka/connect/transforms/Filter.java"
+  ],
+  "prompts": {
+    "named": "Write `connect/transforms/src/test/java/org/apache/kafka/connect/transforms/FilterTest.java`, unit tests for `Filter` that follow the exact same patterns, structure, and assertions as `connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java` (same package, license header, a transform field, JUnit 5, a version test using `AppInfoParser.getVersion()`). Filter drops every record, so its apply tests assert null. Do not modify any existing file.",
+    "natural": "Write unit tests for Kafka Connect's Filter transformation, following the exact same patterns, structure, and assertions as the TimestampConverter transform's tests. Filter drops every record, so the apply tests should assert that. Don't change any existing files."
+  },
+  "grader": {
+    "type": "compile_and_checklist",
+    "gradle_module": ":connect:transforms",
+    "required_regex": [
+      "public class FilterTest",
+      "new Filter<>",
+      "@Test",
+      "xform\\.configure\\(",
+      "xform\\.apply\\(",
+      "assertNull\\(",
+      "AppInfoParser\\.getVersion\\(\\)"
+    ],
+    "min_counts": {
+      "@Test": 2
+    }
+  },
+  "output_file": "connect/transforms/src/test/java/org/apache/kafka/connect/transforms/FilterTest.java"
+}

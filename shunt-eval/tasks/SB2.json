@@ -1,0 +1,46 @@
+{
+  "id": "SB2",
+  "old_id": null,
+  "name": "broker-lifecycle-cross-read",
+  "category": "spotify-benchmark-1to1",
+  "cell": "their row 2, one big file plus two small related files",
+  "files": [
+    "server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java",
+    "metadata/src/main/java/org/apache/kafka/metadata/BrokerState.java",
+    "metadata/src/main/java/org/apache/kafka/image/publisher/BrokerRegistrationTracker.java"
+  ],
+  "prompts": {
+    "named": "Cross-reference `server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java`, `metadata/src/main/java/org/apache/kafka/metadata/BrokerState.java` and `metadata/src/main/java/org/apache/kafka/image/publisher/BrokerRegistrationTracker.java`. Which public classes, enums and interfaces do these files define or implement, and how do they relate to each other: which one holds the broker state and what its initial value is, which values the state can take and how an unknown byte is mapped, and what the tracker does about a missing registration?",
+    "natural": "Kafka has a broker lifecycle manager on the server side, a BrokerState enum, and a broker registration tracker that publishes metadata. Which public classes, enums and interfaces do those three define or implement, and how do they relate to each other: which one holds the broker state and what it starts as, which values the state can take and what happens to an unknown byte value, and what the tracker does when a registration goes missing?"
+  },
+  "grader": {
+    "type": "key_list",
+    "required": [
+      "BrokerLifecycleManager",
+      "BrokerState",
+      "BrokerRegistrationTracker",
+      "MetadataPublisher"
+    ],
+    "required_weight": 0.5,
+    "weighted_groups": [
+      {
+        "name": "relations",
+        "weight": 0.5,
+        "items": [
+          "NOT_RUNNING",
+          "fromValue",
+          "UNKNOWN",
+          "resendBrokerRegistration",
+          "PENDING_CONTROLLED_SHUTDOWN"
+        ]
+      }
+    ],
+    "deny": [
+      "BrokerHeartbeatManager",
+      "BrokerRegistrationManager"
+    ],
+    "penalty": 0.05,
+    "pass_recall": 0.9,
+    "max_invented": 1
+  }
+}

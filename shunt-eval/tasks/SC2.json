@@ -1,0 +1,96 @@
+{
+  "id": "SC2",
+  "old_id": "R3",
+  "name": "group-coordinator-record-replay",
+  "category": "spotify-shape-scaled",
+  "cell": "their row 2 scaled: two big files",
+  "files": [
+    "group-coordinator/src/main/java/org/apache/kafka/coordinator/group/GroupCoordinatorShard.java",
+    "group-coordinator/src/main/java/org/apache/kafka/coordinator/group/GroupCoordinatorRecordHelpers.java"
+  ],
+  "prompts": {
+    "named": "Cross-reference `group-coordinator/src/main/java/org/apache/kafka/coordinator/group/GroupCoordinatorShard.java` and `group-coordinator/src/main/java/org/apache/kafka/coordinator/group/GroupCoordinatorRecordHelpers.java`. For every `case` label in the `switch` inside `GroupCoordinatorShard.replay(...)`, give: (1) the key class the record key is cast to, (2) which manager field (`groupMetadataManager` or `offsetMetadataManager`) the record is forwarded to, and (3) the names of all `public static CoordinatorRecord` helper methods in `GroupCoordinatorRecordHelpers` that build a record with that key class, or \"none in this file\" if no helper in that file builds one. One row per case label.",
+    "natural": "When Kafka's group coordinator shard replays records from the log, which record types does it handle, which manager (group metadata or offset metadata) each one goes to, and which of the record helper methods build each record type? Note which record types have no helper."
+  },
+  "grader": {
+    "type": "key_list",
+    "required": [
+      "LEGACY_OFFSET_COMMIT",
+      "OFFSET_COMMIT",
+      "GROUP_METADATA",
+      "CONSUMER_GROUP_METADATA",
+      "CONSUMER_GROUP_PARTITION_METADATA",
+      "CONSUMER_GROUP_MEMBER_METADATA",
+      "CONSUMER_GROUP_TARGET_ASSIGNMENT_METADATA",
+      "CONSUMER_GROUP_TARGET_ASSIGNMENT_MEMBER",
+      "CONSUMER_GROUP_CURRENT_MEMBER_ASSIGNMENT",
+      "SHARE_GROUP_MEMBER_METADATA",
+      "SHARE_GROUP_METADATA",
+      "SHARE_GROUP_TARGET_ASSIGNMENT_METADATA",
+      "SHARE_GROUP_TARGET_ASSIGNMENT_MEMBER",
+      "SHARE_GROUP_CURRENT_MEMBER_ASSIGNMENT",
+      "SHARE_GROUP_STATE_PARTITION_METADATA",
+      "CONSUMER_GROUP_REGULAR_EXPRESSION",
+      "STREAMS_GROUP_METADATA",
+      "STREAMS_GROUP_MEMBER_METADATA",
+      "STREAMS_GROUP_TARGET_ASSIGNMENT_METADATA",
+      "STREAMS_GROUP_TARGET_ASSIGNMENT_MEMBER",
+      "STREAMS_GROUP_CURRENT_MEMBER_ASSIGNMENT",
+      "STREAMS_GROUP_TOPOLOGY"
+    ],
+    "required_weight": 0.4,
+    "weighted_groups": [
+      {
+        "name": "helpers",
+        "weight": 0.5,
+        "items": [
+          "newOffsetCommitRecord",
+          "newOffsetCommitTombstoneRecord",
+          "newGroupMetadataRecord",
+          "newGroupMetadataTombstoneRecord",
+          "newEmptyGroupMetadataRecord",
+          "newConsumerGroupEpochRecord",
+          "newConsumerGroupEpochTombstoneRecord",
+          "newConsumerGroupSubscriptionMetadataTombstoneRecord",
+          "newConsumerGroupMemberSubscriptionRecord",
+          "newConsumerGroupMemberSubscriptionTombstoneRecord",
+          "newConsumerGroupTargetAssignmentMetadataRecord",
+          "newConsumerGroupTargetAssignmentMetadataTombstoneRecord",
+          "newConsumerGroupTargetAssignmentRecord",
+          "newConsumerGroupTargetAssignmentTombstoneRecord",
+          "newConsumerGroupCurrentAssignmentRecord",
+          "newConsumerGroupCurrentAssignmentTombstoneRecord",
+          "newShareGroupMemberSubscriptionRecord",
+          "newShareGroupMemberSubscriptionTombstoneRecord",
+          "newShareGroupEpochRecord",
+          "newShareGroupEpochTombstoneRecord",
+          "newShareGroupTargetAssignmentMetadataRecord",
+          "newShareGroupTargetAssignmentMetadataTombstoneRecord",
+          "newShareGroupTargetAssignmentRecord",
+          "newShareGroupTargetAssignmentTombstoneRecord",
+          "newShareGroupCurrentAssignmentRecord",
+          "newShareGroupCurrentAssignmentTombstoneRecord",
+          "newShareGroupStatePartitionMetadataRecord",
+          "newShareGroupStatePartitionMetadataTombstoneRecord",
+          "newConsumerGroupRegularExpressionRecord",
+          "newConsumerGroupRegularExpressionTombstone"
+        ]
+      },
+      {
+        "name": "managers",
+        "weight": 0.1,
+        "items": [
+          "offsetMetadataManager",
+          "groupMetadataManager"
+        ]
+      }
+    ],
+    "deny": [
+      "newConsumerGroupRegularExpressionTombstoneRecord"
+    ],
+    "penalty": 0.03,
+    "pass_recall": 0.9,
+    "max_invented": 1,
+    "note": "Streams-group helpers exist in streams/StreamsCoordinatorRecordHelpers.java; the named prompt scopes to GroupCoordinatorRecordHelpers only, the natural prompt does not, so they are not penalized."
+  }
+}

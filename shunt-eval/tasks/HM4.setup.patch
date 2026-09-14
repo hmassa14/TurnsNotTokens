@@ -1,0 +1,13 @@
+diff --git a/streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java b/streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java
+index 58c25ca..0cc47b2 100644
+--- a/streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java
++++ b/streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java
+@@ -501,7 +501,7 @@ public class StateDirectory implements AutoCloseable {
+      * @param taskId task id
+      * @return true if successful
+      */
+-    synchronized boolean lock(final TaskId taskId) {
++    boolean lock(final TaskId taskId) {
+         if (!hasPersistentStores) {
+             return true;
+         }

@@ -1,0 +1,37 @@
+{
+  "id": "CT1",
+  "old_id": "W1",
+  "name": "connect-smt-truncate-field",
+  "category": "small-file-control",
+  "cell": "code-gen, small reference, hook never fires",
+  "files": [
+    "connect/transforms/src/main/java/org/apache/kafka/connect/transforms/MaskField.java"
+  ],
+  "prompts": {
+    "named": "Write a new Kafka Connect Single Message Transform `TruncateField` at `connect/transforms/src/main/java/org/apache/kafka/connect/transforms/TruncateField.java`, following the structure and conventions of `connect/transforms/src/main/java/org/apache/kafka/connect/transforms/MaskField.java` exactly (same package, same license header, abstract generic base class with nested `Key` and `Value` subclasses, same helper utilities from `org.apache.kafka.connect.transforms.util`). Spec: (1) Config keys `fields` (LIST, no default, required, Importance.HIGH) and `max.length` (INT, default 255, `ConfigDef.Range.atLeast(1)`, Importance.HIGH). (2) In `configure`, read config through `SimpleConfig` and keep field names in a `Set<String>`. (3) `apply` dispatches to `applySchemaless` via `Requirements.requireMap` when `operatingSchema(record) == null`, else `applyWithSchema` via `Requirements.requireStruct`. (4) Only values that are `instanceof String` and longer than `max.length` are truncated with `String.substring(0, maxLength)`; everything else copies through unchanged; with a schema, the output `Struct` uses the input schema unchanged. (5) Provide `public static final class Key` and `Value` as MaskField does, plus `version()`, `config()` returning `CONFIG_DEF`, and an empty `close()`. Do not write tests and do not modify any existing file.",
+    "natural": "Add a new Kafka Connect single message transform called TruncateField that truncates string fields to a maximum length. Follow the same pattern the existing MaskField transform uses, including Key and Value variants. Config: `fields` (list, required) and `max.length` (int, default 255, must be at least 1). Only string values longer than the limit get truncated; everything else passes through unchanged. Don't write tests or change existing files."
+  },
+  "grader": {
+    "type": "compile_and_checklist",
+    "gradle_module": ":connect:transforms",
+    "required_regex": [
+      "public abstract class TruncateField<R extends ConnectRecord<R>> implements Transformation<R>",
+      "class Key<R extends ConnectRecord<R>> extends TruncateField<R>",
+      "class Value<R extends ConnectRecord<R>> extends TruncateField<R>",
+      "public static final ConfigDef CONFIG_DEF",
+      "\"fields\"",
+      "\"max\\.length\"",
+      "atLeast\\(1\\)",
+      "public void configure\\(",
+      "public R apply\\(R record\\)",
+      "public ConfigDef config\\(\\)",
+      "public void close\\(\\)",
+      "public String version\\(\\)",
+      "requireMap\\(",
+      "requireStruct\\(",
+      "\\.substring\\(0, ",
+      "instanceof String"
+    ]
+  },
+  "output_file": "connect/transforms/src/main/java/org/apache/kafka/connect/transforms/TruncateField.java"
+}

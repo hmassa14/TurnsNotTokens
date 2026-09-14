@@ -1,0 +1,24 @@
+{
+  "id": "ND3",
+  "old_id": null,
+  "name": "locallog-roll-existing-segment",
+  "category": "needle-read",
+  "cell": "needle: one branch in a 1,072-line file",
+  "files": [
+    "storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java"
+  ],
+  "prompts": {
+    "named": "In `storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java`, in `roll(Long expectedNextOffset)`, what happens when a segment with the new base offset already exists but it is not the empty active segment? Name the exception and quote the distinctive phrase of its message.",
+    "natural": "In Kafka's local log roll logic, what happens when a segment with the new base offset already exists but it isn't the empty active segment? Name the exception and quote the distinctive phrase of its message."
+  },
+  "grader": {
+    "type": "needle",
+    "literal": "while it already exists",
+    "aliases": [
+      "while it already exists."
+    ],
+    "identifiers": [
+      "KafkaException"
+    ]
+  }
+}

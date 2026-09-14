@@ -1,0 +1,26 @@
+{
+  "id": "CT3",
+  "old_id": null,
+  "name": "brokerstate-values",
+  "category": "small-file-control",
+  "cell": "control: needle in a 107-line file, hook never fires",
+  "files": [
+    "metadata/src/main/java/org/apache/kafka/metadata/BrokerState.java"
+  ],
+  "prompts": {
+    "named": "In `metadata/src/main/java/org/apache/kafka/metadata/BrokerState.java`, what byte value does `PENDING_CONTROLLED_SHUTDOWN` carry, and what does `fromValue` return for a byte it does not recognize? Name the enum constant exactly.",
+    "natural": "In Kafka's BrokerState enum, what numeric value does PENDING_CONTROLLED_SHUTDOWN carry, and what does fromValue return for a value it doesn't recognize? Name the constant exactly."
+  },
+  "grader": {
+    "type": "needle",
+    "literal": "UNKNOWN",
+    "aliases": [
+      "BrokerState.UNKNOWN"
+    ],
+    "identifiers": [
+      "PENDING_CONTROLLED_SHUTDOWN",
+      "fromValue",
+      "UNKNOWN"
+    ]
+  }
+}

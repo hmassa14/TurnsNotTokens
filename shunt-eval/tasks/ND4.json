@@ -1,0 +1,25 @@
+{
+  "id": "ND4",
+  "old_id": null,
+  "name": "statedirectory-already-locked",
+  "category": "needle-read",
+  "cell": "needle: one method in a 1,019-line file",
+  "files": [
+    "streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java"
+  ],
+  "prompts": {
+    "named": "In `streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java`, which exception is thrown when the state directory is already locked by another process, and which method throws it? Name both exactly.",
+    "natural": "In Kafka Streams' state directory, which exception is thrown when the state directory is already locked by another process, and which method throws it? Name both exactly."
+  },
+  "grader": {
+    "type": "needle",
+    "literal": "StreamsException",
+    "aliases": [
+      "StreamsException("
+    ],
+    "identifiers": [
+      "StreamsException",
+      "initializeProcessId"
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "ND2",
+  "old_id": null,
+  "name": "networkclient-rebootstrap-required",
+  "category": "needle-read",
+  "cell": "needle: one branch in a 1,879-line file",
+  "files": [
+    "clients/src/main/java/org/apache/kafka/clients/NetworkClient.java"
+  ],
+  "prompts": {
+    "named": "In `clients/src/main/java/org/apache/kafka/clients/NetworkClient.java`, in `handleApiVersionsResponse`, which ApiVersions error code makes the client rebootstrap, and which metadata recovery strategy must be configured for that branch to run? Quote the error code constant exactly.",
+    "natural": "In the Kafka client's NetworkClient, which ApiVersions error code makes the client rebootstrap, and which metadata recovery strategy has to be configured for that to happen? Quote the error code constant exactly."
+  },
+  "grader": {
+    "type": "needle",
+    "literal": "REBOOTSTRAP_REQUIRED",
+    "aliases": [
+      "Errors.REBOOTSTRAP_REQUIRED"
+    ],
+    "identifiers": [
+      "REBOOTSTRAP_REQUIRED",
+      "REBOOTSTRAP",
+      "handleApiVersionsResponse"
+    ]
+  }
+}

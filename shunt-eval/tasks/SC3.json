@@ -1,0 +1,57 @@
+{
+  "id": "SC3",
+  "old_id": "R4",
+  "name": "batch-accumulator-test-coverage",
+  "category": "spotify-shape-scaled",
+  "cell": "their row 3 scaled: big source + big test",
+  "files": [
+    "raft/src/main/java/org/apache/kafka/raft/internals/BatchAccumulator.java",
+    "raft/src/test/java/org/apache/kafka/raft/internals/BatchAccumulatorTest.java"
+  ],
+  "prompts": {
+    "named": "Read `raft/src/main/java/org/apache/kafka/raft/internals/BatchAccumulator.java` and `raft/src/test/java/org/apache/kafka/raft/internals/BatchAccumulatorTest.java`. List every public method declared directly on `BatchAccumulator` (exclude the constructor and methods of nested classes). For each, say whether `BatchAccumulatorTest` calls it at least once (yes/no), and for the ones it calls give the number of call sites. Finish with the list of public methods that the test never calls.",
+    "natural": "Which public methods of the Raft BatchAccumulator class does its unit test never exercise? List all of its public methods and say whether each is called from the test."
+  },
+  "grader": {
+    "type": "key_list",
+    "required": [
+      "append",
+      "allowDrain",
+      "appendControlMessages",
+      "appendVotersRecord",
+      "appendLeaderChangeMessage",
+      "appendSnapshotHeaderRecord",
+      "appendSnapshotFooterRecord",
+      "forceDrain",
+      "needsDrain",
+      "timeUntilDrain",
+      "epoch",
+      "drain",
+      "isEmpty",
+      "close"
+    ],
+    "required_weight": 0.6,
+    "weighted_groups": [
+      {
+        "name": "never_called",
+        "weight": 0.4,
+        "items": [
+          "appendVotersRecord",
+          "appendSnapshotHeaderRecord",
+          "appendSnapshotFooterRecord",
+          "epoch"
+        ]
+      }
+    ],
+    "deny": [
+      "completeCurrentBatch",
+      "maybeCompleteDrain",
+      "startNewBatch",
+      "drainStatus"
+    ],
+    "penalty": 0.05,
+    "pass_recall": 0.9,
+    "max_invented": 1,
+    "note": "never_called group checks presence only; the yes/no flag per method is a known gap"
+  }
+}

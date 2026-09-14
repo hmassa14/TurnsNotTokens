@@ -1,0 +1,27 @@
+{
+  "id": "ND1",
+  "old_id": null,
+  "name": "recordaccumulator-ready-initial-delay",
+  "category": "needle-read",
+  "cell": "needle: one method in a 1,500-line file",
+  "files": [
+    "clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java"
+  ],
+  "prompts": {
+    "named": "In `clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java`, look at `ready(MetadataSnapshot, long)`. What does it return, what three things does that result carry, and what is `nextReadyCheckDelayMs` initialized to before any partition is examined? Quote the initial value exactly.",
+    "natural": "In the Kafka producer's record accumulator, what does the ready check return, what three things does that result carry, and what is the next-check delay initialized to before any partition has been examined? Quote the initial value exactly."
+  },
+  "grader": {
+    "type": "needle",
+    "literal": "Long.MAX_VALUE",
+    "aliases": [
+      "Long.MAX_VALUE"
+    ],
+    "identifiers": [
+      "ReadyCheckResult",
+      "readyNodes",
+      "nextReadyCheckDelayMs",
+      "unknownLeaderTopics"
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "id": "HM4",
+  "old_id": "D1",
+  "name": "statedirectory-lock-unsynchronized",
+  "category": "harm",
+  "cell": "planted bug",
+  "files": [
+    "streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java"
+  ],
+  "prompts": {
+    "named": "Review `streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java` for thread-safety problems. Name the method and the lines involved and explain the race.",
+    "natural": "Can you review how Kafka Streams locks and unlocks task state directories for thread-safety problems? Name the method and lines involved and explain any race you find."
+  },
+  "grader": {
+    "type": "bug_report",
+    "methods": [
+      "lock(",
+      "StateDirectory.lock",
+      "`lock`",
+      " lock "
+    ],
+    "line_range": [
+      504,
+      525
+    ],
+    "line_tolerance": 10,
+    "race_keywords": [
+      "both",
+      "two threads",
+      "not atomic",
+      "putIfAbsent",
+      "synchronized",
+      "check-then-act",
+      "check then act",
+      "race"
+    ],
+    "false_positive_methods": [
+      "lockOwner(",
+      "close()",
+      "getOrCreateDirectoryForTask",
+      "hasStartupTasks",
+      "cleanRemovedTasksCalledByCleanerThread",
+      "cleanStateAndTaskDirectoriesCalledByUser"
+    ]
+  },
+  "setup_patch": "tasks/HM4.setup.patch"
+}

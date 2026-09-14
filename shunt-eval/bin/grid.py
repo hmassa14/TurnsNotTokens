@@ -40,8 +40,8 @@ def existing(runs_dir, task, variant, arm, rep):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--tasks", default="R1,R2,R3,R4,W1,W2,W3,E1,E2,E3,D1,D2")
-    ap.add_argument("--arms", default="stock,shunt,hook-explore")
+    ap.add_argument("--tasks", default="SB1,SB2,SB3,SB4,ND1,ND2,ND3,ND4,SC1,SC2,SC3,SC4,SC5,HM1,HM2,HM3,HM4,HM5")
+    ap.add_argument("--arms", default="stock,shunt-strict")
     ap.add_argument("--variant", default="natural", choices=["named", "natural"])
     ap.add_argument("--reps", type=int, default=1)
     ap.add_argument("--model", default="claude-sonnet-5")
