@@ -94,14 +94,19 @@
 
 <h3>Simulating their tasks</h3>
 
-<p>Twelve tasks, four categories, each with a mechanically checkable answer key and asked the way a developer actually would — no file path in the prompt, so the session has to find the target file itself before it can do anything with it. The first two categories simulate shunt's own two workflows; the other two go after the limits Spotify's own post names for the approach:</p>
+<p>Twenty-one tasks on Kafka, in five groups. Each group is there to answer one question, and the prefix on a task tells you which one:</p>
 
 <ul>
-<li><b>Bulk-read</b> (four tasks): the workflow the bulk-reader mode targets — answer a question that requires reading most of one or two large files, like tracing every state a class's state machine can enter.</li>
-<li><b>Code-write</b> (three tasks): the workflow the code-writer mode targets — write a new class or config from a reference file, graded on compiling plus a checklist.</li>
-<li><b>Precise edit</b> (three tasks): the limit Spotify's own post names for editing — a summary isn't exact content — make one small, targeted change where the same text appears in several places and only some of it should change.</li>
-<li><b>Planted bug</b> (two tasks): the other named limit, that a delegated read can't reason about what it found — find a concurrency bug I introduced myself, such as a removed <code>synchronized</code> keyword, and name the method and the race.</li>
+<li><b>SB, Spotify's benchmark (4 tasks).</b> Their four benchmark rows rebuilt one to one: same question shape, same file sizes. This is the baseline for anything we say about their number. It also shows something on its own: two of their four rows use files under 350 lines, so the hook never fires on half of what they measured.</li>
+<li><b>ND, needle reads (4 tasks).</b> One question whose answer sits in a small slice of a big file. This is the case Spotify's motivation describes and their benchmark never tests. It's also the hook's best case, since the saving from a summary is file size minus answer size, and here the answer is tiny.</li>
+<li><b>SC, scaled to fire the hook (5 tasks).</b> Their rows 2 to 4 again, on files big enough to trip the block. SB tells you what they measured. SC tells you what the hook does when it meets their own task shapes.</li>
+<li><b>HM, harm (5 tasks).</b> Precise edits and debugging on big files. Spotify's own post says delegation doesn't fit either one. The hook fires on them anyway, because it only sees line count. The question here isn't whether it helps, it's whether it costs anything.</li>
+<li><b>CT, controls (3 tasks).</b> Same shapes on files under 350 lines. The hook never fires, so the only thing left to measure is what having the plugin installed costs on its own.</li>
 </ul>
+
+<p>Every task is asked the way a developer would, with no file path, so the session has to find the file before it can do anything with it. Every answer key comes from the code, not from me.</p>
+
+<blockquote class="tldr">TLDR; SB, ND and SC test whether the hook helps where Spotify says it should. HM tests whether it hurts where they say it doesn't apply. CT is what everything looks like with the hook doing nothing.</blockquote>
 
 <h3>Building our eval harness</h3>
 
