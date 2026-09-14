@@ -11,7 +11,8 @@
 #      temperature 0.2 as upstream sets. This is the faithful stand-in for a Portal call.
 #   2. otherwise              -> one-turn headless Claude Code call with --tools "" so no tool
 #      definitions enter the worker's prompt. Needed when the only auth is a Claude subscription.
-#      Temperature cannot be set on this path.
+#      Temperature cannot be set on this path. Thinking is turned off (MAX_THINKING_TOKENS=0) so the
+#      call is a plain one-shot summary like the Portal call, not a reasoning session.
 # Either way every call's JSON (usage, cost, duration, transport) is saved under $SHUNT_RUN_DIR/worker
 # so the harness counts the worker's tokens and cost.
 
@@ -93,6 +94,7 @@ _shunt_invoke_cli() {
   env -u CLAUDECODE -u CLAUDE_CODE_ENTRYPOINT \
     OTEL_RESOURCE_ATTRIBUTES="run.id=${run_id}__worker" \
     CLAUDE_CODE_PROMPT_CACHE_TTL="${CLAUDE_CODE_PROMPT_CACHE_TTL:-5m}" \
+    MAX_THINKING_TOKENS=0 \
     timeout "$SHUNT_TIMEOUT_SECONDS" \
     claude -p --model "$SHUNT_WORKER_MODEL" --system-prompt "$instructions" --tools "" \
       --max-turns 1 --output-format json \

@@ -216,8 +216,20 @@ def spotify_style_avoided(run_dir, files):
             if n in blob:
                 # the workspace is deleted after the run; fall back to the pinned clone it was copied from
                 roots = [ws, meta.get("repo") or "", os.environ.get("SHUNT_EVAL_REPO", "")]
-                path = next((os.path.join(r, rel) for r in roots if r and os.path.isfile(os.path.join(r, rel))), "")
-                size = os.path.getsize(path) if path else 0
+                size = 0
+                for r in roots:
+                    if r and r.endswith(".tar") and os.path.isfile(r):
+                        import tarfile
+                        with tarfile.open(r) as tf:
+                            top = tf.getnames()[0].split("/")[0]
+                            try:
+                                size = tf.getmember(top + "/" + rel).size
+                                break
+                            except KeyError:
+                                continue
+                    elif r and os.path.isfile(os.path.join(r, rel)):
+                        size = os.path.getsize(os.path.join(r, rel))
+                        break
                 total += max(0, size // 4 - t.get("result_chars", 0) // 4)
     return total
 

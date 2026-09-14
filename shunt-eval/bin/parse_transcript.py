@@ -12,6 +12,7 @@ from collections import Counter, defaultdict
 from datetime import datetime
 
 BLOCK_RE = re.compile(r"^File is (\d+) lines \(threshold: (\d+)\)")
+SANDBOX_RE = re.compile(r"^This evaluation is offline")   # the harness sandbox hook, applied to every arm
 STOCK_BYTE_RE = re.compile(r"exceeds maximum allowed size")
 STOCK_TOKEN_RE = re.compile(r"exceeds maximum allowed tokens|\[Truncated: PARTIAL view")
 DEDUP_RE = re.compile(r"already in your context|File unchanged since last read|Wasted call")
@@ -96,6 +97,8 @@ def classify(row):
             flags.append("worker_call")
         if "scripts/code-write" in cmd or "code-write " in cmd:
             flags.append("worker_call")
+    if name in ("Read", "Grep", "Glob", "Bash") and SANDBOX_RE.match(head):
+        flags.append("sandbox_blocked")
     if name == "Agent":
         flags.append("agent_spawn")
     if name == "Skill":
@@ -206,6 +209,7 @@ def main():
         "reads_whole_file": flags.get("read_whole", 0),
         "reads_targeted": flags.get("read_targeted", 0),
         "reads_blocked_by_hook": flags.get("hook_blocked", 0),
+        "sandbox_blocks": flags.get("sandbox_blocked", 0),
         "reads_gated_by_stock": flags.get("stock_byte_gate", 0) + flags.get("stock_token_page", 0),
         "reads_dedup_reminders": flags.get("dedup_reminder", 0),
         "hook_bypass_via_paging": bypass,

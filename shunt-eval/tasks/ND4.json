@@ -8,19 +8,19 @@
     "streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java"
   ],
   "prompts": {
-    "named": "In `streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java`, which exception is thrown when the state directory is already locked by another process, and which method throws it? Name both exactly.",
-    "natural": "In Kafka Streams' state directory, which exception is thrown when the state directory is already locked by another process, and which method throws it? Name both exactly."
+    "named": "In `streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java`, when the instance starts up and finds the state directory already locked by another process, which exception is thrown and which method throws it? Name both exactly.",
+    "natural": "When a Kafka Streams instance starts up and finds its state directory already locked by another process, which exception is thrown and which method throws it? Name both exactly."
   },
   "grader": {
     "type": "needle",
     "literal": "StreamsException",
     "aliases": [
-      "StreamsException(",
-      "LockException"
+      "StreamsException("
     ],
     "identifiers": [
-      "StateDirectory"
+      "StreamsException",
+      "initializeProcessId"
     ],
-    "note": "The prompt says 'already locked by another process'. StateDirectory.initializeProcessId throws StreamsException with exactly that log message, but the class Javadoc describes the per-task lock with the same words and that path throws LockException. Both are accepted; the ambiguity is the task's, not the model's."
+    "note": "Second-grid wording ('already locked by another process') matched both the process-level lock (StreamsException from initializeProcessId) and the per-task lock (LockException); every model answered the latter. Reworded to the startup, process-level case; graded strictly again."
   }
 }

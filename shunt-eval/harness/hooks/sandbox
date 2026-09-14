@@ -1,0 +1,38 @@
+#!/bin/bash
+# Harness sandbox hook, applied identically to every arm via `claude -p --settings harness/settings.json`.
+# The evaluation is "answer from this repository, offline": Spotify's monorepo is private, so a model that
+# fetches the file from GitHub, finds another checkout on the machine, or reads the harness's own results
+# is not doing what a Spotify engineer's session could do. Blocks:
+#   Bash    : network commands (curl, wget, git clone/fetch/pull, pip/npm installs, ssh, URLs) and any
+#             absolute path outside the workspace or the usual system prefixes
+#   Read/Grep/Glob : any path outside the workspace
+# Everything inside the workspace is untouched, so the arms' own hooks behave exactly as before.
+input=$(cat)
+tool=$(printf '%s' "$input" | jq -r '.tool_name // empty')
+ws="${CLAUDE_PROJECT_DIR:-$PWD}"
+reason="This evaluation is offline and limited to the repository checked out at $ws. Answer from the files in it."
+block() { printf '{"decision": "block", "reason": "%s"}\n' "$reason"; exit 0; }
+allow() { echo '{"decision": "allow"}'; exit 0; }
+case "$tool" in
+  Bash)
+    cmd=$(printf '%s' "$input" | jq -r '.tool_input.command // empty')
+    printf '%s' "$cmd" | grep -qE '(^|[^A-Za-z0-9_])(curl|wget|ssh|scp|nc|ncat|telnet|pip3?|npm|npx|yarn|apt(-get)?)([[:space:]]|$)' && block
+    printf '%s' "$cmd" | grep -qE 'git[[:space:]]+(-C[[:space:]]+[^[:space:]]+[[:space:]]+)?(clone|fetch|pull|ls-remote|remote|submodule)' && block
+    printf '%s' "$cmd" | grep -qiE 'https?://|ftp://|ssh://' && block
+    # absolute paths: allow the workspace and system prefixes only
+    for p in $(printf '%s' "$cmd" | grep -oE '(^|[[:space:]"'"'"'=(])/[A-Za-z0-9_./-]*' | sed -E 's/^[[:space:]"'"'"'=(]//'); do
+      case "$p" in
+        "$ws"|"$ws"/*|/usr/*|/bin/*|/sbin/*|/lib*|/etc/*|/dev/null|/proc/*|/sys/*|/opt/*|/var/lib/*) ;;
+        *) block ;;
+      esac
+    done
+    allow ;;
+  Read|Grep|Glob)
+    p=$(printf '%s' "$input" | jq -r '.tool_input.file_path // .tool_input.path // empty')
+    [ -z "$p" ] && allow
+    case "$p" in
+      /*) case "$p" in "$ws"|"$ws"/*) allow ;; *) block ;; esac ;;
+      *) allow ;;
+    esac ;;
+  *) allow ;;
+esac

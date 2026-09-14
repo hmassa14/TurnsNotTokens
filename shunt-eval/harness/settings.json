@@ -1,0 +1,9 @@
+{
+  "permissions": { "deny": ["WebFetch", "WebSearch"] },
+  "hooks": {
+    "PreToolUse": [
+      { "matcher": "Bash", "hooks": [ { "type": "command", "command": "\"$SHUNT_HARNESS\"/hooks/sandbox" } ] },
+      { "matcher": "Read|Grep|Glob", "hooks": [ { "type": "command", "command": "\"$SHUNT_HARNESS\"/hooks/sandbox" } ] }
+    ]
+  }
+}

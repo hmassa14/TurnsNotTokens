@@ -5,10 +5,10 @@ description: "Delegate boilerplate code generation to AiKA. Use for tests, confi
 
 ```bash
 # Generate and write directly to target file
-.claude/shunt/scripts/code-write --spec "<what to generate>" --reference <reference-file> --target <output-path>
+${CLAUDE_PLUGIN_ROOT}/scripts/code-write --spec "<what to generate>" --reference <reference-file> --target <output-path>
 
 # Output to stdout instead (omit --target)
-.claude/shunt/scripts/code-write --spec "<what to generate>" --reference <reference-file>
+${CLAUDE_PLUGIN_ROOT}/scripts/code-write --spec "<what to generate>" --reference <reference-file>
 ```
 
 Each call is independent. To build on what was just generated, pass that file as the

@@ -22,7 +22,7 @@
       "public static Sensor sendLatencySensor\\(",
       "\"records-sent\"",
       "\"bytes-sent\"",
-      "\"send-latency\"",
+      "\"send-latency\"|\"send\"\\s*\\+\\s*LATENCY_SUFFIX|SEND\\s*\\+\\s*LATENCY_SUFFIX",
       "PROCESSOR_NODE_LEVEL_GROUP",
       "nodeLevelSensor\\(",
       "nodeLevelTagMap\\(",
@@ -30,7 +30,8 @@
       "addInvocationRateAndCountToSensor\\(",
       "addRateOfSumAndSumMetricsToSensor\\(",
       "addAvgAndMaxToSensor\\("
-    ]
+    ],
+    "note": "The reference builds latency metric names from LATENCY_SUFFIX; a file that follows that convention must pass. The first two grids required the literal string and failed conforming output on every arm."
   },
   "output_file": "streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/SinkNodeMetrics.java"
 }
