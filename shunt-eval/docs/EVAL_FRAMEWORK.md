@@ -138,6 +138,26 @@ At the first grid's mean of about $0.18 per run, about $21 at list price.  Arm B
 
 Order of work: write the new tasks and derive their keys (SB2, SB3, SB4, SC5, ND1 to ND4, CT3), then the neutral-message strict arm, then the TTL flag in `run.py`, then the new token metric in `parse_transcript.py`, then a smoke run of one task per block before the grid.
 
+## Third grid (06): what changed after reviewing 05
+
+Reviewing the 114 runs of grid 05 found that 23 had left the workspace (web fetches of Kafka source, a stray clone in `/tmp` made by one run and found by others via `find /`, answers from memory) and that the harness's own "eval setup" commit was visible to `git show`, exposing a planted bug in one run. Grid 06 reruns everything under these constraints, applied identically to every arm:
+
+- **Offline sandbox hook** (`harness/hooks/sandbox`, via `claude -p --settings harness/settings.json`): WebFetch and WebSearch denied; Bash refused for network commands and for absolute paths outside the workspace; Read, Grep and Glob refused outside the workspace. Refusals are counted as `sandbox_blocks`, separately from Spotify's hook blocks.
+- **No-history workspaces**: the pinned tree is extracted from a tarball without `.git`, the task's setup patch is applied, and one `import` commit is made, so `git log`/`git show` reveal nothing and `git diff HEAD` is exactly the model's change. Workspaces live under `/var/tmp/shunt-ws`, outside the harness tree, so a run cannot find other runs or `results/`.
+- **System-prompt constraint** on every arm: "Answer from the repository checked out in the working directory. Do not rely on memory of the upstream project or on the internet."
+- **Worker as a one-shot call**: `MAX_THINKING_TOKENS=0` on the headless Haiku call in every hook arm, so the worker's cost is a summary, not a reasoning session (grid 05's worker calls were half thinking tokens).
+- **Spotify's skill files byte-identical to upstream**: `${CLAUDE_PLUGIN_ROOT}` is resolved at install time, as a plugin install would, instead of being rewritten in the arm.
+- **Two grader fixes**: ND4 reworded to the startup, process-level lock (its 05 wording matched two code paths); CT2 accepts the reference's `LATENCY_SUFFIX` naming convention (it failed conforming output on every arm in 03, 04 and 05).
+
+Arms, four, all on the same 21 tasks, 3 reps each (controls included this time), 252 runs, interleaved by arm:
+
+| Arm | What it is | What it answers |
+|---|---|---|
+| `stock` | Claude Code as installed | the baseline |
+| `shunt` | Spotify's plugin exactly as published, offset/limit exception open | what you get if you install it today |
+| `shunt-strict` | the exception removed; block message is Spotify's minus the sentence about it | what the post describes |
+| `shunt-fixed` | `shunt-strict` plus `cat -n` in `bulk-read`, so the worker's line numbers are real | what it would take for delegation to pay; grid 05 showed the model re-reading the file after every summary because the worker's line numbers were guesses and the skill says to verify them |
+
 ## Results
 
 The grid described here ran on 2026-09-14 as `results/05-natural-second-grid` (114 runs). Its README carries the headline numbers, the per-category table with paired intervals, the after-block counts, the grader notes (ND4 ambiguity, checklist-graded code-gen) and the parser fix made during grading. `summary.json` in that folder is what the post's figures G and H and its results section are built from.

@@ -8,7 +8,8 @@ Passes in the order they were run. Each folder has a `README.md` with the write-
 | `02-natural-pilot-r1-d1` | R1 and D1, natural prompts, arms A, B, C | 6 | First sight of the bypass: every block followed by a paged read |
 | `03-natural-three-arms` | all twelve tasks, natural prompts, arms A, B, C | 36 | Worker called 0 of 12; hook fired in only half the runs; stock cheapest |
 | `04-natural-strict-arms` | all twelve tasks, natural prompts, arms B' and C' | 24 | Hook enforced, 87% fewer lines in context, worker still 0 of 12, strict shunt 35% over stock |
-| `05-natural-second-grid` | 21 tasks in five categories, natural prompts, stock vs strict hook with Spotify's own block message, 3 reps, TTL pinned, worker via one-turn call | 114 | The grid the post reports: target content in context down 46%, cost up 16% (paired +18%, CI +1% to +35%), worker called 13 times in 57 runs, cost up 54% where it was |
+| `05-natural-second-grid` | 21 tasks in five categories, natural prompts, stock vs strict hook with Spotify's own block message, 3 reps, TTL pinned, worker via one-turn call | 114 | Superseded by 06 after a contamination audit (23 of 114 runs left the workspace): target content in context down 46%, cost up 16% (paired +18%, CI +1% to +35%), worker called 13 times in 57 runs, cost up 54% where it was |
+| `06-natural-clean-grid` | 21 tasks, natural prompts, four arms (stock; Spotify's hook as shipped; enforced; enforced with numbered lines), 3 reps, offline sandbox on every arm, no-history workspaces, worker thinking off | 252 | The grid the post reports once complete; supersedes 05 |
 
 Grader corrections made during these passes are noted in each README. All 60 natural runs were re-graded after the last correction, so the numbers across `03` and `04` are on the same grader.
 
