@@ -45,7 +45,12 @@ shunt_tmpfile message_file || exit 1
 for path in "${paths[@]}"; do
   {
     printf '<file path="%s">\n' "$path"
-    cat "$path"
+    # DEVIATION (both hook arms): the file goes to the worker with line numbers. Spotify's script sends the
+    # bare text; in our second grid the worker's "line N" claims were then guesses, off by 14 to 23 lines,
+    # and the main model, told by the bulk-reader skill to verify line numbers, re-read the file it was
+    # meant to avoid. Their hosted Portal service may number lines on its side; we cannot see it, so the
+    # worker path we substitute assumes the charitable case.
+    cat -n "$path"
     printf '</file>\n\n'
   } >> "$message_file"
 done

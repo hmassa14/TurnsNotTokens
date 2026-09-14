@@ -146,17 +146,17 @@ Reviewing the 114 runs of grid 05 found that 23 had left the workspace (web fetc
 - **No-history workspaces**: the pinned tree is extracted from a tarball without `.git`, the task's setup patch is applied, and one `import` commit is made, so `git log`/`git show` reveal nothing and `git diff HEAD` is exactly the model's change. Workspaces live under `/var/tmp/shunt-ws`, outside the harness tree, so a run cannot find other runs or `results/`.
 - **System-prompt constraint** on every arm: "Answer from the repository checked out in the working directory. Do not rely on memory of the upstream project or on the internet."
 - **Worker as a one-shot call**: `MAX_THINKING_TOKENS=0` on the headless Haiku call in every hook arm, so the worker's cost is a summary, not a reasoning session (grid 05's worker calls were half thinking tokens).
+- **Numbered lines to the worker, in every hook arm**: `bulk-read` sends each file with `cat -n`. Spotify's script sends bare text; in grid 05 the worker's "line N" claims were guesses, off by 14 to 23 lines, and the skill's own "verify line numbers" instruction then sent the main model back into the file. Their hosted Portal service may number lines on its side; we cannot see it, so the worker path we substitute assumes the charitable case. This is not a separate arm: wrong line numbers are a bug in the part of the plugin we replace, not a design choice worth measuring.
 - **Spotify's skill files byte-identical to upstream**: `${CLAUDE_PLUGIN_ROOT}` is resolved at install time, as a plugin install would, instead of being rewritten in the arm.
 - **Two grader fixes**: ND4 reworded to the startup, process-level lock (its 05 wording matched two code paths); CT2 accepts the reference's `LATENCY_SUFFIX` naming convention (it failed conforming output on every arm in 03, 04 and 05).
 
-Arms, four, all on the same 21 tasks, 3 reps each (controls included this time), 252 runs, interleaved by arm:
+Arms, three, all on the same 21 tasks, 3 reps each (controls included this time), 189 runs, interleaved by arm:
 
 | Arm | What it is | What it answers |
 |---|---|---|
 | `stock` | Claude Code as installed | the baseline |
-| `shunt` | Spotify's plugin exactly as published, offset/limit exception open | what you get if you install it today |
+| `shunt` | Spotify's plugin as published, offset/limit exception open, worker path as above | what you get if you install it today |
 | `shunt-strict` | the exception removed; block message is Spotify's minus the sentence about it | what the post describes |
-| `shunt-fixed` | `shunt-strict` plus `cat -n` in `bulk-read`, so the worker's line numbers are real | what it would take for delegation to pay; grid 05 showed the model re-reading the file after every summary because the worker's line numbers were guesses and the skill says to verify them |
 
 ## Results
 
