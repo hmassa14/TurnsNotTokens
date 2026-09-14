@@ -43,6 +43,8 @@ def load(d):
         "worker_calls": s.get("worker_calls") or 0, "skill_calls": s.get("skill_invocations") or 0,
         "after_block": s.get("after_block") or {}, "spotify_avoided": g.get("spotify_style_tokens_avoided") or 0,
         "output_tokens": sum((x.get("usage") or {}).get("output_tokens", 0) for x in t.get("requests", [])),
+        "frontier_input_tokens": sum(sum((x.get("usage") or {}).get(k, 0) for k in ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens")) for x in t.get("requests", [])),
+        "target_read_lines": g.get("target_read_lines_main") or 0,
         "cache_read": sum((x.get("usage") or {}).get("cache_read_input_tokens", 0) for x in t.get("requests", [])),
     }
 
@@ -122,6 +124,9 @@ def main():
             "requests_mean": (st.mean(x["requests"] for x in s0), st.mean(x["requests"] for x in s1)),
             "tgt_tokens_mean": (st.mean(x["tgt_tokens"] for x in s0), st.mean(x["tgt_tokens"] for x in s1)),
             "output_tokens_mean": (st.mean(x["output_tokens"] for x in s0), st.mean(x["output_tokens"] for x in s1)),
+            "frontier_input_tokens_mean": (st.mean(x["frontier_input_tokens"] for x in s0), st.mean(x["frontier_input_tokens"] for x in s1)),
+            "target_read_lines_mean": (st.mean(x["target_read_lines"] for x in s0), st.mean(x["target_read_lines"] for x in s1)),
+            "spotify_avoided_mean": (st.mean(x["spotify_avoided"] for x in s0), st.mean(x["spotify_avoided"] for x in s1)),
             "cache_read_mean": (st.mean(x["cache_read"] for x in s0), st.mean(x["cache_read"] for x in s1)),
             "blocks": sum(x["blocks"] for x in s1), "runs_with_block": sum(1 for x in s1 if x["blocks"]),
             "worker_calls": sum(x["worker_calls"] for x in s1), "runs_with_worker": sum(1 for x in s1 if x["worker_calls"]),

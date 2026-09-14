@@ -6,6 +6,8 @@
 
 **Headline.** Target-file content in the main model's context fell 46% (counted through every tool). Requests per run rose 29%, wall time 46%, cost +16% by means, +18% paired per task (95% bootstrap interval +1% to +35%; sign test p = 0.19). Pass rate 96% stock, 98% hook. The hook was cheaper on 7 of 21 tasks.
 
+**Tokens, three ways (means per run, stock / hook).** Spotify's formula (file chars/4 minus summary chars/4, only when the worker is called): defined on 9 of 57 hook runs, 12,570 on those, 2,006 averaged over all hook runs (stock's 730 comes from two Explore spawns that named the target). Lines of the target file read by the main model with `Read`: 436 / 42 (−90%). Target-file content reaching the main model by any tool, chars/4: 6,068 / 3,291 (−46%). Input tokens the frontier model was billed for (uncached + cache write + cache read): 270,553 / 332,024 (+23%). Output tokens: 3,718 / 4,572 (+23%).
+
 **Behavior.** 85 blocks in 41 of 57 hook runs. The model's next call after a block: the bulk-reader skill 9 times, Grep 26, Bash 21, a paged Read 26 (refused by the strict hook every time), a Read of another file 3. 13 worker calls in 9 runs on 5 tasks. Zero bypasses.
 
 | Group | Tasks | Runs | Pass stock / hook | Cost per run stock / hook | Δ of means | Δ paired mean (95% CI) | Hook cheaper | Target tokens in context stock / hook | Requests stock / hook | Wall s stock / hook | Blocks | Worker calls |
