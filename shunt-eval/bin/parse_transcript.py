@@ -158,6 +158,21 @@ def main():
                 if later["name"] == "Read" and later["input"].get("file_path") == f and "read_targeted" in later["flags"]:
                     bypass += 1
                     break
+    # what the main agent did right after each hook block: the fallback distribution
+    after_block = Counter()
+    main_rows = [r for r in all_tools if r["agent"] == "main"]
+    for i, row in enumerate(main_rows):
+        if "hook_blocked" not in row["flags"]:
+            continue
+        nxt = main_rows[i + 1] if i + 1 < len(main_rows) else None
+        if nxt is None:
+            after_block["(answered)"] += 1
+        elif "worker_call" in nxt["flags"]:
+            after_block["worker"] += 1
+        elif nxt["name"] == "Read" and "read_targeted" in nxt["flags"]:
+            after_block["Read(paged)"] += 1
+        else:
+            after_block[nxt["name"]] += 1
     lines_entered = sum(row.get("result_lines", 0) for row in all_tools if row["name"] == "Read" and not row.get("is_error") and row["agent"] == "main")
     lines_entered_subagents = sum(row.get("result_lines", 0) for row in all_tools if row["name"] == "Read" and not row.get("is_error") and row["agent"] != "main")
     agent_models = sorted({r["model"] for r in all_req.values() if r["agent"] != "main"})
@@ -190,6 +205,7 @@ def main():
         "bash_reads": flags.get("bash_read", 0),
         "agent_spawns": flags.get("agent_spawn", 0),
         "skill_invocations": flags.get("skill", 0),
+        "after_block": dict(after_block),
         "worker_calls": flags.get("worker_call", 0),
         "reread_after_delegation": reread_after_delegation,
         "edits": flags.get("edit", 0),

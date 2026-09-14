@@ -50,6 +50,8 @@ def load_run(run_dir):
         # performance
         "score": grade.get("score", 0), "pass": 1.0 if grade.get("pass") else 0.0,
         "found": 1.0 if grade.get("target_found") else 0.0,
+        "lucky": 1.0 if grade.get("lucky") else 0.0,
+        "target_tokens_any": grade.get("target_content_tokens_est", 0),
         "lines_in_context": tp.get("lines_entered_context", 0),
         "tool_calls": tp.get("tool_calls_total", 0),
         "reads_whole": tp.get("reads_whole_file", 0), "reads_targeted": tp.get("reads_targeted", 0),
@@ -81,7 +83,9 @@ def main_model_key(res, meta):
 ROWS = [
     ("Performance", None),
     ("Score", "score", "{:.2f}"), ("Pass rate", "pass", "{:.0%}"), ("Found target file", "found", "{:.0%}"),
-    ("Lines read into main context", "lines_in_context", "{:,.0f}"), ("Lines read by subagent or worker", "lines_sub", "{:,.0f}"), ("Tool calls", "tool_calls", "{:.1f}"),
+    ("Lucky passes (right answer, target never found)", "lucky", "{:.0%}"),
+    ("Target content into main context, any tool (tokens, chars/4)", "target_tokens_any", "{:,.0f}"),
+    ("Lines read into main context (Read only)", "lines_in_context", "{:,.0f}"), ("Lines read by subagent or worker", "lines_sub", "{:,.0f}"), ("Tool calls", "tool_calls", "{:.1f}"),
     ("Reads, whole file", "reads_whole", "{:.1f}"), ("Reads, targeted", "reads_targeted", "{:.1f}"),
     ("Reads blocked by hook", "reads_blocked", "{:.1f}"), ("Hook bypassed via offset/limit", "bypass", "{:.1f}"), ("Subagent or worker calls", "delegations", "{:.1f}"),
     ("Re-read after delegation", "reread", "{:.1f}"),

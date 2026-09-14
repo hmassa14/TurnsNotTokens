@@ -29,6 +29,8 @@ Each row gets an exact analog on Kafka, matched on question shape and on file-si
 | 3 `source-plus-test` | "What methods does UserService have, and which ones would be covered if we wrote tests following the OrderService test pattern?" | 35 + 55 | **R6 (new)** what methods does `Filter` have, which would be covered following `InsertHeaderTest`'s pattern | `Filter.java` 62 (no test exists) + `InsertHeaderTest.java` 125 | **no**, same as theirs |
 | 4 `code-generation` | "Write unit tests for UserService following the exact same patterns, structure, and assertions as the OrderService tests." | ref 55, ctx 35 | **W4 (new)** write `FilterTest` following `InsertHeaderTest` exactly | ref `InsertHeaderTest.java` 125, ctx `Filter.java` 62 | **no**, same as theirs |
 
+Code-gen (rows 4 and its scaled versions) is a **skill-uptake test, not a hook test**: no hook intercepts a write, so the code-writer path runs only if the model volunteers the skill. Its result is reported on its own and never folded into the hook's cost figure.
+
 Rows 3 and 4 are kept small on purpose. That is what they tested, and running them shows the reader that half of Spotify's own benchmark is below the hook's threshold. Code-gen is graded two ways: as they scored it (spec sent, file written, Claude never reads it back) and as their skill instructs (Claude reviews the output), because the second is what a real session does.
 
 ## Tasks, part 2: what their benchmark does not cover
@@ -117,7 +119,7 @@ Per run: hook blocks, blocks followed by a paged read, skill invocations, worker
 2. **Cache TTL.** Pinned to 5m on every run via the env var. The first grid straddled Claude Code's automatic switch to 1h and billed the strict arm at the higher rate on all twelve runs.
 3. **Repetitions.** Three per cell for H1 and H2 read tasks. One run per cell gave a 35% gap as billed and a 21 to 27% gap normalized, on 9 of 12 tasks; that is a direction, not a result.
 4. **Interleaving.** Arms alternate per task so time of day and subscription state never line up with one arm.
-5. **Worker.** Haiku through headless Claude Code stands in for Portal. Documented; if the worker is never called it does not matter, if it is called its cost is in the ledger.
+5. **Worker.** Haiku stands in for Portal's Gemini. With `ANTHROPIC_API_KEY` set, the worker is one Messages API call: Spotify's mode instructions as the system prompt, no tools, temperature 0.2 as upstream sets. Without a key (subscription-only auth), it is a one-turn headless Claude Code call with `--tools ""`, so no tool definitions enter the worker's prompt. The first grid's worker carried about 25k tokens of tool definitions per call; that is gone on both paths. Every call records transport, usage, cost and duration.
 6. **Thinking is not persisted.** Claude Code writes empty thinking blocks to the transcript. The model's reasons for a choice cannot be recovered after the fact; behavior has to be inferred from calls only. Design messages so the inference is clean.
 
 ## Grid to run

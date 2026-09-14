@@ -57,6 +57,18 @@ def bug_report(text, g):
             "race_described": race_ok, "false_positives_mentioned": fps}
 
 
+def needle(text, g):
+    """Strict: the literal (or an alias) appears verbatim, whitespace-normalized. Lenient: every identifier in the key appears."""
+    t = " ".join(text.split())
+    lits = [" ".join(x.split()) for x in [g["literal"]] + g.get("aliases", [])]
+    strict = any(l in t for l in lits)
+    idents = g.get("identifiers", [])
+    lenient = all(has(text, i) for i in idents) if idents else strict
+    score = 1.0 if strict else (0.5 if lenient else 0.0)
+    return {"score": score, "pass": strict, "pass_lenient": lenient, "strict_match": strict,
+            "identifiers_missing": [i for i in idents if not has(text, i)]}
+
+
 def norm(s):
     return re.sub(r"\s+", " ", s).strip()
 
@@ -157,12 +169,29 @@ def target_file_check(run_dir, files):
             find_cost += c; find_reqs += 1
         else:
             ans_cost += c; ans_reqs += 1
+    # target content that reached the MAIN model through any tool: Read result lines/chars on the target,
+    # plus Grep/Bash results that hit the target. chars/4 is Spotify's own token convention.
+    read_chars = grep_chars = 0
+    read_lines = 0
+    for t in tp["tool_calls"]:
+        if t.get("agent", "main") != "main" or t.get("is_error"):
+            continue
+        inp = t.get("input", {})
+        if t["name"] == "Read" and any(n in str(inp.get("file_path", "")) for n in names):
+            read_chars += t.get("result_chars", 0); read_lines += t.get("result_lines", 0)
+        elif t["name"] in ("Grep", "Bash"):
+            blob = json.dumps(inp) + " " + (t.get("result_head") or "")
+            if any(n in blob for n in names):
+                grep_chars += t.get("result_chars", 0)
     read_other = sorted({os.path.basename(t["input"].get("file_path", "")) for t in tp["tool_calls"] if t["name"] == "Read"} - set(names))
     return {"target_found": all_found, "target_files_found": found_names, "target_files_missing": sorted(set(names) - set(found_names)),
             "found_via": [f"{v}:{n}" for _, v, n in hits[:6]], "first_target_touch_ts": first_ts,
             "finding_requests": find_reqs, "finding_cost_usd": round(find_cost, 4),
             "answering_requests": ans_reqs, "answering_cost_usd": round(ans_cost, 4),
-            "other_files_read": read_other[:10]}
+            "other_files_read": read_other[:10],
+            "target_read_lines_main": read_lines, "target_read_chars_main": read_chars, "target_grep_chars_main": grep_chars,
+            "target_content_chars_any_tool": read_chars + grep_chars,
+            "target_content_tokens_est": (read_chars + grep_chars) // 4}
 
 
 def spotify_style_avoided(run_dir, files):
@@ -201,6 +230,8 @@ def main():
         res = exact_diff(run_dir, g)
     elif kind == "compile_and_checklist":
         res = compile_and_checklist(run_dir, g)
+    elif kind == "needle":
+        res = needle(load_result_text(run_dir), g)
     else:
         raise SystemExit("unknown grader " + kind)
     res["grader"] = kind
@@ -209,11 +240,8 @@ def main():
     tf = target_file_check(run_dir, task.get("files", []))
     res.update(tf)
     res["spotify_style_tokens_avoided"] = spotify_style_avoided(run_dir, task.get("files", []))
-    if tf.get("target_found") is False:
-        # Never located the file: the answer cannot be grounded, whatever the text says.
-        res["pass"] = False
-        res["score"] = 0.0
-        res["note"] = "target file never read, grepped, or delegated; scored as a miss"
+    # pass is the grader's verdict only. target_found is its own column; a pass without it is "lucky".
+    res["lucky"] = bool(res.get("pass")) and tf.get("target_found") is False
     json.dump(res, open(os.path.join(run_dir, "grade.json"), "w"), indent=2)
     print(json.dumps(res, indent=1))
 

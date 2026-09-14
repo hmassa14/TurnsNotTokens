@@ -39,4 +39,4 @@ if [ "$lines" -le "$MIN_LINES" ]; then
   exit 0
 fi
 
-echo "{\"decision\": \"block\", \"reason\": \"File is ${lines} lines (threshold: ${MIN_LINES}). Use the Agent tool with subagent_type Explore to ask your question about this file instead of reading it directly. Reads with offset/limit are also blocked for this file; use grep for exact lines.\"}"
+echo "{\"decision\": \"block\", \"reason\": \"File is ${lines} lines (threshold: ${MIN_LINES}). Use the Agent tool with subagent_type Explore to ask your question about this file.\"}"

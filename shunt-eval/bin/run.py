@@ -57,6 +57,7 @@ def main():
     ap.add_argument("--keep-workspace", action="store_true")
     ap.add_argument("--permission-mode", default="acceptEdits",
                     help="bypassPermissions is refused when running as root; acceptEdits plus --allowed-tools is the portable choice")
+    ap.add_argument("--cache-ttl", default="5m", help="prompt cache TTL for main, subagents and worker; pinned so both arms pay one rate")
     ap.add_argument("--allowed-tools", default="Read,Grep,Glob,Bash,Edit,Write,MultiEdit,Agent,Skill,TodoWrite,TaskCreate,TaskUpdate")
     args = ap.parse_args()
 
@@ -108,6 +109,8 @@ def main():
         "OTEL_LOG_TOOL_DETAILS": "1",
         "OTEL_RESOURCE_ATTRIBUTES": f"run.id={run_id}",
         "SHUNT_RUN_DIR": run_dir,
+        "CLAUDE_CODE_PROMPT_CACHE_TTL": args.cache_ttl,
+        "CLAUDE_CODE_SUBAGENT_PROMPT_CACHE_TTL": args.cache_ttl,
     })
     os.makedirs(os.path.join(run_dir, "worker"), exist_ok=True)
 
