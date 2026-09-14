@@ -56,7 +56,7 @@
 <li><b>Templated code generation</b>: writing boilerplate, configs, or scaffolding where the structure is already known.</li>
 </ul>
 
-<p>Because Claude Code re-sends the entire conversation on every single request, a large file that enters context once keeps getting billed, at frontier prices, on every request after it.</p>
+<p>Because Claude Code re-sends the entire conversation on every single request, a large file that enters context once keeps getting resent — and rebilled — on every request after it. How much that resend actually costs turns out to matter a lot, and it's not as simple as "the same price again" (more on that later).</p>
 
 <p>To fix that, Spotify built a <em>PreToolUse hook</em> — a script Claude Code runs before it lets a tool call through, able to allow it, block it, or swap in a different instruction, and the model never knows the difference between a hook's message and a tool's real result. Their hook, called <a href="https://github.com/spotify/portal-ai-plugins">shunt</a>, watches for exactly this: when the model tries to read a file over 350 lines, the hook blocks it before the model ever sees the bytes, and routes the file to a cheaper worker instead — other coverage of the post names Gemini 2.5 Flash — to write back a summary, or hand off the boilerplate the same way.</p>
 
