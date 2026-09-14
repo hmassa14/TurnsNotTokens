@@ -60,6 +60,8 @@ def main():
     ap.add_argument("--keep-workspace", action="store_true")
     ap.add_argument("--permission-mode", default="acceptEdits",
                     help="bypassPermissions is refused when running as root; acceptEdits plus --allowed-tools is the portable choice")
+    ap.add_argument("--no-private-tmp", action="store_true",
+                    help="skip the per-session empty tmpfs /tmp (default: each session runs under unshare -m with its own /tmp, so scratch files never leak between runs)")
     ap.add_argument("--cache-ttl", default="5m", help="prompt cache TTL for main, subagents and worker; pinned so both arms pay one rate")
     ap.add_argument("--allowed-tools", default="Read,Grep,Glob,Bash,Edit,Write,MultiEdit,Agent,Skill,TodoWrite,TaskCreate,TaskUpdate")
     ap.add_argument("--append-system-prompt", default="Answer from the repository checked out in the working directory. Do not rely on memory of the upstream project or on the internet.",
@@ -149,6 +151,10 @@ def main():
     if args.append_system_prompt:
         cmd += ["--append-system-prompt", args.append_system_prompt]
     meta["command"] = cmd
+    if not args.no_private_tmp:
+        # every session gets an empty tmpfs /tmp: scratch files a model writes cannot be found by a later run
+        cmd = ["unshare", "-m", "--propagation", "private", "bash", "-c", 'mount -t tmpfs none /tmp && exec "$@"', "_"] + cmd
+        meta["private_tmp"] = True
     t0 = time.time()
     timed_out = False
     try:

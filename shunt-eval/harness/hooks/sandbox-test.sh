@@ -1,0 +1,32 @@
+#!/bin/bash
+# Unit cases for the sandbox hook. Run: harness/hooks/sandbox-test.sh
+cd "$(dirname "$0")"; export CLAUDE_PROJECT_DIR=/var/tmp/shunt-ws/W1; fail=0
+t() { got=$(printf '%s' "$3" | ./sandbox | grep -oE '"decision": "[a-z]+"' | cut -d'"' -f4); if [ "$got" = "$1" ]; then echo "ok    $got  $2"; else echo "FAIL  want $1 got $got  $2"; fail=1; fi; }
+t allow 'worker call, prose slashes in the question' '{"tool_name":"Bash","tool_input":{"command":"/var/tmp/shunt-ws/W1/.claude/shunt/scripts/bulk-read --question \"remote log manager / tiered storage, define(...) / defineInternal(...)\" --paths storage/src/x.java"}}'
+t allow 'scratch files in /tmp' '{"tool_name":"Bash","tool_input":{"command":"cd /var/tmp/shunt-ws/W1/storage && grep -oP x F.java | sort > /tmp/declared.txt && comm -23 /tmp/a /tmp/b"}}'
+t allow 'awk range program' '{"tool_name":"Bash","tool_input":{"command":"awk '"'"'/public static ConfigDef/,/^    }/'"'"' F.java | head"}}'
+t allow 'grep quoted pattern with slash' '{"tool_name":"Bash","tool_input":{"command":"grep -n \"a / b\" x.java"}}'
+t allow 'sed range' '{"tool_name":"Bash","tool_input":{"command":"sed -n '"'"'494,545p'"'"' streams/src/X.java"}}'
+t allow 'gradle' '{"tool_name":"Bash","tool_input":{"command":"./gradlew :connect:transforms:compileTestJava --offline -q"}}'
+t allow 'git log/diff' '{"tool_name":"Bash","tool_input":{"command":"git log --oneline -3 && git diff HEAD"}}'
+t allow 'wc on workspace path' '{"tool_name":"Bash","tool_input":{"command":"wc -l /var/tmp/shunt-ws/W1/a.java | tr -d \" \""}}'
+t allow 'quoted workspace path' '{"tool_name":"Bash","tool_input":{"command":"cat \"/var/tmp/shunt-ws/W1/a.java\""}}'
+t allow 'ls /tmp' '{"tool_name":"Bash","tool_input":{"command":"ls /tmp"}}'
+t allow 'find . relative' '{"tool_name":"Bash","tool_input":{"command":"find . -iname \"Broker*.java\" | head"}}'
+t allow 'read inside' '{"tool_name":"Read","tool_input":{"file_path":"/var/tmp/shunt-ws/W1/a.java"}}'
+t allow 'read /tmp file' '{"tool_name":"Read","tool_input":{"file_path":"/tmp/declared.txt"}}'
+t allow 'glob relative' '{"tool_name":"Glob","tool_input":{"pattern":"**/*.java"}}'
+t block 'curl' '{"tool_name":"Bash","tool_input":{"command":"curl -s https://raw.githubusercontent.com/x"}}'
+t block 'git clone' '{"tool_name":"Bash","tool_input":{"command":"cd /tmp && git clone https://github.com/apache/kafka"}}'
+t block 'pip' '{"tool_name":"Bash","tool_input":{"command":"pip install foo"}}'
+t block 'find /' '{"tool_name":"Bash","tool_input":{"command":"find / -iname \"Broker*.java\" 2>/dev/null"}}'
+t block 'grep -r /' '{"tool_name":"Bash","tool_input":{"command":"grep -rl \"class Foo\" / 2>/dev/null"}}'
+t block 'cd /' '{"tool_name":"Bash","tool_input":{"command":"cd / && ls"}}'
+t block 'ls /' '{"tool_name":"Bash","tool_input":{"command":"ls /"}}'
+t block 'other runs' '{"tool_name":"Bash","tool_input":{"command":"ls /var/tmp/shunt-ws"}}'
+t block 'harness results' '{"tool_name":"Bash","tool_input":{"command":"ls /home/user/WackyWords/shunt-eval/results"}}'
+t block 'quoted harness path' '{"tool_name":"Bash","tool_input":{"command":"cat \"/home/user/WackyWords/shunt-eval/results/x.md\""}}'
+t block 'scratchpad clone' '{"tool_name":"Bash","tool_input":{"command":"ls /tmp/claude-0/x/scratchpad/kafka"}}' 
+t block 'read other run' '{"tool_name":"Read","tool_input":{"file_path":"/var/tmp/shunt-ws/W2/a.java"}}'
+t block 'grep path outside' '{"tool_name":"Grep","tool_input":{"pattern":"x","path":"/home/user/WackyWords/shunt-eval/results"}}'
+exit $fail
