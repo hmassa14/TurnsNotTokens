@@ -24,14 +24,14 @@ Each row gets an exact analog on Kafka, matched on question shape and on file-si
 
 | Their row | Their question (verbatim) | Their files | Our 1:1 | Our files | Hook fires? |
 |---|---|---|---|---|---|
-| 1 `single-large-file` | "What are all the exported items and what do they do?" | 602 lines | **R2** every config key with type and default | `RemoteLogManagerConfig.java` 616 | yes |
-| 2 `multi-file-cross-read` | "Which classes and interfaces are exported across these files, and how do they relate to each other?" | 602 + 35 + 55 | **R5 (new)** one big file plus two small related files, how they relate | `BrokerLifecycleManager.java` 770 + `BrokerState.java` 108 + one more small related file, to select | yes, on the big one |
-| 3 `source-plus-test` | "What methods does UserService have, and which ones would be covered if we wrote tests following the OrderService test pattern?" | 35 + 55 | **R6 (new)** what methods does `Filter` have, which would be covered following `InsertHeaderTest`'s pattern | `Filter.java` 62 (no test exists) + `InsertHeaderTest.java` 125 | **no**, same as theirs |
-| 4 `code-generation` | "Write unit tests for UserService following the exact same patterns, structure, and assertions as the OrderService tests." | ref 55, ctx 35 | **W4 (new)** write `FilterTest` following `InsertHeaderTest` exactly | ref `InsertHeaderTest.java` 125, ctx `Filter.java` 62 | **no**, same as theirs |
+| 1 `single-large-file` | "What are all the exported items and what do they do?" | 602 lines | **SB1** every config key with type and default | `RemoteLogManagerConfig.java` 616 | yes |
+| 2 `multi-file-cross-read` | "Which classes and interfaces are exported across these files, and how do they relate to each other?" | 602 + 35 + 55 | **SB2 (new)** one big file plus two small related files, how they relate | `BrokerLifecycleManager.java` 770 + `BrokerState.java` 108 + one more small related file, to select | yes, on the big one |
+| 3 `source-plus-test` | "What methods does UserService have, and which ones would be covered if we wrote tests following the OrderService test pattern?" | 35 + 55 | **SB3 (new)** what methods does `Filter` have, which would be covered following `InsertHeaderTest`'s pattern | `Filter.java` 62 (no test exists) + `InsertHeaderTest.java` 125 | **no**, same as theirs |
+| 4 `code-generation` | "Write unit tests for UserService following the exact same patterns, structure, and assertions as the OrderService tests." | ref 55, ctx 35 | **SB4 (new)** write `FilterTest` following `InsertHeaderTest` exactly | ref `InsertHeaderTest.java` 125, ctx `Filter.java` 62 | **no**, same as theirs |
 
 Code-gen (rows 4 and its scaled versions) is a **skill-uptake test, not a hook test**: no hook intercepts a write, so the code-writer path runs only if the model volunteers the skill. Its result is reported on its own and never folded into the hook's cost figure.
 
-Rows 3 and 4 are kept small on purpose. That is what they tested, and running them shows the reader that half of Spotify's own benchmark is below the hook's threshold. Code-gen is graded two ways: as they scored it (spec sent, file written, Claude never reads it back) and as their skill instructs (Claude reviews the output), because the second is what a real session does.
+Rows 3 and 4 are kept small on purpose. That is what they tested, and running them shows the reader that half of Spotify's own benchmark is below the hook's threshold. Code-gen is graded on the file the session leaves on disk, which is the file after whatever review the code-writer skill instructs ("review the output and make surgical edits for the ~5-20%"). Spotify's benchmark never graded generated code for correctness; it counted its characters.
 
 ## Tasks, part 2: what their benchmark does not cover
 
@@ -39,18 +39,18 @@ Each addition names the gap it fills.
 
 | Gap in their benchmark | Cell | Tasks | Files | Hook fires? |
 |---|---|---|---|---|
-| Their read rows are all "list every X." The motivation is "read 700 lines to check one thing." The saving from a summary is file size minus answer size, so this is the hook's best case and they never test it. | Needle read | **N1 to N4 (new)**: what `ready()` returns when nothing is ready; what condition triggers rebootstrap; what the KAFKA-6388 guard in `roll()` checks; what `lock()` throws when already locked | `RecordAccumulator` 1,500; `NetworkClient` 1,879; `LocalLog` 1,072; `StateDirectory` 1,019 | yes |
-| One sample per shape. | Second sample of row 1 | R1 every event class and its state | `BrokerLifecycleManager` 770 | yes |
-| Rows 2 to 4 never trip the hook, so they say nothing about it. | Same shapes, scaled into the hook's band | R3 (two big files), R4 (big source + big test), W3 (config class from a 616-line reference), **W5 (new)** tests for `TimestampRouter` following `TimestampConverterTest` (739-line reference) | as listed | yes |
-| Nothing tests a task the post itself says the approach is unsuited to. The hook fires on line count alone, so it fires on these anyway. | Harm: precise edit | E1, E2, E3 | 985 to 1,879 | yes |
-| Same. | Harm: reasoning | D1, D2 | 1,019; 1,500 | yes |
-| No control for the plugin's fixed cost (two skill descriptions in the system prompt every turn) or for unprompted skill uptake. | Small-file control | R6, W4 from part 1; W1, W2; **S1 (new)** a needle question on a file under 350 lines | under 350 | no |
+| Their read rows are all "list every X." The motivation is "read 700 lines to check one thing." The saving from a summary is file size minus answer size, so this is the hook's best case and they never test it. | Needle read | **ND1 to ND4 (new)**: what `ready()` returns when nothing is ready; what condition triggers rebootstrap; what the KAFKA-6388 guard in `roll()` checks; what `lock()` throws when already locked | `RecordAccumulator` 1,500; `NetworkClient` 1,879; `LocalLog` 1,072; `StateDirectory` 1,019 | yes |
+| One sample per shape. | Second sample of row 1 | SC1 every event class and its state | `BrokerLifecycleManager` 770 | yes |
+| Rows 2 to 4 never trip the hook, so they say nothing about it. | Same shapes, scaled into the hook's band | SC2 (two big files), SC3 (big source + big test), SC4 (config class from a 616-line reference), **SC5 (new)** tests for `Filter` following `TimestampConverterTest` (739-line reference) | as listed | yes |
+| Nothing tests a task the post itself says the approach is unsuited to. The hook fires on line count alone, so it fires on these anyway. | Harm: precise edit | HM1, HM2, HM3 | 985 to 1,879 | yes |
+| Same. | Harm: reasoning | HM4, HM5 | 1,019; 1,500 | yes |
+| No control for the plugin's fixed cost (two skill descriptions in the system prompt every turn) or for unprompted skill uptake. | Small-file control | SB3, SB4 from part 1; CT1, CT2; **CT3 (new)** a needle question on a file under 350 lines | under 350 | no |
 
 Every key is derived mechanically from the code, as in `docs/TASKS.md`. Needle keys are a literal expression or identifier with an alias list, so a lossy summary fails.
 
 ## Metrics
 
-Spotify's benchmark measured one deterministic path, so it had two numbers: corpus size and summary size. A Claude Code session is a sequence of requests the model chooses, so every metric here is defined per request, summed per run, and kept separate for the main model and the worker. Three sources, reconciled on every run: the JSON Claude Code prints, the transcript it writes, and the OpenTelemetry export. A number that does not match across all three is not reported.
+Spotify's benchmark measured one deterministic path, so it had two numbers: corpus size and summary size. A Claude Code session is a sequence of requests the model chooses, so every metric here is defined per request, summed per run, and kept separate for the main model and the worker. Three sources on every run: the JSON Claude Code prints (billed cost and totals), the transcript it writes (every request's usage, every tool call), and the OpenTelemetry export (per-request latency). Cost is recomputed per request from the transcript at list price and checked against the printed `total_cost_usd`; the difference is stored with each run (`cost_recon_diff_usd`, zero to six decimals on every run so far).
 
 Three prongs decide whether the hook belongs in a real deployment. A fourth group, tokens, is Spotify's own metric and is reported beside cost, never instead of it. A fifth, behavior, explains the other four.
 
@@ -60,10 +60,11 @@ Three prongs decide whether the hook belongs in a real deployment. A fourth grou
 |---|---|---|
 | pass | grader verdict at the task's threshold | grade.json |
 | score | the grader's continuous score, for partial credit | grade.json |
-| target found | the session read, grepped, or delegated the target file at least once; a pass without it is scored as a miss | transcript |
+| target found | the session read, grepped, or delegated the target file at least once; kept separate from pass | transcript |
+| lucky | pass and not target found; a right answer that never touched the file, reported beside the pass rate | grade.json |
 | pass^k | all k reps passed; the number to report, since one lucky run is not a pass | grade.json over reps |
 
-Graders by category: SB and SC reads, and ND, use key lists derived from the code (recall over names, exact match for needle literals, with alias lists). HM edits use exact diff with decoy lines that must be untouched; HM debugging names the method, a line in range, and the race. Code-gen (SB4, SC4, SC5, CT1, CT2) is graded by **compiling and running the generated tests with Gradle**, not by a regex checklist; the first grid's W2 failed a checklist regex on all arms, which is a grader bug, not a finding. Code-gen is graded twice from the same run: as Spotify scored it (the file is written, the model never reads it back) and with the review step their skill instructs.
+Graders by category: SB and SC reads, and ND, use key lists derived from the code (recall over names, exact match for needle literals, with alias lists). HM edits use exact diff with decoy lines that must be untouched; HM debugging names the method, a line in range, and the race. Code-gen (SB4, SC4, SC5, CT1, CT2) is graded by a checklist of required patterns taken from the reference file (class and method names, the assertion and helper calls the reference uses). Compiling with Gradle was the plan and the grader will do it when a workspace and an offline build are available; Kafka's build does not run offline inside the harness, so this grid is checklist-only, which is a weaker grader than the read tasks get and is stated as such. The first grid's W2 (now CT2) failed its checklist on every arm, so a CT2 failure on both arms in the rerun is a grader question before it is a finding.
 
 What "good" means: for SB, ND, SC and CT, hook pass rate equal to stock. For HM, hook pass rate not below stock. A cost saving on a task that stopped passing is not a saving.
 
@@ -77,7 +78,7 @@ What "good" means: for SB, ND, SC and CT, hook pass rate equal to stock. For HM,
 | by request | the per-request series, for the trace figures | transcript |
 | resend bill | sum over requests of cached tokens re-sent, at the cache-read rate; the mechanism metric for M | transcript |
 
-Rules. Cache TTL is pinned to 5m on every run (`CLAUDE_CODE_PROMPT_CACHE_TTL=5m`), so both arms pay one rate; the first grid straddled Claude Code's automatic switch to 1h and charged the strict arm 2x on writes. Every recomputed total is checked against Claude Code's own `total_cost_usd` and must match to four decimals. Cost is reported at equal correctness: the headline figure is over tasks both arms passed, with the all-tasks figure beside it.
+Rules. Cache TTL is pinned to 5m on every run (`CLAUDE_CODE_PROMPT_CACHE_TTL=5m`), so both arms pay one rate; the first grid straddled Claude Code's automatic switch to 1h and charged the strict arm 2x on writes. Every recomputed total is checked against Claude Code's own `total_cost_usd` and the difference is stored with the run. Cost is reported at equal correctness: the headline figure is over tasks both arms passed, with the all-tasks figure beside it.
 
 Comparison. Paired per task, three reps: per-task mean and range, then the paired difference across tasks with an interval, and a sign test. The number to publish is a percentage change with an interval, per category, not one point for the whole grid.
 
@@ -126,16 +127,16 @@ Per run: hook blocks, blocks followed by a paged read, skill invocations, worker
 
 | Block | Tasks | Arms | Reps | Runs |
 |---|---|---|---|---|
-| 1:1 with Spotify | R2, R5, R6, W4 | stock, shunt-strict (neutral message) | 3 | 24 |
-| Needle reads | N1, N2, N3, N4 | same | 3 | 24 |
-| Scaled and second-sample | R1, R3, R4, W3, W5 | same | 3 | 30 |
-| Harm | E1, E2, E3, D1, D2 | same | 3 | 30 |
-| Small-file controls | S1, W1, W2 | same | 1 | 6 |
+| 1:1 with Spotify | SB1, SB2, SB3, SB4 | stock, shunt-strict (neutral message) | 3 | 24 |
+| Needle reads | ND1, ND2, ND3, ND4 | same | 3 | 24 |
+| Scaled and second-sample | SC1, SC2, SC3, SC4, SC5 | same | 3 | 30 |
+| Harm | HM1, HM2, HM3, HM4, HM5 | same | 3 | 30 |
+| Small-file controls | CT3, CT1, CT2 | same | 1 | 6 |
 | | | | | **114** |
 
-At the first grid's mean of about $0.18 per run, about $21 at list price. W4 and W5 are each graded twice from one run (as Spotify scored it, and with the review step), so they do not add runs. Arm B (shipped message, paging exception open) is not re-run: bypass on every block is established and stays as the sidebar.
+At the first grid's mean of about $0.18 per run, about $21 at list price.  Arm B (shipped message, paging exception open) is not re-run: bypass on every block is established and stays as the sidebar.
 
-Order of work: write the new tasks and derive their keys (R5, R6, W4, W5, N1 to N4, S1), then the neutral-message strict arm, then the TTL flag in `run.py`, then the new token metric in `parse_transcript.py`, then a smoke run of one task per block before the grid.
+Order of work: write the new tasks and derive their keys (SB2, SB3, SB4, SC5, ND1 to ND4, CT3), then the neutral-message strict arm, then the TTL flag in `run.py`, then the new token metric in `parse_transcript.py`, then a smoke run of one task per block before the grid.
 
 ## What the first grid still supports
 

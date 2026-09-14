@@ -169,6 +169,8 @@ def target_file_check(run_dir, files):
             find_cost += c; find_reqs += 1
         else:
             ans_cost += c; ans_reqs += 1
+    # reconciliation: per-request recomputation at list price vs Claude Code's own total_cost_usd
+    recomputed = round(find_cost + ans_cost, 6)
     # target content that reached the MAIN model through any tool: Read result lines/chars on the target,
     # plus Grep/Bash results that hit the target. chars/4 is Spotify's own token convention.
     read_chars = grep_chars = 0
@@ -191,7 +193,8 @@ def target_file_check(run_dir, files):
             "other_files_read": read_other[:10],
             "target_read_lines_main": read_lines, "target_read_chars_main": read_chars, "target_grep_chars_main": grep_chars,
             "target_content_chars_any_tool": read_chars + grep_chars,
-            "target_content_tokens_est": (read_chars + grep_chars) // 4}
+            "target_content_tokens_est": (read_chars + grep_chars) // 4,
+            "cost_recomputed_usd": recomputed}
 
 
 def spotify_style_avoided(run_dir, files):
@@ -242,6 +245,14 @@ def main():
     res["spotify_style_tokens_avoided"] = spotify_style_avoided(run_dir, task.get("files", []))
     # pass is the grader's verdict only. target_found is its own column; a pass without it is "lucky".
     res["lucky"] = bool(res.get("pass")) and tf.get("target_found") is False
+    # reconciliation of the per-request list-price recomputation against Claude Code's own figure
+    try:
+        billed = float(json.load(open(os.path.join(run_dir, "result.json"))).get("total_cost_usd") or 0)
+    except (OSError, ValueError):
+        billed = None
+    if billed is not None and tf.get("cost_recomputed_usd") is not None:
+        res["cost_billed_main_usd"] = billed
+        res["cost_recon_diff_usd"] = round(tf["cost_recomputed_usd"] - billed, 6)
     json.dump(res, open(os.path.join(run_dir, "grade.json"), "w"), indent=2)
     print(json.dumps(res, indent=1))
 

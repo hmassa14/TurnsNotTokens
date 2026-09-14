@@ -86,56 +86,59 @@
 
 <h2>Our experiment: a framework to copy theirs</h2>
 
-<p><em>Does cutting tokens actually cut cost?</em> That's what this tests, on the three things that actually decide whether a technique like this belongs in a real deployment: <b>performance</b> (did it get the right answer), <b>latency</b> (how long that took), and <b>cost</b> (what it cost). Getting a fair answer meant reproducing Spotify's setup as closely as an outsider reading a blog post can: their kind of repo, their hook, their two workflows, run against the plain baseline they're implicitly compared to.</p>
+<p><em>Does cutting tokens actually cut cost?</em> That's what the rest of this piece tests, and testing it fairly meant building two things before a single task ran: a corpus with real files in the size band shunt actually targets, and an evaluation that runs the model instead of assuming what it does after a block. I used Apache Kafka, at a pinned commit, as the public stand-in for Mazmanov's large Java monorepo — big enough to have plenty of files over 350 lines for the hook to have real work to do. Every task below runs under two arms: <em>stock</em>, which is Claude Code exactly as installed with nothing added, and a hook arm built from Spotify's own plugin. What follows is what I measured before I trusted either arm's numbers, where I copied Spotify's plugin exactly, the three places I didn't, and why.</p>
 
-<h3>Finding an open-source monorepo</h3>
+<h3>What Spotify's evals actually measure</h3>
 
-<p>Per his post, Mazmanov built and tested shunt against a large Java monorepo. I wanted a public, reproducible stand-in for that: an open-source Java codebase big enough to have plenty of real files in the 350-line-to-25,000-token band the hook actually cares about. Apache Kafka, at a pinned commit, fit: 17% of its source files are over 350 lines, holding 64% of all the code, against 7.5% and 38% on a comparable TypeScript monorepo I considered and rejected for being too thin in exactly that band.</p>
+<p>Before building anything of my own, I read what ships inside <code>plugins/shunt</code> itself. The plugin carries two eval suites, and neither one does what you'd assume a plugin that changes what Claude Code reads would do: neither ever runs Claude Code.</p>
 
-<h3>Simulating their tasks</h3>
+<p>The first, <code>evals/hook-evals.json</code>, is a unit test for the hook script in isolation. It's 17 cases, each one piping a synthetic file of a given line count straight into <code>check-file-size</code> over stdin and asserting the JSON decision that comes back — <code>allow</code> or <code>block</code> — against what's expected. The line counts it checks cluster right around the threshold on purpose: 100 lines (well under), 350 (the boundary itself), 351 (one line over), 1200, and 5000 (comfortably over). It's a good test of the hook's arithmetic. It says nothing about what happens after a block, because nothing downstream of the hook ever runs.</p>
 
-<p>Twenty-one tasks on Kafka, in five groups. Each group is there to answer one question, and the prefix on a task tells you which one:</p>
+<p>The second, <code>evals/benchmarks.json</code>, is the one behind Spotify's 90% number. It has four rows, and <code>evals/run.sh</code> scores every one of them by calling <code>scripts/bulk-read</code> or <code>scripts/code-write</code> directly — not through Claude Code, not through a <code>Read</code> tool call, not through the hook. For the three bulk-read rows, the "without shunt" cost is the corpus's character count divided by four, and the "with shunt" cost is the returned summary's character count divided by four — the shell script's own <code>token_estimate()</code> function, applied on both sides of the same subtraction. For the code-generation row, it weights output tokens 5x (the script's comment says output tokens cost about five times input) to price what "without shunt" would have cost in generated output, and scores "with shunt" as a flat zero tokens, because the code gets written straight to a file on disk and Claude never reads it back. The fixtures behind all four rows are small: <code>websocket-handler.ts</code> at 602 lines, <code>user-service.ts</code> at 35, <code>order-service.test.ts</code> at 55. Only the first two rows ever touch the 602-line file, so only rows 1 and 2 clear the 350-line threshold at all — rows 3 and 4 are built entirely out of files the hook would never have blocked in the first place, even if this suite ran them through it, which it doesn't.</p>
 
-<ul>
-<li><b>SB, Spotify's benchmark (4 tasks).</b> Their four benchmark rows rebuilt one to one: same question shape, same file sizes. This is the baseline for anything we say about their number. It also shows something on its own: two of their four rows use files under 350 lines, so the hook never fires on half of what they measured.</li>
-<li><b>ND, needle reads (4 tasks).</b> One question whose answer sits in a small slice of a big file. This is the case Spotify's motivation describes and their benchmark never tests. It's also the hook's best case, since the saving from a summary is file size minus answer size, and here the answer is tiny.</li>
-<li><b>SC, scaled to fire the hook (5 tasks).</b> Their rows 2 to 4 again, on files big enough to trip the block. SB tells you what they measured. SC tells you what the hook does when it meets their own task shapes.</li>
-<li><b>HM, harm (5 tasks).</b> Precise edits and debugging on big files. Spotify's own post says delegation doesn't fit either one. The hook fires on them anyway, because it only sees line count. The question here isn't whether it helps, it's whether it costs anything.</li>
-<li><b>CT, controls (3 tasks).</b> Same shapes on files under 350 lines. The hook never fires, so the only thing left to measure is what having the plugin installed costs on its own.</li>
-</ul>
+<p>Put those two suites together and here's what Spotify actually verified before publishing: that the hook's line-count arithmetic is correct, and that reading a file directly costs more characters than reading a summary of it. Both of those are true and neither one is in dispute. What's missing from both suites is the one step in the whole pipeline that isn't deterministic — what the model does with itself once a <code>Read</code> call comes back refused. A <code>PreToolUse</code> hook can block one tool call; it has no way to make the model's next move be the one the plugin's author intended, and nothing in either eval suite ever puts a model in that position to find out. That's the step carrying the entire 90% claim, and it was assumed, not measured, in Spotify's own tests. We run the model in between.</p>
 
-<p>Every task is asked the way a developer would, with no file path, so the session has to find the file before it can do anything with it. Every answer key comes from the code, not from me.</p>
+<blockquote class="tldr">TLDR; Spotify's own evals never run Claude Code. One suite checks the hook's allow/block arithmetic in isolation; the other times a deterministic script call and calls the difference tokens saved. The one non-deterministic step in the whole design — what the model does after it's told no — never appears in either one.</blockquote>
 
-<blockquote class="tldr">TLDR; SB, ND and SC test whether the hook helps where Spotify says it should. HM tests whether it hurts where they say it doesn't apply. CT is what everything looks like with the hook doing nothing.</blockquote>
+<h3>The rule I followed, and the three places I broke it</h3>
 
-<h3>Building our eval harness</h3>
-
-<p>The harness itself is five small pieces of Python, all in this repo:</p>
-
-<ul>
-<li><b>The orchestrator</b> (<code>run.py</code>): copies the repo, drops in the arm's <code>.claude/</code> folder, launches the headless session, and collects everything it produces.</li>
-<li><b>The telemetry receiver</b> (<code>otlp_receiver.py</code>): a small local HTTP server that catches Claude Code's OpenTelemetry export so nothing has to leave the machine.</li>
-<li><b>The parsers</b> (<code>parse_transcript.py</code>, <code>parse_otel.py</code>): turn the raw transcript and OTel dump into one structured record per request — tokens, tool calls, hook decisions — so separate runs are actually comparable.</li>
-<li><b>The grader</b> (<code>grade.py</code>): checks the answer against a key built by hand from the real code, and separately checks whether the target file was ever actually found.</li>
-<li><b>The rollup</b> (<code>table.py</code>): averages every run into the comparison tables the numbers in this post come from.</li>
-</ul>
-
-<p>Every session in this evaluation, across the head-to-head and the two variants below, went through the same five scripts, and I checked the orchestrator's own summary against both parsers on every single one before trusting a number. They agreed to four decimal places throughout.</p>
-
-<h3>Defining the baseline</h3>
-
-<p>One run, start to finish, is the same regardless of arm: copy an untouched Kafka clone into a scratch directory — nothing ever runs against the real checkout — run <code>claude -p</code> with the task's prompt in a brand-new session, with a fixed tool allowlist and a turn cap, then grade the answer against the key above and separately check the transcript for whether the target file was ever read, grepped, or handed off at all. Getting the right answer without ever finding the real file doesn't count as a pass, because that's a lucky guess wearing a right answer.</p>
-
-<p>The baseline, <code>stock</code>, adds nothing to that at all: Claude Code exactly as installed, with only its own default read limits and prompt caching doing whatever they'd do anyway.</p>
-
-<h3>Recreating Spotify's implementation</h3>
-
-<p>The <code>hook</code> arm drops Spotify's plugin in verbatim, with two differences worth naming. The first is the worker: shunt's own routing call goes through Spotify's internal Portal system, which other coverage of the post points to Gemini 2.5 Flash — I don't have access to Portal, so I substituted a direct call to Haiku running the same mode prompts, which puts the worker's own cost in the ledger instead of hiding it behind someone else's infrastructure. The second is the exception in the sidebar below, which I closed so the hook would actually enforce the block it's supposed to make.</p>
+<p>The rule going in was simple: run Spotify's plugin verbatim, and deviate only where there's a stated, specific design flaw — never a stylistic preference, never a guess at what they "probably meant." Every deviation gets written down, with the reason, so a reader can decide for themselves whether it's fair.</p>
 
 <figure>
   <img src="figures/post/B-setup.png" alt="Diagram: one run copies a fresh Kafka checkout, adds one .claude folder, runs claude -p with the question in a new session, collects three records, and grades the answer. The two .claude folders are stock, an empty settings file, and Spotify's hook with its Portal call replaced by a call to Haiku.">
   <figcaption>Figure B · the setup</figcaption>
 </figure>
+
+<div style="overflow-x:auto; margin:24px 0;">
+<table style="width:100%; border-collapse:collapse; font-size:0.92em; line-height:1.5;">
+<thead>
+<tr>
+<th style="text-align:left; padding:6px 12px 10px 0; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">Deviation</th>
+<th style="text-align:left; padding:6px 12px 10px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">What changed</th>
+<th style="text-align:left; padding:6px 0 10px 12px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="padding:12px 12px 12px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>(a) The worker</b><br><code>lib/aika.sh</code></td>
+<td style="padding:12px; border-bottom:1px solid var(--line); vertical-align:top;">Spotify's Portal call to a hosted Gemini model becomes a call to Haiku, running Spotify's own mode prompt as the system prompt, no tools, temperature 0.2 — one Messages API call when an API key is available. Without one, it falls back to a one-turn headless Claude Code call with <code>--tools ""</code>, so no tool definitions ever enter the worker's own prompt.</td>
+<td style="padding:12px 0 12px 12px; border-bottom:1px solid var(--line); vertical-align:top;">I don't have access to Spotify's internal Portal system, so this is the closest same-shape substitute buildable outside it — and it puts the worker's own cost honestly in the ledger instead of hiding it behind someone else's infrastructure. This grid ran on the fallback: the machine it ran on has a Claude subscription and no API key. Measured overhead of that path: 591 input tokens, zero cache writes, $0.0012 for a trivial message. The earlier version of this same substitute, run without <code>--tools ""</code>, carried about 25,000 cache-write tokens of tool definitions on every single call — gone now on both paths.</td>
+</tr>
+<tr>
+<td style="padding:12px 12px 12px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>(b) The exception</b><br><code>hooks/check-file-size</code>, strict arm only</td>
+<td style="padding:12px; border-bottom:1px solid var(--line); vertical-align:top;">The offset/limit exception — any <code>Read</code> call that sets either one sails through no matter how big the file is — is removed, and with it the one sentence in the block message that points the model at it. Every other word of the message is Spotify's.</td>
+<td style="padding:12px 0 12px 12px; border-bottom:1px solid var(--line); vertical-align:top;">The hook's own top-of-file comment says its job is to "block full-file reads on large files." An exception that lets any read carrying an offset through, regardless of file size, is a hole in that promise, not a feature of it — and in the pilot, the model used it on every single block. The shipped version, exception intact, ran in that pilot; what it did is the sidebar below. The grid runs the closed version, because that's the hook doing what the post says it does.</td>
+</tr>
+<tr>
+<td style="padding:12px 12px 0 0; vertical-align:top;"><b>(c) Everything else</b><br>skills, <code>check-bash-read</code></td>
+<td style="padding:12px 0; vertical-align:top;">File paths only, so the skill scripts resolve inside this evaluation's directory layout instead of Spotify's plugin install.</td>
+<td style="padding:12px 0 12px 12px; vertical-align:top;"><code>check-bash-read</code>, both scripts, both skill files' instructional text, and the 350-line threshold itself are byte-identical to what Spotify published. Nothing else in the plugin was touched.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>Here's what deviation (b) looked like in practice, and why closing it wasn't optional once I'd seen it happen:</p>
 
 <div class="callout hook">
 <span class="label">Sidebar: the rule I had to remove first</span>
@@ -146,7 +149,162 @@
 <p>That's a bug in the exception, not a finding about delegation, so I closed it — a file over 350 lines simply cannot be <code>Read</code> by the main model at all, offset or no offset — and ran everything past this point against that version. Every number from here on is the hook doing what the post says it does.</p>
 </div>
 
-<blockquote class="tldr">TLDR; same repo shape, same two workflows, same hook, run against the same plain baseline — with two honest substitutions (Haiku standing in for Portal, one loophole closed) so the comparison tests what Spotify actually built, not a version that quietly lets the model off the hook.</blockquote>
+<blockquote class="tldr">TLDR; the plugin runs verbatim except in three places, all three written down here: the worker becomes Haiku because I don't have Portal access, the strict arm closes a real bypass the published hook leaves open, and everything else — the skills, the Bash-side hook, the threshold — is byte-identical to what Spotify shipped.</blockquote>
+
+<h3>Two hypotheses, and the mechanism claim underneath them</h3>
+
+<p>Spotify's claim splits cleanly into two testable hypotheses, plus one claim about mechanism that has to hold for either of them to matter at all:</p>
+
+<ul>
+<li><b>H1 — the case shunt targets.</b> On the workloads the hook is built for, it lowers both frontier tokens and dollar cost, at equal correctness. This is what SB, ND and SC below exist to test. <em>Supported</em> means: the hook run passes at the same rate as stock, tokens reaching the frontier model's context fall, and cost falls on a majority of the paired repetitions.</li>
+<li><b>H2 — the case Spotify says it doesn't touch.</b> On workloads the hook wasn't built for, where it still fires because the file happens to be big, correctness doesn't drop and cost doesn't rise. This is what HM below tests. <em>Supported</em> means: pass rate doesn't fall below stock, and cost stays within noise of stock — a cost increase here isn't neutral, it's harm, since nothing about the task justified paying for a delegation attempt in the first place.</li>
+<li><b>M — the mechanism claim underneath both.</b> Whatever cost difference shows up is explained by how many requests get sent, not by how many tokens get saved per request. If M holds, cost should track <code>api_requests</code>, not <code>tokens_saved</code> — and that's the relationship every category below, controls included, gets checked against.</li>
+</ul>
+
+<p>A task that doesn't sit inside one of these three cells doesn't belong in the grid. That's the actual filter I applied to every task before it got written.</p>
+
+<h3>Five task categories, matched to theirs where theirs gives me something to match</h3>
+
+<p>Twenty-one tasks on Kafka, sorted into five categories. The prefix on a task's id says which one, and every category exists to answer exactly one of the three cells above.</p>
+
+<ul>
+<li><b>SB — Spotify's benchmark, one to one (4 tasks).</b> Their own <code>benchmarks.json</code> has four rows, and each gets an exact analog on Kafka: same question shape, same file-size band, so the comparison is theirs first and ours second.
+<ul>
+<li><b>SB1</b> — theirs: <em>"What are all the exported items and what do they do?"</em> on <code>websocket-handler.ts</code>, 602 lines. Ours: every config key in <code>RemoteLogManagerConfig.java</code>, 616 lines, with its type and default. Hook fires: yes.</li>
+<li><b>SB2</b> — theirs: <em>"Which classes and interfaces are exported across these files, and how do they relate to each other?"</em> on <code>websocket-handler.ts</code> + <code>user-service.ts</code> + <code>order-service.test.ts</code> (602 + 35 + 55 lines). Ours: how <code>BrokerLifecycleManager.java</code> (770 lines), <code>BrokerState.java</code> (108 lines), and <code>BrokerRegistrationTracker.java</code> relate. Hook fires: yes, on the big one.</li>
+<li><b>SB3</b> — theirs: <em>"What methods does UserService have, and which ones would be covered if we wrote tests following the OrderService test pattern?"</em> on 35 + 55 lines. Ours: what methods <code>Filter.java</code> (62 lines, no test exists yet) has, and which would be covered following <code>InsertHeaderTest.java</code>'s (125 lines) pattern. Hook fires: no — same as theirs.</li>
+<li><b>SB4</b> — theirs: <em>"Write unit tests for UserService following the exact same patterns, structure, and assertions as the OrderService tests."</em> Reference 55 lines, context 35. Ours: write <code>FilterTest</code> following <code>InsertHeaderTest.java</code> exactly, reference 125 lines, context <code>Filter.java</code> at 62. Hook fires: no — same as theirs.</li>
+</ul>
+Rows 3 and 4 are kept small in both benchmarks on purpose — that's what Spotify tested, and running the pair here makes it visible that half of their own benchmark sits below the hook's own threshold. On two of their four rows, the hook that's supposed to trigger the delegation would never have fired. Their code-generation row, and its scaled copies below (SC4, SC5), is a <em>skill-uptake test, not a hook test</em>: no <code>PreToolUse</code> hook watches a <code>Write</code> call, so code-writer only ever runs if the model reaches for the skill on its own. I grade the file the session leaves on disk. That's the file after whatever review code-writer's own skill instructs ("review the output and make surgical edits for the ~5–20% that needs Claude-level judgment"), which is what an actual session does with generated code. Spotify's benchmark never graded the generated code for correctness at all; it counted its characters.</li>
+
+<li><b>ND — needle reads (4 tasks).</b> One fact buried in a big file: the case Spotify's own motivation describes — read 700 lines to check one thing — and the case their four-row benchmark never once tests, since every row there asks the model to enumerate everything a file exports. A needle task is the hook's best possible case, because the saving from handing back a summary instead of the file is <em>file size minus answer size</em>, and here the answer is a sentence, sometimes a single identifier. Every key is a literal expression or name with an alias list, so a lossy summary fails it rather than passing on a technicality.
+<ul>
+<li><b>ND1</b> — what <code>ready()</code> returns when nothing is ready, in <code>RecordAccumulator.java</code>, 1,500 lines.</li>
+<li><b>ND2</b> — what condition triggers a rebootstrap, in <code>NetworkClient.java</code>, 1,879 lines.</li>
+<li><b>ND3</b> — what the KAFKA-6388 guard inside <code>roll()</code> checks, in <code>LocalLog.java</code>, 1,072 lines.</li>
+<li><b>ND4</b> — what <code>lock()</code> throws when the lock is already held, in <code>StateDirectory.java</code>, 1,019 lines.</li>
+</ul>
+Hook fires on all four.</li>
+
+<li><b>SC — their own shapes, scaled until the hook actually fires (5 tasks).</b> Rows 2 through 4 of Spotify's benchmark never trip their own 350-line threshold, which means their benchmark says nothing about what the hook does when it meets its own target shapes at scale. SC reruns those exact shapes on files that clear the line.
+<ul>
+<li><b>SC1</b> — a second sample of the single-large-file shape: every event class and its state, in <code>BrokerLifecycleManager.java</code>, 770 lines.</li>
+<li><b>SC2</b> — the cross-read shape scaled up: <code>GroupCoordinatorShard.java</code> (1,496 lines) and <code>GroupCoordinatorRecordHelpers.java</code> (841 lines), cross-referenced for how records are replayed.</li>
+<li><b>SC3</b> — the source-plus-test shape scaled up: <code>BatchAccumulator.java</code> (646 lines) paired with its own <code>BatchAccumulatorTest.java</code> (764 lines).</li>
+<li><b>SC4</b> — the code-generation shape scaled up: a config class generated from the same 616-line <code>RemoteLogManagerConfig.java</code> reference as SB1.</li>
+<li><b>SC5</b> — the same <code>FilterTest</code> as SB4, generated from the 739-line <code>TimestampConverterTest.java</code> as reference instead of the 125-line one.</li>
+</ul>
+Hook fires on all five; SC4 and SC5 are graded the same way as SB4.</li>
+
+<li><b>HM — harm (5 tasks).</b> Spotify's own post names two task types the approach isn't meant for: a precise edit, where the model needs exact line content to act on, and debugging, where it needs to hold the whole control flow in view at once. The hook doesn't know either of those things — it only ever sees a line count — so it fires on these exactly the way it fires on everything else over 350 lines. HM doesn't ask whether delegation helps here, since nobody claims it does. It asks whether being blocked costs anything when there's nothing to gain from the block.
+<ul>
+<li><b>HM1, HM2, HM3</b> — precise edits: change one log statement's level in <code>SharePartitionManager.java</code> (985 lines), rename one lambda parameter in <code>NetworkClient.java</code> (1,879), change one log level in <code>LocalLog.java</code> (1,072). Each file also carries decoy lines that look similar and must stay untouched.</li>
+<li><b>HM4</b> — a planted concurrency bug in <code>StateDirectory.java</code>, 1,019 lines: a lock taken outside its synchronization.</li>
+<li><b>HM5</b> — a planted concurrency bug in <code>RecordAccumulator.java</code>, 1,500 lines: an append made outside the lock.</li>
+</ul>
+Hook fires on all five.</li>
+
+<li><b>CT — controls (3 tasks).</b> Same question shapes, on files that stay under 350 lines on purpose, so the hook never fires and the only thing left to measure is what the plugin costs by being installed and doing nothing. That cost isn't automatically zero: two skill descriptions — bulk-reader and code-writer — sit in the system prompt on every single turn whether either is ever opened or not, and a model that's read those descriptions is free to reach for one on a task nobody built the hook to trigger. CT isolates both: the fixed system-prompt tax, and any unprompted skill uptake.
+<ul>
+<li><b>CT3</b> — a needle question on <code>BrokerState.java</code>, 108 lines.</li>
+<li><b>CT1, CT2</b> — the code-generation control pair, same shape as SB4, from references of 225 and 213 lines.</li>
+</ul>
+Hook fires on none of the three. SB3 and SB4 are also under the threshold, so they double as controls for their own shapes.</li>
+</ul>
+
+<blockquote class="tldr">TLDR; SB, ND and SC all test H1 — does the hook help where Spotify says it should. HM tests H2 — does it stay harmless where they say it doesn't apply. CT tests neither directly; it's the cost of having the plugin installed and silent, and every other number in this framework gets read against it.</blockquote>
+
+<h3>Metrics: what "helped" has to mean</h3>
+
+<p>Spotify's own benchmark measured one deterministic path end to end, so it only ever needed two numbers: corpus size, summary size. A Claude Code session is a sequence of requests the model itself chooses to make, so every metric here is defined per request, summed per run, and kept separate for the main model and the worker. Three sources back the numbers: the JSON Claude Code prints when a session ends (the billed cost), the transcript it writes as it goes (every request's token usage, every tool call), and the OpenTelemetry export the local runner catches (per-request latency). Cost gets recomputed per request from the transcript at list price and checked against the billed figure; the difference is stored with every run, and so far it's been zero.</p>
+
+<p><b>Performance — did it get the right answer.</b></p>
+<pre style="background:var(--soft); border-radius:8px; padding:14px 18px; overflow-x:auto; font-family:'IBM Plex Mono',monospace; font-size:0.85em; line-height:1.7; margin:8px 0 20px; color:var(--ink);">pass          = grader verdict at the task's threshold
+target_found  = target file was read, grepped, or delegated at least once
+lucky         = pass AND NOT target_found
+pass^k        = pass on every one of k repetitions</pre>
+<p><em>target_found</em> is checked separately from <em>pass</em> because getting the right answer without ever touching the real file is a lucky guess wearing a right answer. It still counts as a pass, since the grader can't tell the difference, but <em>lucky</em> flags it and it gets reported next to the pass rate. <em>pass^k</em>, not a single run's pass, is the number reported per task, since one run landing right isn't evidence, it's a coin flip that happened to come up correct. Graders differ by category: SB, SC and ND score on key lists derived straight from the code — recall over names, exact match on needle literals. HM edits are graded by exact diff against decoy lines that have to stay untouched; HM debugging tasks are graded on naming the right method, a line inside the correct range, and the actual race condition, not a paraphrase of it. Code-gen tasks are graded by a checklist of required patterns taken from the reference file: the class and method names, the assertion styles, the helper calls the reference uses. Compiling would be the better grader, and the harness will do it when a Kafka build is available; the build doesn't run offline on the machine the grid ran on, so this grid is checklist-only, and that's a weaker grader than the read tasks get. It bit once already: in the first grid one code-gen control failed its checklist on every arm, which is a grader question, not a finding about delegation. And "good" means something different per category: SB, ND, SC and CT need the hook's pass rate to equal stock's; HM needs it to not fall below stock's. A cost saving on a task that stopped passing doesn't count as a saving.</p>
+
+<p><b>Cost — what it cost.</b></p>
+<pre style="background:var(--soft); border-radius:8px; padding:14px 18px; overflow-x:auto; font-family:'IBM Plex Mono',monospace; font-size:0.85em; line-height:1.7; margin:8px 0 20px; color:var(--ink);">total       = Σ(main-model tokens × list price)
+            + Σ(worker tokens × list price) + subagents
+by bucket   = uncached input, cache write, cache read, output,
+              each at its own rate
+by phase    = finding (requests before the first touch of the target)
+            + answering (from the first touch on)
+resend bill = Σ over requests of (cached tokens re-sent × cache-read rate)</pre>
+<p><em>resend bill</em> is the mechanism metric for M — it's the number that has to move if request count, not tokens saved, is actually what drives the bill. Cache TTL is pinned to 5 minutes on every run via an environment variable, so neither arm can end up paying a different rate than the other by accident — the next section says why that matters. Every recomputed total is checked against Claude Code's own <code>total_cost_usd</code>, and the difference is stored with the run. Because a hook run that stops passing isn't actually cheaper at anything worth having, the headline cost figure is computed only over tasks both arms passed, with the all-tasks figure sitting next to it rather than replacing it. And the comparison itself is paired per task across three repetitions — a mean and a range per task, then the paired difference across every task with an interval and a sign test — because the number worth publishing is a percentage change with an interval, per category, not one point summarizing the whole grid.</p>
+
+<p><b>Latency — how long it took.</b></p>
+<pre style="background:var(--soft); border-radius:8px; padding:14px 18px; overflow-x:auto; font-family:'IBM Plex Mono',monospace; font-size:0.85em; line-height:1.7; margin:8px 0 20px; color:var(--ink);">wall          = harness start → exit
+requests      = API requests in the run (the turn count)
+per-request   = duration + time-to-first-token,
+                from the OpenTelemetry api_request events
+tool time     = Σ tool-call latencies
+worker time   = the worker call's own duration, when one happens</pre>
+<p>Reported as a median and a p90 across repetitions. This is the prong Spotify's own post already flags honestly — they quote 10 to 30 seconds per delegation — so in SB, ND and SC a hook run that actually delegates is expected to run slower, and the question worth asking is by how much; in HM and CT, where nothing should be delegating at all, it should just match stock.</p>
+
+<p><b>Tokens — Spotify's own metric, measured from inside a real session.</b></p>
+<pre style="background:var(--soft); border-radius:8px; padding:14px 18px; overflow-x:auto; font-family:'IBM Plex Mono',monospace; font-size:0.85em; line-height:1.7; margin:8px 0 20px; color:var(--ink);">target in context = (Read lines of target
+                     + Grep/Bash output that hit the target), chars/4
+Spotify's formula = corpus chars/4 − summary chars/4,
+                    only when a worker call happened
+frontier input    = every input token the main model was billed for,
+                    cached or not</pre>
+<p>The first row replaces a metric from the first grid that counted <code>Read</code> lines alone and missed everything a <code>Grep</code> call carried into context along the way — in one run, that blind spot was 31,000 characters, none of them showing up in the old number. The second row is Spotify's exact formula, kept on its own line, with one honest caveat sitting right next to it: in any run where the worker never gets called, that formula has nothing to compute. How often that happens is itself a result, not a gap in how it's computed.</p>
+
+<p><b>Behavior — why the other four numbers came out the way they did.</b></p>
+<pre style="background:var(--soft); border-radius:8px; padding:14px 18px; overflow-x:auto; font-family:'IBM Plex Mono',monospace; font-size:0.85em; line-height:1.7; margin:8px 0 20px; color:var(--ink);">per run: hook blocks, blocks followed by a paged read,
+         skill invocations, worker calls, Grep calls on the target,
+         re-reads of the target after a delegation, subagent spawns,
+         which tool the model reached for after each block</pre>
+<p>Skill invocations and worker calls are counted separately on purpose, because a model can open a skill's instructions without ever running the script inside them — the two aren't the same event, and collapsing them would hide exactly the gap this evaluation exists to find. In SB, ND and SC specifically, a worker-call count above zero is the precondition for any of Spotify's claimed saving to apply at all; at zero, the mechanism never engaged, and everything downstream is a story about what the model reached for instead, not about delegation.</p>
+
+<blockquote class="tldr">TLDR; performance decides whether a saving counts at all, cost and latency say what it's worth, tokens keeps Spotify's own number honestly in the frame, and behavior explains why the other four came out the way they did. Every cost figure is recomputed from the transcript and checked against what Claude Code says it billed.</blockquote>
+
+<h3>Controls the first grid didn't have</h3>
+
+<p>The first twelve-task grid — the one the results in the next section still come from — got the shape of this right and the mechanics of it wrong in five specific ways. Fixing all five is most of what separates this framework from that one.</p>
+
+<ul>
+<li><b>The block message.</b> The strict arm's message, in the grid already run, ended with a sentence I added: "Reads with offset/limit are also blocked for this file; use grep for exact lines." That's not a neutral refusal — it's an instruction, and it hands the model an alternative before it's had the chance to reach for one on its own, which confounds the entire question of whether the model ever delegates voluntarily. The message this framework uses instead is Spotify's own, minus only the sentence about the offset exception: "File is N lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly." Whether the model greps its way through anyway is then its own choice, not something the block message talked it into.</li>
+<li><b>Cache TTL.</b> Claude Code switches automatically between a 5-minute and a 1-hour cache write, depending on subscription state, and the first grid straddled that switch mid-run — every strict-arm write got billed at twice the rate for part of the grid, purely on timing, with nothing to do with the hook. Pinned to 5 minutes on every run from here on, one environment variable, the first grid's own gap shrinks from the 35% reported in its headline down to 21 to 27%, and stock comes out cheaper on 9 of the twelve tasks, not 11. Same underlying runs, a materially smaller and more honest number the moment one confound is removed — which is exactly why it isn't the number I'm willing to call final.</li>
+<li><b>Three repetitions per cell.</b> One run per cell, which is what the first grid had, means a single different search path the model happens to take can move either arm's number by half again on its own. Every task above runs three times per arm, and H1 and H2 both depend on the paired repetitions and the interval around them, not a point estimate from one run each.</li>
+<li><b>Interleaving.</b> Arms alternate per task rather than running in blocks, so time of day and Claude Code's own cache-state switching never happen to line up with one arm more than the other by coincidence.</li>
+<li><b>Thinking isn't in the transcript.</b> Claude Code writes empty thinking blocks to disk, so the model's actual stated reason for grepping instead of opening a skill — or the reverse — isn't recoverable after the fact from any of the three sources this evaluation trusts. Behavior has to be inferred from the calls the model actually made, never from a reason it never wrote down, and every metric and every block message above is designed with that limit already priced in.</li>
+</ul>
+
+<h3>The grid itself</h3>
+
+<p>Put together, that's 114 runs:</p>
+
+<div style="overflow-x:auto; margin:20px 0;">
+<table style="width:100%; border-collapse:collapse; font-size:0.92em;">
+<thead>
+<tr>
+<th style="text-align:left; padding:6px 10px 8px 0; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">Block</th>
+<th style="text-align:left; padding:6px 10px 8px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">Tasks</th>
+<th style="text-align:right; padding:6px 10px 8px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">Reps</th>
+<th style="text-align:right; padding:6px 0 8px 10px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">Runs</th>
+</tr>
+</thead>
+<tbody>
+<tr><td style="padding:8px 10px 8px 0; border-bottom:1px solid var(--line);">1:1 with Spotify (SB)</td><td style="padding:8px 10px; border-bottom:1px solid var(--line);">SB1, SB2, SB3, SB4</td><td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:right;">3</td><td style="padding:8px 0 8px 10px; border-bottom:1px solid var(--line); text-align:right;">24</td></tr>
+<tr><td style="padding:8px 10px 8px 0; border-bottom:1px solid var(--line);">Needle reads (ND)</td><td style="padding:8px 10px; border-bottom:1px solid var(--line);">ND1, ND2, ND3, ND4</td><td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:right;">3</td><td style="padding:8px 0 8px 10px; border-bottom:1px solid var(--line); text-align:right;">24</td></tr>
+<tr><td style="padding:8px 10px 8px 0; border-bottom:1px solid var(--line);">Scaled &amp; second-sample (SC)</td><td style="padding:8px 10px; border-bottom:1px solid var(--line);">SC1, SC2, SC3, SC4, SC5</td><td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:right;">3</td><td style="padding:8px 0 8px 10px; border-bottom:1px solid var(--line); text-align:right;">30</td></tr>
+<tr><td style="padding:8px 10px 8px 0; border-bottom:1px solid var(--line);">Harm (HM)</td><td style="padding:8px 10px; border-bottom:1px solid var(--line);">HM1, HM2, HM3, HM4, HM5</td><td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:right;">3</td><td style="padding:8px 0 8px 10px; border-bottom:1px solid var(--line); text-align:right;">30</td></tr>
+<tr><td style="padding:8px 10px 8px 0;">Small-file controls (CT)</td><td style="padding:8px 10px;">CT1, CT2, CT3</td><td style="padding:8px 10px; text-align:right;">1</td><td style="padding:8px 0 8px 10px; text-align:right;">6</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>At the first grid's own mean of about $0.18 a run, that's roughly $21 at list price for the whole rerun.</p>
+
+<p>One arm from the original three isn't part of this rerun: Spotify's plugin exactly as published, exception intact. The sidebar above already establishes what that arm does — every block, without exception, gets paged around — and that finding doesn't depend on the block message or the cache TTL at all, so rerunning it under the new controls wouldn't change it. It stays in this piece as the sidebar it already is, not as a third arm in the grid.</p>
+
+<blockquote class="tldr">TLDR; 21 tasks, two arms, three repetitions on everything but the controls, 114 runs. The five fixes above are what separates this grid from the first one.</blockquote>
+
+<p>The numbers in the section below are still the first twelve-task grid, run before any of the five controls above existed, and I'll replace them with the 114-run rerun's results here as soon as it finishes.</p>
 
 <h2>Results: the same token savings, a higher cost</h2>
 
