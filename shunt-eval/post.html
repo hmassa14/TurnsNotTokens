@@ -27,7 +27,7 @@
   .callout.hook { border-left-color:var(--hook); }
   .callout.hook .label { color:var(--hook); }
   blockquote.tldr { border:none; margin:24px 0; padding:0 0 0 18px; border-left:2px solid var(--line); font-style:italic; color:var(--ink-2); }
-  ul { padding-left: 1.3em; margin: 0 0 20px; }
+  ul, ol { padding-left: 1.3em; margin: 0 0 20px; }
   li { margin-bottom: 10px; }
   li b { color: var(--ink); }
   .terms b { font-family:"IBM Plex Mono",monospace; font-weight:600; background:none; }
@@ -67,16 +67,20 @@
   <figcaption>Figure A · where the hook sits</figcaption>
 </figure>
 
-<p>They built that deterministic workflow out of two Claude Code primitives:</p>
+<p>They were able to implement this deterministic workflow using two key Claude Code features:</p>
 
-<ul>
-<li><b>Skills</b>, for the instructions. Claude Code only loads a skill's full body into context once the model decides to use it — until then it's just a name and a one-line description. Spotify's two skills, a bulk-reader and a code-writer, are the instructions for handing a task to the cheaper model and using what comes back.</li>
-<li><b>Hooks</b>, for the enforcement. A skill only helps if the model chooses to open it, so Spotify's <em>PreToolUse hook</em> sits in front of <code>Read</code> and blocks any file over 350 lines before the model sees it, pointing the model at the bulk-reader skill instead.</li>
-</ul>
+<ol>
+<li><b>Skills</b>: progressive disclosure of context, loading instructions into the context window only when needed.</li>
+<li><b>Hooks</b>: a checkpoint in front of a tool call, able to block or redirect it before the model ever sees the result.</li>
+</ol>
+
+<p>In Spotify's case, they built two skills — bulk-reader and code-writer — that get disclosed when a request matches one of the two workflows above. They're really just a set of instructions for how to hand a task off to the cheaper model and what to do with what comes back.</p>
+
+<p>As for hooks, this is how the team put a guardrail on their deterministic workflow. They used a <em>PreToolUse hook</em> that runs before Claude Code lets a <code>Read</code> call through, checking the file's line count first. Over 350 lines, it blocks the call outright and points the model at the bulk-reader skill instead of the raw file. A skill only helps if the model chooses to open it — the hook is what's supposed to force that choice.</p>
 
 <blockquote class="tldr">TLDR; the skill is the manual. The hook is what's supposed to force the model to open it. Whether that actually holds is the seam this whole post pulls on.</blockquote>
 
-<p>Spotify measured the win as tokens avoided — the file's size in characters divided by four, minus the summary that came back, with the worker's own tokens left out of the count. That's roughly a 90% drop in tokens sent to the frontier model, and by the ordinary logic of token pricing, that reads as a 90% cost cut too: fewer tokens to the expensive model, a proportionally smaller bill. That equivalence — a token avoided is a dollar saved — is exactly what the rest of this post tests.</p>
+<p><b>Their evaluation:</b> Spotify measured the win as the count of tokens avoided being read into their context window — the file's size in characters divided by four, minus the summary that came back, with the worker's own tokens left out of the count. That's roughly a 90% drop in tokens sent to the frontier model, and by the ordinary logic of token pricing, that reads as a 90% cost cut too: fewer tokens to the expensive model, a proportionally smaller bill. That equivalence — a token avoided is a dollar saved — is exactly what the rest of this post tests.</p>
 
 <p>That design rests on one assumption: that when the model is refused a read, it does what the hook's message tells it to do. Nothing about a <code>PreToolUse</code> hook enforces that — it can stop one tool call, but it can't stop the model from trying something else on its next turn, and it has no say over what that something else is. Whether the plugin saves anything comes down entirely to what the model reaches for once it's been told no. I wanted to find out, on a real repo, doing real work.</p>
 
