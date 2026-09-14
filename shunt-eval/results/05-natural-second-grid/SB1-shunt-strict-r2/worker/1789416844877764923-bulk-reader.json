@@ -1,0 +1,102 @@
+{
+  "duration_api_ms": 97097,
+  "stop_reason": "end_turn",
+  "session_id": "dcaa2de8-6489-574c-aeef-bb9a81f8414e",
+  "total_cost_usd": 0.08112024999999999,
+  "usage": {
+    "input_tokens": 9,
+    "cache_creation_input_tokens": 11693,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 13299,
+    "output_tokens_details": {
+      "thinking_tokens": 10965
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 11693
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 9,
+        "output_tokens": 13299,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 11693,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 11693,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5": {
+      "inputTokens": 9,
+      "outputTokens": 13299,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 11693,
+      "webSearchRequests": 0,
+      "costUSD": 0.08112024999999999,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 10965,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "| *_PROP Constant | String Value | Type | DEFAULT Constant | DEFAULT Value | Default in define() | Registered? |\n|---|---|---|---|---|---|---|\n| REMOTE_LOG_STORAGE_SYSTEM_ENABLE_PROP | \"remote.log.storage.system.enable\" | BOOLEAN | DEFAULT_REMOTE_LOG_STORAGE_SYSTEM_ENABLE | false | false | Yes |\n| REMOTE_STORAGE_MANAGER_CONFIG_PREFIX_PROP | \"remote.log.storage.manager.impl.prefix\" | STRING | DEFAULT_REMOTE_STORAGE_MANAGER_CONFIG_PREFIX | \"rsm.config.\" | \"rsm.config.\" | Yes |\n| REMOTE_LOG_METADATA_MANAGER_CONFIG_PREFIX_PROP | \"remote.log.metadata.manager.impl.prefix\" | STRING | DEFAULT_REMOTE_LOG_METADATA_MANAGER_CONFIG_PREFIX | \"rlmm.config.\" | \"rlmm.config.\" | Yes |\n| REMOTE_STORAGE_MANAGER_CLASS_NAME_PROP | \"remote.log.storage.manager.class.name\" | STRING | None | — | null | Yes |\n| REMOTE_STORAGE_MANAGER_CLASS_PATH_PROP | \"remote.log.storage.manager.class.path\" | STRING | None | — | null | Yes |\n| REMOTE_LOG_METADATA_MANAGER_CLASS_NAME_PROP | \"remote.log.metadata.manager.class.name\" | STRING | DEFAULT_REMOTE_LOG_METADATA_MANAGER_CLASS_NAME | \"org.apache.kafka.server.log.remote.metadata.storage.TopicBasedRemoteLogMetadataManager\" | DEFAULT_REMOTE_LOG_METADATA_MANAGER_CLASS_NAME | Yes |\n| REMOTE_LOG_METADATA_MANAGER_CLASS_PATH_PROP | \"remote.log.metadata.manager.class.path\" | STRING | None | — | null | Yes |\n| REMOTE_LOG_METADATA_MANAGER_LISTENER_NAME_PROP | \"remote.log.metadata.manager.listener.name\" | STRING | None | — | null | Yes |\n| REMOTE_LOG_METADATA_CUSTOM_METADATA_MAX_BYTES_PROP | \"remote.log.metadata.custom.metadata.max.bytes\" | INT | DEFAULT_REMOTE_LOG_METADATA_CUSTOM_METADATA_MAX_BYTES | 128 | 128 | Yes |\n| REMOTE_LOG_INDEX_FILE_CACHE_TOTAL_SIZE_BYTES_PROP | \"remote.log.index.file.cache.total.size.bytes\" | LONG | DEFAULT_REMOTE_LOG_INDEX_FILE_CACHE_TOTAL_SIZE_BYTES | 1073741824L | 1073741824L | Yes |\n| REMOTE_LOG_INDEX_FILE_CACHE_TTL_MS_PROP | \"remote.log.index.file.cache.ttl.ms\" | LONG | DEFAULT_REMOTE_LOG_INDEX_FILE_CACHE_TTL_MS | 900000L | 900000L | Yes (defineInternal) |\n| REMOTE_LOG_MANAGER_THREAD_POOL_SIZE_PROP | \"remote.log.manager.thread.pool.size\" | INT | DEFAULT_REMOTE_LOG_MANAGER_THREAD_POOL_SIZE | 2 | 2 | Yes |\n| REMOTE_LOG_MANAGER_COPIER_THREAD_POOL_SIZE_PROP | \"remote.log.manager.copier.thread.pool.size\" | INT | DEFAULT_REMOTE_LOG_MANAGER_COPIER_THREAD_POOL_SIZE | 10 | 10 | Yes |\n| REMOTE_LOG_MANAGER_EXPIRATION_THREAD_POOL_SIZE_PROP | \"remote.log.manager.expiration.thread.pool.size\" | INT | DEFAULT_REMOTE_LOG_MANAGER_EXPIRATION_THREAD_POOL_SIZE | 10 | 10 | Yes |\n| REMOTE_LOG_MANAGER_FOLLOWER_THREAD_POOL_SIZE_PROP | \"remote.log.manager.follower.thread.pool.size\" | INT | DEFAULT_REMOTE_LOG_MANAGER_FOLLOWER_THREAD_POOL_SIZE | 2 | 2 | Yes |\n| REMOTE_LOG_MANAGER_TASK_INTERVAL_MS_PROP | \"remote.log.manager.task.interval.ms\" | LONG | DEFAULT_REMOTE_LOG_MANAGER_TASK_INTERVAL_MS | 30000L | 30000L | Yes |\n| REMOTE_LOG_MANAGER_TASK_RETRY_BACK_OFF_MS_PROP | \"remote.log.manager.task.retry.backoff.ms\" | LONG | DEFAULT_REMOTE_LOG_MANAGER_TASK_RETRY_BACK_OFF_MS | 500L | 500L | Yes (defineInternal) |\n| REMOTE_LOG_MANAGER_TASK_RETRY_BACK_OFF_MAX_MS_PROP | \"remote.log.manager.task.retry.backoff.max.ms\" | LONG | DEFAULT_REMOTE_LOG_MANAGER_TASK_RETRY_BACK_OFF_MAX_MS | 30000L | 30000L | Yes (defineInternal) |\n| REMOTE_LOG_MANAGER_TASK_RETRY_JITTER_PROP | \"remote.log.manager.task.retry.jitter\" | DOUBLE | DEFAULT_REMOTE_LOG_MANAGER_TASK_RETRY_JITTER | 0.2 | 0.2 | Yes (defineInternal) |\n| REMOTE_LOG_READER_THREADS_PROP | \"remote.log.reader.threads\" | INT | DEFAULT_REMOTE_LOG_READER_THREADS | 10 | 10 | Yes |\n| REMOTE_LOG_READER_MAX_PENDING_TASKS_PROP | \"remote.log.reader.max.pending.tasks\" | INT | DEFAULT_REMOTE_LOG_READER_MAX_PENDING_TASKS | 100 | 100 | Yes |\n| LOG_LOCAL_RETENTION_MS_PROP | \"log.local.retention.ms\" | LONG | DEFAULT_LOG_LOCAL_RETENTION_MS | -2L | -2L | Yes |\n| LOG_LOCAL_RETENTION_BYTES_PROP | \"log.local.retention.bytes\" | LONG | DEFAULT_LOG_LOCAL_RETENTION_BYTES | -2L | -2L | Yes |\n| LOG_REMOTE_COPY_LAG_MS_PROP | \"log.remote.copy.lag.ms\" | LONG | DEFAULT_LOG_REMOTE_COPY_LAG_MS | 0L | 0L | Yes |\n| LOG_REMOTE_COPY_LAG_BYTES_PROP | \"log.remote.copy.lag.bytes\" | LONG | DEFAULT_LOG_REMOTE_COPY_LAG_BYTES | -1L | -1L | Yes |\n| REMOTE_LOG_MANAGER_COPY_MAX_BYTES_PER_SECOND_PROP | \"remote.log.manager.copy.max.bytes.per.second\" | LONG | DEFAULT_REMOTE_LOG_MANAGER_COPY_MAX_BYTES_PER_SECOND | Long.MAX_VALUE | Long.MAX_VALUE | Yes |\n| REMOTE_LOG_MANAGER_COPY_QUOTA_WINDOW_NUM_PROP | \"remote.log.manager.copy.quota.window.num\" | INT | DEFAULT_REMOTE_LOG_MANAGER_COPY_QUOTA_WINDOW_NUM | 11 | 11 | Yes |\n| REMOTE_LOG_MANAGER_COPY_QUOTA_WINDOW_SIZE_SECONDS_PROP | \"remote.log.manager.copy.quota.window.size.seconds\" | INT | DEFAULT_REMOTE_LOG_MANAGER_COPY_QUOTA_WINDOW_SIZE_SECONDS | 1 | 1 | Yes |\n| REMOTE_LOG_MANAGER_FETCH_MAX_BYTES_PER_SECOND_PROP | \"remote.log.manager.fetch.max.bytes.per.second\" | LONG | DEFAULT_REMOTE_LOG_MANAGER_FETCH_MAX_BYTES_PER_SECOND | Long.MAX_VALUE | Long.MAX_VALUE | Yes |\n| REMOTE_LOG_MANAGER_FETCH_QUOTA_WINDOW_NUM_PROP | \"remote.log.manager.fetch.quota.window.num\" | INT | DEFAULT_REMOTE_LOG_MANAGER_FETCH_QUOTA_WINDOW_NUM | 11 | 11 | Yes |\n| REMOTE_LOG_MANAGER_FETCH_QUOTA_WINDOW_SIZE_SECONDS_PROP | \"remote.log.manager.fetch.quota.window.size.seconds\" | INT | DEFAULT_REMOTE_LOG_MANAGER_FETCH_QUOTA_WINDOW_SIZE_SECONDS | 1 | 1 | Yes |\n| REMOTE_FETCH_MAX_WAIT_MS_PROP | \"remote.fetch.max.wait.ms\" | INT | DEFAULT_REMOTE_FETCH_MAX_WAIT_MS | 500 | 500 | Yes |\n| REMOTE_LIST_OFFSETS_REQUEST_TIMEOUT_MS_PROP | \"remote.list.offsets.request.timeout.ms\" | LONG | DEFAULT_REMOTE_LIST_OFFSETS_REQUEST_TIMEOUT_MS | 30000L | 30000L | Yes |\n\n**Dead/Unregistered Config Constants:** None. All 33 *_PROP constants are registered in `configDef()`.",
+  "ttft_ms": 80834,
+  "type": "result",
+  "duration_ms": 97228,
+  "uuid": "2b848fc7-8403-4f76-8feb-eca3fe4ba3be",
+  "ttft_stream_ms": 670,
+  "time_to_request_ms": 126,
+  "first_content_frame_ms": 886,
+  "time_to_request_from_spawn_ms": 1256721,
+  "warm_spare_claimed": false,
+  "time_origin_ms": 1789416844887.7986,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "transport": "cli",
+  "model": "claude-haiku-4-5"
+}

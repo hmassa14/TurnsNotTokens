@@ -1,0 +1,41 @@
+{
+  "run_id": "SB2__natural__shunt-strict__r2__20260914-202138",
+  "task_id": "SB2",
+  "category": "spotify-benchmark-1to1",
+  "arm": "shunt-strict",
+  "rep": 2,
+  "variant": "natural",
+  "main_model": "claude-sonnet-5",
+  "claude_code_version": "2.1.270 (Claude Code)",
+  "kafka_commit": "0ffb4f5dd57c6af206e3d9f97a433dd15ebb6dfc",
+  "session_id": "10eedf83-6995-436f-8cf6-d3068023687b",
+  "workspace": "/home/user/WackyWords/shunt-eval/runs/_ws/SB2__natural__shunt-strict__r2__20260914-202138",
+  "target_files": [
+    "server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java",
+    "metadata/src/main/java/org/apache/kafka/metadata/BrokerState.java",
+    "metadata/src/main/java/org/apache/kafka/image/publisher/BrokerRegistrationTracker.java"
+  ],
+  "started_at": "2026-09-14T20:21:43.010494+00:00",
+  "prompt": "Kafka has a broker lifecycle manager on the server side, a BrokerState enum, and a broker registration tracker that publishes metadata. Which public classes, enums and interfaces do those three define or implement, and how do they relate to each other: which one holds the broker state and what it starts as, which values the state can take and what happens to an unknown byte value, and what the tracker does when a registration goes missing?",
+  "command": [
+    "claude",
+    "-p",
+    "Kafka has a broker lifecycle manager on the server side, a BrokerState enum, and a broker registration tracker that publishes metadata. Which public classes, enums and interfaces do those three define or implement, and how do they relate to each other: which one holds the broker state and what it starts as, which values the state can take and what happens to an unknown byte value, and what the tracker does when a registration goes missing?",
+    "--model",
+    "claude-sonnet-5",
+    "--session-id",
+    "10eedf83-6995-436f-8cf6-d3068023687b",
+    "--permission-mode",
+    "acceptEdits",
+    "--allowedTools",
+    "Read,Grep,Glob,Bash,Edit,Write,MultiEdit,Agent,Skill,TodoWrite,TaskCreate,TaskUpdate",
+    "--max-turns",
+    "40",
+    "--output-format",
+    "json"
+  ],
+  "wall_ms": 25854,
+  "exit_code": 0,
+  "timeout": false,
+  "finished_at": "2026-09-14T20:22:08.867119+00:00"
+}

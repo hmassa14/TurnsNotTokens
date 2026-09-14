@@ -1,0 +1,102 @@
+{
+  "duration_api_ms": 64907,
+  "stop_reason": "end_turn",
+  "session_id": "dcaa2de8-6489-574c-aeef-bb9a81f8414e",
+  "total_cost_usd": 0.0482815,
+  "usage": {
+    "input_tokens": 9,
+    "cache_creation_input_tokens": 9346,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 7318,
+    "output_tokens_details": {
+      "thinking_tokens": 5340
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 9346
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 9,
+        "output_tokens": 7318,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 9346,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 9346,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5": {
+      "inputTokens": 9,
+      "outputTokens": 7318,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 9346,
+      "webSearchRequests": 0,
+      "costUSD": 0.0482815,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 5340,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "# BrokerLifecycleManager.java Event Classes Analysis\n\n## Initial State Field Declaration\n- **Line 129–131:** `private volatile BrokerState state = BrokerState.NOT_RUNNING;`\n- **JavaDoc:** \"The current broker state. This variable can only be written from the event queue thread.\"\n\n---\n\n## Event Classes (ordered by appearance)\n\n### 1. ResendBrokerRegistrationEvent\n- **Lines 255–261**\n- **Summary:** Clears the registration flag and immediately schedules the next communication attempt.\n- **Sets state:** No state change.\n- **Enqueued by:** Public method `resendBrokerRegistration()` (line 254) via `eventQueue.append(new ResendBrokerRegistrationEvent())`\n\n### 2. BeginControlledShutdownEvent\n- **Lines 289–305**\n- **Summary:** Transitions broker to PENDING_CONTROLLED_SHUTDOWN if currently RUNNING; otherwise initiates immediate shutdown.\n- **Sets state:** `state = BrokerState.PENDING_CONTROLLED_SHUTDOWN` (line 298), conditional on `state == RUNNING` (line 296)\n- **Enqueued by:** Public method `beginControlledShutdown()` (line 316) via `eventQueue.append(new BeginControlledShutdownEvent())`\n\n### 3. SetReadyToUnfenceEvent\n- **Lines 327–333**\n- **Summary:** Sets the readyToUnfence flag and immediately schedules next communication.\n- **Sets state:** No state change.\n- **Enqueued by:** Public method `setReadyToUnfence()` (line 250) via `eventQueue.append(new SetReadyToUnfenceEvent())`\n\n### 4. OfflineDirEvent\n- **Lines 335–348**\n- **Summary:** Records an offline directory and schedules immediate communication if broker is already registered.\n- **Sets state:** No state change.\n- **Enqueued by:** Public method `propagateDirectoryFailure()` (line 245) via `eventQueue.append(new OfflineDirEvent(directory))`\n\n### 5. OfflineDirBrokerFailureEvent\n- **Lines 350–365**\n- **Summary:** Triggers broker shutdown via shutdownHook if offline directory was not communicated to controller.\n- **Sets state:** No state change (invokes shutdownHook instead).\n- **Enqueued by:** Public method `propagateDirectoryFailure()` (lines 246–247) via `eventQueue.scheduleDeferred(\"offlineDirFailure\", new EventQueue.DeadlineFunction(time.nanoseconds() + MILLISECONDS.toNanos(timeout)), new OfflineDirBrokerFailureEvent(directory))`\n\n### 6. CordonedDirEvent\n- **Lines 367–379**\n- **Summary:** Updates cordoned log directories and schedules immediate communication if broker is already registered.\n- **Sets state:** No state change.\n- **Enqueued by:** Public method `propagateDirectoryCordoned()` (line 241) via `eventQueue.append(new CordonedDirEvent(directories))`\n\n### 7. StartupEvent\n- **Lines 381–417**\n- **Summary:** Initializes broker lifecycle state, starts channel manager, schedules registration timeout, and initiates broker registration.\n- **Sets state:** `state = BrokerState.STARTING` (line 410)\n- **Enqueued by:** Public method `start()` (lines 213–214) via `eventQueue.append(new StartupEvent(...))`\n- **Also schedules:** RegistrationTimeoutEvent (lines 415–417) via `eventQueue.scheduleDeferred()`\n\n### 8. BrokerRegistrationResponseEvent\n- **Lines 453–502**\n- **Summary:** Processes broker registration response, setting broker epoch and registration status on success, or rescheduling retry on failure.\n- **Sets state:** No state change.\n- **Enqueued by:** \n  - Callback `BrokerRegistrationResponseHandler.onComplete()` (lines 444–445) via `eventQueue.prepend(new BrokerRegistrationResponseEvent(response, false))`\n  - Callback `BrokerRegistrationResponseHandler.onTimeout()` (line 449) via `eventQueue.prepend(new BrokerRegistrationResponseEvent(null, true))`\n  - Handler registered to channelManager (lines 438–439) in `sendBrokerRegistration()` private method\n\n### 9. BrokerHeartbeatResponseEvent\n- **Lines 507–599**\n- **Summary:** Processes heartbeat response and transitions broker through STARTING→RECOVERY→RUNNING states based on catch-up and fence status; handles controlled shutdown progression.\n- **Sets state:** Two conditional assignments:\n  - `state = BrokerState.RECOVERY` (line 544) when in STARTING state and `responseData.isCaughtUp() == true`\n  - `state = BrokerState.RUNNING` (line 554) when in RECOVERY state and `!responseData.isFenced()`\n- **Enqueued by:**\n  - Callback `BrokerHeartbeatResponseHandler.onComplete()` (lines 488–489) via `eventQueue.prepend(new BrokerHeartbeatResponseEvent(response, false, currentOfflineDirs))`\n  - Callback `BrokerHeartbeatResponseHandler.onTimeout()` (lines 495–496) via `eventQueue.prepend(new BrokerHeartbeatResponseEvent(null, true, currentOfflineDirs))`\n  - Handler registered to channelManager (line 484) in `sendBrokerHeartbeat()` private method\n\n### 10. RegistrationTimeoutEvent\n- **Lines 602–610**\n- **Summary:** Shuts down the broker if initial registration did not complete within the timeout window.\n- **Sets state:** No state change (invokes `eventQueue.beginShutdown()` instead).\n- **Enqueued by:** StartupEvent.run() (lines 415–417) via `eventQueue.scheduleDeferred(\"initialRegistrationTimeout\", new EventQueue.DeadlineFunction(time.nanoseconds() + initialTimeoutNs), new RegistrationTimeoutEvent())`\n\n### 11. CommunicationEvent\n- **Lines 612–622**\n- **Summary:** Sends broker heartbeat if registered; otherwise sends broker registration; delays and marks for immediate retry if communication already in flight.\n- **Sets state:** No state change.\n- **Enqueued by:** Private method `scheduleNextCommunication(long intervalNs)` (line 628) via `eventQueue.scheduleDeferred(\"communication\", new EventQueue.DeadlineFunction(deadlineNs), new CommunicationEvent())`\n- **`scheduleNextCommunication()` called from:** Multiple event handlers (ResendBrokerRegistrationEvent, SetReadyToUnfenceEvent, OfflineDirEvent, CordonedDirEvent, BrokerHeartbeatResponseEvent) and private methods (`scheduleNextCommunicationImmediately`, `scheduleNextCommunicationAfterFailure`, `scheduleNextCommunicationAfterSuccess`)\n\n### 12. ShutdownEvent\n- **Lines 624–637**\n- **Summary:** Transitions broker to SHUTTING_DOWN state, completes controlled shutdown future, cancels initialization futures, and shuts down channel manager.\n- **Sets state:** `state = BrokerState.SHUTTING_DOWN` (line 627)\n- **Enqueued by:** KafkaEventQueue constructor argument (line 194) as the default shutdown event; also triggered indirectly via `eventQueue.beginShutdown()` calls (line 303 in BeginControlledShutdownEvent, line 609 in RegistrationTimeoutEvent)\n\n---\n\n## Summary of All State Assignments (outside Event classes)\nAll state assignments occur **within Event class run() methods**:\n- StartupEvent: STARTING\n- BrokerHeartbeatResponseEvent: RECOVERY, RUNNING\n- BeginControlledShutdownEvent: PENDING_CONTROLLED_SHUTDOWN\n- ShutdownEvent: SHUTTING_DOWN\n\nNo state assignments exist outside Event classes.",
+  "ttft_ms": 47318,
+  "type": "result",
+  "duration_ms": 65029,
+  "uuid": "044aecf4-7068-49e4-ad18-0847c421774b",
+  "ttft_stream_ms": 680,
+  "time_to_request_ms": 117,
+  "first_content_frame_ms": 877,
+  "time_to_request_from_spawn_ms": 3656439,
+  "warm_spare_claimed": false,
+  "time_origin_ms": 1789419244693.7974,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "transport": "cli",
+  "model": "claude-haiku-4-5"
+}

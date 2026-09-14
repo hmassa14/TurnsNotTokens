@@ -1,0 +1,399 @@
+{
+ "summary": {
+  "metric_names": {
+   "claude_code.session.count": 1,
+   "claude_code.cost.usage": 5,
+   "claude_code.token.usage": 5,
+   "claude_code.lines_of_code.count": 1,
+   "claude_code.code_edit_tool.decision": 1,
+   "claude_code.active_time.total": 1
+  },
+  "tokens_by_model_type": {
+   "claude-sonnet-5|input": 10.0,
+   "claude-sonnet-5|output": 974.0,
+   "claude-sonnet-5|cacheRead": 147930.0,
+   "claude-sonnet-5|cacheCreation": 9476.0
+  },
+  "cost_by_model_usd": {
+   "claude-sonnet-5": 0.06303600000000001
+  },
+  "event_counts": {
+   "user_prompt": 1,
+   "tool_decision": 4,
+   "api_request": 5,
+   "tool_result": 4,
+   "assistant_response": 2
+  },
+  "api_requests": 5,
+  "api_latency_ms_p50": 2846.0,
+  "api_latency_ms_max": 5512.0,
+  "tool_decisions": [
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Edit",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   }
+  ],
+  "span_counts": {},
+  "hook_ms_total": 0
+ },
+ "events": [
+  {
+   "event": "user_prompt",
+   "ts": "1789421981604000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "user_prompt",
+    "event.timestamp": "2026-09-14T21:39:41.604Z",
+    "event.sequence": 0,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "prompt_length": "349",
+    "prompt": "<REDACTED>",
+    "message.uuid": "47d73926-6ee3-45d2-882c-377c5484d3e8"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789421984518000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T21:39:44.518Z",
+    "event.sequence": 1,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01EJULZETtq4SfuRbBYmtFq6",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789421984536000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T21:39:44.535Z",
+    "event.sequence": 2,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 169,
+    "cache_read_tokens": 23949,
+    "cache_creation_tokens": 5622,
+    "cost_usd": 0.020538800000000003,
+    "cost_usd_micros": 20539,
+    "duration_ms": 2846,
+    "ttft_ms": 1239,
+    "request_id": "req_011Cf44Eyxrx37wQfKkKEw7p",
+    "client_request_id": "f0ff804b-ca17-43eb-ac9e-09b05c138628",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789421984578000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T21:39:44.578Z",
+    "event.sequence": 3,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01EJULZETtq4SfuRbBYmtFq6",
+    "success": "true",
+    "duration_ms": "58",
+    "tool_input": "{\"pattern\":\"KAFKA-6388\",\"output_mode\":\"content\",\"-n\":true}",
+    "tool_input_size_bytes": "58",
+    "tool_result_size_bytes": "186"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789421987690000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T21:39:47.690Z",
+    "event.sequence": 4,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01RVD8X1HP9d2gz3FP4p8AmM",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789421987698000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T21:39:47.698Z",
+    "event.sequence": 5,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01RVD8X1HP9d2gz3FP4p8AmM",
+    "success": "true",
+    "duration_ms": "7",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/HM3__natural__stock__r3__20260914-213937/storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java\",\"offset\":560,\"limit\":80}",
+    "tool_input_size_bytes": "197",
+    "tool_result_size_bytes": "5632"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789421987937000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T21:39:47.937Z",
+    "event.sequence": 6,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 169,
+    "cache_read_tokens": 29571,
+    "cache_creation_tokens": 284,
+    "cost_usd": 0.008318200000000001,
+    "cost_usd_micros": 8318,
+    "duration_ms": 3330,
+    "ttft_ms": 1345,
+    "request_id": "req_011Cf44FCShTnngVRwxwmufQ",
+    "client_request_id": "7ee5d3a8-43e3-4e32-869f-6d68f553d00d",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789421993483000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T21:39:53.483Z",
+    "event.sequence": 7,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Edit",
+    "tool_use_id": "toolu_017T52NgesDJQy3UeiznzgYP",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789421993499000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T21:39:53.499Z",
+    "event.sequence": 8,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 389,
+    "cache_read_tokens": 29855,
+    "cache_creation_tokens": 2153,
+    "cost_usd": 0.0152475,
+    "cost_usd_micros": 15248,
+    "duration_ms": 5512,
+    "ttft_ms": 1188,
+    "request_id": "req_011Cf44FSrP3eFs5au5FTfQn",
+    "client_request_id": "a6641955-2a1e-42f3-a0c8-308fc10215b2",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789421993500000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-14T21:39:53.500Z",
+    "event.sequence": 9,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "response_length": 129,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf44FSrP3eFs5au5FTfQn",
+    "message.uuid": "ba7b73d4-ba72-4997-a61c-227874821ceb",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789421993533000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T21:39:53.532Z",
+    "event.sequence": 10,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "tool_name": "Edit",
+    "tool_use_id": "toolu_017T52NgesDJQy3UeiznzgYP",
+    "success": "true",
+    "duration_ms": "47",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/HM3__natural__stock__r3__20260914-213937/storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java\",\"old_string\":\"                        updateLogEndOffset(nextOffsetMetadata.messageOffset);\\n                        logger.info(\\\"Rolled new log segment at offset {} in {} ms.\\\", newOffset, time.hiResClockMs() - start);\\n                        return newSegment;\",\"new_string\":\"                        updateLogEndOffset(nextOffsetMetadata.messageOffset);\\n                        logger.warn(\\\"Rolled new log segment at offset {} in {} ms.\\\", newOffset, time.hiResClockMs() - start);\\n                        return newSegment;\",\"replace_all\":false}",
+    "tool_input_size_bytes": "725",
+    "tool_result_size_bytes": "263"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789421996173000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T21:39:56.173Z",
+    "event.sequence": 11,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01Vi5hTdW7FG4WLq6nDFWFwS",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789421996177000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T21:39:56.177Z",
+    "event.sequence": 12,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01Vi5hTdW7FG4WLq6nDFWFwS",
+    "success": "true",
+    "duration_ms": "4",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/HM3__natural__stock__r3__20260914-213937/storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java\",\"offset\":640,\"limit\":30}",
+    "tool_input_size_bytes": "197",
+    "tool_result_size_bytes": "1799"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789421996196000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T21:39:56.196Z",
+    "event.sequence": 13,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 203,
+    "cache_read_tokens": 32008,
+    "cache_creation_tokens": 539,
+    "cost_usd": 0.009783100000000001,
+    "cost_usd_micros": 9783,
+    "duration_ms": 2636,
+    "ttft_ms": 1010,
+    "request_id": "req_011Cf44FrerJQzPcZHeERpjy",
+    "client_request_id": "d564d0b9-092f-40b8-8d31-a73a37790497",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789421998228000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T21:39:58.228Z",
+    "event.sequence": 14,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 44,
+    "cache_read_tokens": 32547,
+    "cache_creation_tokens": 878,
+    "cost_usd": 0.009148400000000001,
+    "cost_usd_micros": 9148,
+    "duration_ms": 1981,
+    "ttft_ms": 1039,
+    "request_id": "req_011Cf44G4C8wiKHfu7PpkGTc",
+    "client_request_id": "91857de8-ffc5-4b19-ac14-2a5e7f26e2ae",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789421998228000000",
+   "attrs": {
+    "run.id": "HM3__natural__stock__r3__20260914-213937",
+    "session.id": "41a46360-78ad-4151-8248-aa131ddb312c",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-14T21:39:58.228Z",
+    "event.sequence": 15,
+    "prompt.id": "a6770629-8c8e-41a7-82ae-ac4c949b4006",
+    "response_length": 114,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf44G4C8wiKHfu7PpkGTc",
+    "message.uuid": "2c7c369e-23ca-45e7-8b8e-adb128eaf66c",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  }
+ ],
+ "spans": []
+}

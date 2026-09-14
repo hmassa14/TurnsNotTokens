@@ -1,0 +1,102 @@
+{
+  "duration_api_ms": 66756,
+  "stop_reason": "end_turn",
+  "session_id": "dcaa2de8-6489-574c-aeef-bb9a81f8414e",
+  "total_cost_usd": 0.0602715,
+  "usage": {
+    "input_tokens": 9,
+    "cache_creation_input_tokens": 11862,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 9087,
+    "output_tokens_details": {
+      "thinking_tokens": 7238
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 11862
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 9,
+        "output_tokens": 9087,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 11862,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 11862,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5": {
+      "inputTokens": 9,
+      "outputTokens": 9087,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 11862,
+      "webSearchRequests": 0,
+      "costUSD": 0.0602715,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 7238,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "# Question 1: Complete List of Broker Configuration Keys\n\n| Constant Name | Config Key (String Value) | ConfigDef Type | Default Value |\n|---|---|---|---|\n| REMOTE_LOG_STORAGE_SYSTEM_ENABLE_PROP | `\"remote.log.storage.system.enable\"` | BOOLEAN | `false` |\n| REMOTE_STORAGE_MANAGER_CONFIG_PREFIX_PROP | `\"remote.log.storage.manager.impl.prefix\"` | STRING | `\"rsm.config.\"` |\n| REMOTE_LOG_METADATA_MANAGER_CONFIG_PREFIX_PROP | `\"remote.log.metadata.manager.impl.prefix\"` | STRING | `\"rlmm.config.\"` |\n| REMOTE_STORAGE_MANAGER_CLASS_NAME_PROP | `\"remote.log.storage.manager.class.name\"` | STRING | `null` |\n| REMOTE_STORAGE_MANAGER_CLASS_PATH_PROP | `\"remote.log.storage.manager.class.path\"` | STRING | `null` |\n| REMOTE_LOG_METADATA_MANAGER_CLASS_NAME_PROP | `\"remote.log.metadata.manager.class.name\"` | STRING | `\"org.apache.kafka.server.log.remote.metadata.storage.TopicBasedRemoteLogMetadataManager\"` |\n| REMOTE_LOG_METADATA_MANAGER_CLASS_PATH_PROP | `\"remote.log.metadata.manager.class.path\"` | STRING | `null` |\n| REMOTE_LOG_METADATA_MANAGER_LISTENER_NAME_PROP | `\"remote.log.metadata.manager.listener.name\"` | STRING | `null` |\n| REMOTE_LOG_METADATA_CUSTOM_METADATA_MAX_BYTES_PROP | `\"remote.log.metadata.custom.metadata.max.bytes\"` | INT | `128` |\n| REMOTE_LOG_INDEX_FILE_CACHE_TOTAL_SIZE_BYTES_PROP | `\"remote.log.index.file.cache.total.size.bytes\"` | LONG | `1073741824L` |\n| REMOTE_LOG_INDEX_FILE_CACHE_TTL_MS_PROP | `\"remote.log.index.file.cache.ttl.ms\"` | LONG | `900000L` |\n| REMOTE_LOG_MANAGER_FOLLOWER_THREAD_POOL_SIZE_PROP | `\"remote.log.manager.follower.thread.pool.size\"` | INT | `2` |\n| REMOTE_LOG_MANAGER_THREAD_POOL_SIZE_PROP | `\"remote.log.manager.thread.pool.size\"` | INT | `2` *(deprecated since 4.2)* |\n| REMOTE_LOG_MANAGER_COPIER_THREAD_POOL_SIZE_PROP | `\"remote.log.manager.copier.thread.pool.size\"` | INT | `10` |\n| REMOTE_LOG_MANAGER_EXPIRATION_THREAD_POOL_SIZE_PROP | `\"remote.log.manager.expiration.thread.pool.size\"` | INT | `10` |\n| REMOTE_LOG_MANAGER_TASK_INTERVAL_MS_PROP | `\"remote.log.manager.task.interval.ms\"` | LONG | `30000L` |\n| REMOTE_LOG_MANAGER_TASK_RETRY_BACK_OFF_MS_PROP | `\"remote.log.manager.task.retry.backoff.ms\"` | LONG | `500L` |\n| REMOTE_LOG_MANAGER_TASK_RETRY_BACK_OFF_MAX_MS_PROP | `\"remote.log.manager.task.retry.backoff.max.ms\"` | LONG | `30000L` |\n| REMOTE_LOG_MANAGER_TASK_RETRY_JITTER_PROP | `\"remote.log.manager.task.retry.jitter\"` | DOUBLE | `0.2` |\n| REMOTE_LOG_READER_THREADS_PROP | `\"remote.log.reader.threads\"` | INT | `10` |\n| REMOTE_LOG_READER_MAX_PENDING_TASKS_PROP | `\"remote.log.reader.max.pending.tasks\"` | INT | `100` |\n| LOG_LOCAL_RETENTION_MS_PROP | `\"log.local.retention.ms\"` | LONG | `-2L` |\n| LOG_LOCAL_RETENTION_BYTES_PROP | `\"log.local.retention.bytes\"` | LONG | `-2L` |\n| LOG_REMOTE_COPY_LAG_MS_PROP | `\"log.remote.copy.lag.ms\"` | LONG | `0L` |\n| LOG_REMOTE_COPY_LAG_BYTES_PROP | `\"log.remote.copy.lag.bytes\"` | LONG | `-1L` |\n| REMOTE_LOG_MANAGER_COPY_MAX_BYTES_PER_SECOND_PROP | `\"remote.log.manager.copy.max.bytes.per.second\"` | LONG | `Long.MAX_VALUE` |\n| REMOTE_LOG_MANAGER_COPY_QUOTA_WINDOW_NUM_PROP | `\"remote.log.manager.copy.quota.window.num\"` | INT | `11` |\n| REMOTE_LOG_MANAGER_COPY_QUOTA_WINDOW_SIZE_SECONDS_PROP | `\"remote.log.manager.copy.quota.window.size.seconds\"` | INT | `1` |\n| REMOTE_LOG_MANAGER_FETCH_MAX_BYTES_PER_SECOND_PROP | `\"remote.log.manager.fetch.max.bytes.per.second\"` | LONG | `Long.MAX_VALUE` |\n| REMOTE_LOG_MANAGER_FETCH_QUOTA_WINDOW_NUM_PROP | `\"remote.log.manager.fetch.quota.window.num\"` | INT | `11` |\n| REMOTE_LOG_MANAGER_FETCH_QUOTA_WINDOW_SIZE_SECONDS_PROP | `\"remote.log.manager.fetch.quota.window.size.seconds\"` | INT | `1` |\n| REMOTE_FETCH_MAX_WAIT_MS_PROP | `\"remote.fetch.max.wait.ms\"` | INT | `500` |\n| REMOTE_LIST_OFFSETS_REQUEST_TIMEOUT_MS_PROP | `\"remote.list.offsets.request.timeout.ms\"` | LONG | `30000L` |\n\n---\n\n# Question 2: Unregistered Constants Cross-Check\n\n**Result: NONE—every declared *_PROP constant is registered in ConfigDef.**\n\n**Verification:**\n- Total *_PROP constants declared in class: 33\n- Total registered via `.define()` or `.defineInternal()` calls: 33\n- Unregistered constants: **0**\n\nAll 33 constants from line 40 through line 210 appear exactly once in the configDef() method (lines 216–420), each with a corresponding `.define()` call. Three use `.defineInternal()` instead of `.define()` (REMOTE_LOG_INDEX_FILE_CACHE_TTL_MS_PROP, REMOTE_LOG_MANAGER_TASK_RETRY_BACK_OFF_MS_PROP, REMOTE_LOG_MANAGER_TASK_RETRY_BACK_OFF_MAX_MS_PROP, REMOTE_LOG_MANAGER_TASK_RETRY_JITTER_PROP), but all are properly registered.",
+  "ttft_ms": 53125,
+  "type": "result",
+  "duration_ms": 66873,
+  "uuid": "3c8f9b32-9bb6-4ef4-8481-b98af9913d3a",
+  "ttft_stream_ms": 672,
+  "time_to_request_ms": 115,
+  "first_content_frame_ms": 891,
+  "time_to_request_from_spawn_ms": 1073447,
+  "warm_spare_claimed": false,
+  "time_origin_ms": 1789416661606.209,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "transport": "cli",
+  "model": "claude-haiku-4-5"
+}

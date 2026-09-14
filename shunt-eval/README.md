@@ -2,14 +2,14 @@
 
 A paired evaluation of Spotify's "shunt" plugin for Claude Code against stock Claude Code, on a real Java monorepo, measuring the bill rather than tokens avoided.
 
-Spotify's engineering post claimed a PreToolUse hook that blocks reads of files over 350 lines and redirects them to a cheap worker model cut Claude Code token usage by 90%. The number they measured was "tokens Claude would have read" minus "tokens in the summary it got back", estimated as characters divided by four, with the worker's own tokens uncounted and no dollar figure. This repo runs the same design, plus what the post described but did not ship, plus a version built only from Claude Code's own parts, on twelve tasks, and records cost, latency, behavior and correctness for every session from three independent sources.
+Spotify's engineering post claimed a PreToolUse hook that blocks reads of files over 350 lines and redirects them to a cheap worker model cut Claude Code token usage by 90%. The number they measured was "tokens Claude would have read" minus "tokens in the summary it got back", estimated as characters divided by four, with the worker's own tokens uncounted and no dollar figure. This repo runs the same design, enforced the way the post describes it, against stock Claude Code on 21 tasks in five categories (Spotify's own four benchmark rows one to one, needle reads, their task shapes at real file sizes, harm tasks the post says the approach is not for, and small-file controls), three runs per cell, and records cost, latency, behavior and correctness for every session from three independent sources. The framework, the reasons behind each task, and the metric definitions are in `docs/EVAL_FRAMEWORK.md`.
 
-Sixty-two headless sessions later, the short version:
+One pilot and 114 controlled sessions later, the short version:
 
-- The hook, as shipped, was bypassed on every block it made. It allows any read that sets an offset or limit, and the model used that every time.
-- With the exception removed, the hook held and cut target-file lines entering the main context by 87%. Spotify's number is real on its own metric.
-- The worker behind the hook was called zero times in 24 runs. Blocked from reading, the model grepped.
-- Stock Claude Code was the cheapest arm. The enforced hook cost 35% more for the same pass rate, because it turned one read into many turns, and with prompt caching a turn costs more than a file.
+- The hook, as shipped, was bypassed on every block it made in the pilot. It allows any read that sets an offset or limit, and the model used that every time. The grid runs it with that exception removed.
+- Enforced, the hook cut target-file content entering the main context by 46%, counted through every tool (Read, Grep, Bash). Spotify's number is real on its own metric, smaller once grep output is counted.
+- The worker was called 13 times in 57 hook runs, on 5 of the 17 tasks where the hook fired. After a block the model's next call was the skill 9 times out of 85, grep or a shell search 47 times, and a paged read 26 times, refused each time.
+- The bill went up 16% for the same pass rate (paired per task +18%, 95% interval +1% to +35%). Where the model delegated it went up 54% and wall time doubled; where it grepped instead cost was flat; on the precise-edit and debugging tasks it went up 27% with correctness unchanged. A turn costs more than a file once the file is cached.
 
 Everything below is reproducible from this directory with a Claude Code login and a Kafka checkout.
 
@@ -122,7 +122,28 @@ Where each number comes from, field by field, is in `docs/METRICS.md`.
 
 ## Results
 
-Twelve tasks, five arms, natural prompts, one run per cell, Sonnet 5 as the main model and Haiku as the worker and as Explore, 2026-09-12.
+### Second grid: 21 tasks, stock vs the enforced hook, three runs each (2026-09-14)
+
+The grid the post reports. Details, per-category table with intervals, grader notes and the parser fix are in `results/05-natural-second-grid/README.md`; `summary.json` there feeds the figures.
+
+| | A stock | B' hook, enforced |
+|---|---|---|
+| Runs | 57 | 57 |
+| Pass rate | 96% | 98% |
+| Cost per run, list price, worker included | $0.140 | $0.162 (+16%; paired +18%, CI +1% to +35%) |
+| Hook cheaper on | | 7 of 21 tasks |
+| Target-file tokens in main context (any tool) | 6,068 | 3,291 (−46%) |
+| API requests per run | 7.1 | 9.1 |
+| Wall clock per run | 47 s | 68 s |
+| Blocks / runs with a block | 0 | 85 / 41 |
+| Worker calls / runs with one | 0 | 13 / 9 |
+| Bypasses | 0 | 0 |
+
+By task type, hook cost relative to stock (paired mean over tasks): Spotify's four benchmark rows +5%; needle reads −8%; Spotify's shapes on big files +37%; harm tasks +27%; controls +21% (one run each). Tasks where the worker was called: +54%. Tasks where the hook fired and the model grepped instead: +14% with an interval that spans zero.
+
+### First grid: 12 tasks, five arms, one run per cell (2026-09-12)
+
+Kept as the record of the first attempt. Two confounds were found afterwards and fixed before the second grid: the strict arm's block message told the model to grep, and Claude Code's automatic cache-TTL switch billed the strict arm's cache writes at twice the rate for part of the grid. TTL-normalized, this grid's 35% gap is 21 to 27%.
 
 | | A stock | B shunt | C Explore | B' strict | C' strict |
 |---|---|---|---|---|---|
@@ -153,9 +174,10 @@ Per-pass write-ups, machine-built tables, and every run's trace report are under
 
 ## Caveats
 
-- One run per cell. The counts (worker calls, blocks, bypasses, spawns) are established. The cost ranking among the hooked arms is observed, not proven; a single search choice moves one run by 50%.
-- The worker is Haiku through headless Claude Code, not Gemini Flash through Portal. That call carries Claude Code's tool definitions, about 25,000 cache-write tokens per call, which a raw API call would not. Irrelevant to the result, since the worker was never called, but it would matter if it had been.
-- Two graders are keyword-based (bug reports, key lists) and one is too literal (code-write checklist). Weaknesses and fixes are listed in `docs/HARNESS.md`.
+- Three runs per cell on the main tasks, one on the controls. Enough for direction and an interval per category, not enough to call a five-point difference real.
+- The worker is Haiku through a one-turn headless call with no tools (591 input tokens of overhead), not Gemini Flash through Portal. With an API key the same file makes one raw Messages call instead.
+- Code-gen tasks are graded by a checklist, not a compiler; Kafka's Gradle build does not run offline here. One needle task's key was ambiguous and now accepts both readings (see the results README).
+- Thinking blocks are not persisted in Claude Code's transcripts, so the model's reasons for grepping rather than delegating are inferred from its calls, never read.
 - Sonnet 5 on Claude Code 2.1.269. A model that reads whole files by default, which is what the 350-line threshold was designed for, would trigger the hook more and might delegate. That is the experiment to run next, on an older model.
 
 ## Layout

@@ -1,0 +1,102 @@
+{
+  "duration_api_ms": 72665,
+  "stop_reason": "end_turn",
+  "session_id": "dcaa2de8-6489-574c-aeef-bb9a81f8414e",
+  "total_cost_usd": 0.05217025000000001,
+  "usage": {
+    "input_tokens": 9,
+    "cache_creation_input_tokens": 9241,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 8122,
+    "output_tokens_details": {
+      "thinking_tokens": 5585
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 9241
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 9,
+        "output_tokens": 8122,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 9241,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 9241,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5": {
+      "inputTokens": 9,
+      "outputTokens": 8122,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 9241,
+      "webSearchRequests": 0,
+      "costUSD": 0.05217025000000001,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 5585,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "# Analysis of BrokerLifecycleManager.java\n\n## (1) Initial BrokerState Value\n- **Line 154**: `private volatile BrokerState state = BrokerState.NOT_RUNNING;`\n\n---\n\n## (2) Event Classes Implementing EventQueue.Event (in order)\n\n1. **Line 317**: `ResendBrokerRegistrationEvent`\n2. **Line 335**: `BeginControlledShutdownEvent`\n3. **Line 365**: `SetReadyToUnfenceEvent`\n4. **Line 376**: `OfflineDirEvent`\n5. **Line 391**: `OfflineDirBrokerFailureEvent`\n6. **Line 404**: `CordonedDirEvent`\n7. **Line 419**: `StartupEvent`\n8. **Line 587**: `BrokerRegistrationResponseEvent`\n9. **Line 669**: `BrokerHeartbeatResponseEvent`\n10. **Line 787**: `RegistrationTimeoutEvent`\n11. **Line 795**: `CommunicationEvent`\n12. **Line 807**: `ShutdownEvent`\n\n---\n\n## (3) State Transition Logic per Event Class\n\n- **ResendBrokerRegistrationEvent** (line 317–323)\n  - No state change\n  - Sets `registered = false` (line 321)\n  - Calls `scheduleNextCommunicationImmediately()`\n\n- **BeginControlledShutdownEvent** (line 335–360)\n  - **Line 343**: If `state == RUNNING`, sets `state = BrokerState.PENDING_CONTROLLED_SHUTDOWN`\n  - **Line 340**: If already in `PENDING_CONTROLLED_SHUTDOWN`, no change; logs\n  - **Line 349**: Default branch (any other state) calls `beginShutdown()`, no direct state assignment\n  - Calls `scheduleNextCommunicationImmediately()` (line 345)\n\n- **SetReadyToUnfenceEvent** (line 365–371)\n  - No state change\n  - Sets `readyToUnfence = true` (line 366)\n\n- **OfflineDirEvent** (line 376–388)\n  - No state change\n  - Adds directory to `offlineDirs` map with value `false`\n\n- **OfflineDirBrokerFailureEvent** (line 391–401)\n  - No state change\n  - If offline directory not communicated, calls `shutdownHook.run()` (line 399)\n\n- **CordonedDirEvent** (line 404–416)\n  - No state change\n  - Sets `cordonedLogDirs = dirs` (line 415)\n\n- **StartupEvent** (line 419–456)\n  - **Line 452**: Sets `state = BrokerState.STARTING`\n  - Calls `sendBrokerRegistration()` (line 456)\n  - Schedules `RegistrationTimeoutEvent` (line 453–455)\n\n- **BrokerRegistrationResponseEvent** (line 587–650)\n  - No state change\n  - Upon successful registration (line 624): sets `registered = true`, `initialRegistrationSucceeded = true`, `brokerEpoch = message.data().brokerEpoch()` (lines 623–625)\n  - Various error paths call `scheduleNextCommunicationAfterFailure()`\n\n- **BrokerHeartbeatResponseEvent** (line 669–786)\n  - **Line 722**: If `state == STARTING` AND `responseData.isCaughtUp()`, sets `state = BrokerState.RECOVERY`; completes `initialCatchUpFuture` (line 723)\n  - **Line 735**: If `state == RECOVERY` AND `!responseData.isFenced()`, sets `state = BrokerState.RUNNING`; completes `initialUnfenceFuture` (line 734)\n  - **Line 738**: If `state == RUNNING`, no state change; calls `scheduleNextCommunicationAfterSuccess()`\n  - **Line 741–754**: If `state == PENDING_CONTROLLED_SHUTDOWN`, no state change; logic branches on `shouldShutDown()` response\n  - **Line 755**: If `state == SHUTTING_DOWN`, no state change; logs\n\n- **RegistrationTimeoutEvent** (line 787–793)\n  - No state change\n  - If `!initialRegistrationSucceeded`, calls `eventQueue.beginShutdown(\"registrationTimeout\")` (line 792)\n\n- **CommunicationEvent** (line 795–805)\n  - No state change\n  - Decides between `sendBrokerHeartbeat()` and `sendBrokerRegistration()` based on flags\n\n- **ShutdownEvent** (line 807–820)\n  - **Line 810**: Sets `state = BrokerState.SHUTTING_DOWN`\n  - Completes `controlledShutdownFuture` (line 811)\n  - Cancels `initialCatchUpFuture`, `initialUnfenceFuture` (lines 812–813)\n  - Shuts down `channelManager` (lines 814–816)\n\n---\n\n## (4) Call Sites for Each Event Class\n\n- **ResendBrokerRegistrationEvent**\n  - **Line 289**: `eventQueue.append(new ResendBrokerRegistrationEvent());`\n  - Method: `resendBrokerRegistration()` (line 285)\n\n- **BeginControlledShutdownEvent**\n  - **Line 355**: `eventQueue.append(new BeginControlledShutdownEvent());`\n  - Method: `beginControlledShutdown()` (line 351)\n  - Comment (line 347–349): \"Enter the controlled shutdown state if we are in RUNNING state. Or, if we're not running, shut down immediately.\"\n\n- **SetReadyToUnfenceEvent**\n  - **Line 269**: `eventQueue.append(new SetReadyToUnfenceEvent());`\n  - Method: `setReadyToUnfence()` (line 268)\n\n- **OfflineDirEvent**\n  - **Line 281**: `eventQueue.append(new OfflineDirEvent(directory));`\n  - Method: `propagateDirectoryFailure()` (line 276)\n  - Comment (line 274–275): \"Propagate directory failures to the controller.\"\n\n- **OfflineDirBrokerFailureEvent**\n  - **Lines 282–284**: `eventQueue.scheduleDeferred(\"offlineDirFailure\", new EventQueue.DeadlineFunction(time.nanoseconds() + MILLISECONDS.toNanos(timeout)), new OfflineDirBrokerFailureEvent(directory));`\n  - Method: `propagateDirectoryFailure()` (line 276)\n  - Comment (lines 282–283): \"If we can't communicate the offline directory to the controller, we should shut down.\"\n\n- **CordonedDirEvent**\n  - **Line 294**: `eventQueue.append(new CordonedDirEvent(directories));`\n  - Method: `propagateDirectoryCordoned()` (line 290)\n  - Condition: `if (cordonedLogDirsSupported.get())` (line 293)\n  - Comment (line 290–292): \"Propagate directory cordoned to the controller.\"\n\n- **StartupEvent**\n  - **Line 263**: `eventQueue.append(new StartupEvent(highestMetadataOffsetProvider, channelManager, clusterId, advertisedListeners, supportedFeatures));`\n  - Method: `start()` (line 250)\n\n- **BrokerRegistrationResponseEvent**\n  - **Line 573**: `eventQueue.prepend(new BrokerRegistrationResponseEvent(response, false));`\n  - Method: `BrokerRegistrationResponseHandler.onComplete()` (line 571)\n  - Comment (lines 566–568): \"the response handler is not invoked from the event handler thread, so it is not safe to update state here, instead, schedule an event to continue handling the response on the event handler thread\"\n  - **Line 579**: `eventQueue.prepend(new BrokerRegistrationResponseEvent(null, true));`\n  - Method: `BrokerRegistrationResponseHandler.onTimeout()` (line 577)\n  - Comment (same, lines 566–568)\n\n- **BrokerHeartbeatResponseEvent**\n  - **Line 663**: `eventQueue.prepend(new BrokerHeartbeatResponseEvent(response, false, currentOfflineDirs));`\n  - Method: `BrokerHeartbeatResponseHandler.onComplete()` (line 661)\n  - Comment (lines 656–658): \"the response handler is not invoked from the event handler thread, so it is not safe to update state here, instead, schedule an event to continue handling the response on the event handler thread\"\n  - **Line 668**: `eventQueue.prepend(new BrokerHeartbeatResponseEvent(null, true, currentOfflineDirs));`\n  - Method: `BrokerHeartbeatResponseHandler.onTimeout()` (line 666)\n  - Comment (same, lines 656–658)\n\n- **RegistrationTimeoutEvent**\n  - **Lines 453–455**: `eventQueue.scheduleDeferred(\"initialRegistrationTimeout\", new EventQueue.DeadlineFunction(time.nanoseconds() + initialTimeoutNs), new RegistrationTimeoutEvent());`\n  - Method: `StartupEvent.run()` (line 442)\n\n- **CommunicationEvent**\n  - **Line 782**: `eventQueue.scheduleDeferred(\"communication\", new EventQueue.DeadlineFunction(deadlineNs), new CommunicationEvent());`\n  - Method: `scheduleNextCommunication()` (line 775)\n  - Comment (line 777): \"Scheduling next communication at {}ms from now.\"\n\n- **ShutdownEvent**\n  - **Line 212**: Passed to `KafkaEventQueue` constructor\n  - Method: `BrokerLifecycleManager` constructor (line 206)\n  - Used as shutdown event for the queue\n\n---\n\n## (5) External Events Referenced But Not Defined\n\n- **None**. All events referenced via `eventQueue.append()`, `eventQueue.prepend()`, or `eventQueue.scheduleDeferred()` are defined within this file.",
+  "ttft_ms": 50486,
+  "type": "result",
+  "duration_ms": 72790,
+  "uuid": "9aa8683d-171d-4693-a18f-448329e4ba03",
+  "ttft_stream_ms": 774,
+  "time_to_request_ms": 122,
+  "first_content_frame_ms": 1033,
+  "time_to_request_from_spawn_ms": 3442956,
+  "warm_spare_claimed": false,
+  "time_origin_ms": 1789419031181.4663,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "transport": "cli",
+  "model": "claude-haiku-4-5"
+}

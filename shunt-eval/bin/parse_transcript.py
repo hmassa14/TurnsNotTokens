@@ -40,6 +40,11 @@ def parse_file(path, agent_label):
             rid = o.get("requestId") or o.get("uuid")
             r = requests.setdefault(rid, {"request_id": rid, "model": m.get("model"), "usage": m.get("usage") or {},
                                           "first_ts": o.get("timestamp"), "blocks": [], "agent": agent_label})
+            # One API response is written as several lines (thinking, text, tool_use), each carrying a running
+            # output_tokens count; the last line has the full count. Keep the largest so output is not undercounted.
+            u_new = m.get("usage") or {}
+            if u_new.get("output_tokens", 0) > r["usage"].get("output_tokens", 0):
+                r["usage"] = u_new
             for b in m.get("content") or []:
                 r["blocks"].append(b.get("type"))
                 if b.get("type") == "tool_use":

@@ -1,0 +1,95 @@
+{
+ "summary": {
+  "metric_names": {
+   "claude_code.session.count": 1,
+   "claude_code.cost.usage": 1,
+   "claude_code.token.usage": 1,
+   "claude_code.active_time.total": 1
+  },
+  "tokens_by_model_type": {
+   "claude-sonnet-5|input": 2.0,
+   "claude-sonnet-5|output": 364.0,
+   "claude-sonnet-5|cacheRead": 23949.0,
+   "claude-sonnet-5|cacheCreation": 5568.0
+  },
+  "cost_by_model_usd": {
+   "claude-sonnet-5": 0.0223538
+  },
+  "event_counts": {
+   "user_prompt": 1,
+   "api_request": 1,
+   "assistant_response": 1
+  },
+  "api_requests": 1,
+  "api_latency_ms_p50": 4918.0,
+  "api_latency_ms_max": 4918.0,
+  "tool_decisions": [],
+  "span_counts": {},
+  "hook_ms_total": 0
+ },
+ "events": [
+  {
+   "event": "user_prompt",
+   "ts": "1789418716584000000",
+   "attrs": {
+    "run.id": "ND4__natural__stock__r1__20260914-204510",
+    "session.id": "a1c9fb6f-607b-4595-b7c0-7916cdf27b36",
+    "terminal.type": "linux",
+    "event.name": "user_prompt",
+    "event.timestamp": "2026-09-14T20:45:16.584Z",
+    "event.sequence": 0,
+    "prompt.id": "c2f01d06-431f-4c4f-8392-84c7a68e3ef6",
+    "prompt_length": "170",
+    "prompt": "<REDACTED>",
+    "message.uuid": "79e57ee4-c1cd-4f77-9886-3c8179b57d5b"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789418721600000000",
+   "attrs": {
+    "run.id": "ND4__natural__stock__r1__20260914-204510",
+    "session.id": "a1c9fb6f-607b-4595-b7c0-7916cdf27b36",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T20:45:21.600Z",
+    "event.sequence": 1,
+    "prompt.id": "c2f01d06-431f-4c4f-8392-84c7a68e3ef6",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 364,
+    "cache_read_tokens": 23949,
+    "cache_creation_tokens": 5568,
+    "cost_usd": 0.0223538,
+    "cost_usd_micros": 22354,
+    "duration_ms": 4918,
+    "ttft_ms": 503,
+    "request_id": "req_011Cf3z6HEDcgqyUvTQvonRq",
+    "client_request_id": "4b1fb9c2-da74-4e58-95b9-596c7b57097e",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789418721601000000",
+   "attrs": {
+    "run.id": "ND4__natural__stock__r1__20260914-204510",
+    "session.id": "a1c9fb6f-607b-4595-b7c0-7916cdf27b36",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-14T20:45:21.601Z",
+    "event.sequence": 2,
+    "prompt.id": "c2f01d06-431f-4c4f-8392-84c7a68e3ef6",
+    "response_length": 183,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf3z6HEDcgqyUvTQvonRq",
+    "message.uuid": "5bf92ed1-648b-4752-bb86-881288e1b5db",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  }
+ ],
+ "spans": []
+}

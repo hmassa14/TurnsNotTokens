@@ -1,0 +1,39 @@
+{
+  "run_id": "CT2__natural__shunt-strict__r1__20260914-220940",
+  "task_id": "CT2",
+  "category": "small-file-control",
+  "arm": "shunt-strict",
+  "rep": 1,
+  "variant": "natural",
+  "main_model": "claude-sonnet-5",
+  "claude_code_version": "2.1.270 (Claude Code)",
+  "kafka_commit": "0ffb4f5dd57c6af206e3d9f97a433dd15ebb6dfc",
+  "session_id": "695a1301-d03b-4c64-a966-89edb57d52c3",
+  "workspace": "/home/user/WackyWords/shunt-eval/runs/_ws/CT2__natural__shunt-strict__r1__20260914-220940",
+  "target_files": [
+    "streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/ProcessorNodeMetrics.java"
+  ],
+  "started_at": "2026-09-14T22:09:42.192411+00:00",
+  "prompt": "Add a SinkNodeMetrics registry to Kafka Streams next to the existing node-level metrics classes, following the conventions of the processor node metrics class. It needs three DEBUG-level node sensors: records-sent (invocation rate and count), bytes-sent (rate of sum and sum), and send-latency (avg and max). Don't write tests or change existing files.",
+  "command": [
+    "claude",
+    "-p",
+    "Add a SinkNodeMetrics registry to Kafka Streams next to the existing node-level metrics classes, following the conventions of the processor node metrics class. It needs three DEBUG-level node sensors: records-sent (invocation rate and count), bytes-sent (rate of sum and sum), and send-latency (avg and max). Don't write tests or change existing files.",
+    "--model",
+    "claude-sonnet-5",
+    "--session-id",
+    "695a1301-d03b-4c64-a966-89edb57d52c3",
+    "--permission-mode",
+    "acceptEdits",
+    "--allowedTools",
+    "Read,Grep,Glob,Bash,Edit,Write,MultiEdit,Agent,Skill,TodoWrite,TaskCreate,TaskUpdate",
+    "--max-turns",
+    "40",
+    "--output-format",
+    "json"
+  ],
+  "wall_ms": 85201,
+  "exit_code": 0,
+  "timeout": false,
+  "finished_at": "2026-09-14T22:11:07.395672+00:00"
+}

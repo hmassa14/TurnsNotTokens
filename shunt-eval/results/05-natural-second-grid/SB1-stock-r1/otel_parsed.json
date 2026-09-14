@@ -1,0 +1,403 @@
+{
+ "summary": {
+  "metric_names": {
+   "claude_code.session.count": 1,
+   "claude_code.cost.usage": 5,
+   "claude_code.token.usage": 5,
+   "claude_code.active_time.total": 1
+  },
+  "tokens_by_model_type": {
+   "claude-sonnet-5|input": 10.0,
+   "claude-sonnet-5|output": 4069.0,
+   "claude-sonnet-5|cacheRead": 185891.0,
+   "claude-sonnet-5|cacheCreation": 30004.0
+  },
+  "cost_by_model_usd": {
+   "claude-sonnet-5": 0.1528982
+  },
+  "event_counts": {
+   "user_prompt": 1,
+   "tool_decision": 4,
+   "api_request": 5,
+   "tool_result": 4,
+   "assistant_response": 2
+  },
+  "api_requests": 5,
+  "api_latency_ms_p50": 3084.0,
+  "api_latency_ms_max": 15056.0,
+  "tool_decisions": [
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   }
+  ],
+  "span_counts": {},
+  "hook_ms_total": 0
+ },
+ "events": [
+  {
+   "event": "user_prompt",
+   "ts": "1789416586669000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "user_prompt",
+    "event.timestamp": "2026-09-14T20:09:46.669Z",
+    "event.sequence": 0,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "prompt_length": "271",
+    "prompt": "<REDACTED>",
+    "message.uuid": "d71d74ab-c30c-4f2a-acb1-b4383486d77a"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789416589863000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T20:09:49.863Z",
+    "event.sequence": 1,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_011kv3UNEDXUJt6MJgsk9H1e",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -iname \\\"RemoteLogManagerConfig.java\\\" 2>/dev/null; find / -iname \\\"*.java\\\" -path \\\"*remote*log*\\\" 2>/dev/null | head -50\"}"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789416589882000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T20:09:49.882Z",
+    "event.sequence": 2,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 235,
+    "cache_read_tokens": 23949,
+    "cache_creation_tokens": 5596,
+    "cost_usd": 0.0211338,
+    "cost_usd_micros": 21134,
+    "duration_ms": 3084,
+    "ttft_ms": 718,
+    "request_id": "req_011Cf3wPGL21YP5fd9XTi2AG",
+    "client_request_id": "b8a50d4e-5c0a-45d6-b597-72bcdf6bd0e3",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789416592514000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T20:09:52.514Z",
+    "event.sequence": 3,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_011kv3UNEDXUJt6MJgsk9H1e",
+    "success": "true",
+    "duration_ms": "2648",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -iname \\\"RemoteLogManagerConfig.java\\\" 2>/dev/null; find / -iname \\\"*.java\\\" -path \\\"*remote*log*\\\" 2>/dev/null | head -50\"}",
+    "tool_input": "{\"command\":\"find / -iname \\\"RemoteLogManagerConfig.java\\\" 2>/dev/null; find / -iname \\\"*.java\\\" -path \\\"*remote*log*\\\" 2>/dev/null | head -50\"}",
+    "tool_input_size_bytes": "143",
+    "tool_result_size_bytes": "1923"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789416594129000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T20:09:54.129Z",
+    "event.sequence": 4,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01AMUcXo3179YMxeC9vgU2SZ",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789416594143000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T20:09:54.143Z",
+    "event.sequence": 5,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 152,
+    "cache_read_tokens": 29545,
+    "cache_creation_tokens": 1253,
+    "cost_usd": 0.0105655,
+    "cost_usd_micros": 10566,
+    "duration_ms": 1596,
+    "ttft_ms": 575,
+    "request_id": "req_011Cf3wPgjhpZVV7bHVUToHk",
+    "client_request_id": "dfdcb64c-0229-4a76-a511-3773b848bd1a",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789416594144000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-14T20:09:54.144Z",
+    "event.sequence": 6,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "response_length": 56,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf3wPgjhpZVV7bHVUToHk",
+    "message.uuid": "999828d4-9ac7-4908-b9b3-1e9afeb141ff",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789416594273000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T20:09:54.273Z",
+    "event.sequence": 7,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01AMUcXo3179YMxeC9vgU2SZ",
+    "success": "true",
+    "duration_ms": "141",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/SB1__natural__stock__r1__20260914-200941/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\"}",
+    "tool_input_size_bytes": "191",
+    "tool_result_size_bytes": "39269"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789416609373000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T20:10:09.373Z",
+    "event.sequence": 8,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01JqWXDVaDN4Xwcw3zmzZFvj",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"FILE=/home/user/WackyWords/shunt-eval/runs/_ws/SB1__natural__stock__r1__20260914-200941/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\",\"full_command\":\"FILE=/home/user/WackyWords/shunt-eval/runs/_ws/SB1__natural__stock__r1__20260914-200941/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\\necho \\\"PROP constants:\\\"; grep -oE '[A-Z_]+_PROP(?= =)' -P \\\"$FILE\\\" | sort -u | wc -l\\ngrep -oE '[A-Z_]+_PROP(?= =)' -P \\\"$FILE\\\" | sort -u\\necho \\\"---\\\"\\necho \\\"define/defineInternal calls with PROP arg:\\\"\\ngrep -oE '\\\\.defineInternal\\\\(([A-Z_]+_PROP)|\\\\.define\\\\(([A-Z_]+_PROP)' \\\"$FILE\\\" | sort -u\\n\"}"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789416609386000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T20:10:09.386Z",
+    "event.sequence": 9,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 2080,
+    "cache_read_tokens": 30798,
+    "cache_creation_tokens": 18268,
+    "cost_usd": 0.0726336,
+    "cost_usd_micros": 72634,
+    "duration_ms": 15056,
+    "ttft_ms": 626,
+    "request_id": "req_011Cf3wPpNbMYEfwrDsgDB8z",
+    "client_request_id": "40b4801e-1d2a-42ec-9850-72d99c9ed0ad",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789416609493000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T20:10:09.493Z",
+    "event.sequence": 10,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01JqWXDVaDN4Xwcw3zmzZFvj",
+    "success": "true",
+    "duration_ms": "118",
+    "tool_parameters": "{\"bash_command\":\"FILE=/home/user/WackyWords/shunt-eval/runs/_ws/SB1__natural__stock__r1__20260914-200941/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\",\"full_command\":\"FILE=/home/user/WackyWords/shunt-eval/runs/_ws/SB1__natural__stock__r1__20260914-200941/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\\necho \\\"PROP constants:\\\"; grep -oE '[A-Z_]+_PROP(?= =)' -P \\\"$FILE\\\" | sort -u | wc -l\\ngrep -oE '[A-Z_]+_PROP(?= =)' -P \\\"$FILE\\\" | sort -u\\necho \\\"---\\\"\\necho \\\"define/defineInternal calls with PROP arg:\\\"\\ngrep -oE '\\\\.defineInternal\\\\(([A-Z_]+_PROP)|\\\\.define\\\\(([A-Z_]+_PROP)' \\\"$FILE\\\" | sort -u\\n\"}",
+    "tool_input": "{\"command\":\"FILE=/home/user/WackyWords/shunt-eval/runs/_ws/SB1__natural__stock__r1__20260914-200941/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\\necho \\\"PROP constants:\\\"; grep -oE '[A-Z_]+_PROP(?= =)' -P \\\"$FILE\\\" | sort -u | wc -l\\ngrep -oE '[A-Z_]+_PROP(?= =)' -P \\\"$FILE\\\" | sort -u\\necho \\\"---\\\"\\necho \\\"define/defineInternal calls with PROP arg:\\\"\\ngrep -oE '\\\\.defineInternal\\\\(([A-Z_]+_PROP)|\\\\.define\\\\(([A-Z_]+_PROP)' \\\"$FILE\\\" | sort -u\\n\"}",
+    "tool_input_size_bytes": "499",
+    "tool_result_size_bytes": "1856"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789416612555000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T20:10:12.555Z",
+    "event.sequence": 11,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_012BmmvTSg3aPWjvBtDRMGi4",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"FILE=/home/user/WackyWords/shunt-eval/runs/_ws/SB1__natural__stock__r1__20260914-200941/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\",\"full_command\":\"FILE=/home/user/WackyWords/shunt-eval/runs/_ws/SB1__natural__stock__r1__20260914-200941/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\\ngrep -oE '[A-Z_]+_PROP =' \\\"$FILE\\\" | sed 's/ =//' | sort -u\\n\"}"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789416612563000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T20:10:12.563Z",
+    "event.sequence": 12,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 202,
+    "cache_read_tokens": 49066,
+    "cache_creation_tokens": 3467,
+    "cost_usd": 0.0205047,
+    "cost_usd_micros": 20505,
+    "duration_ms": 3045,
+    "ttft_ms": 1057,
+    "request_id": "req_011Cf3wQwHM9KBDbh7BKqfqV",
+    "client_request_id": "cf91731a-538b-4d71-a992-6550a3ebfbed",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789416612621000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T20:10:12.621Z",
+    "event.sequence": 13,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_012BmmvTSg3aPWjvBtDRMGi4",
+    "success": "true",
+    "duration_ms": "64",
+    "tool_parameters": "{\"bash_command\":\"FILE=/home/user/WackyWords/shunt-eval/runs/_ws/SB1__natural__stock__r1__20260914-200941/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\",\"full_command\":\"FILE=/home/user/WackyWords/shunt-eval/runs/_ws/SB1__natural__stock__r1__20260914-200941/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\\ngrep -oE '[A-Z_]+_PROP =' \\\"$FILE\\\" | sed 's/ =//' | sort -u\\n\"}",
+    "tool_input": "{\"command\":\"FILE=/home/user/WackyWords/shunt-eval/runs/_ws/SB1__natural__stock__r1__20260914-200941/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\\ngrep -oE '[A-Z_]+_PROP =' \\\"$FILE\\\" | sed 's/ =//' | sort -u\\n\"}",
+    "tool_input_size_bytes": "258",
+    "tool_result_size_bytes": "1421"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789416622653000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T20:10:22.653Z",
+    "event.sequence": 14,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 1400,
+    "cache_read_tokens": 52533,
+    "cache_creation_tokens": 1420,
+    "cost_usd": 0.0280606,
+    "cost_usd_micros": 28061,
+    "duration_ms": 10008,
+    "ttft_ms": 622,
+    "request_id": "req_011Cf3wRAg1A5gP9zhozdtPa",
+    "client_request_id": "9dc709c1-8cac-4e0e-beac-4a7da26c0dde",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789416622653000000",
+   "attrs": {
+    "run.id": "SB1__natural__stock__r1__20260914-200941",
+    "session.id": "68a4d75d-9a0c-4479-892d-335c0393e6ed",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-14T20:10:22.653Z",
+    "event.sequence": 15,
+    "prompt.id": "b2ce279b-73c0-4f16-b96c-52eb4ad55ab1",
+    "response_length": 2927,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf3wRAg1A5gP9zhozdtPa",
+    "message.uuid": "aed5d4a9-2b3a-42e5-acce-447fb6e45771",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  }
+ ],
+ "spans": []
+}

@@ -1,0 +1,238 @@
+{
+ "summary": {
+  "requests_total": 3,
+  "requests_main": 3,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 3,
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 25714,
+    "cache_read_input_tokens": 84884,
+    "output_tokens": 5060
+   }
+  },
+  "tool_mix": {
+   "Bash": 2,
+   "Read": 1
+  },
+  "tool_calls_total": 3,
+  "reads_total": 1,
+  "reads_whole_file": 1,
+  "reads_targeted": 0,
+  "reads_blocked_by_hook": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {},
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 0,
+  "lines_entered_context": 617,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 3,
+  "files_read": [
+   "RemoteLogManagerConfig.java"
+  ],
+  "tool_latency_ms": {
+   "Bash": 695,
+   "Read": 149
+  },
+  "api_gap_ms_p50": 20444,
+  "api_gap_ms_max": 20444,
+  "final_text_chars": 3158
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf3wuePAR6w9DVJDmzC9i",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5596,
+    "cache_read_input_tokens": 23949,
+    "output_tokens": 513,
+    "output_tokens_details": {
+     "thinking_tokens": 347
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5596
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 513,
+      "cache_read_input_tokens": 23949,
+      "cache_creation_input_tokens": 5596,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5596,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:16:44.743Z",
+   "blocks": [
+    "thinking",
+    "tool_use",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3wvCxUozxhdfkt2FLgd",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1845,
+    "cache_read_input_tokens": 29545,
+    "output_tokens": 157,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1845
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 157,
+      "cache_read_input_tokens": 29545,
+      "cache_creation_input_tokens": 1845,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1845,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:16:48.674Z",
+   "blocks": [
+    "text",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3wvRVYDHmYsn63oUink",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 18273,
+    "cache_read_input_tokens": 31390,
+    "output_tokens": 4390,
+    "output_tokens_details": {
+     "thinking_tokens": 2928
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 18273
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 4390,
+      "cache_read_input_tokens": 31390,
+      "cache_creation_input_tokens": 18273,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 18273,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:17:09.864Z",
+   "blocks": [
+    "thinking",
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01Q61rw8fphukCaGkhLCkRiq",
+   "name": "Bash",
+   "input": {
+    "command": "find / -iname \"RemoteLogManagerConfig.java\" 2>/dev/null"
+   },
+   "ts_use": "2026-09-14T20:16:45.203Z",
+   "request_id": "req_011Cf3wuePAR6w9DVJDmzC9i",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:16:46.521Z",
+   "is_error": false,
+   "result_head": "/tmp/claude-0/-home-user-WackyWords/dcaa2de8-6489-574c-aeef-bb9a81f8414e/scratchpad/kafka/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java\n/home/user/WackyWords/shunt-eval/runs/_ws/D1__natural__shunt__r1__20260912-171451/storage/src/main/java/org/apache/ka",
+   "result_chars": 1923,
+   "result_lines": 0,
+   "latency_ms": 1317,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_012jwPvXLRfUjMgGBbaC9ZQr",
+   "name": "Bash",
+   "input": {
+    "command": "ls /home/user/WackyWords/shunt-eval/runs/_ws/SB1__natural__stock__r3__20260914-201635"
+   },
+   "ts_use": "2026-09-14T20:16:46.342Z",
+   "request_id": "req_011Cf3wuePAR6w9DVJDmzC9i",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:16:46.416Z",
+   "is_error": false,
+   "result_head": "AGENTS.md\nCONTRIBUTING.md\nHEADER\nLICENSE\nLICENSE-binary\nNOTICE\nNOTICE-binary\nREADME.md\nSECURITY.md\nVagrantfile\napi-checker\nbin\nbuild\nbuild.gradle\ncheckstyle\nclients\ncommitter-tools\nconfig\nconnect\ncoordinator-common\ncore\ndoap_Kafka.rdf\ndocker\ndocs\nexamples\ngenerator\ngradle\ngradle.properties\ngradlew\ng",
+   "result_chars": 529,
+   "result_lines": 0,
+   "latency_ms": 73,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01Xi8H97jTq4EGNMzPKbMeuF",
+   "name": "Read",
+   "input": {
+    "file_path": "/home/user/WackyWords/shunt-eval/runs/_ws/SB1__natural__stock__r3__20260914-201635/storage/src/main/java/org/apache/kafka/server/log/remote/storage/RemoteLogManagerConfig.java"
+   },
+   "ts_use": "2026-09-14T20:16:49.271Z",
+   "request_id": "req_011Cf3wvCxUozxhdfkt2FLgd",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:16:49.420Z",
+   "is_error": false,
+   "result_head": "1\t/*\n2\t * Licensed to the Apache Software Foundation (ASF) under one or more\n3\t * contributor license agreements. See the NOTICE file distributed with\n4\t * this work for additional information regarding copyright ownership.\n5\t * The ASF licenses this file to You under the Apache License, Version 2.0",
+   "result_chars": 39269,
+   "result_lines": 617,
+   "latency_ms": 149,
+   "flags": [
+    "read_whole"
+   ]
+  }
+ ]
+}

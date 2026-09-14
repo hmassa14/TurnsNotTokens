@@ -15,11 +15,12 @@
     "type": "needle",
     "literal": "StreamsException",
     "aliases": [
-      "StreamsException("
+      "StreamsException(",
+      "LockException"
     ],
     "identifiers": [
-      "StreamsException",
-      "initializeProcessId"
-    ]
+      "StateDirectory"
+    ],
+    "note": "The prompt says 'already locked by another process'. StateDirectory.initializeProcessId throws StreamsException with exactly that log message, but the class Javadoc describes the per-task lock with the same words and that path throws LockException. Both are accepted; the ambiguity is the task's, not the model's."
   }
 }

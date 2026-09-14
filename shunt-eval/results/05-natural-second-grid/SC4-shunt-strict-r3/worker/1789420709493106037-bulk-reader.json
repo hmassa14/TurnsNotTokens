@@ -1,0 +1,102 @@
+{
+  "duration_api_ms": 34940,
+  "stop_reason": "end_turn",
+  "session_id": "dcaa2de8-6489-574c-aeef-bb9a81f8414e",
+  "total_cost_usd": 0.0344015,
+  "usage": {
+    "input_tokens": 9,
+    "cache_creation_input_tokens": 11750,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 3941,
+    "output_tokens_details": {
+      "thinking_tokens": 3291
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 11750
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 9,
+        "output_tokens": 3941,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 11750,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 11750,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5": {
+      "inputTokens": 9,
+      "outputTokens": 3941,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 11750,
+      "webSearchRequests": 0,
+      "costUSD": 0.0344015,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 3291,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "- **(a) Field and Constructor:**\n  - Field declaration (line 253):\n    ```\n        private final AbstractConfig config;\n    ```\n  - Constructor (lines 408–410):\n    ```\n        public RemoteLogManagerConfig(AbstractConfig config) {\n            this.config = config;\n        }\n    ```\n  - Note: No instance fields appear immediately after class opening brace (line 38); constants precede the field.\n\n- **(b) First complete config key definition block (lines 40–47):**\n  ```\n      /**\n       * Prefix used for properties to be passed to {@link RemoteStorageManager} implementation. Remote log subsystem collects all the properties having\n       * this prefix and passes to {@code RemoteStorageManager} using {@link RemoteStorageManager#configure(Map)}.\n       */\n      public static final String REMOTE_STORAGE_MANAGER_CONFIG_PREFIX_PROP = \"remote.log.storage.manager.impl.prefix\";\n      public static final String REMOTE_STORAGE_MANAGER_CONFIG_PREFIX_DOC = \"Prefix used for properties to be passed to RemoteStorageManager \" +\n              \"implementation. For example this value can be <code>rsm.config.</code>.\";\n      public static final String DEFAULT_REMOTE_STORAGE_MANAGER_CONFIG_PREFIX = \"rsm.config.\";\n  ```\n\n- **(c) PROP/DOC/DEFAULT organization:**\n  - Declared together as a group per-key (one PROP, one DOC, one DEFAULT consecutively for each configuration key).\n\n- **(d) configDef() method:**\n  - Signature (line 255):\n    ```\n        public static ConfigDef configDef() {\n    ```\n  - First lines (255–261):\n    ```\n        public static ConfigDef configDef() {\n            return new ConfigDef()\n                    .define(REMOTE_LOG_STORAGE_SYSTEM_ENABLE_PROP,\n                            BOOLEAN,\n                            DEFAULT_REMOTE_LOG_STORAGE_SYSTEM_ENABLE,\n                            null,\n                            MEDIUM,\n                            REMOTE_LOG_STORAGE_SYSTEM_ENABLE_DOC)\n    ```\n  - Last lines (381–387):\n    ```\n                    .define(REMOTE_LIST_OFFSETS_REQUEST_TIMEOUT_MS_PROP,\n                            LONG,\n                            DEFAULT_REMOTE_LIST_OFFSETS_REQUEST_TIMEOUT_MS,\n                            atLeast(1),\n                            MEDIUM,\n                            REMOTE_LIST_OFFSETS_REQUEST_TIMEOUT_MS_DOC);\n        }\n    ```\n  - Creates new ConfigDef() each call (not static final field).",
+  "ttft_ms": 29828,
+  "type": "result",
+  "duration_ms": 35068,
+  "uuid": "60eb2d6e-05c1-43b6-8db4-e4303b19841c",
+  "ttft_stream_ms": 617,
+  "time_to_request_ms": 125,
+  "first_content_frame_ms": 855,
+  "time_to_request_from_spawn_ms": 5121316,
+  "warm_spare_claimed": false,
+  "time_origin_ms": 1789420709505.0916,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "transport": "cli",
+  "model": "claude-haiku-4-5"
+}

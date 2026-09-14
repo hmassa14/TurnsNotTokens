@@ -47,11 +47,11 @@
 
 <main>
   <h1>Figures for "Tokens Are Cheap, Turns Are Not"</h1>
-  <p class="lede">In post order. A: the mechanism. B: the setup. C: the call-out on the rule we removed. D, E, F: one task traced, then as bars, then in cents. G: the headline across twelve tasks. Two arms throughout: stock, and Spotify's hook with its exception closed.</p>
+  <p class="lede">In post order. A: the mechanism. B: the setup. C: the call-out on the rule we removed. D, E, F: one task traced, then as bars, then in cents. G: the headline across twenty-one tasks. H: the same bill split by task type. Two arms throughout: stock, and Spotify's hook with its exception closed.</p>
 
-  <figure>
+  <figure id="fig-hook">
     <span class="fig-n">Figure A · where the hook sits</span>
-    <svg viewBox="0 0 900 460" role="img" aria-label="Claude Code's tool loop with Spotify's PreToolUse hook in the path of a Read call, and what the model did after a block: never Spotify's worker; grep in every run with the hook enforced; and, before the exception was closed, a paged read on every block.">
+    <svg viewBox="0 0 900 460" role="img" aria-label="Claude Code's tool loop with Spotify's PreToolUse hook in the path of a Read call, and what the model did next after each of the 85 blocks in the second grid: the worker script 9 times, grep or a shell search 47 times, a paged read 26 times, which the enforced hook refused.">
       <defs>
         <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
         <marker id="ar-hook" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--hook)"/></marker>
@@ -88,25 +88,25 @@
       <line x1="30" y1="322" x2="870" y2="322" stroke="currentColor" stroke-width="0.6" opacity="0.35"/>
       <text x="30" y="344" font-weight="600">After a block, the model's next call was</text>
       <!-- three columns: x = 30, 320, 610 ; width 250 -->
-      <rect x="30" y="358" width="250" height="52" rx="6" class="box dim" stroke-dasharray="5 4"/>
-      <text x="155" y="379" text-anchor="middle" font-weight="600" class="dim">Spotify's worker script</text>
+      <rect x="30" y="358" width="250" height="52" rx="6" class="box hook-s" stroke-width="1.6"/>
+      <text x="155" y="379" text-anchor="middle" font-weight="600">Spotify's worker script</text>
       <text x="155" y="396" text-anchor="middle" class="small">bulk-read → Haiku reads the file → summary</text>
-      <text x="155" y="428" text-anchor="middle" class="small mono">0 of 12 runs</text>
-      <text x="155" y="443" text-anchor="middle" class="small">what the design assumes</text>
+      <text x="155" y="428" text-anchor="middle" class="small mono">9 of 85 blocks</text>
+      <text x="155" y="443" text-anchor="middle" class="small">what the design assumes; 13 worker calls in 57 runs</text>
 
       <rect x="320" y="358" width="250" height="52" rx="6" class="box hook-s" stroke-width="1.6"/>
-      <text x="445" y="379" text-anchor="middle" font-weight="600">Grep(pattern, file)</text>
+      <text x="445" y="379" text-anchor="middle" font-weight="600">Grep or Bash on the file</text>
       <text x="445" y="396" text-anchor="middle" class="small">never blocked; matching lines enter context</text>
-      <text x="445" y="428" text-anchor="middle" class="small mono">every run</text>
-      <text x="445" y="443" text-anchor="middle" class="small">what happened</text>
+      <text x="445" y="428" text-anchor="middle" class="small mono">47 of 85 blocks</text>
+      <text x="445" y="443" text-anchor="middle" class="small">what usually happened</text>
 
       <rect x="610" y="358" width="250" height="52" rx="6" class="box dim" stroke-dasharray="5 4"/>
       <text x="735" y="379" text-anchor="middle" font-weight="600" class="dim">Read(file, offset, limit)</text>
       <text x="735" y="396" text-anchor="middle" class="small">the published hook lets this through</text>
-      <text x="735" y="428" text-anchor="middle" class="small mono">9 of 9 blocks, before the fix</text>
+      <text x="735" y="428" text-anchor="middle" class="small mono">tried 26 times; refused here</text>
       <text x="735" y="443" text-anchor="middle" class="small">closed for this test (see call-out)</text>
     </svg>
-    <figcaption><b>Where the hook sits, and the way out.</b> A PreToolUse hook runs between the model's tool call and the tool. On allow, the file comes back whole. On block, only the hook's message comes back, and the model chooses its next call. Spotify's design assumes that choice is the worker script. In twelve tasks it never was: the model grepped the file instead, a few hundred lines at a time. The right-hand exit, a read with an offset, is the one the published hook leaves open; we closed it so the hook would do what the post describes.</figcaption>
+    <figcaption><b>Where the hook sits, and the way out.</b> A PreToolUse hook runs between the model's tool call and the tool. On allow, the file comes back whole. On block, only the hook's message comes back, and the model chooses its next call. Spotify's design assumes that choice is the worker script. Across 85 blocks in 57 hook runs it was, 9 times. The usual choice was grep, 47 times. The right-hand exit, a read with an offset, is the one the published hook leaves open; we closed it so the hook would do what the post describes, and the model still tried it 26 times.</figcaption>
   </figure>
   <figure id="fig-setup">
     <span class="fig-n">Figure B · the setup</span>
@@ -141,13 +141,13 @@
       <text x="360" y="290" class="small">Spotify's published plugin with two changes: the call to their internal Portal</text>
       <text x="360" y="304" class="small">becomes a call to Haiku, and the rule that let a paged read through is deleted,</text>
       <text x="360" y="318" class="small">so the hook enforces what the post describes (call-out below).</text>
-      <text x="20" y="356" class="small">Twelve tasks on Kafka, each asked as a developer would (no file path given), one run per arm per task, Sonnet 5 as the main model, Haiku as the worker.</text>
+      <text x="20" y="356" class="small">Twenty-one tasks on Kafka, each asked as a developer would (no file path given), three runs per arm per task, Sonnet 5 as the main model, Haiku as the worker.</text>
     </svg>
     <figcaption><b>The setup.</b> Every run starts from an untouched Kafka checkout and a fresh headless session; nothing carries over. Two folders. Stock is Claude Code as installed. The hook arm is Spotify's published plugin with its Portal call pointed at Haiku and one rule removed, so that a file over 350 lines cannot be read by the expensive model at all.</figcaption>
   </figure>
   <figure id="fig-callout">
     <span class="fig-n">Figure C · call-out: the rule we removed, and why</span>
-    <p class="small" style="margin:0 0 10px;color:var(--ink-2)">R1 under Spotify's hook exactly as published, requests 4 to 6 of 11. The blocked read is followed by a read with an offset, which the published hook allows.</p>
+    <p class="small" style="margin:0 0 10px;color:var(--ink-2)">The same broker-lifecycle question under Spotify's hook exactly as published, requests 4 to 6 of 11, from the pilot. The blocked read is followed by a read with an offset, which the published hook allows.</p>
 <div class="sb">
 <section class="run hook">
 <h3><span class="arm">Spotify&#x27;s hook, as published</span> 11 requests · $0.204 · 78 s · pass</h3>
@@ -188,238 +188,332 @@
   </figure>
   <figure id="fig-story">
     <span class="fig-n">Figure D · one question, request by request</span>
-    <p class="small" style="margin:0 0 10px;color:var(--ink-2)">R1, "how does the broker lifecycle manager move between states?" Stock, request 2 of 3; then with the hook, requests 4, 5, 10, 11 and 15 of 16. Each numbered row is one API request: what the model was given, what it decided, what came back.</p>
+    <p class="small" style="margin:0 0 10px;color:var(--ink-2)">"How does the broker lifecycle manager move between states?" Stock, request 3 of 5; then with the hook, requests 3, 5, 6, 7, 8, 9 and 15 of 15. Each numbered row is one API request: what the model was given, what it decided, what came back.</p>
 <div class="sb">
 <section class="run stock">
-<h3><span class="arm">A · stock</span> 3 requests · $0.113 · 39 s · pass</h3>
+<h3><span class="arm">A · stock</span> 5 requests · $0.129 · 42 s · pass</h3>
 <div class="step">
-<div class="n">2</div>
+<div class="n">3</div>
 <div class="cols">
 <div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
-<div class="col"><span class="lbl">Model decided</span>(thought first) Read `BrokerLifecycleManager.java`, the whole file<div class="meta">137 output tokens</div></div>
-<div class="col"><span class="lbl">Came back</span><div class="quote">771 numbered lines of the file</div><div class="meta">36,294 chars, 115 ms</div></div>
+<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java`, the whole file<div class="meta">124 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">771 numbered lines of the file</div><div class="meta">36,294 chars, 151 ms</div></div>
 </div>
-<div class="cost">running cost ≈ 3.9¢</div>
+<div class="cost">running cost ≈ 5.0¢</div>
 </div>
-<div class="skip">… request 3 skipped … running total 11.3¢</div>
+<div class="skip">… request 5 skipped … running total 13.7¢</div>
 </section>
 <section class="run hook">
-<h3><span class="arm">B · Spotify&#x27;s hook, enforced</span> 16 requests · $0.285 · 70 s · pass</h3>
+<h3><span class="arm">B · Spotify&#x27;s hook, enforced</span> 15 requests · $0.225 · 157 s · pass</h3>
 <div class="step">
-<div class="n">4</div>
+<div class="n">3</div>
 <div class="cols">
 <div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
-<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java`, the whole file<div class="meta">127 output tokens</div></div>
-<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read; in this arm a paged read is refused too. The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly. Reads with offset/limit are also blocked for this file; use grep for exact lines.</div></div>
+<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java`, the whole file<div class="meta">128 output tokens</div></div>
+<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read. The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly.</div></div>
 </div>
-<div class="cost">running cost ≈ 6.0¢</div>
+<div class="cost">running cost ≈ 4.8¢</div>
 </div>
+<div class="skip">… request 4 skipped … running total 5.8¢</div>
 <div class="step">
 <div class="n">5</div>
 <div class="cols">
-<div class="col"><span class="lbl">Sent to the model</span>everything above + the hook&#x27;s message</div>
-<div class="col"><span class="lbl">Model decided</span>(thought first) Grep for `class \w+Event|extends EventQueue.Event|BrokerState\.|privat` in `BrokerLifecycleManager.java`<div class="meta">358 output tokens</div></div>
-<div class="col"><span class="lbl">Came back</span><div class="quote">131:    private volatile BrokerState state = BrokerState.NOT_RUNNING;
-303:    private class ResendBrokerRegistrationEvent implements EventQueue.Event {
-335:    private class BeginControlledShutdownEvent implements EventQueue.Event {
-343:   </div><div class="meta">1,653 chars, 18 ms</div></div>
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Read `BrokerLifecycleManager.java` lines 1 to 351<div class="meta">412 output tokens</div></div>
+<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read. The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly.</div></div>
 </div>
 <div class="cost">running cost ≈ 7.1¢</div>
 </div>
-<div class="skip">… request 9 skipped … running total 13.4¢</div>
 <div class="step">
-<div class="n">10</div>
+<div class="n">6</div>
 <div class="cols">
-<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
-<div class="col"><span class="lbl">Model decided</span>(thought first) Grep for `.` in `BrokerLifecycleManager.java`<div class="meta">317 output tokens</div></div>
-<div class="col"><span class="lbl">Came back</span><div class="quote">626:            }
-627:            if (response.authenticationException() != null) {
-628:                logger.error(&quot;Unable to send broker heartbeat for {} because of an authentication exception.&quot;,
-629:                        nodeId, respo</div><div class="meta">8,671 chars, 35 ms</div></div>
+<div class="col"><span class="lbl">Sent to the model</span>everything above + the hook&#x27;s message</div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Skill `bulk-reader`<div class="meta">504 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">Launching skill: bulk-reader</div><div class="meta">28 chars, 45 ms</div></div>
 </div>
-<div class="cost">running cost ≈ 15.0¢</div>
+<div class="cost">running cost ≈ 8.4¢</div>
 </div>
 <div class="step">
-<div class="n">11</div>
+<div class="n">7</div>
 <div class="cols">
-<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
-<div class="col"><span class="lbl">Model decided</span>(thought first) Grep for `.` in `BrokerLifecycleManager.java`<div class="meta">296 output tokens</div></div>
-<div class="col"><span class="lbl">Came back</span><div class="quote">626:            }
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Skill result</div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Bash: `.claude/shunt/scripts/bulk-read --question &quot;Read this file in full and answer: (1) What Br`<div class="meta">511 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote"># Analysis of BrokerLifecycleManager.java
 
-[Showing results with pagination = limit: 1, offset: 544]</div><div class="meta">76 chars, 36 ms</div></div>
+## (1) Initial BrokerState Value
+- **Line 154**: `private volatile BrokerState state = BrokerState.NOT_RUNNING;`
+
+---
+
+## (2) Event Classes Implementing EventQueue.Event (in order)
+
+1. **Line 317**</div><div class="meta">7,656 chars, 75064 ms</div></div>
 </div>
-<div class="cost">running cost ≈ 16.9¢</div>
+<div class="cost">running cost ≈ 9.9¢</div>
 </div>
-<div class="skip">… request 14 skipped … running total 21.2¢</div>
+<div class="step">
+<div class="n">8</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Bash result</div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Grep for `private class BeginControlledShutdownEvent|private class Bro` in `BrokerLifecycleManager.java`<div class="meta">519 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">131:    private volatile BrokerState state = BrokerState.NOT_RUNNING;
+132-
+133-    /**
+134-     * A thread-safe callback function which gives this manager the current highest metadata
+135-     * offset.  This variable can only be read or wr</div><div class="meta">4,433 chars, 34 ms</div></div>
+</div>
+<div class="cost">running cost ≈ 12.1¢</div>
+</div>
+<div class="step">
+<div class="n">9</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
+<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java` lines 632 to 732<div class="meta">272 output tokens</div></div>
+<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read. The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly.</div></div>
+</div>
+<div class="cost">running cost ≈ 13.7¢</div>
+</div>
+<div class="skip">… request 14 skipped … running total 20.3¢</div>
 <div class="step">
 <div class="n">15</div>
 <div class="cols">
-<div class="col"><span class="lbl">Sent to the model</span>everything above + that Glob result</div>
-<div class="col"><span class="lbl">Model decided</span>Read `BrokerState.java`, the whole file<div class="meta">125 output tokens</div></div>
-<div class="col"><span class="lbl">Came back</span><div class="quote">108 numbered lines of the file</div><div class="meta">3,054 chars, 38 ms</div></div>
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Read result</div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) write the answer<div class="meta">1829 output tokens</div></div>
+<div class="col"><span class="lbl">The answer begins</span><div class="quote">I have everything needed to give a complete, verified answer.  ## `BrokerLifecycleManager` (`server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java`)  ### Starting state `state` is a `volatile BrokerState` field initialized to **`BrokerState.…</div></div>
 </div>
-<div class="cost">running cost ≈ 22.3¢</div>
+<div class="cost">running cost ≈ 23.4¢</div>
 </div>
-<div class="skip">… request 16 skipped … running total 25.5¢</div>
 </section>
 </div>
-    <figcaption><b>What the model does when it cannot read the file.</b> Stock found the file with one grep and read it whole on its second request; the answer came on the third. With the hook, the same read was refused and the model received one sentence naming the bulk-reader. It did not call the bulk-reader. It grepped the file ten times, twice with the pattern <code>.</code> and an offset, which is a paged read through a different tool, then read the small <code>BrokerState.java</code> and answered. Correct answer both times: 3 requests against 16.</figcaption>
+    <figcaption><b>What the model does when it cannot read the file.</b> Stock found the file with one grep and read it whole on its third request; the answer came on the fifth. With the hook, the same read was refused, a paged read was refused, and then the model did what Spotify designed: it opened the bulk-reader skill and sent the file to the Haiku worker. The worker's summary came back on request 7. The model then grepped the file anyway, tried another paged read, grepped twice more, and answered on request 15. Correct answer both times: 5 requests against 15, plus the worker's own call.</figcaption>
   </figure>
   <figure id="fig-bars">
     <span class="fig-n">Figure E · the same question as bars</span>
-    <svg viewBox="0 0 900 600" role="img" aria-label="Two request-by-request traces of the R1 task. Stock: three API requests, each re-sending about thirty thousand cached tokens, 83,119 cache-read tokens in total, 11 cents. With the hook enforced: sixteen requests, the fourth blocked, followed by ten greps, a glob and a read of a small file; context grows from 30 to 49 thousand tokens per request, 601,342 cache-read tokens in total, 28 cents.">
-      <text x="20" y="22" font-weight="600">R1: "how does the broker lifecycle manager move between states?"  ·  770-line file  ·  Sonnet 5</text>
+    <svg viewBox="0 0 900 600" role="img" aria-label="Two request-by-request traces of the broker-lifecycle question. Stock: 5 API requests, 162,601 cache-read tokens in total, 13 cents. With the hook enforced: 15 requests, three of them refused reads, one the worker call; context grows from 30 to 45 thousand tokens per request, 534,142 cache-read tokens in total, 23 cents plus 5 cents for the worker.">
+      <text x="20" y="22" font-weight="600">"How does the broker lifecycle manager move between states?"  ·  770-line file  ·  Sonnet 5</text>
       <text x="20" y="40" class="small">Each bar is one API request; its height is everything sent to the model, almost all of it read from cache. Under each bar: the tool call made next, and what it returned.</text>
       <text x="20" y="80" font-weight="600" fill="var(--stock)">A · stock</text>
-      <text x="20" y="96" class="small">3 requests · 83,119 cached tokens re-sent · 3,890 output tokens · $0.113</text>
+      <text x="20" y="96" class="small">5 requests · 162,601 cached tokens re-sent · 3,643 output tokens · $0.129</text>
       <line x1="60" y1="240" x2="880" y2="240" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
-<rect x="70.0" y="162.4" width="46" height="77.6" rx="3" class="stock" opacity="0.85"/>
-<text x="93.0" y="155" text-anchor="middle" class="small mono">29k</text>
-<text x="93.0" y="256" text-anchor="middle" class="small">Grep</text>
-<text x="93.0" y="270" text-anchor="middle" class="small mono">157</text>
-<rect x="170.0" y="161.1" width="46" height="78.9" rx="3" class="stock" opacity="0.85"/>
-<text x="193.0" y="154" text-anchor="middle" class="small mono">30k</text>
-<text x="193.0" y="256" text-anchor="middle" class="small">Read</text>
-<text x="193.0" y="270" text-anchor="middle" class="small mono">771 ln</text>
-<rect x="270.0" y="125.8" width="46" height="114.2" rx="3" class="stock" opacity="0.85"/>
-<text x="293.0" y="119" text-anchor="middle" class="small mono">43k</text>
-<text x="293.0" y="256" text-anchor="middle" class="small">answer</text>
-<text x="293.0" y="270" text-anchor="middle" class="small mono">3.4k out</text>
-      <rect x="270" y="125.8" width="46" height="35.3" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/>
-      <text x="330" y="140" class="small">← the file, 13.4k tokens, written to cache once (3.3¢)</text>
-      <text x="330" y="200" class="small">everything else is re-read from cache at a tenth of the input price</text>
+<rect x="70.0" y="159.7" width="46" height="80.3" rx="3" class="stock" opacity="0.85"/>
+<text x="93.0" y="153" text-anchor="middle" class="small mono">30k</text>
+<text x="93.0" y="256" text-anchor="middle" class="small">Bash</text>
+<text x="93.0" y="270" text-anchor="middle" class="small mono">pwd</text>
+<rect x="170.0" y="153.6" width="46" height="86.4" rx="3" class="stock" opacity="0.85"/>
+<text x="193.0" y="147" text-anchor="middle" class="small mono">32k</text>
+<text x="193.0" y="256" text-anchor="middle" class="small">Grep</text>
+<text x="193.0" y="270" text-anchor="middle" class="small mono">157</text>
+<rect x="270.0" y="153.0" width="46" height="87.0" rx="3" class="stock" opacity="0.85"/>
+<text x="293.0" y="146" text-anchor="middle" class="small mono">32k</text>
+<text x="293.0" y="256" text-anchor="middle" class="small">Read</text>
+<text x="293.0" y="270" text-anchor="middle" class="small mono">771 ln</text>
+<rect x="370.0" y="116.6" width="46" height="123.4" rx="3" class="stock" opacity="0.85"/>
+<text x="393.0" y="110" text-anchor="middle" class="small mono">45k</text>
+<text x="393.0" y="256" text-anchor="middle" class="small">Bash</text>
+<text x="393.0" y="270" text-anchor="middle" class="small mono">find</text>
+<rect x="470.0" y="110.0" width="46" height="130.0" rx="3" class="stock" opacity="0.85"/>
+<text x="493.0" y="103" text-anchor="middle" class="small mono">48k</text>
+<text x="493.0" y="256" text-anchor="middle" class="small">answer</text>
+<text x="493.0" y="270" text-anchor="middle" class="small mono">1.7k out</text>
+      <text x="560" y="150" class="small">the file: 9.1k tokens, written to cache once (2.3¢)</text>
+      <text x="560" y="168" class="small">everything else: re-read from cache at a tenth of input price</text>
       <text x="20" y="330" font-weight="600" fill="var(--hook)">B · Spotify's hook, enforced</text>
-      <text x="20" y="346" class="small">16 requests · 601,342 cached tokens re-sent · 6,269 output tokens · $0.285</text>
+      <text x="20" y="346" class="small">15 requests · 534,142 cached tokens re-sent · 6,470 output tokens · $0.225 + $0.052 worker</text>
       <line x1="60" y1="490" x2="880" y2="490" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
-<rect x="66.0" y="412.1" width="36" height="77.9" rx="3" class="hook" opacity="0.85"/>
-<text x="84.0" y="405" text-anchor="middle" class="small mono">30k</text>
+<rect x="66.0" y="409.4" width="36" height="80.6" rx="3" class="hook" opacity="0.85"/>
+<text x="84.0" y="402" text-anchor="middle" class="small mono">30k</text>
 <text x="84.0" y="506" text-anchor="middle" class="small">Bash</text>
 <text x="84.0" y="520" text-anchor="middle" class="small mono">find</text>
-<rect x="117.0" y="411.0" width="36" height="79.0" rx="3" class="hook" opacity="0.85"/>
-<text x="135.0" y="506" text-anchor="middle" class="small">Bash</text>
-<text x="135.0" y="520" text-anchor="middle" class="small mono">ls -</text>
-<rect x="168.0" y="405.2" width="36" height="84.8" rx="3" class="hook" opacity="0.85"/>
-<text x="186.0" y="506" text-anchor="middle" class="small">Grep</text>
-<text x="186.0" y="520" text-anchor="middle" class="small mono">157</text>
-<rect x="219.0" y="404.6" width="36" height="85.4" rx="3" class="hook" opacity="0.85"/>
-<rect x="219.0" y="404.6" width="36" height="85.4" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
-<text x="237.0" y="383" text-anchor="middle" class="small" font-weight="600">blocked</text>
-<text x="237.0" y="506" text-anchor="middle" class="small">Read</text>
-<text x="237.0" y="520" text-anchor="middle" class="small mono">0 lines</text>
-<rect x="270.0" y="403.9" width="36" height="86.1" rx="3" class="hook" opacity="0.85"/>
-<text x="288.0" y="506" text-anchor="middle" class="small">Grep</text>
-<text x="288.0" y="520" text-anchor="middle" class="small mono">2k</text>
-<rect x="321.0" y="401.1" width="36" height="88.9" rx="3" class="hook" opacity="0.85"/>
-<text x="339.0" y="506" text-anchor="middle" class="small">Grep</text>
-<text x="339.0" y="520" text-anchor="middle" class="small mono">2k</text>
-<rect x="372.0" y="398.7" width="36" height="91.3" rx="3" class="hook" opacity="0.85"/>
-<text x="390.0" y="506" text-anchor="middle" class="small">Grep</text>
-<text x="390.0" y="520" text-anchor="middle" class="small mono">3k</text>
-<rect x="423.0" y="394.6" width="36" height="95.4" rx="3" class="hook" opacity="0.85"/>
-<text x="441.0" y="506" text-anchor="middle" class="small">Grep</text>
-<text x="441.0" y="520" text-anchor="middle" class="small mono">9k</text>
-<rect x="474.0" y="383.8" width="36" height="106.2" rx="3" class="hook" opacity="0.85"/>
-<text x="492.0" y="506" text-anchor="middle" class="small">Grep</text>
-<text x="492.0" y="520" text-anchor="middle" class="small mono">5k</text>
-<rect x="525.0" y="378.5" width="36" height="111.5" rx="3" class="hook" opacity="0.85"/>
-<text x="543.0" y="506" text-anchor="middle" class="small">Grep</text>
-<text x="543.0" y="520" text-anchor="middle" class="small mono">"."</text>
-<rect x="576.0" y="370.0" width="36" height="120.0" rx="3" class="hook" opacity="0.85"/>
-<text x="594.0" y="506" text-anchor="middle" class="small">Grep</text>
-<text x="594.0" y="520" text-anchor="middle" class="small mono">"."</text>
-<rect x="627.0" y="369.0" width="36" height="121.0" rx="3" class="hook" opacity="0.85"/>
-<text x="645.0" y="506" text-anchor="middle" class="small">Grep</text>
-<text x="645.0" y="520" text-anchor="middle" class="small mono">2k</text>
-<rect x="678.0" y="365.8" width="36" height="124.2" rx="3" class="hook" opacity="0.85"/>
-<text x="696.0" y="506" text-anchor="middle" class="small">Grep</text>
-<text x="696.0" y="520" text-anchor="middle" class="small mono">316</text>
-<rect x="729.0" y="364.3" width="36" height="125.7" rx="3" class="hook" opacity="0.85"/>
-<text x="747.0" y="506" text-anchor="middle" class="small">Glob</text>
-<rect x="780.0" y="363.9" width="36" height="126.1" rx="3" class="hook" opacity="0.85"/>
-<text x="798.0" y="506" text-anchor="middle" class="small">Read</text>
-<text x="798.0" y="520" text-anchor="middle" class="small mono">108 ln</text>
-<rect x="831.0" y="360.0" width="36" height="130.0" rx="3" class="hook" opacity="0.85"/>
-<text x="849.0" y="353" text-anchor="middle" class="small mono">49k</text>
-<text x="849.0" y="506" text-anchor="middle" class="small">answer</text>
-<text x="849.0" y="520" text-anchor="middle" class="small mono">1.9k out</text>
-      <path d="M270 540 L270 546 L714 546 L714 540" fill="none" stroke="currentColor" stroke-width="0.8"/>
-      <text x="492" y="560" text-anchor="middle" class="small">nine greps returned 31k characters of a 36k-character file, in pieces, each re-sent on every request after it</text>
+<rect x="121.0" y="407.5" width="36" height="82.5" rx="3" class="hook" opacity="0.85"/>
+<text x="139.0" y="506" text-anchor="middle" class="small">Grep</text>
+<text x="139.0" y="520" text-anchor="middle" class="small mono">157</text>
+<rect x="176.0" y="406.8" width="36" height="83.2" rx="3" class="hook" opacity="0.85"/>
+<rect x="176.0" y="406.8" width="36" height="83.2" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<text x="194.0" y="385" text-anchor="middle" class="small" font-weight="600">blocked</text>
+<text x="194.0" y="506" text-anchor="middle" class="small">Read</text>
+<text x="194.0" y="520" text-anchor="middle" class="small mono">refused</text>
+<rect x="231.0" y="406.2" width="36" height="83.8" rx="3" class="hook" opacity="0.85"/>
+<text x="249.0" y="506" text-anchor="middle" class="small">Grep</text>
+<text x="249.0" y="520" text-anchor="middle" class="small mono">2.1k</text>
+<rect x="286.0" y="402.9" width="36" height="87.1" rx="3" class="hook" opacity="0.85"/>
+<rect x="286.0" y="402.9" width="36" height="87.1" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<text x="304.0" y="381" text-anchor="middle" class="small" font-weight="600">blocked</text>
+<text x="304.0" y="506" text-anchor="middle" class="small">Read</text>
+<text x="304.0" y="520" text-anchor="middle" class="small mono">refused</text>
+<rect x="341.0" y="401.5" width="36" height="88.5" rx="3" class="hook" opacity="0.85"/>
+<text x="359.0" y="506" text-anchor="middle" class="small">Skill</text>
+<text x="359.0" y="520" text-anchor="middle" class="small mono">bulk</text>
+<rect x="396.0" y="398.4" width="36" height="91.6" rx="3" class="hook" opacity="0.85"/>
+<rect x="396.0" y="398.4" width="36" height="91.6" rx="3" fill="none" stroke="var(--hook)" stroke-width="1.8" stroke-dasharray="4 3"/>
+<text x="414.0" y="376" text-anchor="middle" class="small" font-weight="600">worker</text>
+<text x="414.0" y="506" text-anchor="middle" class="small">worker</text>
+<text x="414.0" y="520" text-anchor="middle" class="small mono">7.7k</text>
+<rect x="451.0" y="387.4" width="36" height="102.6" rx="3" class="hook" opacity="0.85"/>
+<text x="469.0" y="506" text-anchor="middle" class="small">Grep</text>
+<text x="469.0" y="520" text-anchor="middle" class="small mono">4.4k</text>
+<rect x="506.0" y="381.3" width="36" height="108.7" rx="3" class="hook" opacity="0.85"/>
+<rect x="506.0" y="381.3" width="36" height="108.7" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<text x="524.0" y="359" text-anchor="middle" class="small" font-weight="600">blocked</text>
+<text x="524.0" y="506" text-anchor="middle" class="small">Read</text>
+<text x="524.0" y="520" text-anchor="middle" class="small mono">refused</text>
+<rect x="561.0" y="380.2" width="36" height="109.8" rx="3" class="hook" opacity="0.85"/>
+<text x="579.0" y="506" text-anchor="middle" class="small">Grep</text>
+<text x="579.0" y="520" text-anchor="middle" class="small mono">3.1k</text>
+<rect x="616.0" y="376.5" width="36" height="113.5" rx="3" class="hook" opacity="0.85"/>
+<text x="634.0" y="506" text-anchor="middle" class="small">Grep</text>
+<text x="634.0" y="520" text-anchor="middle" class="small mono">3.2k</text>
+<rect x="671.0" y="372.6" width="36" height="117.4" rx="3" class="hook" opacity="0.85"/>
+<text x="689.0" y="506" text-anchor="middle" class="small">Bash</text>
+<text x="689.0" y="520" text-anchor="middle" class="small mono">find</text>
+<rect x="726.0" y="371.2" width="36" height="118.8" rx="3" class="hook" opacity="0.85"/>
+<text x="744.0" y="506" text-anchor="middle" class="small">Grep</text>
+<text x="744.0" y="520" text-anchor="middle" class="small mono">16</text>
+<rect x="781.0" y="370.6" width="36" height="119.4" rx="3" class="hook" opacity="0.85"/>
+<text x="799.0" y="506" text-anchor="middle" class="small">Read</text>
+<text x="799.0" y="520" text-anchor="middle" class="small mono">108 ln</text>
+<rect x="836.0" y="366.5" width="36" height="123.5" rx="3" class="hook" opacity="0.85"/>
+<text x="854.0" y="359" text-anchor="middle" class="small mono">45k</text>
+<text x="854.0" y="506" text-anchor="middle" class="small">answer</text>
+<text x="854.0" y="520" text-anchor="middle" class="small mono">1.8k out</text>
+      <text x="470" y="560" text-anchor="middle" class="small">the worker's summary came back as 7.6k characters; the model grepped 13k more out of the file after it, each piece re-sent on every request after it</text>
     </svg>
-    <figcaption><b>The same question, request by request.</b> Stock read the file once and answered on the third request. With the hook, the fourth request's read was refused; the model then pulled the file out with grep, a few hundred lines at a time, over nine more requests, each re-sending everything before it. Cached tokens re-sent went from 83k to 601k and output tokens from 3.9k to 6.3k. Both answers were correct. Data from the transcripts in <code>results/03-natural-three-arms</code> and <code>results/04-natural-strict-arms</code>.</figcaption>
+    <figcaption><b>The same question, request by request.</b> Stock read the file once and answered on the fifth request. With the hook, the third request's read was refused and so was a paged read; the model then called the worker, got a summary, and kept going: four more greps, another refused read, and the answer on request 15. Cached tokens re-sent went from 162k to 534k and output tokens from 3.6k to 6.5k. Both answers were correct. Data from <code>results/05-natural-second-grid</code>, SC1 rep 1.</figcaption>
   </figure>
   <figure id="fig-money">
     <span class="fig-n">Figure F · where the money went</span>
-    <svg viewBox="0 0 900 430" role="img" aria-label="Cost breakdown of the two R1 runs in cents, stacked by price bucket. Stock: 2.2 cents system prompt, 3.5 cents file written to cache, 1.7 cents cache re-reads, 3.9 cents output, 11.3 total. Hook: 2.3, 7.9, 12.0, 6.3, total 28.5. The bucket that grew most is the conversation re-sent on every request.">
-      <text x="20" y="22" font-weight="600">Where the money went, R1, in cents at Sonnet 5 list price</text>
+    <svg viewBox="0 0 900 430" role="img" aria-label="Cost breakdown of the two broker-lifecycle runs in cents, stacked by price bucket. Stock: 1.4 cents system prompt, 4.6 cents tool results written to cache, 3.3 cents cache re-reads, 3.6 cents output, 12.9 total. Hook: 1.4, 3.9, 10.7, 6.5, plus 5.2 cents for the worker, total 27.7. The bucket that grew most is the conversation re-sent on every request.">
+      <text x="20" y="22" font-weight="600">Where the money went, in cents at list price</text>
       <text x="20" y="40" class="small">Same two runs as Figures D and E. Each bar is the run's total cost, stacked by what the tokens were billed as.</text>
       <text x="130" y="82" text-anchor="middle" font-weight="600" fill="var(--stock)">A · stock</text>
-      <text x="130" y="98" text-anchor="middle" class="small mono">11.3¢ · 3 requests</text>
-<rect x="90" y="312.2" width="80" height="15.8" class="stock" opacity="0.35"/>
-<text x="130" y="325.1" text-anchor="middle" class="small mono">2.2</text>
-<rect x="90" y="284.4" width="80" height="25.8" class="stock" opacity="0.6"/>
-<text x="130" y="302.3" text-anchor="middle" class="small mono">3.5</text>
-<rect x="90" y="271.1" width="80" height="11.3" class="stock" opacity="0.85"/>
-<text x="130" y="281.8" text-anchor="middle" class="small mono">1.7</text>
-<rect x="90" y="240.0" width="80" height="29.1" class="stock" opacity="1.0"/>
-<text x="130" y="259.5" text-anchor="middle" class="small mono">3.9</text>
+      <text x="130" y="98" text-anchor="middle" class="small mono">12.9¢ · 5 requests</text>
+<rect x="90" y="318.8" width="80" height="9.2" class="stock" opacity="0.3"/>
+<text x="130" y="328.4" text-anchor="middle" class="small mono">1.4</text>
+<rect x="90" y="282.3" width="80" height="34.5" class="stock" opacity="0.5"/>
+<text x="130" y="304.6" text-anchor="middle" class="small mono">4.6</text>
+<rect x="90" y="256.3" width="80" height="24.0" class="stock" opacity="0.7"/>
+<text x="130" y="273.3" text-anchor="middle" class="small mono">3.3</text>
+<rect x="90" y="227.1" width="80" height="27.1" class="stock" opacity="0.9"/>
+<text x="130" y="245.7" text-anchor="middle" class="small mono">3.6</text>
       <text x="330" y="82" text-anchor="middle" font-weight="600" fill="var(--hook)">B · Spotify's hook, enforced</text>
-      <text x="330" y="98" text-anchor="middle" class="small mono">28.5¢ · 16 requests</text>
-<rect x="290" y="311.8" width="80" height="16.2" class="hook" opacity="0.35"/>
-<text x="330" y="324.9" text-anchor="middle" class="small mono">2.3</text>
-<rect x="290" y="248.5" width="80" height="61.2" class="hook" opacity="0.6"/>
-<text x="330" y="284.1" text-anchor="middle" class="small mono">7.9</text>
-<rect x="290" y="152.3" width="80" height="94.2" class="hook" opacity="0.85"/>
-<text x="330" y="204.4" text-anchor="middle" class="small mono">12.0</text>
-<rect x="290" y="102.2" width="80" height="48.2" class="hook" opacity="1.0"/>
-<text x="330" y="131.2" text-anchor="middle" class="small mono">6.3</text>
+      <text x="330" y="98" text-anchor="middle" class="small mono">27.7¢ · 15 requests + worker</text>
+<rect x="290" y="318.6" width="80" height="9.4" class="hook" opacity="0.3"/>
+<text x="330" y="328.3" text-anchor="middle" class="small mono">1.4</text>
+<rect x="290" y="287.1" width="80" height="29.5" class="hook" opacity="0.5"/>
+<text x="330" y="306.8" text-anchor="middle" class="small mono">3.9</text>
+<rect x="290" y="201.6" width="80" height="83.5" class="hook" opacity="0.7"/>
+<text x="330" y="248.3" text-anchor="middle" class="small mono">10.7</text>
+<rect x="290" y="149.8" width="80" height="49.8" class="hook" opacity="0.9"/>
+<text x="330" y="179.7" text-anchor="middle" class="small mono">6.5</text>
+<rect x="290" y="108.1" width="80" height="39.7" class="hook" opacity="1.0"/>
+<text x="330" y="133.0" text-anchor="middle" class="small mono">5.2</text>
       <line x1="70" y1="330" x2="400" y2="330" stroke="currentColor" stroke-width="0.8"/>
-<line x1="372" y1="321" x2="392" y2="321" stroke="currentColor" stroke-width="0.6" opacity="0.5"/>
-<text x="398" y="325" class="small">system prompt and tools, written to cache once</text>
-<line x1="372" y1="280" x2="392" y2="280" stroke="currentColor" stroke-width="0.6" opacity="0.5"/>
-<text x="398" y="276" class="small" font-weight="600">grep results and the small file, written to cache once</text><text x="398" y="292" class="small">about as many characters as the whole file would have been</text>
-<line x1="372" y1="200" x2="392" y2="200" stroke="currentColor" stroke-width="0.6" opacity="0.5"/>
-<text x="398" y="196" class="small" font-weight="600">the whole conversation re-sent on every request, at the cache-read rate</text><text x="398" y="212" class="small">3 requests of ~30k tokens vs 16 requests of 30k to 49k</text>
-<line x1="372" y1="127" x2="392" y2="127" stroke="currentColor" stroke-width="0.6" opacity="0.5"/>
-<text x="398" y="123" class="small" font-weight="600">output: thinking and the answer, at the output rate</text><text x="398" y="139" class="small">sixteen rounds of thinking instead of three</text>
+<line x1="372" y1="324" x2="392" y2="324" stroke="currentColor" stroke-width="0.6" opacity="0.5"/>
+<text x="398" y="328" class="small">system prompt and tools, written to cache once</text>
+<line x1="372" y1="303" x2="392" y2="303" stroke="currentColor" stroke-width="0.6" opacity="0.5"/>
+<text x="398" y="299" class="small" font-weight="600">tool results written to cache once</text><text x="398" y="315" class="small">the whole file (9.1k tokens) vs 3.3k of greps plus the worker's summary</text>
+<line x1="372" y1="244" x2="392" y2="244" stroke="currentColor" stroke-width="0.6" opacity="0.5"/>
+<text x="398" y="240" class="small" font-weight="600">the whole conversation re-sent on every request, at the cache-read rate</text><text x="398" y="256" class="small">5 requests of ~30-48k tokens vs 15 requests of 30-45k</text>
+<line x1="372" y1="176" x2="392" y2="176" stroke="currentColor" stroke-width="0.6" opacity="0.5"/>
+<text x="398" y="172" class="small" font-weight="600">output: thinking and the answer, at the output rate</text><text x="398" y="188" class="small">15 rounds of thinking instead of 5</text>
+<line x1="372" y1="129" x2="392" y2="129" stroke="currentColor" stroke-width="0.6" opacity="0.5"/>
+<text x="398" y="125" class="small" font-weight="600">the worker's own call (Haiku, one turn)</text><text x="398" y="141" class="small">9k in, 8k out, mostly its thinking</text>
       <line x1="70" y1="356" x2="880" y2="356" stroke="currentColor" stroke-width="0.6" opacity="0.4"/>
-      <text x="70" y="378"><tspan font-weight="600">The read the hook refused would have cost 3.3¢.</tspan><tspan class="small"> Working around it added 4.4¢ of cache writes, 10.4¢ of re-sends and 2.4¢ of output.</tspan></text>
-      <text x="70" y="400" class="small mono">Sonnet 5 per million tokens · input $2.00 · cache write $2.50 (5 min) / $4.00 (1 h) · cache read $0.20 · output $10.00</text>
-      <text x="70" y="416" class="small">Claude Code wrote the stock run's tool results at the 5-minute rate and the hook run's at the 1-hour rate; both bars reconcile to the cost the CLI reported.</text>
+      <text x="70" y="378"><tspan font-weight="600">The read the hook refused would have cost 2.3¢.</tspan><tspan class="small"> Delegating, then searching anyway: +7.4¢ re-sends, +2.8¢ output, +5.2¢ worker.</tspan></text>
+      <text x="70" y="400" class="small mono">Sonnet 5 per M tokens · input $2.00 · cache write $2.50 (5-min, pinned) · cache read $0.20 · output $10.00 · Haiku at list</text>
+      <text x="70" y="416" class="small">Both bars reconcile to the cost Claude Code reported for the run; the worker's cost comes from its own usage record.</text>
     </svg>
-    <figcaption><b>What caching makes cheap, and what it does not.</b> The bucket the hook targets, file content written to cache, went up, not down: the grep results add up to about as much text as the file. But the bucket that grew most is the one the hook never looks at. Every request re-sends the entire conversation. Re-reads are cheap per token, a fifth of a cent per thousand, but sixteen of them at 30k to 49k tokens each cost seven times what three did, and every request ends in fresh thinking at fifty times that price. With caching, a file that enters context once is nearly free afterward. A turn is not.</figcaption>
+    <figcaption><b>What caching makes cheap, and what it does not.</b> The bucket the hook targets, file content written to cache, did shrink: the greps and the worker's summary add up to less than the file. But the bucket that grew most is the one the hook never looks at. Every request re-sends the entire conversation. Re-reads are cheap per token, a fifth of a cent per thousand, but 15 of them at 30k to 45k tokens each cost three times what 5 did, and every request ends in fresh thinking at fifty times that price. With caching, a file that enters context once is nearly free afterward. A turn is not.</figcaption>
   </figure>
   <figure id="fig-headline">
     <span class="fig-n">Figure G · the result</span>
-    <svg viewBox="0 0 900 330" role="img" aria-label="Three bar charts, stock against the enforced hook, over twelve tasks. Target-file lines in the main model's context: 7,111 against 893. API requests: 82 against 132. Cost at list price: $1.94 against $2.61. Pass rate 11 of 12 against 12 of 12.">
-      <text x="20" y="22" font-weight="600">Twelve tasks: the metric Spotify reported fell 87%, the bill rose 35%</text>
-      <text x="20" y="40" class="small">Same tasks, same model, same Kafka, one run per cell. Stock passed 11 of 12, the hook 12 of 12.</text>
-<text x="40" y="76" font-weight="600">Target-file lines in main context</text>
+    <svg viewBox="0 0 900 330" role="img" aria-label="Three bar charts, stock against the enforced hook, means per run over 21 tasks and 114 runs. Target-file content in the main model's context: 6,068 against 3,291 tokens. API requests: 7.1 against 9.1. Cost at list price: $0.140 against $0.162. Pass rate 96% against 98%.">
+      <text x="20" y="22" font-weight="600">Twenty-one tasks, three runs each: the content Spotify counts fell 46%, the bill rose 16%</text>
+      <text x="20" y="40" class="small">Means per run, same tasks, same model, same Kafka, 57 runs per arm. Pass rate 96% stock, 98% hook.</text>
+<text x="40" y="76" font-weight="600">Target-file tokens in main context</text>
 <line x1="40" y1="260" x2="280" y2="260" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
 <rect x="40" y="98.0" width="110" height="162.0" rx="4" class="stock"/><rect x="40" y="256" width="110" height="4" class="stock"/>
-<text x="95.0" y="92.0" text-anchor="middle" class="small mono">7,111</text>
+<text x="95.0" y="92.0" text-anchor="middle" class="small mono">6,068</text>
 <text x="95.0" y="276" text-anchor="middle" class="small">A stock</text>
-<rect x="170" y="239.7" width="110" height="20.3" rx="4" class="hook"/><rect x="170" y="256" width="110" height="4" class="hook"/>
-<text x="225.0" y="233.7" text-anchor="middle" class="small mono">893</text>
+<rect x="170" y="172.1" width="110" height="87.9" rx="4" class="hook"/><rect x="170" y="256" width="110" height="4" class="hook"/>
+<text x="225.0" y="166.1" text-anchor="middle" class="small mono">3,291</text>
 <text x="225.0" y="276" text-anchor="middle" class="small">B hook</text>
-<text x="340" y="76" font-weight="600">API requests</text>
+<text x="340" y="76" font-weight="600">API requests per run</text>
 <line x1="340" y1="260" x2="580" y2="260" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
-<rect x="340" y="159.4" width="110" height="100.6" rx="4" class="stock"/><rect x="340" y="256" width="110" height="4" class="stock"/>
-<text x="395.0" y="153.4" text-anchor="middle" class="small mono">82</text>
+<rect x="340" y="134.1" width="110" height="125.9" rx="4" class="stock"/><rect x="340" y="256" width="110" height="4" class="stock"/>
+<text x="395.0" y="128.1" text-anchor="middle" class="small mono">7.1</text>
 <text x="395.0" y="276" text-anchor="middle" class="small">A stock</text>
 <rect x="470" y="98.0" width="110" height="162.0" rx="4" class="hook"/><rect x="470" y="256" width="110" height="4" class="hook"/>
-<text x="525.0" y="92.0" text-anchor="middle" class="small mono">132</text>
+<text x="525.0" y="92.0" text-anchor="middle" class="small mono">9.1</text>
 <text x="525.0" y="276" text-anchor="middle" class="small">B hook</text>
-<text x="640" y="76" font-weight="600">Cost, list price</text>
+<text x="640" y="76" font-weight="600">Cost per run, list price</text>
 <line x1="640" y1="260" x2="880" y2="260" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
-<rect x="640" y="139.6" width="110" height="120.4" rx="4" class="stock"/><rect x="640" y="256" width="110" height="4" class="stock"/>
-<text x="695.0" y="133.6" text-anchor="middle" class="small mono">$1.94</text>
+<rect x="640" y="119.8" width="110" height="140.2" rx="4" class="stock"/><rect x="640" y="256" width="110" height="4" class="stock"/>
+<text x="695.0" y="113.8" text-anchor="middle" class="small mono">$0.140</text>
 <text x="695.0" y="276" text-anchor="middle" class="small">A stock</text>
 <rect x="770" y="98.0" width="110" height="162.0" rx="4" class="hook"/><rect x="770" y="256" width="110" height="4" class="hook"/>
-<text x="825.0" y="92.0" text-anchor="middle" class="small mono">$2.61</text>
+<text x="825.0" y="92.0" text-anchor="middle" class="small mono">$0.162</text>
 <text x="825.0" y="276" text-anchor="middle" class="small">B hook</text>
       <rect x="40" y="300" width="14" height="10" rx="2" class="stock"/><text x="60" y="309" class="small">stock Claude Code</text>
-      <rect x="200" y="300" width="14" height="10" rx="2" class="hook"/><text x="220" y="309" class="small">with Spotify's hook, enforced</text>
+      <rect x="200" y="300" width="14" height="10" rx="2" class="hook"/><text x="220" y="309" class="small">with Spotify's hook, enforced (worker cost included)</text>
     </svg>
-    <figcaption><b>The result.</b> The hook did what the post promised on the post's own metric: 87% fewer target-file lines in the expensive model's context. It did so by turning reads into greps, which added fifty API requests across the twelve tasks, and the bill went up 35% for the same pass rate. The three charts share arms and nothing else; they are deliberately not one dual-axis chart. Detail per task is in the results tables.</figcaption>
+    <figcaption><b>The result.</b> The hook did what the post promised on the post's own metric: 46% less target-file content in the expensive model's context, counted through every tool, not just Read. It did so by turning reads into greps and, sometimes, into a worker call, which added 29% more API requests per run, and the bill went up 16% for the same pass rate. The three charts share arms and nothing else; they are deliberately not one dual-axis chart. Detail per task is in the results tables.</figcaption>
+  </figure>
+  <figure id="fig-by-category">
+    <span class="fig-n">Figure H · cost change by task type</span>
+    <svg viewBox="0 0 900 412" role="img" aria-label="Horizontal bars of the hook arm's cost relative to stock, per task type, with 95% bootstrap intervals over tasks. Spotify's four benchmark tasks +5%. Needle reads -8%. Spotify's shapes on big files +37%. Harm tasks +27%. Controls +21%. Tasks where the worker was called +54%. Tasks where the model grepped instead +14%.">
+      <text x="20" y="22" font-weight="600">Hook cost relative to stock, by task type · paired per task, mean of three runs each</text>
+      <text x="20" y="40" class="small">Bar: mean of the per-task percentage differences. Line: 95% bootstrap interval over tasks. Worker cost included in the hook arm.</text>
+<line x1="529" y1="70" x2="529" y2="390" stroke="currentColor" stroke-width="0.8"/>
+<text x="363" y="62" text-anchor="middle" class="small mono">-50%</text>
+<line x1="363" y1="70" x2="363" y2="390" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+<text x="446" y="62" text-anchor="middle" class="small mono">-25%</text>
+<line x1="446" y1="70" x2="446" y2="390" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+<text x="529" y="62" text-anchor="middle" class="small mono">+0%</text>
+<text x="612" y="62" text-anchor="middle" class="small mono">+25%</text>
+<line x1="612" y1="70" x2="612" y2="390" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+<text x="694" y="62" text-anchor="middle" class="small mono">+50%</text>
+<line x1="694" y1="70" x2="694" y2="390" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+<text x="777" y="62" text-anchor="middle" class="small mono">+75%</text>
+<line x1="777" y1="70" x2="777" y2="390" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+<text x="860" y="62" text-anchor="middle" class="small mono">+100%</text>
+<line x1="860" y1="70" x2="860" y2="390" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+<text x="20" y="94" class="small" font-weight="600">Spotify's four benchmark tasks</text>
+<text x="20" y="108" class="small">4 tasks · pass 92% / 100% · hook cheaper on 2 of 4</text>
+<line x1="446" y1="90" x2="661" y2="90" stroke="currentColor" stroke-width="1.2" opacity="0.7"/>
+<rect x="529" y="81" width="17" height="18" rx="3" class="hook" opacity="0.85"/>
+<text x="669" y="94" text-anchor="start" class="small mono" font-weight="600">+5%</text>
+<text x="20" y="134" class="small" font-weight="600">Needle: one fact in a big file</text>
+<text x="20" y="148" class="small">4 tasks · pass 100% / 100% · hook cheaper on 3 of 4</text>
+<line x1="440" y1="130" x2="565" y2="130" stroke="currentColor" stroke-width="1.2" opacity="0.7"/>
+<rect x="501" y="121" width="28" height="18" rx="3" class="stock" opacity="0.85"/>
+<text x="432" y="134" text-anchor="end" class="small mono" font-weight="600">-8%</text>
+<text x="20" y="174" class="small" font-weight="600">Spotify's shapes on files over 350 lines</text>
+<text x="20" y="188" class="small">5 tasks · pass 100% / 93% · hook cheaper on 1 of 5</text>
+<line x1="543" y1="170" x2="770" y2="170" stroke="currentColor" stroke-width="1.2" opacity="0.7"/>
+<rect x="529" y="161" width="124" height="18" rx="3" class="hook" opacity="0.85"/>
+<text x="778" y="174" text-anchor="start" class="small mono" font-weight="600">+37%</text>
+<text x="20" y="214" class="small" font-weight="600">Harm: precise edits, debugging, big files</text>
+<text x="20" y="228" class="small">5 tasks · pass 100% / 100% · hook cheaper on 0 of 5</text>
+<line x1="587" y1="210" x2="647" y2="210" stroke="currentColor" stroke-width="1.2" opacity="0.7"/>
+<rect x="529" y="201" width="90" height="18" rx="3" class="hook" opacity="0.85"/>
+<text x="655" y="214" text-anchor="start" class="small mono" font-weight="600">+27%</text>
+<text x="20" y="254" class="small" font-weight="600">Controls: small files, hook never fires</text>
+<text x="20" y="268" class="small">3 tasks · pass 67% / 100% · hook cheaper on 1 of 3</text>
+<line x1="395" y1="250" x2="860" y2="250" stroke="currentColor" stroke-width="1.2" opacity="0.7"/>
+<rect x="529" y="241" width="71" height="18" rx="3" class="hook" opacity="0.85"/>
+<text x="868" y="254" text-anchor="start" class="small mono" font-weight="600">+21%</text>
+<line x1="20" y1="282" x2="880" y2="282" stroke="currentColor" stroke-width="0.6" opacity="0.4"/>
+<text x="20" y="306" class="small" font-weight="600">Hook fired, model called the worker</text>
+<text x="20" y="320" class="small">5 tasks · pass 100% / 93% · hook cheaper on 0 of 5</text>
+<line x1="640" y1="302" x2="792" y2="302" stroke="currentColor" stroke-width="1.2" opacity="0.7"/>
+<rect x="529" y="293" width="180" height="18" rx="3" class="hook" opacity="0.85"/>
+<text x="800" y="306" text-anchor="start" class="small mono" font-weight="600">+54%</text>
+<text x="20" y="346" class="small" font-weight="600">Hook fired, model grepped instead</text>
+<text x="20" y="360" class="small">12 tasks · pass 97% / 100% · hook cheaper on 4 of 12</text>
+<line x1="514" y1="342" x2="643" y2="342" stroke="currentColor" stroke-width="1.2" opacity="0.7"/>
+<rect x="529" y="333" width="46" height="18" rx="3" class="hook" opacity="0.85"/>
+<text x="651" y="346" text-anchor="start" class="small mono" font-weight="600">+14%</text>
+    </svg>
+    <figcaption><b>Where the bill moved.</b> The hook is not uniformly more expensive. On the needle reads it is a little cheaper, because the block turns a paged read into a grep. Where it fires on Spotify's own task shapes at real file sizes, and on the edit and debugging tasks Spotify says the approach is not for, it costs more. The split at the bottom is the mechanism: on the five tasks where the model actually called the worker, cost rose by half; on the twelve where it grepped its way around the block, cost was flat on average with a wide interval. Delegation, when it happens, is the expensive path.</figcaption>
   </figure>
 </main>

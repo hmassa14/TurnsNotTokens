@@ -1,0 +1,216 @@
+{
+ "summary": {
+  "requests_total": 3,
+  "requests_main": 3,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 3,
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 7140,
+    "cache_read_input_tokens": 84528,
+    "output_tokens": 919
+   }
+  },
+  "tool_mix": {
+   "ToolSearch": 1,
+   "WebSearch": 1
+  },
+  "tool_calls_total": 2,
+  "reads_total": 0,
+  "reads_whole_file": 0,
+  "reads_targeted": 0,
+  "reads_blocked_by_hook": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {},
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 0,
+  "lines_entered_context": 0,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 2,
+  "files_read": [],
+  "tool_latency_ms": {
+   "ToolSearch": 13,
+   "WebSearch": 4
+  },
+  "api_gap_ms_p50": 1894,
+  "api_gap_ms_max": 1894,
+  "final_text_chars": 676
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf3z7SbokDRrWPqcQHzfK",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5691,
+    "cache_read_input_tokens": 23949,
+    "output_tokens": 576,
+    "output_tokens_details": {
+     "thinking_tokens": 495
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5691
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 576,
+      "cache_read_input_tokens": 23949,
+      "cache_creation_input_tokens": 5691,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5691,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:45:39.554Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3z7zuWThEc7n6TU6SFg",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1299,
+    "cache_read_input_tokens": 29640,
+    "output_tokens": 72,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1299
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 72,
+      "cache_read_input_tokens": 29640,
+      "cache_creation_input_tokens": 1299,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1299,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:45:41.845Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3z8968UgV5shoMSCFDs",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 150,
+    "cache_read_input_tokens": 30939,
+    "output_tokens": 271,
+    "output_tokens_details": {
+     "thinking_tokens": 28
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 150
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 271,
+      "cache_read_input_tokens": 30939,
+      "cache_creation_input_tokens": 150,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 150,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:45:43.544Z",
+   "blocks": [
+    "thinking",
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01E5R2zYTcyDTbfDGtE5kMft",
+   "name": "ToolSearch",
+   "input": {
+    "query": "select:WebSearch",
+    "max_results": 3
+   },
+   "ts_use": "2026-09-14T20:45:39.937Z",
+   "request_id": "req_011Cf3z7SbokDRrWPqcQHzfK",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:45:39.950Z",
+   "is_error": false,
+   "result_head": "",
+   "result_chars": 0,
+   "result_lines": 0,
+   "latency_ms": 13,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_013ZQHS7PtsXtYYvh3AimGmJ",
+   "name": "WebSearch",
+   "input": {
+    "query": "Kafka Streams StateDirectory LockException lock method \"already locked\""
+   },
+   "ts_use": "2026-09-14T20:45:41.845Z",
+   "request_id": "req_011Cf3z7zuWThEc7n6TU6SFg",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:45:41.850Z",
+   "is_error": true,
+   "result_head": "Claude requested permissions to use WebSearch, but you haven't granted it yet.",
+   "result_chars": 78,
+   "result_lines": 0,
+   "latency_ms": 4,
+   "flags": []
+  }
+ ]
+}

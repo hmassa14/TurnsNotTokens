@@ -90,7 +90,7 @@ def main():
     meta = {
         "run_id": run_id, "task_id": task["id"], "category": task["category"], "arm": args.arm,
         "rep": args.rep, "variant": args.variant, "main_model": args.model, "claude_code_version": version,
-        "kafka_commit": kafka_commit, "session_id": session_id, "workspace": ws, "target_files": task.get("files", []),
+        "kafka_commit": kafka_commit, "session_id": session_id, "workspace": ws, "repo": os.path.abspath(args.repo), "target_files": task.get("files", []),
         "started_at": datetime.now(timezone.utc).isoformat(), "prompt": prompt,
     }
     json.dump(meta, open(os.path.join(run_dir, "meta.json"), "w"), indent=2)

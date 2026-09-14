@@ -1,0 +1,13 @@
+diff --git a/storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java b/storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java
+index 6f88b33..122a172 100644
+--- a/storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java
++++ b/storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java
+@@ -606,7 +606,7 @@ public class LocalLog {
+                                     .map(LogSegment::toString)
+                                     .collect(Collectors.joining(", "))));
+                         updateLogEndOffset(nextOffsetMetadata.messageOffset);
+-                        logger.info("Rolled new log segment at offset {} in {} ms.", newOffset, time.hiResClockMs() - start);
++                        logger.warn("Rolled new log segment at offset {} in {} ms.", newOffset, time.hiResClockMs() - start);
+                         return newSegment;
+                     } else {
+                         throw new KafkaException("Trying to roll a new log segment for topic partition " + topicPartition + " with start offset " + newOffset +

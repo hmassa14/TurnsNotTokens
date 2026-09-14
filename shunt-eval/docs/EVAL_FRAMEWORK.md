@@ -138,6 +138,10 @@ At the first grid's mean of about $0.18 per run, about $21 at list price.  Arm B
 
 Order of work: write the new tasks and derive their keys (SB2, SB3, SB4, SC5, ND1 to ND4, CT3), then the neutral-message strict arm, then the TTL flag in `run.py`, then the new token metric in `parse_transcript.py`, then a smoke run of one task per block before the grid.
 
+## Results
+
+The grid described here ran on 2026-09-14 as `results/05-natural-second-grid` (114 runs). Its README carries the headline numbers, the per-category table with paired intervals, the after-block counts, the grader notes (ND4 ambiguity, checklist-graded code-gen) and the parser fix made during grading. `summary.json` in that folder is what the post's figures G and H and its results section are built from.
+
 ## What the first grid still supports
 
 - Spotify's benchmark never runs Claude Code; it calls the worker script directly. Their 90% presupposes delegation. Verified from `evals/run.sh`.

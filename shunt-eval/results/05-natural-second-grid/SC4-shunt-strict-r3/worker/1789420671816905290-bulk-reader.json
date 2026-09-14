@@ -1,0 +1,102 @@
+{
+  "duration_api_ms": 21184,
+  "stop_reason": "end_turn",
+  "session_id": "dcaa2de8-6489-574c-aeef-bb9a81f8414e",
+  "total_cost_usd": 0.026870250000000002,
+  "usage": {
+    "input_tokens": 9,
+    "cache_creation_input_tokens": 11733,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 2439,
+    "output_tokens_details": {
+      "thinking_tokens": 549
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 11733
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 9,
+        "output_tokens": 2439,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 11733,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 11733,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5": {
+      "inputTokens": 9,
+      "outputTokens": 2439,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 11733,
+      "webSearchRequests": 0,
+      "costUSD": 0.026870250000000002,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 549,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "# RemoteLogManagerConfig Analysis\n\n## (1) Package Declaration and Imports\n- **Package**: `org.apache.kafka.server.log.remote.storage`\n- **Imports**:\n  - `org.apache.kafka.common.config.AbstractConfig`\n  - `org.apache.kafka.common.config.ConfigDef`\n  - `java.util.Collections`\n  - `java.util.Map`\n  - Static imports: `ConfigDef.Importance.{LOW, MEDIUM}`, `ConfigDef.Range.{atLeast, between}`, `ConfigDef.Type.{BOOLEAN, DOUBLE, INT, LONG, STRING}`\n\n## (2) Config Key Pattern (Boolean & Int)\n\n**Boolean Example**: `REMOTE_LOG_STORAGE_SYSTEM_ENABLE_PROP`\n- `PROP`: `\"remote.log.storage.system.enable\"`\n- `DOC`: `\"Whether to enable tiered storage functionality in a broker or not. When it is true broker starts all the services required for the tiered storage functionality.\"`\n- `DEFAULT`: `false`\n- `ConfigDef.define()`: `.define(REMOTE_LOG_STORAGE_SYSTEM_ENABLE_PROP, BOOLEAN, DEFAULT_REMOTE_LOG_STORAGE_SYSTEM_ENABLE, null, MEDIUM, REMOTE_LOG_STORAGE_SYSTEM_ENABLE_DOC)`\n\n**Int Example**: `REMOTE_LOG_METADATA_CUSTOM_METADATA_MAX_BYTES_PROP`\n- `PROP`: `\"remote.log.metadata.custom.metadata.max.bytes\"`\n- `DOC`: `\"The maximum size of custom metadata in bytes that the broker should accept from a remote storage plugin. If custom metadata exceeds this limit, the updated segment metadata will not be stored, the copied data will be attempted to delete, and the remote copying task for this topic-partition will stop with an error.\"`\n- `DEFAULT`: `128`\n- `ConfigDef.define()`: `.define(REMOTE_LOG_METADATA_CUSTOM_METADATA_MAX_BYTES_PROP, INT, DEFAULT_REMOTE_LOG_METADATA_CUSTOM_METADATA_MAX_BYTES, atLeast(0), LOW, REMOTE_LOG_METADATA_CUSTOM_METADATA_MAX_BYTES_DOC)`\n\n## (3) Class-Level Javadoc/Annotations\n- No class-level Javadoc present\n- No class-level annotations present\n\n## (4) `configDef()` Method Structure\n- `public static ConfigDef configDef()`\n- Returns `new ConfigDef()` with chained `.define()` and `.defineInternal()` calls\n- ~60+ chained method calls defining all config parameters\n- Terminates with semicolon after final `.define()` call\n\n## (5) Constructor Signature & AbstractConfig Wrapping\n```java\npublic RemoteLogManagerConfig(AbstractConfig config) {\n    this.config = config;\n}\n```\n- Takes `AbstractConfig` as parameter and stores directly as instance field\n- Does NOT create new AbstractConfig; wraps existing instance\n\n## (6) Typed Getter Methods\n\n**Boolean Example**: `isRemoteStorageSystemEnabled()`\n```java\npublic boolean isRemoteStorageSystemEnabled() {\n    return config.getBoolean(REMOTE_LOG_STORAGE_SYSTEM_ENABLE_PROP);\n}\n```\n\n**Int Example**: `remoteLogMetadataCustomMetadataMaxBytes()`\n```java\npublic int remoteLogMetadataCustomMetadataMaxBytes() {\n    return config.getInt(REMOTE_LOG_METADATA_CUSTOM_METADATA_MAX_BYTES_PROP);\n}\n```\n\n## (7) Relevant Static Imports\n```java\nstatic org.apache.kafka.common.config.ConfigDef.Importance.LOW;\nstatic org.apache.kafka.common.config.ConfigDef.Importance.MEDIUM;\nstatic org.apache.kafka.common.config.ConfigDef.Range.atLeast;\nstatic org.apache.kafka.common.config.ConfigDef.Range.between;\nstatic org.apache.kafka.common.config.ConfigDef.Type.BOOLEAN;\nstatic org.apache.kafka.common.config.ConfigDef.Type.DOUBLE;\nstatic org.apache.kafka.common.config.ConfigDef.Type.INT;\nstatic org.apache.kafka.common.config.ConfigDef.Type.LONG;\nstatic org.apache.kafka.common.config.ConfigDef.Type.STRING;\n```\n\n## (8) Access Modifiers\n- **Class**: `public final class RemoteLogManagerConfig`\n- **Getters**: All public instance methods\n\n## (9) File Header (Top ~40 Lines) & Representative Config Block\n\n**Top of file:**\n```java\n/*\n * Licensed to the Apache Software Foundation (ASF) under one or more\n * contributor license agreements. See the NOTICE file distributed with\n * this work for additional information regarding copyright ownership.\n * The ASF licenses this file to You under the Apache License, Version 2.0\n * (the \"License\"); you may not use this file except in compliance with\n * the License. You may obtain a copy of the License at\n *\n *    http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage org.apache.kafka.server.log.remote.storage;\n\nimport org.apache.kafka.common.config.AbstractConfig;\nimport org.apache.kafka.common.config.ConfigDef;\n\nimport java.util.Collections;\nimport java.util.Map;\n\nimport static org.apache.kafka.common.config.ConfigDef.Importance.LOW;\nimport static org.apache.kafka.common.config.ConfigDef.Importance.MEDIUM;\nimport static org.apache.kafka.common.config.ConfigDef.Range.atLeast;\nimport static org.apache.kafka.common.config.ConfigDef.Range.between;\nimport static org.apache.kafka.common.config.ConfigDef.Type.BOOLEAN;\nimport static org.apache.kafka.common.config.ConfigDef.Type.DOUBLE;\nimport static org.apache.kafka.common.config.ConfigDef.Type.INT;\nimport static org.apache.kafka.common.config.ConfigDef.Type.LONG;\nimport static org.apache.kafka.common.config.ConfigDef.Type.STRING;\n\npublic final class RemoteLogManagerConfig {\n```\n\n**Representative Config Block:**\n```java\n.define(REMOTE_LOG_METADATA_CUSTOM_METADATA_MAX_BYTES_PROP,\n        INT,\n        DEFAULT_REMOTE_LOG_METADATA_CUSTOM_METADATA_MAX_BYTES,\n        atLeast(0),\n        LOW,\n        REMOTE_LOG_METADATA_CUSTOM_METADATA_MAX_BYTES_DOC)\n.define(REMOTE_LOG_INDEX_FILE_CACHE_TOTAL_SIZE_BYTES_PROP,\n        LONG,\n        DEFAULT_REMOTE_LOG_INDEX_FILE_CACHE_TOTAL_SIZE_BYTES,\n        atLeast(1),\n        LOW,\n        REMOTE_LOG_INDEX_FILE_CACHE_TOTAL_SIZE_BYTES_DOC)\n.defineInternal(REMOTE_LOG_INDEX_FILE_CACHE_TTL_MS_PROP,\n        LONG,\n        DEFAULT_REMOTE_LOG_INDEX_FILE_CACHE_TTL_MS,\n        atLeast(-1),\n        LOW,\n        REMOTE_LOG_INDEX_FILE_CACHE_TTL_MS_DOC)\n```",
+  "ttft_ms": 5896,
+  "type": "result",
+  "duration_ms": 21298,
+  "uuid": "a9e794a0-f4c9-4f20-a7e0-cc1a754bf28b",
+  "ttft_stream_ms": 751,
+  "time_to_request_ms": 112,
+  "first_content_frame_ms": 945,
+  "time_to_request_from_spawn_ms": 5083672,
+  "warm_spare_claimed": false,
+  "time_origin_ms": 1789420671828.1533,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "transport": "cli",
+  "model": "claude-haiku-4-5"
+}

@@ -1,0 +1,626 @@
+{
+ "summary": {
+  "metric_names": {
+   "claude_code.session.count": 1,
+   "claude_code.cost.usage": 7,
+   "claude_code.token.usage": 7,
+   "claude_code.lines_of_code.count": 1,
+   "claude_code.code_edit_tool.decision": 1,
+   "claude_code.active_time.total": 1
+  },
+  "tokens_by_model_type": {
+   "claude-sonnet-5|input": 14.0,
+   "claude-sonnet-5|output": 2903.0,
+   "claude-sonnet-5|cacheRead": 242833.0,
+   "claude-sonnet-5|cacheCreation": 19829.0
+  },
+  "cost_by_model_usd": {
+   "claude-sonnet-5": 0.1271971
+  },
+  "event_counts": {
+   "user_prompt": 1,
+   "tool_decision": 7,
+   "api_request": 7,
+   "tool_result": 7,
+   "assistant_response": 4
+  },
+  "api_requests": 7,
+  "api_latency_ms_p50": 3779.0,
+  "api_latency_ms_max": 9337.0,
+  "tool_decisions": [
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Glob",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Write",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   }
+  ],
+  "span_counts": {},
+  "hook_ms_total": 0
+ },
+ "events": [
+  {
+   "event": "user_prompt",
+   "ts": "1789417672353000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "user_prompt",
+    "event.timestamp": "2026-09-14T20:27:52.353Z",
+    "event.sequence": 0,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "prompt_length": "258",
+    "prompt": "<REDACTED>",
+    "message.uuid": "e9991405-f0ff-46e3-8841-9c86729a33e0"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789417675578000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T20:27:55.578Z",
+    "event.sequence": 1,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_015ZNm12ACzhkGWCbQ1hcZB3",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -type d -iname \\\"*kafka*\\\" 2>/dev/null | grep -v proc | head -50\"}"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789417675597000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T20:27:55.596Z",
+    "event.sequence": 2,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 117,
+    "cache_read_tokens": 23949,
+    "cache_creation_tokens": 5601,
+    "cost_usd": 0.0199663,
+    "cost_usd_micros": 19966,
+    "duration_ms": 3153,
+    "ttft_ms": 2085,
+    "request_id": "req_011Cf3xmK1yTyQEiuCVHPHQM",
+    "client_request_id": "7e52eb4a-e29e-431b-a896-aae5742cc686",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789417676474000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T20:27:56.473Z",
+    "event.sequence": 3,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_015ZNm12ACzhkGWCbQ1hcZB3",
+    "success": "true",
+    "duration_ms": "893",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -type d -iname \\\"*kafka*\\\" 2>/dev/null | grep -v proc | head -50\"}",
+    "tool_input": "{\"command\":\"find / -type d -iname \\\"*kafka*\\\" 2>/dev/null | grep -v proc | head -50\"}",
+    "tool_input_size_bytes": "85",
+    "tool_result_size_bytes": "6549"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789417680244000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T20:28:00.244Z",
+    "event.sequence": 4,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_015AvUWVgQzowJvH5tc8bDkb",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find /tmp/kafka-src -type d -iname \\\"*connect*\\\" 2>/dev/null | head -20; echo \\\"---\\\"; find / -path \\\"*/connect/transforms/src/main/java/org/apache/kafka/connect/transforms/Filter.java\\\" 2>/dev/null; echo \\\"---\\\"; find / -path \\\"*InsertHeaderTest.java\\\" 2>/dev/null\"}"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789417680282000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T20:28:00.282Z",
+    "event.sequence": 5,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 276,
+    "cache_read_tokens": 29550,
+    "cache_creation_tokens": 3974,
+    "cost_usd": 0.018609,
+    "cost_usd_micros": 18609,
+    "duration_ms": 3779,
+    "ttft_ms": 1232,
+    "request_id": "req_011Cf3xmbQDRsC24mmDYcL7C",
+    "client_request_id": "946cff78-c361-4abf-a785-706b19951c8c",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789417682237000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T20:28:02.237Z",
+    "event.sequence": 6,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_015AvUWVgQzowJvH5tc8bDkb",
+    "success": "true",
+    "duration_ms": "1991",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find /tmp/kafka-src -type d -iname \\\"*connect*\\\" 2>/dev/null | head -20; echo \\\"---\\\"; find / -path \\\"*/connect/transforms/src/main/java/org/apache/kafka/connect/transforms/Filter.java\\\" 2>/dev/null; echo \\\"---\\\"; find / -path \\\"*InsertHeaderTest.java\\\" 2>/dev/null\"}",
+    "tool_input": "{\"command\":\"find /tmp/kafka-src -type d -iname \\\"*connect*\\\" 2>/dev/null | head -20; echo \\\"---\\\"; find / -path \\\"*/connect/transforms/src/main/java/org/apache/kafka/connect/transforms/Filter.java\\\" 2>/dev/null; echo \\\"---\\\"; find / -path \\\"*InsertHeaderTest.java\\\" 2>/dev/null\"}",
+    "tool_input_size_bytes": "279",
+    "tool_result_size_bytes": "3701"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789417684999000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T20:28:04.999Z",
+    "event.sequence": 7,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01RNzouDHGK5xG67j5H9MvLs",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789417685009000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T20:28:05.009Z",
+    "event.sequence": 8,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01RNzouDHGK5xG67j5H9MvLs",
+    "success": "true",
+    "duration_ms": "7",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/SB4__natural__stock__r1__20260914-202746/connect/transforms/src/test/java/org/apache/kafka/connect/transforms/InsertHeaderTest.java\"}",
+    "tool_input_size_bytes": "189",
+    "tool_result_size_bytes": "5444"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789417685668000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T20:28:05.668Z",
+    "event.sequence": 9,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01JYw7k6vpG3dwFkzhahf71Z",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789417685674000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T20:28:05.674Z",
+    "event.sequence": 10,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01JYw7k6vpG3dwFkzhahf71Z",
+    "success": "true",
+    "duration_ms": "4",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/SB4__natural__stock__r1__20260914-202746/connect/transforms/src/main/java/org/apache/kafka/connect/transforms/Filter.java\"}",
+    "tool_input_size_bytes": "179",
+    "tool_result_size_bytes": "2311"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789417685684000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T20:28:05.684Z",
+    "event.sequence": 11,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 275,
+    "cache_read_tokens": 33524,
+    "cache_creation_tokens": 2164,
+    "cost_usd": 0.0148688,
+    "cost_usd_micros": 14869,
+    "duration_ms": 3424,
+    "ttft_ms": 1636,
+    "request_id": "req_011Cf3xn2Di7yy4gD4vtJ6he",
+    "client_request_id": "fed372ed-b6cb-4d1b-b918-09594e598c0b",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789417685685000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-14T20:28:05.685Z",
+    "event.sequence": 12,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "response_length": 71,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf3xn2Di7yy4gD4vtJ6he",
+    "message.uuid": "787701dd-4336-49f9-b031-5a39539e6828",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789417691913000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T20:28:11.913Z",
+    "event.sequence": 13,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Glob",
+    "tool_use_id": "toolu_01V3n6439jdzEJb5UBa1kyDV",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789417691926000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T20:28:11.926Z",
+    "event.sequence": 14,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 583,
+    "cache_read_tokens": 35688,
+    "cache_creation_tokens": 3487,
+    "cost_usd": 0.0216891,
+    "cost_usd_micros": 21689,
+    "duration_ms": 6183,
+    "ttft_ms": 1466,
+    "request_id": "req_011Cf3xnH8PrUdUQPgXmrXkW",
+    "client_request_id": "f1e9edce-246f-4aec-854f-5cf93dc474b3",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789417691947000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T20:28:11.947Z",
+    "event.sequence": 15,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "tool_name": "Glob",
+    "tool_use_id": "toolu_01V3n6439jdzEJb5UBa1kyDV",
+    "success": "true",
+    "duration_ms": "32",
+    "tool_input": "{\"pattern\":\"**/FilterTest.java\"}",
+    "tool_input_size_bytes": "32",
+    "tool_result_size_bytes": "14"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789417701296000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T20:28:21.296Z",
+    "event.sequence": 16,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Write",
+    "tool_use_id": "toolu_01Lk3aRLRwxAQGxK6jeW5HHq",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789417701306000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T20:28:21.306Z",
+    "event.sequence": 17,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 1185,
+    "cache_read_tokens": 39175,
+    "cache_creation_tokens": 631,
+    "cost_usd": 0.0212665,
+    "cost_usd_micros": 21267,
+    "duration_ms": 9337,
+    "ttft_ms": 1420,
+    "request_id": "req_011Cf3xnjdqgkxqafHp7D5EG",
+    "client_request_id": "dc412406-5919-4ca2-9a59-46fb713616c2",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789417701306000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-14T20:28:21.306Z",
+    "event.sequence": 18,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "response_length": 94,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf3xnjdqgkxqafHp7D5EG",
+    "message.uuid": "0dd9c5ac-3af4-494e-9210-a2e320f1dba1",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789417701438000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T20:28:21.438Z",
+    "event.sequence": 19,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "tool_name": "Write",
+    "tool_use_id": "toolu_01Lk3aRLRwxAQGxK6jeW5HHq",
+    "success": "true",
+    "duration_ms": "140",
+    "tool_input": "{\"file_path\":\"/home/user/WackyWords/shunt-eval/runs/_ws/SB4__natural__stock__r1__20260914-202746/connect/transforms/src/test/java/org/apache/kafka/connect/transforms/FilterTest.java\",\"content\":\"/*\\n * Licensed to the Apache Software Foundation (ASF) under one or more\\n * contributor license agreements. See the NOTICE file \u2026[2569 chars]\"}",
+    "tool_input_size_bytes": "2858",
+    "tool_result_size_bytes": "263"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789417705039000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T20:28:25.039Z",
+    "event.sequence": 20,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01H68Ez6A2S7YRJHQTZZ4BTo",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"ls\",\"full_command\":\"ls gradlew 2>/dev/null && timeout 100 ./gradlew :connect:transforms:test --tests \\\"org.apache.kafka.connect.transforms.FilterTest\\\" -q 2>&1 | tail -60\",\"timeout\":120000}"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789417705048000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T20:28:25.048Z",
+    "event.sequence": 21,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 241,
+    "cache_read_tokens": 39806,
+    "cache_creation_tokens": 1335,
+    "cost_usd": 0.0137127,
+    "cost_usd_micros": 13713,
+    "duration_ms": 3580,
+    "ttft_ms": 1764,
+    "request_id": "req_011Cf3xoSK5NCRoJy2E3fZVD",
+    "client_request_id": "51fc07ee-ec7b-4f0b-9bb7-f9b2abeabc64",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789417705048000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-14T20:28:25.048Z",
+    "event.sequence": 22,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "response_length": 39,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf3xoSK5NCRoJy2E3fZVD",
+    "message.uuid": "96c03806-1a93-4102-9951-8126c71da4bb",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789417742104000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T20:29:02.104Z",
+    "event.sequence": 23,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01H68Ez6A2S7YRJHQTZZ4BTo",
+    "success": "true",
+    "duration_ms": "37063",
+    "tool_parameters": "{\"bash_command\":\"ls\",\"full_command\":\"ls gradlew 2>/dev/null && timeout 100 ./gradlew :connect:transforms:test --tests \\\"org.apache.kafka.connect.transforms.FilterTest\\\" -q 2>&1 | tail -60\",\"timeout\":120000}",
+    "tool_input": "{\"command\":\"ls gradlew 2>/dev/null && timeout 100 ./gradlew :connect:transforms:test --tests \\\"org.apache.kafka.connect.transforms.FilterTest\\\" -q 2>&1 | tail -60\",\"timeout\":120000}",
+    "tool_input_size_bytes": "181",
+    "tool_result_size_bytes": "3740"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789417746142000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T20:29:06.142Z",
+    "event.sequence": 24,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 226,
+    "cache_read_tokens": 41141,
+    "cache_creation_tokens": 2637,
+    "cost_usd": 0.0170847,
+    "cost_usd_micros": 17085,
+    "duration_ms": 4013,
+    "ttft_ms": 1591,
+    "request_id": "req_011Cf3xrS8FAWtdnyuMs6tAM",
+    "client_request_id": "8c1d30dd-8083-47c1-8639-b71296901c75",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789417746142000000",
+   "attrs": {
+    "run.id": "SB4__natural__stock__r1__20260914-202746",
+    "session.id": "c5ec49c9-a0ac-412f-83e8-f1669cfb9d9e",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-14T20:29:06.142Z",
+    "event.sequence": 25,
+    "prompt.id": "eb289a9d-dc2e-4227-b5e0-581815767586",
+    "response_length": 600,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf3xrS8FAWtdnyuMs6tAM",
+    "message.uuid": "d7f48994-3dfc-4f61-8327-51bdd5859790",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  }
+ ],
+ "spans": []
+}

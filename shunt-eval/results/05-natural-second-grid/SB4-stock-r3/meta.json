@@ -1,0 +1,40 @@
+{
+  "run_id": "SB4__natural__stock__r3__20260914-203302",
+  "task_id": "SB4",
+  "category": "spotify-benchmark-1to1",
+  "arm": "stock",
+  "rep": 3,
+  "variant": "natural",
+  "main_model": "claude-sonnet-5",
+  "claude_code_version": "2.1.270 (Claude Code)",
+  "kafka_commit": "0ffb4f5dd57c6af206e3d9f97a433dd15ebb6dfc",
+  "session_id": "6a0a4050-0b2c-422e-b199-9f4653416f41",
+  "workspace": "/home/user/WackyWords/shunt-eval/runs/_ws/SB4__natural__stock__r3__20260914-203302",
+  "target_files": [
+    "connect/transforms/src/test/java/org/apache/kafka/connect/transforms/InsertHeaderTest.java",
+    "connect/transforms/src/main/java/org/apache/kafka/connect/transforms/Filter.java"
+  ],
+  "started_at": "2026-09-14T20:33:05.131226+00:00",
+  "prompt": "Write unit tests for Kafka Connect's Filter transformation, following the exact same patterns, structure, and assertions as the InsertHeader transform's tests. Filter drops every record, so the apply tests should assert that. Don't change any existing files.",
+  "command": [
+    "claude",
+    "-p",
+    "Write unit tests for Kafka Connect's Filter transformation, following the exact same patterns, structure, and assertions as the InsertHeader transform's tests. Filter drops every record, so the apply tests should assert that. Don't change any existing files.",
+    "--model",
+    "claude-sonnet-5",
+    "--session-id",
+    "6a0a4050-0b2c-422e-b199-9f4653416f41",
+    "--permission-mode",
+    "acceptEdits",
+    "--allowedTools",
+    "Read,Grep,Glob,Bash,Edit,Write,MultiEdit,Agent,Skill,TodoWrite,TaskCreate,TaskUpdate",
+    "--max-turns",
+    "40",
+    "--output-format",
+    "json"
+  ],
+  "wall_ms": 62182,
+  "exit_code": 0,
+  "timeout": false,
+  "finished_at": "2026-09-14T20:34:07.316012+00:00"
+}

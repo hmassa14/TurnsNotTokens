@@ -1,0 +1,704 @@
+{
+ "summary": {
+  "requests_total": 11,
+  "requests_main": 11,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 11,
+    "input_tokens": 22,
+    "cache_creation_input_tokens": 12380,
+    "cache_read_input_tokens": 349464,
+    "output_tokens": 2412
+   }
+  },
+  "tool_mix": {
+   "Bash": 7,
+   "ToolSearch": 1,
+   "WebSearch": 1,
+   "Read": 1
+  },
+  "tool_calls_total": 10,
+  "reads_total": 1,
+  "reads_whole_file": 0,
+  "reads_targeted": 1,
+  "reads_blocked_by_hook": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {},
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 0,
+  "lines_entered_context": 55,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 10,
+  "files_read": [
+   "LocalLog.scala"
+  ],
+  "tool_latency_ms": {
+   "Bash": 666,
+   "ToolSearch": 9,
+   "WebSearch": 3,
+   "Read": 20
+  },
+  "api_gap_ms_p50": 1657,
+  "api_gap_ms_max": 5687,
+  "final_text_chars": 876
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf3yvYbR4izFrhM1hN3J9",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5582,
+    "cache_read_input_tokens": 23949,
+    "output_tokens": 227,
+    "output_tokens_details": {
+     "thinking_tokens": 156
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5582
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 227,
+      "cache_read_input_tokens": 23949,
+      "cache_creation_input_tokens": 5582,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5582,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:43:07.019Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3yvrXRDTVZRJT2tRN11",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 281,
+    "cache_read_input_tokens": 29531,
+    "output_tokens": 540,
+    "output_tokens_details": {
+     "thinking_tokens": 454
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 281
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 540,
+      "cache_read_input_tokens": 29531,
+      "cache_creation_input_tokens": 281,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 281,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:43:14.497Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3ywJxtmLGaCuE7v7zgo",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1997,
+    "cache_read_input_tokens": 29812,
+    "output_tokens": 124,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1997
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 124,
+      "cache_read_input_tokens": 29812,
+      "cache_creation_input_tokens": 1997,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1997,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:43:16.610Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3ywUCXA35kvPyUDdjZU",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 179,
+    "cache_read_input_tokens": 31809,
+    "output_tokens": 144,
+    "output_tokens_details": {
+     "thinking_tokens": 30
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 179
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 144,
+      "cache_read_input_tokens": 31809,
+      "cache_creation_input_tokens": 179,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 179,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:43:18.294Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3ywcsQuYvdwQyjWFh8r",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 997,
+    "cache_read_input_tokens": 31988,
+    "output_tokens": 217,
+    "output_tokens_details": {
+     "thinking_tokens": 25
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 997
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 217,
+      "cache_read_input_tokens": 31988,
+      "cache_creation_input_tokens": 997,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 997,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:43:20.739Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3ywqiL1XY7x7xrkDoMk",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 294,
+    "cache_read_input_tokens": 32985,
+    "output_tokens": 140,
+    "output_tokens_details": {
+     "thinking_tokens": 51
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 294
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 140,
+      "cache_read_input_tokens": 32985,
+      "cache_creation_input_tokens": 294,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 294,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:43:23.849Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3yx1jLRPYdGMxasgSdL",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 279,
+    "cache_read_input_tokens": 33279,
+    "output_tokens": 126,
+    "output_tokens_details": {
+     "thinking_tokens": 52
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 279
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 126,
+      "cache_read_input_tokens": 33279,
+      "cache_creation_input_tokens": 279,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 279,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:43:26.091Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3yxAGncVNdQJRDxWgyr",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 204,
+    "cache_read_input_tokens": 33558,
+    "output_tokens": 266,
+    "output_tokens_details": {
+     "thinking_tokens": 96
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 204
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 266,
+      "cache_read_input_tokens": 33558,
+      "cache_creation_input_tokens": 204,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 204,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:43:29.054Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3yxZNM9dT3mvGFURsne",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 345,
+    "cache_read_input_tokens": 33762,
+    "output_tokens": 209,
+    "output_tokens_details": {
+     "thinking_tokens": 58
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 345
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 209,
+      "cache_read_input_tokens": 33762,
+      "cache_creation_input_tokens": 345,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 345,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:43:33.333Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3yxkNtYoJvNDtz7QFhq",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 577,
+    "cache_read_input_tokens": 34107,
+    "output_tokens": 104,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 577
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 104,
+      "cache_read_input_tokens": 34107,
+      "cache_creation_input_tokens": 577,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 577,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:43:35.799Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf3yxr9uF6WABybae37qc",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1645,
+    "cache_read_input_tokens": 34684,
+    "output_tokens": 315,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1645
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 315,
+      "cache_read_input_tokens": 34684,
+      "cache_creation_input_tokens": 1645,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1645,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T20:43:38.713Z",
+   "blocks": [
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01Mvm4znzBmL6p1EQKkGWfRA",
+   "name": "Bash",
+   "input": {
+    "command": "find / -iname \"LocalLog.scala\" 2>/dev/null"
+   },
+   "ts_use": "2026-09-14T20:43:07.327Z",
+   "request_id": "req_011Cf3yvYbR4izFrhM1hN3J9",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:43:08.809Z",
+   "is_error": false,
+   "result_head": "(Bash completed with no output)",
+   "result_chars": 31,
+   "result_lines": 0,
+   "latency_ms": 1482,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01DzqSgna1o4WCkNd4vohGFX",
+   "name": "ToolSearch",
+   "input": {
+    "query": "select:WebSearch,WebFetch",
+    "max_results": 5
+   },
+   "ts_use": "2026-09-14T20:43:14.921Z",
+   "request_id": "req_011Cf3yvrXRDTVZRJT2tRN11",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:43:14.930Z",
+   "is_error": false,
+   "result_head": " ",
+   "result_chars": 1,
+   "result_lines": 0,
+   "latency_ms": 9,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_015Pz1P6hZSymTtQdaSguyA2",
+   "name": "Bash",
+   "input": {
+    "command": "curl -s \"https://raw.githubusercontent.com/apache/kafka/trunk/core/src/main/scala/kafka/log/LocalLog.scala\" | grep -n \"already exists\" -A 5 -B 30 | head -100"
+   },
+   "ts_use": "2026-09-14T20:43:16.610Z",
+   "request_id": "req_011Cf3ywJxtmLGaCuE7v7zgo",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:43:17.112Z",
+   "is_error": false,
+   "result_head": "(Bash completed with no output)",
+   "result_chars": 31,
+   "result_lines": 0,
+   "latency_ms": 502,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01SBr6Gsc1PNqEGGWNUyJob6",
+   "name": "Bash",
+   "input": {
+    "command": "curl -sSv \"https://raw.githubusercontent.com/apache/kafka/trunk/core/src/main/scala/kafka/log/LocalLog.scala\" 2>&1 | head -30"
+   },
+   "ts_use": "2026-09-14T20:43:18.965Z",
+   "request_id": "req_011Cf3ywUCXA35kvPyUDdjZU",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:43:19.176Z",
+   "is_error": false,
+   "result_head": "* Uses proxy env variable no_proxy == 'localhost,127.0.0.1,::1,127.0.0.0/8,0.0.0.0/8,::,169.254.0.0/16,api.anthropic.com,api-staging.anthropic.com,api-pr-preview.anthropic.com,mcp-proxy.anthropic.com,mcp-proxy-staging.anthropic.com,registry.npmjs.org,jsr.io,npm.jsr.io,pypi.org,files.pythonhosted.org",
+   "result_chars": 1440,
+   "result_lines": 0,
+   "latency_ms": 211,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01KuDSZsm9g4uzNB5sLVhSvs",
+   "name": "Bash",
+   "input": {
+    "command": "curl -s -w \"\\nHTTP_CODE:%{http_code}\\n\" \"https://raw.githubusercontent.com/apache/kafka/trunk/core/src/main/scala/kafka/log/LocalLog.scala\" -o /tmp/LocalLog.scala; tail -5 /tmp/LocalLog.scala 2>/dev/null; wc -l /tmp/LocalLog.scala 2>/dev/null"
+   },
+   "ts_use": "2026-09-14T20:43:21.963Z",
+   "request_id": "req_011Cf3ywcsQuYvdwQyjWFh8r",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:43:22.191Z",
+   "is_error": false,
+   "result_head": "HTTP_CODE:404\n404: Not Found0 /tmp/LocalLog.scala",
+   "result_chars": 49,
+   "result_lines": 0,
+   "latency_ms": 227,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_0164UJhs8erXQA79swHZnKJm",
+   "name": "Bash",
+   "input": {
+    "command": "curl -s \"https://api.github.com/search/code?q=repo:apache/kafka+filename:LocalLog\" | head -50"
+   },
+   "ts_use": "2026-09-14T20:43:24.355Z",
+   "request_id": "req_011Cf3ywqiL1XY7x7xrkDoMk",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:43:24.516Z",
+   "is_error": false,
+   "result_head": "{\"message\":\"This GitHub API path is not available: sessions are bound to their configured repositories. Use repository-scoped endpoints (repos/{owner}/{repo}/...).\",\"documentation_url\":\"https://docs.anthropic.com/en/docs/claude-code/github-actions\"}",
+   "result_chars": 249,
+   "result_lines": 0,
+   "latency_ms": 161,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01GNNvnpMo4YtdZgjbPAeuwX",
+   "name": "WebSearch",
+   "input": {
+    "query": "apache kafka LocalLog.scala roll \"already exists\" KafkaException"
+   },
+   "ts_use": "2026-09-14T20:43:26.509Z",
+   "request_id": "req_011Cf3yx1jLRPYdGMxasgSdL",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:43:26.513Z",
+   "is_error": true,
+   "result_head": "Claude requested permissions to use WebSearch, but you haven't granted it yet.",
+   "result_chars": 78,
+   "result_lines": 0,
+   "latency_ms": 3,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_013Q1Ttthb8m9ue5ksmDSwQr",
+   "name": "Bash",
+   "input": {
+    "command": "for branch in trunk 3.8 3.7 3.6 3.5; do\n  url=\"https://raw.githubusercontent.com/apache/kafka/$branch/core/src/main/scala/kafka/log/LocalLog.scala\"\n  code=$(curl -s -o /dev/null -w \"%{http_code}\" \"$url\")\n  echo \"$branch: $code\"\ndone"
+   },
+   "ts_use": "2026-09-14T20:43:30.104Z",
+   "request_id": "req_011Cf3yxAGncVNdQJRDxWgyr",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:43:31.919Z",
+   "is_error": false,
+   "result_head": "trunk: 404\n3.8: 200\n3.7: 200\n3.6: 200\n3.5: 200",
+   "result_chars": 46,
+   "result_lines": 0,
+   "latency_ms": 1814,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01P2s3vDCZ9zuav6n6S5obwF",
+   "name": "Bash",
+   "input": {
+    "command": "curl -s \"https://raw.githubusercontent.com/apache/kafka/3.8/core/src/main/scala/kafka/log/LocalLog.scala\" -o /tmp/LocalLog.scala; grep -n \"already exists\\|def roll\\|KafkaException\" /tmp/LocalLog.scala"
+   },
+   "ts_use": "2026-09-14T20:43:34.226Z",
+   "request_id": "req_011Cf3yxZNM9dT3mvGFURsne",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:43:34.498Z",
+   "is_error": false,
+   "result_head": "25:import org.apache.kafka.common.{KafkaException, TopicPartition}\n470:  private[log] def roll(expectedNextOffset: Option[Long] = None): LogSegment = {\n478:        // segment with the same base offset already exists and loaded\n491:          throw new KafkaException(s\"Trying to roll a new log segment",
+   "result_chars": 864,
+   "result_lines": 0,
+   "latency_ms": 271,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_019iufNVA3zSNpm2AXPQHpJz",
+   "name": "Read",
+   "input": {
+    "file_path": "/tmp/LocalLog.scala",
+    "offset": 460,
+    "limit": 55
+   },
+   "ts_use": "2026-09-14T20:43:35.799Z",
+   "request_id": "req_011Cf3yxkNtYoJvNDtz7QFhq",
+   "agent": "main",
+   "ts_result": "2026-09-14T20:43:35.820Z",
+   "is_error": false,
+   "result_head": "460\t  }\n461\t\n462\t  /**\n463\t   * Roll the log over to a new active segment starting with the current logEndOffset.\n464\t   * This will trim the index to the exact size of the number of entries it currently contains.\n465\t   *\n466\t   * @param expectedNextOffset The expected next offset after the segment",
+   "result_chars": 3411,
+   "result_lines": 55,
+   "latency_ms": 20,
+   "flags": [
+    "read_targeted"
+   ]
+  }
+ ]
+}

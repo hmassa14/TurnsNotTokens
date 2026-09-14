@@ -1,0 +1,524 @@
+{
+ "summary": {
+  "metric_names": {
+   "claude_code.session.count": 1,
+   "claude_code.cost.usage": 7,
+   "claude_code.token.usage": 7,
+   "claude_code.active_time.total": 1
+  },
+  "tokens_by_model_type": {
+   "claude-sonnet-5|input": 14.0,
+   "claude-sonnet-5|output": 15249.0,
+   "claude-sonnet-5|cacheRead": 351995.0,
+   "claude-sonnet-5|cacheCreation": 57644.0
+  },
+  "cost_by_model_usd": {
+   "claude-sonnet-5": 0.367027
+  },
+  "event_counts": {
+   "user_prompt": 1,
+   "tool_decision": 6,
+   "api_request": 7,
+   "tool_result": 6,
+   "assistant_response": 1
+  },
+  "api_requests": 7,
+  "api_latency_ms_p50": 17981.0,
+  "api_latency_ms_max": 56353.0,
+  "tool_decisions": [
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   }
+  ],
+  "span_counts": {},
+  "hook_ms_total": 0
+ },
+ "events": [
+  {
+   "event": "user_prompt",
+   "ts": "1789422880714000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "user_prompt",
+    "event.timestamp": "2026-09-14T21:54:40.714Z",
+    "event.sequence": 0,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "prompt_length": "207",
+    "prompt": "<REDACTED>",
+    "message.uuid": "9fa4863c-d662-4638-abae-3b97080e61bd"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789422884557000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T21:54:44.556Z",
+    "event.sequence": 1,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01WTV2QdWxSBZJ61dbVssw1m",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -maxdepth 6 -iname \\\"RecordAccumulator.java\\\" 2>/dev/null\",\"description\":\"Search filesystem for Kafka RecordAccumulator.java\"}"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789422884574000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T21:54:44.574Z",
+    "event.sequence": 2,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 293,
+    "cache_read_tokens": 23949,
+    "cache_creation_tokens": 5578,
+    "cost_usd": 0.021668800000000002,
+    "cost_usd_micros": 21669,
+    "duration_ms": 3760,
+    "ttft_ms": 681,
+    "request_id": "req_011Cf45PGYMTmZTUGj2KoJXi",
+    "client_request_id": "dd629570-ffbf-4ec5-b7a3-1916e57f7e05",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789422885201000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T21:54:45.201Z",
+    "event.sequence": 3,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01WTV2QdWxSBZJ61dbVssw1m",
+    "success": "true",
+    "duration_ms": "642",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -maxdepth 6 -iname \\\"RecordAccumulator.java\\\" 2>/dev/null\",\"description\":\"Search filesystem for Kafka RecordAccumulator.java\"}",
+    "tool_input": "{\"command\":\"find / -maxdepth 6 -iname \\\"RecordAccumulator.java\\\" 2>/dev/null\",\"description\":\"Search filesystem for Kafka RecordAccumulator.java\"}",
+    "tool_input_size_bytes": "145",
+    "tool_result_size_bytes": "27"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789422886627000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T21:54:46.627Z",
+    "event.sequence": 4,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01VJbZbTNXFWtkvJpAwVhJQA",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789422886637000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T21:54:46.636Z",
+    "event.sequence": 5,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 91,
+    "cache_read_tokens": 29527,
+    "cache_creation_tokens": 352,
+    "cost_usd": 0.0076994,
+    "cost_usd_micros": 7699,
+    "duration_ms": 1404,
+    "ttft_ms": 584,
+    "request_id": "req_011Cf45PbMCDFEANgKSE32BK",
+    "client_request_id": "0cb7391a-ac7f-4cee-93e4-ee1bdab6b57f",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789422886765000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T21:54:46.765Z",
+    "event.sequence": 6,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01VJbZbTNXFWtkvJpAwVhJQA",
+    "success": "true",
+    "duration_ms": "135",
+    "tool_input": "{\"file_path\":\"/tmp/RecordAccumulator.java\"}",
+    "tool_input_size_bytes": "43",
+    "tool_result_size_bytes": "68639"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789422935686000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T21:55:35.686Z",
+    "event.sequence": 7,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_012NrE7RGPmJTMSPWnjEE5q2",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789422935691000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T21:55:35.691Z",
+    "event.sequence": 8,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_012NrE7RGPmJTMSPWnjEE5q2",
+    "success": "true",
+    "duration_ms": "3",
+    "tool_input": "{\"file_path\":\"/tmp/RecordAccumulator.java\",\"offset\":1238}",
+    "tool_input_size_bytes": "57",
+    "tool_result_size_bytes": "12362"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789422935716000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T21:55:35.716Z",
+    "event.sequence": 9,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 5020,
+    "cache_read_tokens": 29879,
+    "cache_creation_tokens": 25024,
+    "cost_usd": 0.1187398,
+    "cost_usd_micros": 118740,
+    "duration_ms": 48924,
+    "ttft_ms": 660,
+    "request_id": "req_011Cf45Pi1HkAEp6fk45Nwr7",
+    "client_request_id": "6c19e8d9-921f-466a-bed3-933581a266fb",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789422992084000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T21:56:32.084Z",
+    "event.sequence": 10,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01FCTaNC16CWWUaRwUpdKcjX",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -maxdepth 8 -iname \\\"BuiltInPartitioner.java\\\" 2>/dev/null\",\"description\":\"Look for BuiltInPartitioner.java on filesystem\"}"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789422992101000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T21:56:32.101Z",
+    "event.sequence": 11,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 5402,
+    "cache_read_tokens": 54903,
+    "cache_creation_tokens": 9711,
+    "cost_usd": 0.08928209999999999,
+    "cost_usd_micros": 89282,
+    "duration_ms": 56353,
+    "ttft_ms": 927,
+    "request_id": "req_011Cf45TKTq27c6nnhe8zN9E",
+    "client_request_id": "167f8027-c00c-4c34-8aa6-2d3cf7aa9ec8",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789422992552000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T21:56:32.552Z",
+    "event.sequence": 12,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01FCTaNC16CWWUaRwUpdKcjX",
+    "success": "true",
+    "duration_ms": "466",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -maxdepth 8 -iname \\\"BuiltInPartitioner.java\\\" 2>/dev/null\",\"description\":\"Look for BuiltInPartitioner.java on filesystem\"}",
+    "tool_input": "{\"command\":\"find / -maxdepth 8 -iname \\\"BuiltInPartitioner.java\\\" 2>/dev/null\",\"description\":\"Look for BuiltInPartitioner.java on filesystem\"}",
+    "tool_input_size_bytes": "142",
+    "tool_result_size_bytes": "28"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789422994693000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T21:56:34.693Z",
+    "event.sequence": 13,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01G1UgX6AJ5mJQcQb9cAwd82",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789422994699000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T21:56:34.699Z",
+    "event.sequence": 14,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01G1UgX6AJ5mJQcQb9cAwd82",
+    "success": "true",
+    "duration_ms": "5",
+    "tool_input": "{\"file_path\":\"/tmp/BuiltInPartitioner.java\"}",
+    "tool_input_size_bytes": "44",
+    "tool_result_size_bytes": "23550"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789422994708000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T21:56:34.708Z",
+    "event.sequence": 15,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 153,
+    "cache_read_tokens": 64614,
+    "cache_creation_tokens": 5464,
+    "cost_usd": 0.028116800000000004,
+    "cost_usd_micros": 28117,
+    "duration_ms": 2132,
+    "ttft_ms": 745,
+    "request_id": "req_011Cf45XWUUEFDu4gKCjDEo9",
+    "client_request_id": "7cfe7931-1c05-4086-ad3e-c804b25fd5d9",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789423022780000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-14T21:57:02.780Z",
+    "event.sequence": 16,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01MQSNq9VsMazfFZsesfgAzW",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"grep\",\"full_command\":\"grep -n \\\"batches\\\\.\\\\(remove\\\\|put\\\\|clear\\\\)\\\" /tmp/RecordAccumulator.java\",\"description\":\"Check for any removal/replacement of per-partition deque entries\"}"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789423022803000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T21:57:02.803Z",
+    "event.sequence": 17,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 2486,
+    "cache_read_tokens": 70078,
+    "cache_creation_tokens": 8967,
+    "cost_usd": 0.0612971,
+    "cost_usd_micros": 61297,
+    "duration_ms": 28074,
+    "ttft_ms": 660,
+    "request_id": "req_011Cf45XfafNbbpst9WkbLxy",
+    "client_request_id": "485fc18f-0e5f-4d9b-b2e0-03ab683f5812",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789423022827000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-14T21:57:02.827Z",
+    "event.sequence": 18,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01MQSNq9VsMazfFZsesfgAzW",
+    "success": "true",
+    "duration_ms": "44",
+    "tool_parameters": "{\"bash_command\":\"grep\",\"full_command\":\"grep -n \\\"batches\\\\.\\\\(remove\\\\|put\\\\|clear\\\\)\\\" /tmp/RecordAccumulator.java\",\"description\":\"Check for any removal/replacement of per-partition deque entries\"}",
+    "tool_input": "{\"command\":\"grep -n \\\"batches\\\\.\\\\(remove\\\\|put\\\\|clear\\\\)\\\" /tmp/RecordAccumulator.java\",\"description\":\"Check for any removal/replacement of per-partition deque entries\"}",
+    "tool_input_size_bytes": "171",
+    "tool_result_size_bytes": "47"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789423040832000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-14T21:57:20.832Z",
+    "event.sequence": 19,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 1804,
+    "cache_read_tokens": 79045,
+    "cache_creation_tokens": 2548,
+    "cost_usd": 0.040223,
+    "cost_usd_micros": 40223,
+    "duration_ms": 17981,
+    "ttft_ms": 759,
+    "request_id": "req_011Cf45ZjqhM5YH5mcTfYjRU",
+    "client_request_id": "9d2dc5df-461d-4f20-923d-7b5151b9652b",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789423040832000000",
+   "attrs": {
+    "run.id": "HM5__natural__stock__r1__20260914-215436",
+    "session.id": "1f3887f2-3447-42cd-b67d-0cd853660e43",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-14T21:57:20.832Z",
+    "event.sequence": 20,
+    "prompt.id": "608f26af-f678-400f-b420-b0dc6900a4ff",
+    "response_length": 4420,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf45ZjqhM5YH5mcTfYjRU",
+    "message.uuid": "76c8349a-799e-4798-a702-c94de98d346b",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  }
+ ],
+ "spans": []
+}

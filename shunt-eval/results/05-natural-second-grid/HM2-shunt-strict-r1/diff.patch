@@ -1,0 +1,23 @@
+diff --git a/clients/src/main/java/org/apache/kafka/clients/NetworkClient.java b/clients/src/main/java/org/apache/kafka/clients/NetworkClient.java
+index 2fdc289..b728343 100644
+--- a/clients/src/main/java/org/apache/kafka/clients/NetworkClient.java
++++ b/clients/src/main/java/org/apache/kafka/clients/NetworkClient.java
+@@ -1231,12 +1231,12 @@ public class NetworkClient implements KafkaClient {
+ 
+     private void handleRebootstrap(List<ClientResponse> responses, long now) {
+         if (metadataRecoveryStrategy == MetadataRecoveryStrategy.REBOOTSTRAP && metadataUpdater.needsRebootstrap(now, rebootstrapTriggerMs)) {
+-            this.metadataUpdater.fetchNodes().forEach(node -> {
+-                String nodeId = node.idString();
+-                this.selector.close(nodeId);
+-                if (connectionStates.isConnecting(nodeId) || connectionStates.isConnected(nodeId)) {
+-                    log.info("Disconnecting from node {} due to client rebootstrap.", nodeId);
+-                    processDisconnection(responses, nodeId, now, ChannelState.LOCAL_CLOSE);
++            this.metadataUpdater.fetchNodes().forEach(nodeToClose -> {
++                String nodeToCloseId = nodeToClose.idString();
++                this.selector.close(nodeToCloseId);
++                if (connectionStates.isConnecting(nodeToCloseId) || connectionStates.isConnected(nodeToCloseId)) {
++                    log.info("Disconnecting from node {} due to client rebootstrap.", nodeToCloseId);
++                    processDisconnection(responses, nodeToCloseId, now, ChannelState.LOCAL_CLOSE);
+                 }
+             });
+             metadataUpdater.rebootstrap(now);
