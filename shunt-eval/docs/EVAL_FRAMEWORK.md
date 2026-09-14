@@ -46,18 +46,70 @@ Each addition names the gap it fills.
 
 Every key is derived mechanically from the code, as in `docs/TASKS.md`. Needle keys are a literal expression or identifier with an alias list, so a lossy summary fails.
 
-## Metrics, per hypothesis
+## Metrics
 
-| Group | Metric | Source | Note |
-|---|---|---|---|
-| Performance | pass, score | grader | unchanged |
-| Performance | target file found | transcript | a pass without the target is a miss |
-| Tokens (Spotify's metric) | **target-file content entering frontier context via any tool** | transcript: `Read` lines + `Grep`/`Bash` result chars that hit the target, converted at chars/4 | replaces `lines_entered_context`, which counted `Read` only |
-| Tokens | Spotify's own formula, for comparison | corpus chars/4 minus summary chars/4 | reported beside, never instead |
-| Cost | total at list price, **cache TTL pinned** | result.json, recomputed | `CLAUDE_CODE_PROMPT_CACHE_TTL=5m` on every run so both arms are billed at one rate |
-| Cost | finding / answering split | first touch of target | unchanged |
-| Latency | wall, api_requests | meta, transcript | requests is the mechanism metric for M |
-| Behavior | blocks, bypasses, skill invocations, worker calls, greps | transcript | skill invocations counted separately from worker calls |
+Spotify's benchmark measured one deterministic path, so it had two numbers: corpus size and summary size. A Claude Code session is a sequence of requests the model chooses, so every metric here is defined per request, summed per run, and kept separate for the main model and the worker. Three sources, reconciled on every run: the JSON Claude Code prints, the transcript it writes, and the OpenTelemetry export. A number that does not match across all three is not reported.
+
+Three prongs decide whether the hook belongs in a real deployment. A fourth group, tokens, is Spotify's own metric and is reported beside cost, never instead of it. A fifth, behavior, explains the other four.
+
+### Performance: did it get the right answer
+
+| Metric | Definition | Source |
+|---|---|---|
+| pass | grader verdict at the task's threshold | grade.json |
+| score | the grader's continuous score, for partial credit | grade.json |
+| target found | the session read, grepped, or delegated the target file at least once; a pass without it is scored as a miss | transcript |
+| pass^k | all k reps passed; the number to report, since one lucky run is not a pass | grade.json over reps |
+
+Graders by category: SB and SC reads, and ND, use key lists derived from the code (recall over names, exact match for needle literals, with alias lists). HM edits use exact diff with decoy lines that must be untouched; HM debugging names the method, a line in range, and the race. Code-gen (SB4, SC4, SC5, CT1, CT2) is graded by **compiling and running the generated tests with Gradle**, not by a regex checklist; the first grid's W2 failed a checklist regex on all arms, which is a grader bug, not a finding. Code-gen is graded twice from the same run: as Spotify scored it (the file is written, the model never reads it back) and with the review step their skill instructs.
+
+What "good" means: for SB, ND, SC and CT, hook pass rate equal to stock. For HM, hook pass rate not below stock. A cost saving on a task that stopped passing is not a saving.
+
+### Cost: what it cost
+
+| Metric | Definition | Source |
+|---|---|---|
+| total | main model + worker + subagents, at list price, from tokens | result.json usage, worker/*.json, recomputed |
+| by bucket | uncached input, cache write, cache read, output, each at its rate | result.json usage |
+| by phase | finding (requests before the first touch of the target) and answering (from the first touch on) | transcript |
+| by request | the per-request series, for the trace figures | transcript |
+| resend bill | sum over requests of cached tokens re-sent, at the cache-read rate; the mechanism metric for M | transcript |
+
+Rules. Cache TTL is pinned to 5m on every run (`CLAUDE_CODE_PROMPT_CACHE_TTL=5m`), so both arms pay one rate; the first grid straddled Claude Code's automatic switch to 1h and charged the strict arm 2x on writes. Every recomputed total is checked against Claude Code's own `total_cost_usd` and must match to four decimals. Cost is reported at equal correctness: the headline figure is over tasks both arms passed, with the all-tasks figure beside it.
+
+Comparison. Paired per task, three reps: per-task mean and range, then the paired difference across tasks with an interval, and a sign test. The number to publish is a percentage change with an interval, per category, not one point for the whole grid.
+
+### Latency: how long it took
+
+| Metric | Definition | Source |
+|---|---|---|
+| wall | harness start to exit | meta.json |
+| requests | API requests in the run; the turn count | transcript |
+| per-request duration, time to first token | from `api_request` events | OpenTelemetry |
+| time in tools | sum of tool latencies | transcript |
+| time in worker | the worker call's own duration, when one happens | worker/*.json |
+
+Reported as median and p90 across reps. Latency is the prong Spotify's own post flags (10 to 30 seconds per delegation), so in SB, ND and SC a hook run that delegates is expected to be slower and the question is by how much; in HM and CT it should match stock.
+
+### Tokens: Spotify's metric, done inside Claude Code
+
+| Metric | Definition | Note |
+|---|---|---|
+| target content in frontier context | target-file text that reached the main model through **any** tool: `Read` lines, plus `Grep` and `Bash` results that hit the target, at chars/4 | replaces the first grid's `lines_entered_context`, which counted `Read` only and so missed the 31k characters R1's greps brought in |
+| Spotify's formula | corpus chars/4 minus summary chars/4, computed only when a worker call happened | zero worker calls means this metric is undefined, which is itself the finding |
+| frontier input tokens | every input token the main model was billed for, cached or not | what their post's "tokens" would mean if it were a bill |
+
+### Behavior: why the numbers came out that way
+
+Per run: hook blocks, blocks followed by a paged read, skill invocations, worker calls, `Grep` calls on the target, re-reads of the target after a delegation, subagent spawns. Skill invocations and worker calls are counted separately, because a skill can be opened without the script being run. In SB, ND and SC, worker calls above zero is the precondition for any of Spotify's claimed saving; zero means the mechanism never engaged and the cost result is about the model's fallback, not about delegation.
+
+### Success criteria, per category
+
+| Category | Performance | Cost | Latency | Tokens |
+|---|---|---|---|---|
+| SB, ND, SC (helps?) | equal pass rate | lower, with interval excluding zero | slower allowed; report by how much | lower, on the any-tool metric |
+| HM (hurts?) | not lower | not higher | not slower | reported, not a criterion |
+| CT (overhead) | equal | equal within the plugin's fixed system-prompt cost | equal | equal |
 
 ## Controls that the first grid lacked
 
