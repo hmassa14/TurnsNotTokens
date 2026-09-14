@@ -156,7 +156,9 @@ def main():
             f = row["input"].get("file_path")
             for later in all_tools[i + 1:i + 4]:
                 if later["name"] == "Read" and later["input"].get("file_path") == f and "read_targeted" in later["flags"]:
-                    bypass += 1
+                    # a paged read only counts as a bypass if it actually went through
+                    if "hook_blocked" not in later["flags"] and not later.get("is_error"):
+                        bypass += 1
                     break
     # what the main agent did right after each hook block: the fallback distribution
     after_block = Counter()
