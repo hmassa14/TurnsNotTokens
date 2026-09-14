@@ -43,29 +43,40 @@
 <p class="dek">Spotify published a Claude Code plugin that blocks the model from reading big files and hands them to a cheap worker instead, claiming a 90% cut in tokens. I rebuilt it on a real repo and measured the bill. The number they reported is real. The bill went up anyway.</p>
 <p class="byline">Twelve tasks, two Claude Code configurations, one Java monorepo, three independent sources of telemetry per run.</p>
 
-<p>I've been thinking a lot about <em>tokenomics</em> lately — cache hit rates, price per million tokens, the vocabulary of running these things at scale — and how rarely any of it gets checked against an actual bill. Spotify published a blog post about a Claude Code plugin claiming a 90% cut in tokens, achieved by blocking the model from reading big files and handing them off to a cheap worker instead. I wanted to look under the hood.</p>
+<p>I feel like everyone's caught wind of the term <em>tokenomics</em> recently. From customer calls to consultants' LinkedIn posts, people are getting more and more cognizant of AI spend and looking for a better way to quantify it. It can't just be priced per question, flat — we have to think about question complexity and model power together, and lately, teams have started measuring that complexity in tokens needed. Makes sense.</p>
 
-<p>So I rebuilt it on a real repo and measured the bill. The short version is in the title: the 90% token reduction Spotify reported is real, on their own metric. The dollar cost of getting it went up 35% anyway. Here's what they were trying to solve, what they built, and why the bill went up when I recreated it.</p>
+<p>That's led a lot of cost-wary teams to start building their own token optimizers. Seeing the trend take off, I wanted to dig into one of these examples myself. Last week, Spotify published a blog post that bounced around Hacker News and Reddit, about a Claude Code plugin claiming a 90% cut in tokens. So in this piece, I'm taking you with me as we rebuild it and look under the hood.</p>
+
+<blockquote class="tldr">TLDR; the 90% token reduction Spotify reported is real. The dollar cost of getting it went up about 35% anyway. Here's what they were trying to solve, what they built, and why the bill went up when I recreated it.</blockquote>
 
 <h2>What Spotify built, and why</h2>
 
-<p>Dimitri Mazmanov, the Spotify engineer who wrote <a href="https://engineering.atspotify.com/2026/9/portal-by-spotify-cut-my-claude-code-token-usage-by-90">the post</a>, frames it as a simple tokenomics problem: a huge share of their token usage in Claude Code was going toward tasks that don't actually need frontier-level reasoning. Inside a large codebase, an agent burns through its context budget on two kinds of work that aren't reasoning at all:</p>
+<p><b>The why:</b> the Spotify team noticed a trend in their own Claude Code usage — a huge share of the tokens they were burning went toward tasks that didn't actually need the frontier-level reasoning power they were paying for. Spotify works out of one large monorepo, and inside it, most of that non-reasoning work fell into two buckets:</p>
 
 <ul>
-<li><b>Bulk file reading</b>: loading a 700-plus-line file into context just to check a pattern or answer a question about a fraction of it.</li>
+<li><b>Bulk file reads</b>: loading a 700-plus-line file into context just to check a pattern or answer a question about a fraction of it.</li>
 <li><b>Templated code generation</b>: writing boilerplate, configs, or scaffolding where the structure is already known.</li>
 </ul>
 
-<p>Because Claude Code re-sends the entire conversation on every single request, a large file that enters context once keeps getting resent — and rebilled — on every request after it. How much that resend actually costs turns out to matter a lot, and it's not as simple as "the same price again" (more on that later).</p>
+<p>Because Claude Code resends the whole conversation on every request, any large file that's entered context once stays there and keeps getting rebilled on every request after it, however many turns that ends up being. Spotify didn't want to keep paying frontier prices to carry around the parts of a file nobody actually asked about.</p>
 
-<p>To fix that, Spotify built a <em>PreToolUse hook</em> — a script Claude Code runs before it lets a tool call through, able to allow it, block it, or swap in a different instruction, and the model never knows the difference between a hook's message and a tool's real result. Their hook, called <a href="https://github.com/spotify/portal-ai-plugins">shunt</a>, watches for exactly this: when the model tries to read a file over 350 lines, the hook blocks it before the model ever sees the bytes, and routes the file to a cheaper worker instead — other coverage of the post names Gemini 2.5 Flash — to write back a summary, or hand off the boilerplate the same way.</p>
-
-<p>Spotify measured the win as tokens avoided: the file's size in characters divided by four, minus the summary that came back, with the worker's own tokens left out of the count entirely. That works out to roughly a 90% drop in tokens sent to the frontier model — and by the ordinary logic of token pricing, fewer tokens to the expensive model reads as a proportionally smaller bill. That equivalence, a token avoided is a dollar saved, is exactly what the rest of this post tests.</p>
+<p><b>The what:</b> to fix it, Spotify built a more deterministic workflow for exactly those two task types — send the request to a smaller model to process, and hand Claude Code back only the key context it actually needs. They picked a Gemini model for the worker (other coverage of the post names Gemini 2.5 Flash), reading the large file in full and returning just the parts that matter.</p>
 
 <figure>
   <img src="figures/post/A-hook-in-the-loop.png" alt="Diagram: the model calls Read, a PreToolUse hook checks the line count, and either allows the read or blocks it and returns a message. After a block, the model can call the worker script, page through the file with an offset, or grep it. In this evaluation the model never called the worker.">
   <figcaption>Figure A · where the hook sits</figcaption>
 </figure>
+
+<p>They built that deterministic workflow out of two Claude Code primitives:</p>
+
+<ul>
+<li><b>Skills</b>, for the instructions. Claude Code only loads a skill's full body into context once the model decides to use it — until then it's just a name and a one-line description. Spotify's two skills, a bulk-reader and a code-writer, are the instructions for handing a task to the cheaper model and using what comes back.</li>
+<li><b>Hooks</b>, for the enforcement. A skill only helps if the model chooses to open it, so Spotify's <em>PreToolUse hook</em> sits in front of <code>Read</code> and blocks any file over 350 lines before the model sees it, pointing the model at the bulk-reader skill instead.</li>
+</ul>
+
+<blockquote class="tldr">TLDR; the skill is the manual. The hook is what's supposed to force the model to open it. Whether that actually holds is the seam this whole post pulls on.</blockquote>
+
+<p>Spotify measured the win as tokens avoided — the file's size in characters divided by four, minus the summary that came back, with the worker's own tokens left out of the count. That's roughly a 90% drop in tokens sent to the frontier model, and by the ordinary logic of token pricing, that reads as a 90% cost cut too: fewer tokens to the expensive model, a proportionally smaller bill. That equivalence — a token avoided is a dollar saved — is exactly what the rest of this post tests.</p>
 
 <p>That design rests on one assumption: that when the model is refused a read, it does what the hook's message tells it to do. Nothing about a <code>PreToolUse</code> hook enforces that — it can stop one tool call, but it can't stop the model from trying something else on its next turn, and it has no say over what that something else is. Whether the plugin saves anything comes down entirely to what the model reaches for once it's been told no. I wanted to find out, on a real repo, doing real work.</p>
 
@@ -126,9 +137,11 @@
 <p>That's a bug in the exception, not a finding about delegation, so I closed it — a file over 350 lines simply cannot be <code>Read</code> by the main model at all, offset or no offset — and ran everything past this point against that version. Every number from here on is the hook doing what the post says it does.</p>
 </div>
 
+<blockquote class="tldr">TLDR; same repo shape, same two workflows, same hook, run against the same plain baseline — with two honest substitutions (Haiku standing in for Portal, one loophole closed) so the comparison tests what Spotify actually built, not a version that quietly lets the model off the hook.</blockquote>
+
 <h2>Results: the same token savings, a higher cost</h2>
 
-<p>Run head to head, the hook arm delivers Spotify's own metric faithfully and costs more anyway. Here's that shape one task at a time, then across all twelve.</p>
+<p>Run head to head: the hook arm delivers Spotify's own metric, faithfully. It just costs more anyway. Here's that shape one task at a time, then across all twelve.</p>
 
 <h3>One question, traced</h3>
 
@@ -174,6 +187,8 @@
 <span class="label">Sidebar: what if the worker were Claude Code's own subagent?</span>
 <p>One objection to all of this: Spotify's worker script is unfamiliar precisely because it's an external shell script behind a plugin, and Claude Code already ships something built for exactly this — the <code>Explore</code> subagent, a second, disposable conversation with its own context and read-only tools, which the main model can call any time it wants to hand off a search. So I ran the same hook again, with its refusal message pointing at Explore instead of at Spotify's script, and pinned Explore to Haiku the way the worker was supposed to run. It changed the arithmetic only slightly: Explore got called in 2 of 12 tasks, the model grepped through the rest, and the run came in at $2.31 against the plain hook's $2.61 — cheaper, but still nowhere near stock's $1.94, and still not the behavior either design assumes. Making the fallback something the model already knows how to call helped a little. It didn't change what the model actually reached for.</p>
 </div>
+
+<blockquote class="tldr">TLDR; the hook does cut context the way Spotify says it does. It just costs more to get there, because every block that isn't followed becomes another full turn — and turns, not tokens, are what actually moved the bill.</blockquote>
 
 <h2>Findings</h2>
 
