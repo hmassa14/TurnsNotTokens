@@ -10,35 +10,41 @@ That splits into two testable hypotheses, and the task set has to cover both.
 
 | | Hypothesis | Task cells | What "supported" means |
 |---|---|---|---|
-| H1 | On the workloads shunt targets, the hook reduces frontier tokens **and** dollar cost, at equal correctness. | H1a to H1e below | Hook run passes at the same rate as stock; frontier-context tokens fall; cost falls on a majority of paired reps. |
-| H2 | On workloads shunt does not target, where the hook still fires because the file is big, it does **not** reduce correctness and does **not** raise cost. | H2a, H2b | Pass rate unchanged; cost within noise of stock. A cost increase here is harm, not neutral. |
+| H1 | On the workloads shunt targets, the hook reduces frontier tokens **and** dollar cost, at equal correctness. | part 1 rows 1 to 4; needle, scaled, second-sample rows in part 2 | Hook run passes at the same rate as stock; frontier-context tokens fall; cost falls on a majority of paired reps. |
+| H2 | On workloads shunt does not target, where the hook still fires because the file is big, it does **not** reduce correctness and does **not** raise cost. | harm rows in part 2 | Pass rate unchanged; cost within noise of stock. A cost increase here is harm, not neutral. |
 | M | Any cost difference is explained by request count (turns) times cached resend, not by per-token price. | all | Cost tracks `api_requests`, not `tokens_saved`. |
 
 A task that does not sit in one of these cells does not belong in the grid.
 
-## Task cells
+## Tasks, part 1: one-to-one with Spotify's benchmark
 
-Two things decide a cell: whether Spotify expects improvement, and the shape of the read. Shape matters because Spotify's motivation ("read 700 lines to check a pattern") is needle-shaped, while every task in their benchmark file is exhaustive-shaped ("list every export"). Both shapes are H1; they can come out differently.
+Their benchmark file (`plugins/shunt/evals/benchmarks.json`) has four rows. Their fixtures: `websocket-handler.ts` 602 lines, `user-service.ts` 35, `order-service.test.ts` 55. Only rows 1 and 2 contain a file over the 350-line threshold; rows 3 and 4 never would have tripped the hook. Their scoring calls the worker script directly and never runs Claude Code, so that did not matter to them. It matters to us, because ours run through Claude Code and the hook.
 
-| Cell | Shape | Spotify source | Existing tasks | Status |
+Each row gets an exact analog on Kafka, matched on question shape and on file-size band, so the comparison is theirs first and ours second.
+
+| Their row | Their question (verbatim) | Their files | Our 1:1 | Our files | Hook fires? |
+|---|---|---|---|---|---|
+| 1 `single-large-file` | "What are all the exported items and what do they do?" | 602 lines | **R2** every config key with type and default | `RemoteLogManagerConfig.java` 616 | yes |
+| 2 `multi-file-cross-read` | "Which classes and interfaces are exported across these files, and how do they relate to each other?" | 602 + 35 + 55 | **R5 (new)** one big file plus two small related files, how they relate | `BrokerLifecycleManager.java` 770 + `BrokerState.java` 108 + one more small related file, to select | yes, on the big one |
+| 3 `source-plus-test` | "What methods does UserService have, and which ones would be covered if we wrote tests following the OrderService test pattern?" | 35 + 55 | **R6 (new)** what methods does `Filter` have, which would be covered following `InsertHeaderTest`'s pattern | `Filter.java` 62 (no test exists) + `InsertHeaderTest.java` 125 | **no**, same as theirs |
+| 4 `code-generation` | "Write unit tests for UserService following the exact same patterns, structure, and assertions as the OrderService tests." | ref 55, ctx 35 | **W4 (new)** write `FilterTest` following `InsertHeaderTest` exactly | ref `InsertHeaderTest.java` 125, ctx `Filter.java` 62 | **no**, same as theirs |
+
+Rows 3 and 4 are kept small on purpose. That is what they tested, and running them shows the reader that half of Spotify's own benchmark is below the hook's threshold. Code-gen is graded two ways: as they scored it (spec sent, file written, Claude never reads it back) and as their skill instructs (Claude reviews the output), because the second is what a real session does.
+
+## Tasks, part 2: what their benchmark does not cover
+
+Each addition names the gap it fills.
+
+| Gap in their benchmark | Cell | Tasks | Files | Hook fires? |
 |---|---|---|---|---|
-| H1a | Exhaustive read of one big file | benchmark #1 `single-large-file` | R1, R2 | ok |
-| H1b | Cross-read across files | benchmark #2 `multi-file-cross-read` | R3 | ok |
-| H1c | Source plus its test | benchmark #3 `source-plus-test` | R4 | ok |
-| H1d | **Needle read**: question answerable from under 10% of a big file, no edit | post motivation, not in their benchmark | none | **missing, add 4** |
-| H1e | Templated code-gen from a reference | benchmark #4 `code-generation` | W1, W2, W3 | W1/W2 references are under 350 lines, hook never fires: keep as no-fire controls, not as H1e evidence. W3 fires. Add 1 with a big reference. |
-| H2a | Precise edit in a big file (needs exact text) | post's stated limit: editing needs exact content | E1, E2, E3 | ok |
-| H2b | Reasoning over a big file (debugging) | post's stated limit: a summary cannot reason | D1, D2 | ok |
-| C0 | Small file, hook never fires | control: plugin overhead only | W1, W2 | ok |
+| Their read rows are all "list every X." The motivation is "read 700 lines to check one thing." The saving from a summary is file size minus answer size, so this is the hook's best case and they never test it. | Needle read | **N1 to N4 (new)**: what `ready()` returns when nothing is ready; what condition triggers rebootstrap; what the KAFKA-6388 guard in `roll()` checks; what `lock()` throws when already locked | `RecordAccumulator` 1,500; `NetworkClient` 1,879; `LocalLog` 1,072; `StateDirectory` 1,019 | yes |
+| One sample per shape. | Second sample of row 1 | R1 every event class and its state | `BrokerLifecycleManager` 770 | yes |
+| Rows 2 to 4 never trip the hook, so they say nothing about it. | Same shapes, scaled into the hook's band | R3 (two big files), R4 (big source + big test), W3 (config class from a 616-line reference), **W5 (new)** tests for `TimestampRouter` following `TimestampConverterTest` (739-line reference) | as listed | yes |
+| Nothing tests a task the post itself says the approach is unsuited to. The hook fires on line count alone, so it fires on these anyway. | Harm: precise edit | E1, E2, E3 | 985 to 1,879 | yes |
+| Same. | Harm: reasoning | D1, D2 | 1,019; 1,500 | yes |
+| No control for the plugin's fixed cost (two skill descriptions in the system prompt every turn) or for unprompted skill uptake. | Small-file control | R6, W4 from part 1; W1, W2; **S1 (new)** a needle question on a file under 350 lines | under 350 | no |
 
-Needle tasks to add (H1d), each on a file over 350 lines, answer in one method or one block:
-
-- N1 `RecordAccumulator.java` (1,500 lines): what does `ready()` return when no batch is full and no linger has expired. Key: the exact return expression and the two fields it reads.
-- N2 `NetworkClient.java` (1,879 lines): what condition triggers a rebootstrap. Key: the boolean expression in `handleApiVersionsResponse`.
-- N3 `LocalLog.java` (1,072 lines): what the KAFKA-6388 special case in `roll()` checks for. Key: the guard expression.
-- N4 `StateDirectory.java` (1,019 lines): which exception `lock()` throws when the directory is already locked by another process. Key: the exception class and the message.
-
-Every key is a literal expression or identifier, graded exact-match with an alias list, so a summary from a worker can pass only if it preserved the literal.
+Every key is derived mechanically from the code, as in `docs/TASKS.md`. Needle keys are a literal expression or identifier with an alias list, so a lossy summary fails.
 
 ## Metrics, per hypothesis
 
@@ -64,12 +70,18 @@ Every key is a literal expression or identifier, graded exact-match with an alia
 
 ## Grid to run
 
-| Arms | Tasks | Reps | Runs |
-|---|---|---|---|
-| stock, shunt-strict (neutral message) | R1 to R4, N1 to N4, W3 plus one new code-write, E1 to E3, D1, D2 | 3 | 14 x 2 x 3 = 84 |
-| stock, shunt-strict | W1, W2 (no-fire controls) | 1 | 4 |
+| Block | Tasks | Arms | Reps | Runs |
+|---|---|---|---|---|
+| 1:1 with Spotify | R2, R5, R6, W4 | stock, shunt-strict (neutral message) | 3 | 24 |
+| Needle reads | N1, N2, N3, N4 | same | 3 | 24 |
+| Scaled and second-sample | R1, R3, R4, W3, W5 | same | 3 | 30 |
+| Harm | E1, E2, E3, D1, D2 | same | 3 | 30 |
+| Small-file controls | S1, W1, W2 | same | 1 | 6 |
+| | | | | **114** |
 
-At the first grid's mean of about $0.18 per run, roughly $16 at list price. Arm B (shipped message, paging exception open) is not re-run: its result, bypass on every block, is established and is the sidebar.
+At the first grid's mean of about $0.18 per run, about $21 at list price. W4 and W5 are each graded twice from one run (as Spotify scored it, and with the review step), so they do not add runs. Arm B (shipped message, paging exception open) is not re-run: bypass on every block is established and stays as the sidebar.
+
+Order of work: write the new tasks and derive their keys (R5, R6, W4, W5, N1 to N4, S1), then the neutral-message strict arm, then the TTL flag in `run.py`, then the new token metric in `parse_transcript.py`, then a smoke run of one task per block before the grid.
 
 ## What the first grid still supports
 
