@@ -50,12 +50,13 @@
   <p class="lede">In post order. A: the mechanism. B: the setup. C: the call-out on the rule that makes the shipped hook a suggestion. D, E, F: one task traced under all three setups, then as bars, then in cents. G: the headline across twenty-one tasks. H: the same bill split by task type. Three setups throughout: stock, Spotify's hook as shipped, and as described.</p>
 
   <figure id="fig-hook">
-    <span class="fig-n">Figure A · why the hook, and what it does</span>
-    <svg viewBox="0 0 900 460" role="img" aria-label="Diagram: the main model calls Read on a file. A PreToolUse hook checks the line count first. Under 350 lines, the file is read whole. Over 350 lines, the hook blocks the call and returns a message pointing the model at the bulk-reader skill. The skill hands the file to a cheap worker model, which reads it in full and returns a summary; only that summary is meant to enter the main model's context.">
+    <span class="fig-n">Figure A · why the hook, and what shunt does</span>
+    <svg viewBox="0 0 900 700" role="img" aria-label="Diagram of two delegation paths sharing one backend. Top: the main model calls Read on a file; a PreToolUse hook checks the line count. Under 350 lines, the file is read whole. Over 350 lines, the hook blocks the call and returns a message pointing the model at the bulk-reader skill, which hands the file to AiKA in bulk-reader mode; only the summary that comes back is meant to enter the main model's context. Bottom: for templated code generation, no hook is involved at all — the model opens the code-writer skill on its own when a task matches its description, which hands a spec and a reference file to AiKA in code-writer mode; AiKA writes the generated code directly to the target file, and only a line-count confirmation enters the main model's context, which then reviews and hand-edits the part that needs judgment.">
       <defs>
         <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
         <marker id="ar-hook" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--hook)"/></marker>
       </defs>
+      <text x="30" y="26" font-weight="600">Reading a large file — PreToolUse hook enforces it</text>
       <!-- Model -->
       <rect x="30" y="150" width="130" height="64" rx="6" class="box"/>
       <text x="95" y="177" text-anchor="middle" font-weight="600">Main model</text>
@@ -75,26 +76,50 @@
       <text x="582" y="113" text-anchor="middle" font-weight="600">Read tool</text>
       <text x="582" y="130" text-anchor="middle" class="small">file from disk</text>
       <path d="M642 117 C 760 117, 760 40, 95 40 L 95 148" fill="none" stroke="currentColor" stroke-width="1.2" marker-end="url(#ar)"/>
-      <text x="420" y="34" text-anchor="middle" class="small">whole file enters context, at frontier prices</text>
+      <text x="420" y="60" text-anchor="middle" class="small">whole file enters context, at frontier prices</text>
       <!-- block path -->
       <line x1="422" y1="192" x2="520" y2="230" stroke="var(--hook)" stroke-width="1.6" marker-end="url(#ar-hook)"/>
       <text x="470" y="228" text-anchor="middle" class="small" fill="var(--hook)">yes · block</text>
       <rect x="522" y="208" width="120" height="50" rx="6" class="box hook-s" stroke-width="1.6"/>
       <text x="582" y="229" text-anchor="middle" font-weight="600">Block reason</text>
       <text x="582" y="246" text-anchor="middle" class="small">"use /bulk-reader"</text>
-      <!-- the designed fallback: skill hands off to a cheap worker, which returns a summary -->
+      <!-- the designed fallback: skill hands off to AiKA, bulk-reader mode -->
       <line x1="582" y1="258" x2="582" y2="288" stroke="var(--hook)" stroke-width="1.6" marker-end="url(#ar-hook)"/>
       <rect x="472" y="290" width="220" height="56" rx="6" class="box hook-s" stroke-width="1.6"/>
       <text x="582" y="311" text-anchor="middle" font-weight="600">Skill: bulk-reader</text>
       <text x="582" y="329" text-anchor="middle" class="small">instructions for handing the file off</text>
       <line x1="582" y1="346" x2="582" y2="376" stroke="var(--hook)" stroke-width="1.6" marker-end="url(#ar-hook)"/>
       <rect x="472" y="378" width="220" height="56" rx="6" class="box hook-s" stroke-width="1.6"/>
-      <text x="582" y="399" text-anchor="middle" font-weight="600">Worker model</text>
-      <text x="582" y="417" text-anchor="middle" class="small">cheap model reads the file in full</text>
-      <path d="M472 406 C 210 406, 210 260, 95 260 L 95 216" fill="none" stroke="var(--hook)" stroke-width="1.6" marker-end="url(#ar-hook)"/>
-      <text x="290" y="443" text-anchor="middle" class="small" fill="var(--hook)">only the worker's summary is meant to enter context</text>
+      <text x="582" y="399" text-anchor="middle" font-weight="600">AiKA · bulk-reader mode</text>
+      <text x="582" y="417" text-anchor="middle" class="small">reads the file in full, writes a summary</text>
+      <path d="M472 406 C 210 406, 210 260, 130 260 L 130 216" fill="none" stroke="var(--hook)" stroke-width="1.6" marker-end="url(#ar-hook)"/>
+      <text x="300" y="450" text-anchor="middle" class="small" fill="var(--hook)">only the summary is meant to enter context</text>
+
+      <!-- divider -->
+      <line x1="30" y1="486" x2="870" y2="486" stroke="currentColor" stroke-width="0.6" opacity="0.35"/>
+      <text x="30" y="508" font-weight="600">Generating templated code — no hook; the model opens this on its own</text>
+
+      <!-- second lane: code generation, voluntary skill, same backend -->
+      <rect x="30" y="530" width="130" height="64" rx="6" class="box"/>
+      <text x="95" y="557" text-anchor="middle" font-weight="600">Main model</text>
+      <text x="95" y="575" text-anchor="middle" class="small">same model as above</text>
+      <line x1="160" y1="562" x2="250" y2="562" stroke="var(--hook)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar-hook)"/>
+      <text x="205" y="552" text-anchor="middle" class="small" fill="var(--hook)">&gt;80% boilerplate</text>
+      <rect x="252" y="534" width="200" height="56" rx="6" class="box hook-s" stroke-width="1.6"/>
+      <text x="352" y="555" text-anchor="middle" font-weight="600">Skill: code-writer</text>
+      <text x="352" y="573" text-anchor="middle" class="small">matched by task, not by a block</text>
+      <line x1="452" y1="562" x2="492" y2="562" stroke="var(--hook)" stroke-width="1.6" marker-end="url(#ar-hook)"/>
+      <rect x="494" y="534" width="210" height="56" rx="6" class="box hook-s" stroke-width="1.6"/>
+      <text x="599" y="555" text-anchor="middle" font-weight="600">AiKA · code-writer mode</text>
+      <text x="599" y="573" text-anchor="middle" class="small">spec + a reference file in</text>
+      <line x1="704" y1="562" x2="744" y2="562" stroke="var(--hook)" stroke-width="1.6" marker-end="url(#ar-hook)"/>
+      <rect x="746" y="534" width="124" height="56" rx="6" class="box hook-s" stroke-width="1.6"/>
+      <text x="808" y="555" text-anchor="middle" font-weight="600">Target file</text>
+      <text x="808" y="573" text-anchor="middle" class="small">written directly</text>
+      <path d="M746 590 C 500 650, 200 650, 95 650 L 95 596" fill="none" stroke="var(--hook)" stroke-width="1.6" marker-end="url(#ar-hook)"/>
+      <text x="420" y="672" text-anchor="middle" class="small" fill="var(--hook)">only a line-count confirmation enters context; the model reviews and hand-edits the rest</text>
     </svg>
-    <figcaption><b>Why the hook, and what it does.</b> Spotify's monorepo burns tokens on two kinds of non-reasoning work: reading a large file to check a fraction of it, and generating templated code where the structure is already known. A PreToolUse hook intercepts a Read over 350 lines before the frontier model sees the bytes, and blocks it with a message pointing the model at the bulk-reader skill, which hands the file to a cheaper worker model and is designed to return only a summary. On allow, the file still comes back whole.</figcaption>
+    <figcaption><b>Why the hook, and what shunt does.</b> Spotify's monorepo burns tokens on two kinds of non-reasoning work: reading a large file to check a fraction of it, and generating templated code where the structure is already known. shunt ships one delegation path per problem, both routed through the same Portal action, <code>aika:invoke-chat</code>, addressed by mode. Reading is enforced: a PreToolUse hook intercepts a Read over 350 lines before the frontier model sees the bytes and blocks it toward the bulk-reader skill. Code generation is not enforced at all — no hook watches a Write, so the code-writer skill only runs if the model's own judgment matches a task to its description. Both hand off to AiKA and are designed to bring back as little as possible: a summary for a read, a line count for a write.</figcaption>
   </figure>
   <figure id="fig-setup">
     <span class="fig-n">Figure B · the setup</span>
