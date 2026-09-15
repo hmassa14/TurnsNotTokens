@@ -67,17 +67,73 @@
 
 <blockquote class="tldr">TLDR; Spotify checked the hook's math and timed a script. Neither test ever put a model on the other side of the block to see what it would actually do.</blockquote>
 
-<h2>How I tested it</h2>
+<h2>Our Experiment</h2>
 
-<p>I ran every task under three setups, each one change from the last: <em>stock</em> Claude Code, nothing added; <em>as shipped</em>, stock plus Spotify's plugin exactly as published, including a rule that lets a <code>Read</code> with an offset through even on a big file; and <em>as described</em>, the same plugin with that one rule removed, so the hook actually does what their post says it does. All three ran offline, sandboxed to the repository, so nothing could answer from memory or fetch the file off GitHub.</p>
+<p>Every task ran under three setups, each one change from the last: <em>stock</em> Claude Code, nothing added; <em>as shipped</em>, stock plus Spotify's plugin exactly as published, including a rule that lets a <code>Read</code> with an offset through even on a big file; and <em>as described</em>, the same plugin with that one rule removed, so the hook actually does what their post says it does. The worker behind both hook setups is the same substitute — a one-turn call to Haiku instead of Spotify's hosted Gemini model, since I don't have access to their internal Portal system — so it's never what explains a difference between the two hook setups.</p>
 
-<p>The corpus is Apache Kafka at one pinned commit, in place of Spotify's private monorepo. It won out over Backstage — Spotify's own open-source project, and the more obvious pick — because only 7.5% of Backstage's files clear the 350-line threshold, against 17% of Kafka's, holding 64% of its code. A repo is only useful for this test if the hook has real work to do on most of what a developer touches, and on Backstage it mostly wouldn't.</p>
+<h3>Why Kafka</h3>
 
-<p>Twenty-one questions, asked the way a developer would with no file path given, in five categories: Spotify's own four benchmark rows rebuilt on Kafka; needle reads, one fact buried in a 1,000-to-1,900-line file, which is the case their motivation describes and their own benchmark never tests; their task shapes at real file sizes; five "harm" tasks — precise edits and debugging — that Spotify's own post says the approach isn't for; and small-file controls where the hook can't fire at all, to measure what the plugin costs just by being installed. Three repetitions of everything, interleaved by setup, 189 sessions total, about $30 at list price.</p>
+<p>Spotify's code is private, so this needs a public repo that looks like theirs in the one way the hook cares about: lots of files over 350 lines, in a language their benchmark used. There's a second, less obvious constraint. Stock Claude Code already refuses to read very large files and pages anything over about 25,000 tokens on its own, so the target files have to sit in the band between Spotify's 350-line threshold and Claude Code's own gates, or the hook never gets the chance to fire first.</p>
 
-<p>The one deviation worth flagging: I don't have access to Spotify's internal Portal system, so the worker is a one-turn call to Haiku instead of their hosted Gemini model, with the file sent with line numbers. That last part matters — their own script sends the file bare, and in an earlier pass of this test the worker's line-number claims were wrong by 14 to 23 lines, which sent the model straight back into the file it was supposed to avoid reading. I fixed that before calling this final, because I wanted to give their design its best shot.</p>
+<p>Backstage, Spotify's own open-source project, was the obvious first pick and lost: only 7.5% of its files clear 350 lines, holding 38% of its code. Apache Kafka has 17% of its files over that line, holding 64% of the code — the hook has real work to do on most of what a developer would touch. Kafka trunk, pinned at one commit, Java and Scala, is the corpus.</p>
 
-<h2>What happened</h2>
+<div style="overflow-x:auto; margin:24px 0;"><table style="width:100%; border-collapse:collapse; font-size:0.92em; line-height:1.5;">
+<thead><tr><th style="text-align:left; padding:6px 12px 10px 0; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;"></th><th style="text-align:right; padding:6px 0 10px 12px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">Kafka, used</th><th style="text-align:right; padding:6px 0 10px 12px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">Backstage, rejected</th></tr></thead>
+<tbody>
+<tr><td style="padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top;">Files over 350 lines</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">1,096 of 6,448 (17%)</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">549 of 7,348 (7.5%)</td></tr>
+<tr><td style="padding:10px 12px 10px 0;  vertical-align:top;">Share of code in those files</td><td style="padding:10px 0 10px 12px;  vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">64%</td><td style="padding:10px 0 10px 12px;  vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">38%</td></tr>
+</tbody></table></div>
+
+<p>One honest limit: Kafka is a repo the model has seen in training, and Spotify's code is not. So every session in the final grid runs offline and sandboxed — no web tools, no network commands, no reading anything outside the checkout, a private empty <code>/tmp</code> per session, and a system-prompt line telling the model to answer from the repository, not memory. That constraint applies to all three setups equally, stock included, so the baseline is "Claude Code as installed, cut off from the internet," which is the honest baseline for a private codebase. Every one of the 189 runs actually touched its target file before answering; nobody got the right answer from memory.</p>
+
+<h3>Why These Tasks</h3>
+
+<p>Twenty-one questions, five named categories, each asked the way a developer would with no file path given, so the session has to find the file before it can read it:</p>
+
+<ul>
+<li><b>Spotify's own benchmark (4 tasks).</b> Their four rows, rebuilt on Kafka at the same shapes and file sizes — so the comparison is theirs first.</li>
+<li><b>Needle reads (4 tasks).</b> One fact buried in a file of 1,000 to 1,900 lines. This is the case Spotify's own motivation describes — read 700 lines to check one thing — and the case their benchmark never tests.</li>
+<li><b>Their shapes at real file sizes (5 tasks).</b> The same question shapes as their four rows, but on files big enough to actually trip the 350-line threshold, which two of theirs never do.</li>
+<li><b>Harm (5 tasks).</b> Precise edits and debugging — the two task types Spotify's own post says the approach isn't for. The hook only sees a line count, so it fires on these anyway.</li>
+<li><b>Controls (3 tasks).</b> The same shapes on small files, where the hook can't fire at all, to measure what the plugin costs just by being installed.</li>
+</ul>
+
+<p>Three repetitions of every task, interleaved by setup so time of day never lines up with one setup by coincidence: 189 sessions, about $30 at list price.</p>
+
+<h3>Why These Metrics</h3>
+
+<p>Spotify's benchmark needed two numbers: corpus size, summary size. A Claude Code session is a sequence of turns the model chooses to make, so this test measures four things per run instead, each summed per turn and kept separate for the main model and the worker:</p>
+
+<ul>
+<li><b>Performance</b> — pass at the grader's threshold, and separately, whether the target file was actually read, grepped, or delegated at all. A right answer that never touched the file is flagged as lucky, not counted as evidence the setup worked.</li>
+<li><b>Cost</b> — every run's cost recomputed turn by turn from the transcript at list price and checked against what Claude Code itself billed. The headline number is paired per task: each task's own before-and-after difference, then the mean of those differences with an interval, not one pooled average across twenty-one very different questions.</li>
+<li><b>Latency</b> — wall clock, turns per run, per-turn duration from OpenTelemetry.</li>
+<li><b>Behavior</b> — blocks, what the model's very next call was after each one, and whether that call was the worker, a paged read, or a grep. This is the number Spotify's own evals never produced.</li>
+</ul>
+
+<p>Every earlier pass at this grid taught me a control I was missing. The most important one: the strict block message can't hint at the fallback ("use grep for exact lines") or it isn't measuring the model's own choice anymore — it's measuring an instruction I wrote. The final message is Spotify's, word for word, minus only the sentence about the loophole in the setup that closes it.</p>
+
+<h3>How It Ran</h3>
+
+<p>Nothing here is interactive. The harness unpacks a fresh, historyless Kafka checkout, drops in one setup's <code>.claude</code> folder — Spotify's plugin lives there as a project config, not a plugin install — and calls Claude Code once in headless mode with the task's question as the argument. This is the actual command, the same for all three setups:</p>
+
+<pre class="code">CLAUDE_CODE_ENABLE_TELEMETRY=1 \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 \
+CLAUDE_CODE_PROMPT_CACHE_TTL=5m CLAUDE_CODE_SUBAGENT_PROMPT_CACHE_TTL=5m \
+unshare -m bash -c 'mount -t tmpfs none /tmp && exec "$@"' _ \
+claude -p "$PROMPT" \
+  --model claude-sonnet-5 \
+  --permission-mode acceptEdits \
+  --settings "$HARNESS/settings.json" \
+  --append-system-prompt "Answer from the repository checked out in the \
+working directory. Do not rely on memory of the upstream project or on \
+the internet." \
+  --max-turns 40 \
+  --output-format json</pre>
+
+<p>The cache-TTL pin makes sure every setup pays the same rate for writing a file to the prompt cache, so the comparison can't be skewed by Claude Code silently switching billing tiers mid-run. <code>--settings</code> loads the offline sandbox. <code>unshare</code> gives the session its own empty <code>/tmp</code> so nothing it writes can be found by a later run. When it exits, the harness collects the billed cost and token usage, the full transcript, and the OpenTelemetry trace, diffs the workspace against the starting commit, grades the answer, and deletes the workspace. The next run starts clean.</p>
+
+<h2>Results</h2>
 
 <p>Take one real question: <em>how does the broker lifecycle manager move between states?</em> The file is 770 lines. Stock greps for the class, reads it whole, answers — three turns, ten cents. As shipped, the read gets refused, and the model just pages around the block with an offset, which the hook allows; the whole file ends up in context anyway, one turn later. As described, with that loophole closed, the model does what Spotify actually designed: opens the skill, calls the worker, gets a real summary back, checks one thing with a grep, and answers. Nine turns either way, and the enforced version costs more than stock even though it's the version working exactly as intended, because six extra turns of resending the whole conversation cost more than the two cents it would have cost to just read the file once.</p>
 
@@ -105,6 +161,6 @@
 
 <p>A token avoided isn't automatically a dollar saved. A turn is the unit the invoice actually counts, and no hook that only watches the tool call in front of it can tell the difference.</p>
 
-<p class="byline" style="margin-top:8px">The full write-up, with the exact commands, the hook script, every task, and all 189 runs, is at <a href="https://github.com/hmassa14/TurnsNotTokens">github.com/hmassa14/TurnsNotTokens</a>.</p>
+<p class="byline" style="margin-top:8px">The full write-up, with the deviations table, the metrics as equations, the validation checklist, and all 189 runs, is at <a href="https://github.com/hmassa14/TurnsNotTokens">github.com/hmassa14/TurnsNotTokens</a>.</p>
 
 </main>
