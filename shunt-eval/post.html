@@ -89,7 +89,7 @@
 
 <h2>Our experiment: a framework to copy theirs</h2>
 
-<p><em>Does cutting tokens actually cut cost?</em> That's what the rest of this piece tests, and testing it fairly meant building two things before a single task ran: a corpus with real files in the size band shunt actually targets, and an evaluation that runs the model instead of assuming what it does after a block. I used Apache Kafka, at a pinned commit, as the public stand-in for Mazmanov's large Java monorepo — big enough to have plenty of files over 350 lines for the hook to have real work to do. Every task below runs under two arms: <em>stock</em>, which is Claude Code exactly as installed with nothing added, and a hook arm built from Spotify's own plugin. What follows is what I measured before I trusted either arm's numbers, where I copied Spotify's plugin exactly, the three places I didn't, and why.</p>
+<p><em>Does cutting tokens actually cut cost?</em> That's what the rest of this piece tests, and testing it fairly meant building two things before a single task ran: a corpus with real files in the size band shunt actually targets, and an evaluation that runs the model instead of assuming what it does after a block. I used Apache Kafka, at a pinned commit, as the public stand-in for Mazmanov's large Java monorepo — big enough to have plenty of files over 350 lines for the hook to have real work to do. Every task below runs under three setups, each one change apart: <em>stock</em>, which is Claude Code exactly as installed with nothing added; <em>as shipped</em>, which is stock plus Spotify's plugin exactly as published; and <em>as described</em>, which is the same plugin with one rule removed so the hook does what their post says it does. What follows is what I measured before I trusted any of those numbers, where I copied Spotify's plugin exactly, the three places I didn't, and why.</p>
 
 <h3>What Spotify's evals actually measure</h3>
 
@@ -105,29 +105,33 @@
 
 <h3>How one run gets kicked off</h3>
 
-<p>Every one of the 114 sessions starts the same way, and none of it is interactive. The harness is a Python script that copies a pristine Kafka checkout into a fresh directory, drops in one <code>.claude</code> folder, and calls Claude Code in headless mode with the task's prompt as the argument. Claude Code answers, writes its transcript, exits, and the script grades what's left behind. Nobody types anything; there's no terminal session to nudge. What differs between the two arms is only what's inside that <code>.claude</code> folder.</p>
+<p>Every one of the 189 sessions starts the same way, and none of it is interactive. The harness is a Python script that unpacks a pristine Kafka checkout into a fresh directory with no git history, drops in one <code>.claude</code> folder, and calls Claude Code in headless mode with the task's prompt as the argument. Claude Code answers, writes its transcript, exits, and the script grades what's left behind. Nobody types anything; there's no terminal session to nudge. What differs between the three setups is only what's inside that <code>.claude</code> folder.</p>
 
 <figure>
   <img src="figures/post/B-setup.png" alt="Diagram: one run copies a fresh Kafka checkout, adds one .claude folder, runs claude -p with the question in a new session, collects three records, and grades the answer. The two .claude folders are stock, an empty settings file, and Spotify's hook with its Portal call replaced by a call to Haiku.">
   <figcaption>Figure B · the setup</figcaption>
 </figure>
 
-<p>Here's the layout of the two folders. The stock arm's <code>.claude</code> is a single empty settings file, so Claude Code runs exactly as installed. The hook arm's <code>.claude</code> is Spotify's plugin, copied in as a project-level config instead of a plugin install so the paths resolve inside a throwaway workspace:</p>
+<p>Here's the layout of the folders. Stock's <code>.claude</code> is a single empty settings file, so Claude Code runs exactly as installed. The two hook setups' <code>.claude</code> is Spotify's plugin, copied in as a project-level config instead of a plugin install so it lives inside a throwaway workspace; they differ from each other in one file:</p>
 
 <pre class="code">arms/stock/.claude/
 └── settings.json                <span class="c"># contains {}</span>
 
-arms/shunt-strict/.claude/
+arms/shunt/.claude/                    <span class="c"># "as shipped"</span>
 ├── settings.json                <span class="c"># the two PreToolUse hooks, below</span>
 ├── shunt/
-│   ├── hooks/check-file-size    <span class="c"># Spotify's, minus the offset exception</span>
+│   ├── hooks/check-file-size    <span class="c"># Spotify's, byte-identical, exception open</span>
 │   ├── hooks/check-bash-read    <span class="c"># Spotify's, byte-identical</span>
-│   ├── scripts/bulk-read        <span class="c"># Spotify's, byte-identical</span>
+│   ├── scripts/bulk-read        <span class="c"># Spotify's, one line: cat -n instead of cat</span>
 │   ├── scripts/code-write       <span class="c"># Spotify's, byte-identical</span>
 │   └── scripts/lib/aika.sh      <span class="c"># the Portal call, swapped for Haiku</span>
 └── skills/
-    ├── bulk-reader/SKILL.md     <span class="c"># Spotify's, script path only</span>
-    └── code-writer/SKILL.md     <span class="c"># Spotify's, script path only</span></pre>
+    ├── bulk-reader/SKILL.md     <span class="c"># Spotify's, byte-identical</span>
+    └── code-writer/SKILL.md     <span class="c"># Spotify's, byte-identical</span>
+
+arms/shunt-strict/.claude/             <span class="c"># "as described"</span>
+└── (identical, except)
+    shunt/hooks/check-file-size  <span class="c"># minus the offset/limit exception</span></pre>
 
 <p>The hook arm's <code>settings.json</code> is Spotify's <code>hooks.json</code> with the plugin-root variable swapped for the project-dir one. This is the entire wiring. Two matchers, one script each; Claude Code runs the script before every <code>Read</code> and every <code>Bash</code> call and reads its JSON answer:</p>
 
@@ -163,7 +167,7 @@ Use the /bulk-reader skill to delegate this read to AiKA \
 instead of reading it directly."
 echo "{\"decision\": \"block\", \"reason\": \"${reason}\"}"</pre>
 
-<p>Then the call. This is the exact command the harness runs, from inside the workspace, for both arms. The prompt is the task's question, verbatim; the session id is a fresh UUID so nothing carries over from a previous run; permissions are pre-granted so no run ever stalls on a "may I?" prompt; and the JSON output format is what gives back the billed cost and token counts at the end:</p>
+<p>Then the call. This is the exact command the harness runs, from inside the workspace, for all three setups. The prompt is the task's question, verbatim; the session id is a fresh UUID so nothing carries over from a previous run; permissions are pre-granted so no run ever stalls on a "may I?" prompt; and the JSON output format is what gives back the billed cost and token counts at the end:</p>
 
 <pre class="code">cd "$WORKSPACE"   <span class="c"># fresh Kafka copy at one pinned commit + one .claude folder</span>
 
@@ -171,17 +175,22 @@ CLAUDE_CODE_ENABLE_TELEMETRY=1 \
 OTEL_LOGS_EXPORTER=otlp OTEL_METRICS_EXPORTER=otlp OTEL_TRACES_EXPORTER=otlp \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 OTEL_LOG_TOOL_DETAILS=1 \
 CLAUDE_CODE_PROMPT_CACHE_TTL=5m CLAUDE_CODE_SUBAGENT_PROMPT_CACHE_TTL=5m \
-SHUNT_RUN_DIR="$RUN_DIR" \
+SHUNT_RUN_DIR="$RUN_DIR" SHUNT_HARNESS="$HARNESS" \
+unshare -m bash -c 'mount -t tmpfs none /tmp && exec "$@"' _ \
 claude -p "$PROMPT" \
   --model claude-sonnet-5 \
   --session-id "$(uuidgen)" \
   --permission-mode acceptEdits \
   --allowedTools "Read,Grep,Glob,Bash,Edit,Write,MultiEdit,Agent,Skill,\
 TodoWrite,TaskCreate,TaskUpdate" \
+  --settings "$HARNESS/settings.json" \
+  --append-system-prompt "Answer from the repository checked out in the \
+working directory. Do not rely on memory of the upstream project or on \
+the internet." \
   --max-turns 40 \
   --output-format json</pre>
 
-<p>Three of those environment variables matter to the numbers. The <code>OTEL_*</code> block turns on Claude Code's built-in OpenTelemetry export and points it at a tiny local receiver, which is where the per-request latency and token counts come from. The two <code>CACHE_TTL</code> variables pin the prompt-cache write to the 5-minute rate for the main model, any subagent it spawns, and the worker, so both arms pay one rate (there's a whole paragraph below on why). And <code>SHUNT_RUN_DIR</code> is mine, not Spotify's: it tells the swapped-in worker where to save its own usage JSON so the worker's tokens and dollars end up in the same ledger as the main model's.</p>
+<p>Five things in that command matter to the numbers. The <code>OTEL_*</code> block turns on Claude Code's built-in OpenTelemetry export and points it at a tiny local receiver, which is where the per-request latency and token counts come from. The two <code>CACHE_TTL</code> variables pin the prompt-cache write to the 5-minute rate for the main model, any subagent it spawns, and the worker, so every setup pays one rate (there's a whole paragraph below on why). <code>SHUNT_RUN_DIR</code> is mine, not Spotify's: it tells the swapped-in worker where to save its own usage JSON so the worker's tokens and dollars end up in the same ledger as the main model's. <code>--settings</code> loads the harness's own sandbox, the same file for every setup: it denies the web tools and refuses any command or read that leaves the workspace, for reasons the controls section below gets into. And the <code>unshare</code> wrapper gives each session its own empty <code>/tmp</code>, so scratch files the model writes can't be found by a later run.</p>
 
 <p>When the process exits, the harness collects three things. The JSON on stdout has the final answer, the billed cost, and total token usage. The transcript Claude Code writes under <code>~/.claude/projects</code> has every request and every tool call, including the hook's block messages. The receiver has the OpenTelemetry events. It then diffs the workspace against the pinned commit, so an edit task's changes are captured exactly, and hands everything to the grader. The workspace is deleted. The next run starts from the clean copy again, on the other arm.</p>
 
@@ -203,18 +212,18 @@ TodoWrite,TaskCreate,TaskUpdate" \
 <tbody>
 <tr>
 <td style="padding:12px 12px 12px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>(a) The worker</b><br><code>lib/aika.sh</code></td>
-<td style="padding:12px; border-bottom:1px solid var(--line); vertical-align:top;">Spotify's Portal call to a hosted Gemini model becomes a call to Haiku, running Spotify's own mode prompt as the system prompt, no tools, temperature 0.2 — one Messages API call when an API key is available. Without one, it falls back to a one-turn headless Claude Code call with <code>--tools ""</code>, so no tool definitions ever enter the worker's own prompt.</td>
-<td style="padding:12px 0 12px 12px; border-bottom:1px solid var(--line); vertical-align:top;">I don't have access to Spotify's internal Portal system, so this is the closest same-shape substitute buildable outside it — and it puts the worker's own cost honestly in the ledger instead of hiding it behind someone else's infrastructure. This grid ran on the fallback: the machine it ran on has a Claude subscription and no API key. Measured overhead of that path: 591 input tokens, zero cache writes, $0.0012 for a trivial message. The earlier version of this same substitute, run without <code>--tools ""</code>, carried about 25,000 cache-write tokens of tool definitions on every single call — gone now on both paths.</td>
+<td style="padding:12px; border-bottom:1px solid var(--line); vertical-align:top;">Spotify's Portal call to a hosted Gemini model becomes a one-turn call to Haiku, running Spotify's own mode prompt as the system prompt, no tools, thinking off — one Messages API call when an API key is available, otherwise a headless Claude Code call with <code>--tools ""</code> so no tool definitions enter the worker's prompt. And the file goes to the worker with line numbers (<code>cat -n</code> instead of <code>cat</code> in their <code>bulk-read</code> script).</td>
+<td style="padding:12px 0 12px 12px; border-bottom:1px solid var(--line); vertical-align:top;">I don't have access to Spotify's internal Portal system, so this is the closest same-shape substitute buildable outside it — and it puts the worker's own cost honestly in the ledger instead of hiding it behind someone else's infrastructure. This grid ran on the fallback: the machine has a Claude subscription and no API key. Overhead of that path: 591 input tokens and about a tenth of a cent per call. The line numbers are there because their script sends the bare file, and in an earlier grid the worker's "line N" claims were guesses, off by 14 to 23 lines; the skill's own last line then tells the model to verify line numbers, which sent it straight back into the file it was meant to avoid. Their hosted service may well number lines on its side — I can't see it — so the substitute assumes the charitable case. Same worker in both hook setups, so it never explains a difference between them.</td>
 </tr>
 <tr>
-<td style="padding:12px 12px 12px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>(b) The exception</b><br><code>hooks/check-file-size</code>, strict arm only</td>
+<td style="padding:12px 12px 12px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>(b) The exception</b><br><code>hooks/check-file-size</code>, "as described" only</td>
 <td style="padding:12px; border-bottom:1px solid var(--line); vertical-align:top;">The offset/limit exception — any <code>Read</code> call that sets either one sails through no matter how big the file is — is removed, and with it the one sentence in the block message that points the model at it. Every other word of the message is Spotify's.</td>
-<td style="padding:12px 0 12px 12px; border-bottom:1px solid var(--line); vertical-align:top;">The hook's own top-of-file comment says its job is to "block full-file reads on large files." An exception that lets any read carrying an offset through, regardless of file size, is a hole in that promise, not a feature of it — and in the pilot, the model used it on every single block. The shipped version, exception intact, ran in that pilot; what it did is the sidebar below. The grid runs the closed version, because that's the hook doing what the post says it does.</td>
+<td style="padding:12px 0 12px 12px; border-bottom:1px solid var(--line); vertical-align:top;">The hook's own top-of-file comment says its job is to "block full-file reads on large files." An exception that lets any read carrying an offset through, regardless of file size, is a hole in that promise, not a feature of it — and in the pilot, the model used it on every single block (sidebar below). Both versions run in the grid: the published one, because that's what you get if you install the plugin today, and the closed one, because that's the hook doing what the post says it does. The two setups differ by exactly this rule.</td>
 </tr>
 <tr>
 <td style="padding:12px 12px 0 0; vertical-align:top;"><b>(c) Everything else</b><br>skills, <code>check-bash-read</code></td>
-<td style="padding:12px 0; vertical-align:top;">File paths only, so the skill scripts resolve inside this evaluation's directory layout instead of Spotify's plugin install.</td>
-<td style="padding:12px 0 12px 12px; vertical-align:top;"><code>check-bash-read</code>, both scripts, both skill files' instructional text, and the 350-line threshold itself are byte-identical to what Spotify published. Nothing else in the plugin was touched.</td>
+<td style="padding:12px 0; vertical-align:top;">Nothing. The skills reference a plugin-root variable; the harness fills it in when it copies the plugin into a workspace, the way a plugin install would.</td>
+<td style="padding:12px 0 12px 12px; vertical-align:top;"><code>check-bash-read</code>, both skill files, and the 350-line threshold itself are byte-identical to what Spotify published. Their Bash hook, incidentally, only inspects <code>cat</code>, <code>head</code>, <code>tail</code>, <code>less</code> and <code>more</code>; a <code>sed -n '400,500p'</code> on a big file goes straight through, and the model finds that on its own. I left it as they wrote it.</td>
 </tr>
 </tbody>
 </table>
@@ -228,10 +237,10 @@ TodoWrite,TaskCreate,TaskUpdate" \
 <figure style="margin:16px 0 4px;">
   <img src="figures/post/C-callout-published-hook.png" alt="Storyboard: under Spotify's published hook, the model's read is blocked, then it greps the file, then it reads the file with an offset of 255 and a limit of 180, which the hook allows.">
 </figure>
-<p>That's a bug in the exception, not a finding about delegation, so I closed it — a file over 350 lines simply cannot be <code>Read</code> by the main model at all, offset or no offset — and ran everything past this point against that version. Every number from here on is the hook doing what the post says it does.</p>
+<p>That's a bug in the exception, not a finding about delegation. So the grid runs both: the plugin as published, bypass and all, and a closed version where a file over 350 lines simply cannot be <code>Read</code> by the main model at all, offset or no offset. Whatever differs between those two setups is this one rule.</p>
 </div>
 
-<blockquote class="tldr">TLDR; the plugin runs verbatim except in three places, all three written down here: the worker becomes Haiku because I don't have Portal access, the strict arm closes a real bypass the published hook leaves open, and everything else — the skills, the Bash-side hook, the threshold — is byte-identical to what Spotify shipped.</blockquote>
+<blockquote class="tldr">TLDR; the plugin runs verbatim except in two places, both written down here: the worker becomes a one-shot Haiku call with numbered lines because I don't have Portal access, and one setup closes a real bypass the published hook leaves open while the other keeps it. Everything else — the skills, the Bash-side hook, the threshold — is byte-identical to what Spotify shipped.</blockquote>
 
 <h3>Two hypotheses, and the mechanism claim underneath them</h3>
 
@@ -346,19 +355,20 @@ frontier input    = every input token the main model was billed for,
 
 <h3>Controls the first grid didn't have</h3>
 
-<p>The first twelve-task grid got the shape of this right and the mechanics of it wrong in five specific ways. Fixing all five is most of what separates this framework from that one, and the results section reports only the second grid.</p>
+<p>It took three grids to get this right. The first, twelve tasks, got the shape of it right and the mechanics wrong in five specific ways. The second fixed those five and then failed its own audit in a sixth way I hadn't thought to check. The results section reports only the third. Here's what each one taught me.</p>
 
 <ul>
 <li><b>The block message.</b> The strict arm's message, in the grid already run, ended with a sentence I added: "Reads with offset/limit are also blocked for this file; use grep for exact lines." That's not a neutral refusal — it's an instruction, and it hands the model an alternative before it's had the chance to reach for one on its own, which confounds the entire question of whether the model ever delegates voluntarily. The message this framework uses instead is Spotify's own, minus only the sentence about the offset exception: "File is N lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly." Whether the model greps its way through anyway is then its own choice, not something the block message talked it into.</li>
 <li><b>Cache TTL.</b> Claude Code switches automatically between a 5-minute and a 1-hour cache write, depending on subscription state, and the first grid straddled that switch mid-run — every strict-arm write got billed at twice the rate for part of the grid, purely on timing, with nothing to do with the hook. Pinned to 5 minutes on every run from here on, one environment variable, the first grid's own gap shrinks from the 35% reported in its headline down to 21 to 27%, and stock comes out cheaper on 9 of the twelve tasks, not 11. Same underlying runs, a materially smaller and more honest number the moment one confound is removed — which is exactly why it isn't the number I'm willing to call final.</li>
 <li><b>Three repetitions per cell.</b> One run per cell, which is what the first grid had, means a single different search path the model happens to take can move either arm's number by half again on its own. Every task above runs three times per arm, and H1 and H2 both depend on the paired repetitions and the interval around them, not a point estimate from one run each.</li>
 <li><b>Interleaving.</b> Arms alternate per task rather than running in blocks, so time of day and Claude Code's own cache-state switching never happen to line up with one arm more than the other by coincidence.</li>
+<li><b>The model has to stay in the repo.</b> Reviewing the second grid's 114 sessions, 23 had left the workspace. Ten fetched Kafka source from GitHub. Twelve read a stray clone in <code>/tmp</code> that one stock run had made with <code>git clone</code> and later runs on both arms found with <code>find /</code>, at a different commit than the pinned one. Two answered from memory with no tool calls. And one stock run ran <code>git show</code> on the harness's own setup commit and read a planted bug straight out of the diff. None of that is possible against Spotify's private monorepo, so none of it was measuring the thing I was simulating. The third grid puts every setup, stock included, behind the same wall: web tools denied, network commands and walks from <code>/</code> refused, any path outside the workspace refused, a private empty <code>/tmp</code> per session, workspaces with no git history to leak, and one sentence in the system prompt saying to answer from the repository. Refusals are counted separately from Spotify's blocks. It means the baseline is "Claude Code as installed, offline," which is the right baseline for a private codebase and a different one from what a laptop with internet would show.</li>
 <li><b>Thinking isn't in the transcript.</b> Claude Code writes empty thinking blocks to disk, so the model's actual stated reason for grepping instead of opening a skill — or the reverse — isn't recoverable after the fact from any of the three sources this evaluation trusts. Behavior has to be inferred from the calls the model actually made, never from a reason it never wrote down, and every metric and every block message above is designed with that limit already priced in.</li>
 </ul>
 
 <h3>The grid itself</h3>
 
-<p>Put together, that's 114 runs:</p>
+<p>Put together, that's 189 runs:</p>
 
 <div style="overflow-x:auto; margin:20px 0;">
 <table style="width:100%; border-collapse:collapse; font-size:0.92em;">
@@ -371,20 +381,18 @@ frontier input    = every input token the main model was billed for,
 </tr>
 </thead>
 <tbody>
-<tr><td style="padding:8px 10px 8px 0; border-bottom:1px solid var(--line);">1:1 with Spotify (SB)</td><td style="padding:8px 10px; border-bottom:1px solid var(--line);">SB1, SB2, SB3, SB4</td><td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:right;">3</td><td style="padding:8px 0 8px 10px; border-bottom:1px solid var(--line); text-align:right;">24</td></tr>
-<tr><td style="padding:8px 10px 8px 0; border-bottom:1px solid var(--line);">Needle reads (ND)</td><td style="padding:8px 10px; border-bottom:1px solid var(--line);">ND1, ND2, ND3, ND4</td><td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:right;">3</td><td style="padding:8px 0 8px 10px; border-bottom:1px solid var(--line); text-align:right;">24</td></tr>
-<tr><td style="padding:8px 10px 8px 0; border-bottom:1px solid var(--line);">Scaled &amp; second-sample (SC)</td><td style="padding:8px 10px; border-bottom:1px solid var(--line);">SC1, SC2, SC3, SC4, SC5</td><td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:right;">3</td><td style="padding:8px 0 8px 10px; border-bottom:1px solid var(--line); text-align:right;">30</td></tr>
-<tr><td style="padding:8px 10px 8px 0; border-bottom:1px solid var(--line);">Harm (HM)</td><td style="padding:8px 10px; border-bottom:1px solid var(--line);">HM1, HM2, HM3, HM4, HM5</td><td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:right;">3</td><td style="padding:8px 0 8px 10px; border-bottom:1px solid var(--line); text-align:right;">30</td></tr>
-<tr><td style="padding:8px 10px 8px 0;">Small-file controls (CT)</td><td style="padding:8px 10px;">CT1, CT2, CT3</td><td style="padding:8px 10px; text-align:right;">1</td><td style="padding:8px 0 8px 10px; text-align:right;">6</td></tr>
+<tr><td style="padding:8px 10px 8px 0; border-bottom:1px solid var(--line);">1:1 with Spotify (SB)</td><td style="padding:8px 10px; border-bottom:1px solid var(--line);">SB1, SB2, SB3, SB4</td><td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:right;">3</td><td style="padding:8px 0 8px 10px; border-bottom:1px solid var(--line); text-align:right;">36</td></tr>
+<tr><td style="padding:8px 10px 8px 0; border-bottom:1px solid var(--line);">Needle reads (ND)</td><td style="padding:8px 10px; border-bottom:1px solid var(--line);">ND1, ND2, ND3, ND4</td><td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:right;">3</td><td style="padding:8px 0 8px 10px; border-bottom:1px solid var(--line); text-align:right;">36</td></tr>
+<tr><td style="padding:8px 10px 8px 0; border-bottom:1px solid var(--line);">Scaled &amp; second-sample (SC)</td><td style="padding:8px 10px; border-bottom:1px solid var(--line);">SC1, SC2, SC3, SC4, SC5</td><td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:right;">3</td><td style="padding:8px 0 8px 10px; border-bottom:1px solid var(--line); text-align:right;">45</td></tr>
+<tr><td style="padding:8px 10px 8px 0; border-bottom:1px solid var(--line);">Harm (HM)</td><td style="padding:8px 10px; border-bottom:1px solid var(--line);">HM1, HM2, HM3, HM4, HM5</td><td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:right;">3</td><td style="padding:8px 0 8px 10px; border-bottom:1px solid var(--line); text-align:right;">45</td></tr>
+<tr><td style="padding:8px 10px 8px 0;">Small-file controls (CT)</td><td style="padding:8px 10px;">CT1, CT2, CT3</td><td style="padding:8px 10px; text-align:right;">3</td><td style="padding:8px 0 8px 10px; text-align:right;">27</td></tr>
 </tbody>
 </table>
 </div>
 
-<p>At the first grid's own mean of about $0.18 a run, that's roughly $21 at list price for the whole rerun.</p>
+<p>Three setups on every task, and this time three repetitions on the controls too. At about $0.15 a run, that's roughly $30 at list price. The setups alternate within each task and repetition, so time of day never lines up with one of them.</p>
 
-<p>One arm from the original three isn't part of this rerun: Spotify's plugin exactly as published, exception intact. The sidebar above already establishes what that arm does — every block, without exception, gets paged around — and that finding doesn't depend on the block message or the cache TTL at all, so rerunning it under the new controls wouldn't change it. It stays in this piece as the sidebar it already is, not as a third arm in the grid.</p>
-
-<blockquote class="tldr">TLDR; 21 tasks, two arms, three repetitions on everything but the controls, 114 runs. The five fixes above are what separates this grid from the first one.</blockquote>
+<blockquote class="tldr">TLDR; 21 tasks, three setups each one change apart, three repetitions of everything, 189 runs, all of them offline and inside the repo. The six fixes above are what separate this grid from the first two.</blockquote>
 
 <h2>Results: the same token savings, a higher cost</h2>
 
