@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="utf-8" />
+    <title></title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Wacky Words</h1>
+      <div id="words">
+        <p>Enter the requested words to create a story.</p>
+        <form id="wordInput">
+          <label for="name">Name</label> <input type="text" id="name" />
+          <label for="place">Place</label> <input type="text" id="place" />
+          <label for="number">Number</label> <input type="text" id="number" />
+          <label for="time">Unit of Time</label>
+          <input type="text" id="time" /> <label for="animal">Animal</label>
+          <input type="text" id="animal" />
+          <label for="adjective">Adjective</label>
+          <input type="text" id="adjective" />
+          <label for="friend">A Friend's Name</label>
+          <input type="text" id="friend" />
+        </form>
+
+        <!--
+          The onClick attribute tells the HTML to call the function whenever it is clicked.
+        -->
+        <br />
+        <button class="btn btn-success" onClick="tellStory()">Let's Go!</button>
+      </div>
+      <div id="theStory" class="my-4 p-3 border rounded hidden"></div>
+      <button id="reset" class="btn btn-danger hidden" onClick="resetStory()">
+        Reset Story
+      </button>
+    </div>
+    <script src="example.js" charset="utf-8"></script>
+  </body>
+</html>

@@ -1,45 +1,39 @@
-<title>Tokens Are Cheap, Turns Are Not</title>
-<meta name="description" content="Spotify published a Claude Code plugin that blocks big file reads and hands them to a cheap model, claiming a 90% token cut. I rebuilt it on Kafka and measured the bill instead of the tokens.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<style>
-  :root { --bg:#F5F6F3; --surface:#FFFFFF; --ink:#1B1F1D; --ink-2:#4A5350; --ink-3:#7B857F; --line:#D6DAD3; --stock:#0A9385; --hook:#B84E28; --soft:#ECEEE9; --tip:#EDF3EC; --tip-b:#5B8A6B; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#141816; --surface:#1C211E; --ink:#E6E9E4; --ink-2:#B4BBB5; --ink-3:#7F8882; --line:#313834; --stock:#1E9A8C; --hook:#C97440; --soft:#232925; --tip:#1B2420; --tip-b:#4E8760; } }
-  :root[data-theme="dark"] { --bg:#141816; --surface:#1C211E; --ink:#E6E9E4; --ink-2:#B4BBB5; --ink-3:#7F8882; --line:#313834; --stock:#1E9A8C; --hook:#C97440; --soft:#232925; --tip:#1B2420; --tip-b:#4E8760; }
-  * { box-sizing: border-box; }
-  body { background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans",system-ui,sans-serif; font-size:17px; line-height:1.65; padding-block:44px 90px; padding-inline:20px; }
-  main { max-width:700px; margin:0 auto; }
-  .kicker { font-family:"IBM Plex Mono",monospace; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-3); margin:0 0 10px; }
-  h1 { font-size:2.1rem; line-height:1.2; margin:0 0 6px; letter-spacing:-0.01em; }
-  .dek { font-size:1.15rem; color:var(--ink-2); margin:0 0 36px; max-width:56ch; }
-  h2 { font-size:1.5rem; margin:56px 0 16px; letter-spacing:-0.005em; }
-  h3 { font-size:1.1rem; margin:28px 0 10px; }
-  p { margin:0 0 20px; }
-  a { color:var(--hook); text-decoration-thickness: 1px; }
-  em { font-style: italic; }
-  .lede-em { font-style: normal; font-weight: 600; }
-  code { font-family:"IBM Plex Mono",monospace; font-size:0.88em; background:var(--soft); padding:0.1em 0.35em; border-radius:4px; }
-  pre.code { background:var(--soft); border-radius:8px; padding:14px 18px; overflow-x:auto; font-family:"IBM Plex Mono",monospace; font-size:0.82em; line-height:1.6; margin:8px 0 20px; color:var(--ink); }
-  pre.code code { background:none; padding:0; font-size:1em; }
-  pre.code .c { color:var(--ink-3); }
-  figure { margin:32px 0; }
-  figure img { width:100%; display:block; border:1px solid var(--line); border-radius:8px; background:var(--surface); }
-  figcaption { font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-3); margin-top:10px; }
-  .callout { border-left:3px solid var(--tip-b); background:var(--tip); border-radius:0 8px 8px 0; padding:16px 20px; margin:28px 0; }
-  .callout .label { font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--tip-b); display:block; margin-bottom:8px; font-weight:600; }
-  .callout p:last-child { margin-bottom:0; }
-  .callout.hook { border-left-color:var(--hook); }
-  .callout.hook .label { color:var(--hook); }
-  blockquote.tldr { border:none; margin:24px 0; padding:0 0 0 18px; border-left:2px solid var(--line); font-style:italic; color:var(--ink-2); }
-  ul, ol { padding-left: 1.3em; margin: 0 0 20px; }
-  li { margin-bottom: 10px; }
-  li b { color: var(--ink); }
-  .terms b { font-family:"IBM Plex Mono",monospace; font-weight:600; background:none; }
-  hr.sec { border:none; border-top:1px solid var(--line); margin:48px 0; }
-  .byline { color:var(--ink-3); font-size:0.9rem; margin: -16px 0 40px; }
-  @media (max-width: 480px) { h1 { font-size: 1.7rem; } h2 { font-size: 1.3rem; } body { font-size: 16px; } }
-</style>
+#!/usr/bin/env python3
+"""Emit post.html from the archived grid. Numbers come from results/06-natural-clean-grid; prose is the post.
 
-<main>
+Usage: python3 bin/write_post.py   (writes shunt-eval/post.html; the CSS head is kept from the existing file)
+"""
+import json, os, re
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+A = os.path.join(ROOT, 'results', '06-natural-clean-grid')
+S1 = json.load(open(os.path.join(A, 'summary-shipped.json')))
+S2 = json.load(open(os.path.join(A, 'summary-enforced.json')))
+o1, o2 = S1['overall'], S2['overall']
+c1, c2 = S1['by_category'], S2['by_category']
+old = open(os.path.join(ROOT, 'post.html')).read()
+HEAD = old[:old.index('<main>')]
+
+def pct(v): return f"{v:+.0f}%"
+def d(a, b): return f"{(b / a - 1) * 100:+.0f}%"
+def ci(g): lo, hi = g['cost_pct_paired_ci']; return f"{pct(lo)} to {pct(hi)}"
+TH = 'style="text-align:left; padding:6px 12px 10px 0; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:\'IBM Plex Mono\',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;"'
+THR = TH.replace('text-align:left; padding:6px 12px 10px 0', 'text-align:right; padding:6px 0 10px 12px')
+TD = 'style="padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top;"'
+TDM = 'style="padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;"'
+TDR = 'style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:\'IBM Plex Mono\',monospace; font-size:0.9em; white-space:nowrap;"'
+TABLE = '<div style="overflow-x:auto; margin:24px 0;"><table style="width:100%; border-collapse:collapse; font-size:0.92em; line-height:1.5;">'
+PRE = '<pre class="code">'
+
+read_pct = abs((o2['target_read_lines_mean'][1] / o2['target_read_lines_mean'][0] - 1) * 100)
+any_pct1 = abs((o1['tgt_tokens_mean'][1] / o1['tgt_tokens_mean'][0] - 1) * 100)
+any_pct2 = abs((o2['tgt_tokens_mean'][1] / o2['tgt_tokens_mean'][0] - 1) * 100)
+fin1 = (o1['frontier_input_tokens_mean'][1] / o1['frontier_input_tokens_mean'][0] - 1) * 100
+fin2 = (o2['frontier_input_tokens_mean'][1] / o2['frontier_input_tokens_mean'][0] - 1) * 100
+cost1, cost2 = o1['cost_pct_of_means'], o2['cost_pct_of_means']
+ab1, ab2 = o1['after_block'], o2['after_block']
+deleg, grep_only = S2['delegated_tasks'], S2['grep_only_tasks']
+
+body = f'''<main>
 
 <p class="kicker">Field dispatch</p>
 <h1>Tokens Are Cheap, Turns Are Not</h1>
@@ -52,7 +46,7 @@
 
 <p>This one runs longer than my usual, because I want you to be able to check my work. It's laid out the way a paper would be: what Spotify built, how I designed the test, exactly how I set it up so you can run it yourself, what came out, and what I think it means. If you only want the answer, the TLDR is next and the results are in section 4.</p>
 
-<blockquote class="tldr">TLDR; the token reduction Spotify reported is real on the metric they used: with their hook enforced, Claude read 87% fewer lines of the big files. The tokens the frontier model was actually billed for went up 41%, and the dollar cost went up 8% with the plugin as they shipped it and 19% with the hook doing what their post describes, at the same pass rate. Whether a given task came out cheaper was decided by the task, not by the plugin: when the answer is a slice of a big file, blocking the read saves money; when the answer is most of the file, it costs money. A line count can't tell those apart.</blockquote>
+<blockquote class="tldr">TLDR; the token reduction Spotify reported is real on the metric they used: with their hook enforced, Claude read {read_pct:.0f}% fewer lines of the big files. The tokens the frontier model was actually billed for went up {fin2:.0f}%, and the dollar cost went up {cost1:.0f}% with the plugin as they shipped it and {cost2:.0f}% with the hook doing what their post describes, at the same pass rate. Whether a given task came out cheaper was decided by the task, not by the plugin: when the answer is a slice of a big file, blocking the read saves money; when the answer is most of the file, it costs money. A line count can't tell those apart.</blockquote>
 
 <ol>
 <li><a href="#s1">What Spotify built, and why</a></li>
@@ -76,7 +70,7 @@
 <p><b>The what:</b> to fix it, Spotify built a more deterministic workflow for exactly those two task types — send the request to a smaller model to process, and hand Claude Code back only the key context it actually needs. They picked a Gemini model for the worker (other coverage of the post names Gemini 2.5 Flash), reading the large file in full and returning just the parts that matter. They published the plugin, called <em>shunt</em>, in their <a href="https://github.com/spotify/portal-ai-plugins/tree/b5ed620c6850f1ea7327b7cd9d0696aae0bf2d89/plugins/shunt">portal-ai-plugins</a> repository, which is what everything below is built on.</p>
 
 <figure>
-  <img src="figures/post/A-hook-in-the-loop.png" alt="Diagram: the model calls Read, a PreToolUse hook checks the line count, and either allows the read or blocks it and returns a message. After a block, the model can call the worker script, page through the file with an offset, or grep it. As shipped it paged through on 9 of 26 blocks and never called the worker; with the paging closed it called the worker on 4 of 96 blocks and grepped on 53.">
+  <img src="figures/post/A-hook-in-the-loop.png" alt="Diagram: the model calls Read, a PreToolUse hook checks the line count, and either allows the read or blocks it and returns a message. After a block, the model can call the worker script, page through the file with an offset, or grep it. As shipped it paged through on {ab1.get('Read(paged)',0)} of {o1['blocks']} blocks and never called the worker; with the paging closed it called the worker on {ab2.get('Skill',0)} of {o2['blocks']} blocks and grepped on {ab2.get('Grep',0)+ab2.get('Bash',0)}.">
   <figcaption>Figure A · where the hook sits, and the three ways out</figcaption>
 </figure>
 
@@ -115,12 +109,12 @@
 
 <p>Every task runs under three setups. Each one adds exactly one thing to the one before it, so any difference between neighbours has one explanation.</p>
 
-<div style="overflow-x:auto; margin:24px 0;"><table style="width:100%; border-collapse:collapse; font-size:0.92em; line-height:1.5;">
-<thead><tr><th style="text-align:left; padding:6px 12px 10px 0; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">Setup</th><th style="text-align:left; padding:6px 12px 10px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">What it is</th><th style="text-align:left; padding:6px 0 10px 12px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">What it answers</th></tr></thead>
+{TABLE}
+<thead><tr><th {TH}>Setup</th><th {TH.replace('padding:6px 12px 10px 0','padding:6px 12px 10px')}>What it is</th><th {THR.replace('text-align:right','text-align:left')}>What it answers</th></tr></thead>
 <tbody>
-<tr><td style="padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>Stock</b></td><td style="padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;">Claude Code exactly as installed, nothing added. Offline, like the other two.</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top;">The baseline.</td></tr>
-<tr><td style="padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>As shipped</b></td><td style="padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;">Stock plus Spotify's plugin exactly as published, including a rule that lets a <code>Read</code> with an offset through even on a big file.</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top;">What you get if you install it today.</td></tr>
-<tr><td style="padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>As described</b></td><td style="padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;">As shipped with that one rule removed, so a file over 350 lines cannot be read by the main model at all.</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top;">What their post says the hook does.</td></tr>
+<tr><td {TD}><b>Stock</b></td><td {TDM}>Claude Code exactly as installed, nothing added. Offline, like the other two.</td><td {TDM.replace('padding:10px 12px','padding:10px 0 10px 12px')}>The baseline.</td></tr>
+<tr><td {TD}><b>As shipped</b></td><td {TDM}>Stock plus Spotify's plugin exactly as published, including a rule that lets a <code>Read</code> with an offset through even on a big file.</td><td {TDM.replace('padding:10px 12px','padding:10px 0 10px 12px')}>What you get if you install it today.</td></tr>
+<tr><td {TD}><b>As described</b></td><td {TDM}>As shipped with that one rule removed, so a file over 350 lines cannot be read by the main model at all.</td><td {TDM.replace('padding:10px 12px','padding:10px 0 10px 12px')}>What their post says the hook does.</td></tr>
 </tbody></table></div>
 
 <p>The worker behind both hook setups is the same substitute (section 3 has the details), so it never explains a difference between them. Stock versus as-shipped is "what installing the plugin does." As-shipped versus as-described is "what closing the loophole does." Stock versus as-described is "what the post claims."</p>
@@ -152,7 +146,7 @@
 <p>Spotify's benchmark measured one deterministic path, so it needed two numbers: corpus size and summary size. A Claude Code session is a sequence of turns the model chooses, so every metric here is defined per turn, summed per run, and kept separate for the main model and the worker. Four prongs, in the order the results report them.</p>
 
 <p><b>Performance.</b></p>
-<pre class="code">pass          = the grader's verdict at the task's threshold
+{PRE}pass          = the grader's verdict at the task's threshold
 target_found  = the target file was read, grepped, or delegated at least once
 lucky         = pass AND NOT target_found
                 (a right answer that never touched the file)
@@ -160,7 +154,7 @@ pass^k        = pass on every one of the k repetitions</pre>
 <p>Graders differ by category. The read tasks score on key lists derived from the code: recall over names, exact match on needle literals with an alias list. The edits are graded by exact diff, with decoy lines that must be untouched. The bugs are graded on naming the method, a line in range, and the race. Code generation is graded by a checklist of patterns taken from the reference file, which is the weakest grader in the set; compiling would be better, and Kafka's build doesn't run offline on the machine the grid ran on. "Good" means the hook setups pass at stock's rate; for the harm tasks, that they don't fall below it. A cost saving on a task that stopped passing doesn't count.</p>
 
 <p><b>Cost.</b></p>
-<pre class="code">total      = Σ(main-model tokens × list price) + Σ(worker tokens × list price)
+{PRE}total      = Σ(main-model tokens × list price) + Σ(worker tokens × list price)
 by bucket  = uncached input · cache write · cache read · output,
              each at its own rate
 by phase   = finding (turns before the first touch of the target)
@@ -169,13 +163,13 @@ resend     = Σ over turns of (cached tokens re-sent × cache-read rate)</pre>
 <p>Every run's cost is recomputed turn by turn from the transcript at list price and checked against the figure Claude Code itself reports; the difference is stored with the run, and on all 189 it's under a millionth of a dollar. The headline is paired per task: each task's mean over three runs, then the percentage difference between setups, then the mean of those differences with a bootstrap interval and a sign test. That's the number worth publishing, because a pooled average over twenty-one different questions mostly measures which questions happen to be expensive.</p>
 
 <p><b>Latency.</b></p>
-<pre class="code">wall      = harness start → exit
+{PRE}wall      = harness start → exit
 turns     = API requests in the run
 per turn  = duration and time to first token, from OpenTelemetry
 worker    = the worker call's own duration, when one happens</pre>
 
 <p><b>Tokens, three ways.</b> Because "90% fewer tokens" can mean three different things:</p>
-<pre class="code">Spotify's formula  = file chars/4 − summary chars/4,
+{PRE}Spotify's formula  = file chars/4 − summary chars/4,
                      only when a worker call happened
 lines read         = lines of the target the main model got back from Read
 in context         = Read lines + Grep/Bash output that hit the target, chars/4
@@ -209,8 +203,8 @@ billed input       = every input token the frontier model was charged for</pre>
 
 <p>Spotify ships shunt as a Claude Code plugin. I copied its files into a project-level <code>.claude</code> folder instead of installing it, so that it lives inside a throwaway workspace and can be swapped per setup. Stock's folder is a single empty settings file. The two hook setups share everything except one file:</p>
 
-<pre class="code">arms/stock/.claude/
-└── settings.json                <span class="c"># contains {}</span>
+{PRE}arms/stock/.claude/
+└── settings.json                <span class="c"># contains {{}}</span>
 
 arms/shunt/.claude/                    <span class="c"># "as shipped"</span>
 ├── settings.json                <span class="c"># the two PreToolUse hooks, below</span>
@@ -230,65 +224,65 @@ arms/shunt-strict/.claude/             <span class="c"># "as described"</span>
 
 <p>The wiring is Spotify's <code>hooks.json</code> with the plugin-root variable swapped for the project-dir one. Two matchers, one script each; Claude Code runs the script before every <code>Read</code> and every <code>Bash</code> call and reads its JSON answer:</p>
 
-<pre class="code">{ "hooks": { "PreToolUse": [
-  { "matcher": "Read",
-    "hooks": [ { "type": "command",
-      "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/shunt/hooks/check-file-size"
-    } ] },
-  { "matcher": "Bash",
-    "hooks": [ { "type": "command",
-      "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/shunt/hooks/check-bash-read"
-    } ] }
-] } }</pre>
+{PRE}{{ "hooks": {{ "PreToolUse": [
+  {{ "matcher": "Read",
+    "hooks": [ {{ "type": "command",
+      "command": "\\"$CLAUDE_PROJECT_DIR\\"/.claude/shunt/hooks/check-file-size"
+    }} ] }},
+  {{ "matcher": "Bash",
+    "hooks": [ {{ "type": "command",
+      "command": "\\"$CLAUDE_PROJECT_DIR\\"/.claude/shunt/hooks/check-bash-read"
+    }} ] }}
+] }} }}</pre>
 
 <p>And the hook script itself, comments trimmed and the block message wrapped for the page, is short enough to read in full. It gets the proposed tool call on stdin, counts lines, and answers <code>allow</code> or <code>block</code>. The block carries the message the model will see as the tool's result. This is the "as described" version; the shipped one has three more lines that allow the call when an offset or limit is set:</p>
 
-<pre class="code">#!/bin/bash
-MIN_LINES="${SHUNT_MIN_LINES:-350}"
+{PRE}#!/bin/bash
+MIN_LINES="${{SHUNT_MIN_LINES:-350}}"
 input=$(cat)
 file_path=$(echo "$input" | jq -r '.tool_input.file_path // empty')
 
 if [ -z "$file_path" ] || [ ! -f "$file_path" ]; then
-  echo '{"decision": "allow"}'; exit 0
+  echo '{{"decision": "allow"}}'; exit 0
 fi
 
 lines=$(wc -l &lt; "$file_path" | tr -d ' ')
 if [ "$lines" -le "$MIN_LINES" ]; then
-  echo '{"decision": "allow"}'; exit 0
+  echo '{{"decision": "allow"}}'; exit 0
 fi
 
-reason="File is ${lines} lines (threshold: ${MIN_LINES}). \
-Use the /bulk-reader skill to delegate this read to AiKA \
+reason="File is ${{lines}} lines (threshold: ${{MIN_LINES}}). \\
+Use the /bulk-reader skill to delegate this read to AiKA \\
 instead of reading it directly."
-echo "{\"decision\": \"block\", \"reason\": \"${reason}\"}"</pre>
+echo "{{\\"decision\\": \\"block\\", \\"reason\\": \\"${{reason}}\\"}}"</pre>
 
 <h3>Where I deviated from Spotify's plugin, and why</h3>
 
 <p>The rule going in: run the plugin verbatim, and deviate only where there's a stated, specific design flaw — never a stylistic preference, never a guess at what they "probably meant." Every deviation is written down so a reader can decide for themselves whether it's fair. There are two.</p>
 
-<div style="overflow-x:auto; margin:24px 0;"><table style="width:100%; border-collapse:collapse; font-size:0.92em; line-height:1.5;">
-<thead><tr><th style="text-align:left; padding:6px 12px 10px 0; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">Deviation</th><th style="text-align:left; padding:6px 12px 10px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">What changed</th><th style="text-align:left; padding:6px 0 10px 12px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">Why</th></tr></thead>
+{TABLE}
+<thead><tr><th {TH}>Deviation</th><th {TH.replace('padding:6px 12px 10px 0','padding:6px 12px 10px')}>What changed</th><th {THR.replace('text-align:right','text-align:left')}>Why</th></tr></thead>
 <tbody>
 <tr>
-<td style="padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>(a) The worker</b><br><code>lib/aika.sh</code>, <code>bulk-read</code></td>
-<td style="padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;">Spotify's Portal call to a hosted Gemini model becomes a one-turn call to Haiku running Spotify's own mode prompt as the system prompt, no tools, thinking off — one Messages API call when an API key is available, otherwise a headless Claude Code call with <code>--tools ""</code> so no tool definitions enter the worker's prompt. And the file goes to the worker with line numbers (<code>cat -n</code> instead of <code>cat</code>).</td>
-<td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top;">I don't have access to Spotify's internal Portal system, so this is the closest same-shape substitute buildable outside it, and it puts the worker's own cost in the ledger instead of hiding it behind someone else's infrastructure. The line numbers are there because their script sends the bare file, and in an earlier grid the worker's "line N" claims were guesses, off by 14 to 23 lines; the skill's own last line then tells the model to verify line numbers, which sent it straight back into the file it was meant to avoid. Their hosted service may well number lines on its side — I can't see it — so the substitute assumes the charitable case. Same worker in both hook setups.</td>
+<td {TD}><b>(a) The worker</b><br><code>lib/aika.sh</code>, <code>bulk-read</code></td>
+<td {TDM}>Spotify's Portal call to a hosted Gemini model becomes a one-turn call to Haiku running Spotify's own mode prompt as the system prompt, no tools, thinking off — one Messages API call when an API key is available, otherwise a headless Claude Code call with <code>--tools ""</code> so no tool definitions enter the worker's prompt. And the file goes to the worker with line numbers (<code>cat -n</code> instead of <code>cat</code>).</td>
+<td {TDM.replace('padding:10px 12px','padding:10px 0 10px 12px')}>I don't have access to Spotify's internal Portal system, so this is the closest same-shape substitute buildable outside it, and it puts the worker's own cost in the ledger instead of hiding it behind someone else's infrastructure. The line numbers are there because their script sends the bare file, and in an earlier grid the worker's "line N" claims were guesses, off by 14 to 23 lines; the skill's own last line then tells the model to verify line numbers, which sent it straight back into the file it was meant to avoid. Their hosted service may well number lines on its side — I can't see it — so the substitute assumes the charitable case. Same worker in both hook setups.</td>
 </tr>
 <tr>
-<td style="padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>(b) The exception</b><br><code>hooks/check-file-size</code>, "as described" only</td>
-<td style="padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;">The offset/limit exception — any <code>Read</code> that sets either one goes through no matter how big the file is — is removed, and with it the one sentence in the block message that points the model at it.</td>
-<td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top;">The hook's own top-of-file comment says its job is to "block full-file reads on large files." An exception that lets any read carrying an offset through, regardless of file size, is a hole in that promise, not a feature of it (sidebar below). Both versions run, and they differ by exactly this rule.</td>
+<td {TD}><b>(b) The exception</b><br><code>hooks/check-file-size</code>, "as described" only</td>
+<td {TDM}>The offset/limit exception — any <code>Read</code> that sets either one goes through no matter how big the file is — is removed, and with it the one sentence in the block message that points the model at it.</td>
+<td {TDM.replace('padding:10px 12px','padding:10px 0 10px 12px')}>The hook's own top-of-file comment says its job is to "block full-file reads on large files." An exception that lets any read carrying an offset through, regardless of file size, is a hole in that promise, not a feature of it (sidebar below). Both versions run, and they differ by exactly this rule.</td>
 </tr>
 <tr>
-<td style="padding:10px 12px 10px 0;  vertical-align:top;"><b>Everything else</b></td>
-<td style="padding:10px 12px;  vertical-align:top;">Nothing. The skills reference a plugin-root variable; the harness fills it in when it copies the plugin into a workspace, the way a plugin install would.</td>
-<td style="padding:10px 0 10px 12px;  vertical-align:top;"><code>check-bash-read</code>, both skill files, and the 350-line threshold are byte-identical to what Spotify published. Their Bash hook only inspects <code>cat</code>, <code>head</code>, <code>tail</code>, <code>less</code> and <code>more</code>; a <code>sed -n '400,500p'</code> on a big file goes straight through, and the model finds that on its own. I left it as they wrote it.</td>
+<td {TD.replace('border-bottom:1px solid var(--line);','')}><b>Everything else</b></td>
+<td {TDM.replace('border-bottom:1px solid var(--line);','')}>Nothing. The skills reference a plugin-root variable; the harness fills it in when it copies the plugin into a workspace, the way a plugin install would.</td>
+<td {TDM.replace('padding:10px 12px','padding:10px 0 10px 12px').replace('border-bottom:1px solid var(--line);','')}><code>check-bash-read</code>, both skill files, and the 350-line threshold are byte-identical to what Spotify published. Their Bash hook only inspects <code>cat</code>, <code>head</code>, <code>tail</code>, <code>less</code> and <code>more</code>; a <code>sed -n '400,500p'</code> on a big file goes straight through, and the model finds that on its own. I left it as they wrote it.</td>
 </tr>
 </tbody></table></div>
 
 <div class="callout hook">
 <span class="label">Sidebar: the rule that makes the shipped hook a suggestion</span>
-<p>The plugin <a href="https://github.com/spotify/portal-ai-plugins/blob/b5ed620c6850f1ea7327b7cd9d0696aae0bf2d89/plugins/shunt/hooks/check-file-size#L11-L17">as Spotify published it</a> has an exception: a <code>Read</code> call with an offset or a line limit is allowed through even on a file over 350 lines. Here's what that looks like on the config-keys task. The hook refuses the whole-file read and its own message tells the model to re-read with an offset if it needs exact content. The model does exactly that, twice: lines 1 to 321, then 320 to 616. The whole 616-line file is in context one request after the refusal, and the worker was never touched. Across the grid, that's what happened on 9 of the 26 blocks the shipped hook made.</p>
+<p>The plugin <a href="https://github.com/spotify/portal-ai-plugins/blob/b5ed620c6850f1ea7327b7cd9d0696aae0bf2d89/plugins/shunt/hooks/check-file-size#L11-L17">as Spotify published it</a> has an exception: a <code>Read</code> call with an offset or a line limit is allowed through even on a file over 350 lines. Here's what that looks like on the config-keys task. The hook refuses the whole-file read and its own message tells the model to re-read with an offset if it needs exact content. The model does exactly that, twice: lines 1 to 321, then 320 to 616. The whole 616-line file is in context one request after the refusal, and the worker was never touched. Across the grid, that's what happened on {ab1.get('Read(paged)',0)} of the {o1['blocks']} blocks the shipped hook made.</p>
 <figure style="margin:16px 0 4px;">
   <img src="figures/post/C-callout-published-hook.png" alt="Storyboard: under Spotify's published hook, the model's read of the 616-line config file is refused, then it reads lines 1 to 321 with an offset, then lines 320 to 616, both of which the hook allows.">
 </figure>
@@ -304,25 +298,25 @@ echo "{\"decision\": \"block\", \"reason\": \"${reason}\"}"</pre>
 
 <p>Nothing is interactive. The harness unpacks the pinned Kafka tree from a tarball into a fresh directory, applies the task's setup patch if it has one (the planted bugs), makes a single <code>import</code> commit so there's no history to leak, drops in the setup's <code>.claude</code> folder, and calls Claude Code in headless mode with the task's question as the argument. This is the exact command, the same for all three setups:</p>
 
-<pre class="code">cd "$WORKSPACE"   <span class="c"># fresh Kafka copy at one pinned commit + one .claude folder</span>
+{PRE}cd "$WORKSPACE"   <span class="c"># fresh Kafka copy at one pinned commit + one .claude folder</span>
 
-CLAUDE_CODE_ENABLE_TELEMETRY=1 \
-OTEL_LOGS_EXPORTER=otlp OTEL_METRICS_EXPORTER=otlp OTEL_TRACES_EXPORTER=otlp \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 OTEL_LOG_TOOL_DETAILS=1 \
-CLAUDE_CODE_PROMPT_CACHE_TTL=5m CLAUDE_CODE_SUBAGENT_PROMPT_CACHE_TTL=5m \
-SHUNT_RUN_DIR="$RUN_DIR" SHUNT_HARNESS="$HARNESS" \
-unshare -m bash -c 'mount -t tmpfs none /tmp && exec "$@"' _ \
-claude -p "$PROMPT" \
-  --model claude-sonnet-5 \
-  --session-id "$(uuidgen)" \
-  --permission-mode acceptEdits \
-  --allowedTools "Read,Grep,Glob,Bash,Edit,Write,MultiEdit,Agent,Skill,\
-TodoWrite,TaskCreate,TaskUpdate" \
-  --settings "$HARNESS/settings.json" \
-  --append-system-prompt "Answer from the repository checked out in the \
-working directory. Do not rely on memory of the upstream project or on \
-the internet." \
-  --max-turns 40 \
+CLAUDE_CODE_ENABLE_TELEMETRY=1 \\
+OTEL_LOGS_EXPORTER=otlp OTEL_METRICS_EXPORTER=otlp OTEL_TRACES_EXPORTER=otlp \\
+OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 OTEL_LOG_TOOL_DETAILS=1 \\
+CLAUDE_CODE_PROMPT_CACHE_TTL=5m CLAUDE_CODE_SUBAGENT_PROMPT_CACHE_TTL=5m \\
+SHUNT_RUN_DIR="$RUN_DIR" SHUNT_HARNESS="$HARNESS" \\
+unshare -m bash -c 'mount -t tmpfs none /tmp && exec "$@"' _ \\
+claude -p "$PROMPT" \\
+  --model claude-sonnet-5 \\
+  --session-id "$(uuidgen)" \\
+  --permission-mode acceptEdits \\
+  --allowedTools "Read,Grep,Glob,Bash,Edit,Write,MultiEdit,Agent,Skill,\\
+TodoWrite,TaskCreate,TaskUpdate" \\
+  --settings "$HARNESS/settings.json" \\
+  --append-system-prompt "Answer from the repository checked out in the \\
+working directory. Do not rely on memory of the upstream project or on \\
+the internet." \\
+  --max-turns 40 \\
   --output-format json</pre>
 
 <p>Five things in that command matter to the numbers. The <code>OTEL_*</code> block turns on Claude Code's built-in OpenTelemetry export and points it at a tiny local receiver, which is where per-turn latency comes from. The two <code>CACHE_TTL</code> variables pin the prompt-cache write to the 5-minute rate for the main model, any subagent, and the worker. <code>SHUNT_RUN_DIR</code> is mine, not Spotify's: it tells the swapped-in worker where to save its own usage JSON so the worker's tokens and dollars land in the same ledger as the main model's. <code>--settings</code> loads the harness's sandbox, the same file for every setup. And the <code>unshare</code> wrapper gives each session its own empty <code>/tmp</code>.</p>
@@ -375,33 +369,33 @@ the internet." \
 
 <p>Before cost, the token question, because "90% fewer tokens" can mean three different things and the answer changes with each one. All of these are measured from the same 189 sessions, as means per run:</p>
 
-<div style="overflow-x:auto; margin:24px 0;"><table style="width:100%; border-collapse:collapse; font-size:0.92em; line-height:1.5;">
-<thead><tr><th style="text-align:left; padding:6px 12px 10px 0; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">What's being counted</th><th style="text-align:right; padding:6px 0 10px 12px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">Stock</th><th style="text-align:right; padding:6px 0 10px 12px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">As shipped</th><th style="text-align:right; padding:6px 0 10px 12px; border-bottom:2px solid var(--line); color:var(--ink-3); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.05em; text-transform:uppercase;">As described</th></tr></thead>
+{TABLE}
+<thead><tr><th {TH}>What's being counted</th><th {THR}>Stock</th><th {THR}>As shipped</th><th {THR}>As described</th></tr></thead>
 <tbody>
-<tr><td style="padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>Spotify's formula.</b> File size minus summary size, characters over four, counted only when the worker is called.</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">—</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">never called</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">defined on 5 of 63 runs</td></tr>
-<tr><td style="padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>Lines of the target file the main model read with <code>Read</code>.</b> The closest thing to what Spotify's number describes.</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">450</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">232 (-48%)</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">59 (-87%)</td></tr>
-<tr><td style="padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>Target-file content that reached the main model by any tool.</b> Read, plus every Grep and Bash result that hit the file, characters over four.</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">6,016</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">3,721 (-38%)</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">2,919 (-51%)</td></tr>
-<tr><td style="padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>Input tokens the frontier model was billed for.</b> Every turn, uncached plus cache write plus cache read: the thing the invoice counts.</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">229,697</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">277,146 (+21%)</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">324,523 (+41%)</td></tr>
-<tr><td style="padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top;"><b>Output tokens.</b> Thinking and answers, at the expensive rate.</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">3,061</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">3,569 (+17%)</td><td style="padding:10px 0 10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.9em; white-space:nowrap;">3,867 (+26%)</td></tr>
+<tr><td {TD}><b>Spotify's formula.</b> File size minus summary size, characters over four, counted only when the worker is called.</td><td {TDR}>—</td><td {TDR}>never called</td><td {TDR}>defined on {o2['runs_with_worker']} of 63 runs</td></tr>
+<tr><td {TD}><b>Lines of the target file the main model read with <code>Read</code>.</b> The closest thing to what Spotify's number describes.</td><td {TDR}>{o1['target_read_lines_mean'][0]:.0f}</td><td {TDR}>{o1['target_read_lines_mean'][1]:.0f} ({d(o1['target_read_lines_mean'][0],o1['target_read_lines_mean'][1])})</td><td {TDR}>{o2['target_read_lines_mean'][1]:.0f} ({d(o2['target_read_lines_mean'][0],o2['target_read_lines_mean'][1])})</td></tr>
+<tr><td {TD}><b>Target-file content that reached the main model by any tool.</b> Read, plus every Grep and Bash result that hit the file, characters over four.</td><td {TDR}>{o1['tgt_tokens_mean'][0]:,.0f}</td><td {TDR}>{o1['tgt_tokens_mean'][1]:,.0f} ({d(o1['tgt_tokens_mean'][0],o1['tgt_tokens_mean'][1])})</td><td {TDR}>{o2['tgt_tokens_mean'][1]:,.0f} ({d(o2['tgt_tokens_mean'][0],o2['tgt_tokens_mean'][1])})</td></tr>
+<tr><td {TD}><b>Input tokens the frontier model was billed for.</b> Every turn, uncached plus cache write plus cache read: the thing the invoice counts.</td><td {TDR}>{o1['frontier_input_tokens_mean'][0]:,.0f}</td><td {TDR}>{o1['frontier_input_tokens_mean'][1]:,.0f} ({d(o1['frontier_input_tokens_mean'][0],o1['frontier_input_tokens_mean'][1])})</td><td {TDR}>{o2['frontier_input_tokens_mean'][1]:,.0f} ({d(o2['frontier_input_tokens_mean'][0],o2['frontier_input_tokens_mean'][1])})</td></tr>
+<tr><td {TD}><b>Output tokens.</b> Thinking and answers, at the expensive rate.</td><td {TDR}>{o1['output_tokens_mean'][0]:,.0f}</td><td {TDR}>{o1['output_tokens_mean'][1]:,.0f} ({d(o1['output_tokens_mean'][0],o1['output_tokens_mean'][1])})</td><td {TDR}>{o2['output_tokens_mean'][1]:,.0f} ({d(o2['output_tokens_mean'][0],o2['output_tokens_mean'][1])})</td></tr>
 </tbody></table></div>
 
-<p>Read top to bottom, that's the whole argument. On Spotify's own formula the hook as shipped has nothing to report, because the worker was never called in 63 runs, and the hook as described reports a number on 5. On the metric their number describes, lines of the big file that Claude read, the enforced hook delivers the 90%: 450 lines a run down to 59. Count what actually entered the model's context through every tool and the cut is 51%, because the model pulled a good part of it back in through grep. Count what the frontier model was billed for, every token on every turn, and it went <em>up</em>, 21% as shipped and 41% as described, because there were more turns and each one re-sends everything before it. Their metric is real, and it's the wrong metric. It counts what one tool didn't read and not what the session sent.</p>
+<p>Read top to bottom, that's the whole argument. On Spotify's own formula the hook as shipped has nothing to report, because the worker was never called in 63 runs, and the hook as described reports a number on {o2['runs_with_worker']}. On the metric their number describes, lines of the big file that Claude read, the enforced hook delivers the 90%: {o1['target_read_lines_mean'][0]:.0f} lines a run down to {o2['target_read_lines_mean'][1]:.0f}. Count what actually entered the model's context through every tool and the cut is {any_pct2:.0f}%, because the model pulled a good part of it back in through grep. Count what the frontier model was billed for, every token on every turn, and it went <em>up</em>, {fin1:.0f}% as shipped and {fin2:.0f}% as described, because there were more turns and each one re-sends everything before it. Their metric is real, and it's the wrong metric. It counts what one tool didn't read and not what the session sent.</p>
 
 <h3>Performance, cost, latency</h3>
 
 <figure>
-  <img src="figures/post/G-headline.png" alt="Three small-multiple bar charts, stock against the hook as shipped and as described, means per run: target-file tokens in context 6,016, 3,721, 2,919; API requests 6.1, 7.7, 9.2; cost $0.121, $0.131, $0.144.">
+  <img src="figures/post/G-headline.png" alt="Three small-multiple bar charts, stock against the hook as shipped and as described, means per run: target-file tokens in context {o1['tgt_tokens_mean'][0]:,.0f}, {o1['tgt_tokens_mean'][1]:,.0f}, {o2['tgt_tokens_mean'][1]:,.0f}; API requests {o1['requests_mean'][0]:.1f}, {o1['requests_mean'][1]:.1f}, {o2['requests_mean'][1]:.1f}; cost ${o1['cost_mean'][0]:.3f}, ${o1['cost_mean'][1]:.3f}, ${o2['cost_mean'][1]:.3f}.">
   <figcaption>Figure G · the result</figcaption>
 </figure>
 
-<p><b>Performance:</b> the same. 100% of stock runs passed, 98% as shipped, 97% as described; that's three failures in 189, one of them the checklist grader on a code-generation control. Nobody answered from memory: every run touched its target file. <b>Cost:</b> up 8% as shipped and 19% as described, worker included. Paired per task, the shipped hook came out cheaper on 9 of 21 tasks with a mean difference of +8% and an interval from -1% to +20%, which spans zero. The enforced hook came out cheaper on 7 of 21 with a mean difference of +22% and an interval from +7% to +39%, which doesn't. <b>Latency:</b> turns per run went from 6.1 to 7.7 to 9.2; wall time from 39 seconds to 45 to 51.</p>
+<p><b>Performance:</b> the same. {o1['pass_rate'][0]*100:.0f}% of stock runs passed, {o1['pass_rate'][1]*100:.0f}% as shipped, {o2['pass_rate'][1]*100:.0f}% as described; that's three failures in 189, one of them the checklist grader on a code-generation control. Nobody answered from memory: every run touched its target file. <b>Cost:</b> up {cost1:.0f}% as shipped and {cost2:.0f}% as described, worker included. Paired per task, the shipped hook came out cheaper on {o1['hook_cheaper_tasks']} of 21 tasks with a mean difference of {pct(o1['cost_pct_paired_mean'])} and an interval from {ci(o1)}, which spans zero. The enforced hook came out cheaper on {o2['hook_cheaper_tasks']} of 21 with a mean difference of {pct(o2['cost_pct_paired_mean'])} and an interval from {ci(o2)}, which doesn't. <b>Latency:</b> turns per run went from {o1['requests_mean'][0]:.1f} to {o1['requests_mean'][1]:.1f} to {o2['requests_mean'][1]:.1f}; wall time from {o1['wall_mean'][0]:.0f} seconds to {o1['wall_mean'][1]:.0f} to {o2['wall_mean'][1]:.0f}.</p>
 
-<p>What the model did after a block is the number underneath all of that. As shipped, the hook fired 26 times in 63 runs. The model's next call was a paged read that went straight through 9 times and a grep 14 times; the worker, never. As described, the hook fired 96 times. The model tried the paged read anyway 33 times and was refused every time, grepped or ran a shell search 53 times, and reached for the bulk-reader skill 4 times, which became 7 worker calls in 5 runs. Given a neutral refusal, a skill it has never used, and correct line numbers when it does use it, Sonnet 5 delegates about one block in twenty and greps the rest.</p>
+<p>What the model did after a block is the number underneath all of that. As shipped, the hook fired {o1['blocks']} times in 63 runs. The model's next call was a paged read that went straight through {ab1.get('Read(paged)',0)} times and a grep {ab1.get('Grep',0)} times; the worker, never. As described, the hook fired {o2['blocks']} times. The model tried the paged read anyway {ab2.get('Read(paged)',0)} times and was refused every time, grepped or ran a shell search {ab2.get('Grep',0)+ab2.get('Bash',0)} times, and reached for the bulk-reader skill {ab2.get('Skill',0)} times, which became {o2['worker_calls']} worker calls in {o2['runs_with_worker']} runs. Given a neutral refusal, a skill it has never used, and correct line numbers when it does use it, Sonnet 5 delegates about one block in twenty and greps the rest.</p>
 
 <h3>By task type</h3>
 
 <figure>
-  <img src="figures/post/H-by-category.png" alt="Horizontal bars of hook cost relative to stock by task type with 95% intervals, two bars per row for as shipped and as described: Spotify's four tasks +25% and +53%; needle reads, harm tasks and controls near zero; Spotify's shapes on big files positive; as described where the worker was called +57%, where the model grepped instead +26%.">
+  <img src="figures/post/H-by-category.png" alt="Horizontal bars of hook cost relative to stock by task type with 95% intervals, two bars per row for as shipped and as described: Spotify's four tasks {pct(c1['SB']['cost_pct_paired_mean'])} and {pct(c2['SB']['cost_pct_paired_mean'])}; needle reads, harm tasks and controls near zero; Spotify's shapes on big files positive; as described where the worker was called {pct(deleg['cost_pct_paired_mean'])}, where the model grepped instead {pct(grep_only['cost_pct_paired_mean'])}.">
   <figcaption>Figure H · cost change by task type</figcaption>
 </figure>
 
@@ -413,23 +407,23 @@ the internet." \
 <li><b>Where the hook doesn't fire, the plugin is a wash.</b> Small files, and the needle reads where the model grepped first and never tried to read the file. The shipped hook's differences there run from −17% to +20% with no pattern. That's what three runs of the same task look like when nothing is different.</li>
 </ul>
 
-<p>The shipped hook has a fourth pattern of its own: where it fires, the model pages around it and the file comes in in slices, so it pays for the refusal and gets none of the reduction. On Spotify's own four benchmark tasks that's +25% paired; on their shapes at real file sizes, +11%. And the worker, where it was actually called, was the expensive path: +57% over stock on those 3 tasks, with an interval from +42% to +86%. Numbered lines shortened the search after the summary from six or seven extra turns to one, and it's still half again the price of just reading the file, because the refused read, the refused paged read, the skill load and the worker call are each a turn.</p>
+<p>The shipped hook has a fourth pattern of its own: where it fires, the model pages around it and the file comes in in slices, so it pays for the refusal and gets none of the reduction. On Spotify's own four benchmark tasks that's {pct(c1['SB']['cost_pct_paired_mean'])} paired; on their shapes at real file sizes, {pct(c1['SC']['cost_pct_paired_mean'])}. And the worker, where it was actually called, was the expensive path: {pct(deleg['cost_pct_paired_mean'])} over stock on those {deleg['n_tasks']} tasks, with an interval from {ci(deleg)}. Numbered lines shortened the search after the summary from six or seven extra turns to one, and it's still half again the price of just reading the file, because the refused read, the refused paged read, the skill load and the worker call are each a turn.</p>
 
-<p>On the two hypotheses: H1 is not supported. On the tasks the hook was built for, tokens fall and cost rises, on both hook setups, and the enforced one's interval excludes zero. H2 holds on correctness and is a near miss on cost: the harm tasks passed at 100% on every setup, and their paired cost difference was +0% as shipped and +8% as described, both with intervals spanning zero. M holds everywhere: cost moved with turns, and turns moved with blocks.</p>
+<p>On the two hypotheses: H1 is not supported. On the tasks the hook was built for, tokens fall and cost rises, on both hook setups, and the enforced one's interval excludes zero. H2 holds on correctness and is a near miss on cost: the harm tasks passed at 100% on every setup, and their paired cost difference was {pct(c1['HM']['cost_pct_paired_mean'])} as shipped and {pct(c2['HM']['cost_pct_paired_mean'])} as described, both with intervals spanning zero. M holds everywhere: cost moved with turns, and turns moved with blocks.</p>
 
-<blockquote class="tldr">TLDR; both versions of the hook cut context the way Spotify says. Both raise the bill, 8% and 19%, because every block becomes more turns. Whether a given task comes out cheaper is decided by whether the answer is a slice of the file or the whole of it, and the hook can't tell.</blockquote>
+<blockquote class="tldr">TLDR; both versions of the hook cut context the way Spotify says. Both raise the bill, {cost1:.0f}% and {cost2:.0f}%, because every block becomes more turns. Whether a given task comes out cheaper is decided by whether the answer is a slice of the file or the whole of it, and the hook can't tell.</blockquote>
 
 <h2 id="s5">5. Discussion</h2>
 
 <h3>Findings</h3>
 
 <ul>
-<li><b>The published hook doesn't enforce the block it claims to make.</b> Its offset/limit exception let the model page around 9 of 26 blocks, and on those the file came in anyway, in slices, a turn later. Installed today, the plugin is a wash where it doesn't fire and a small tax where it does: +8% overall, with a paired interval that spans zero.</li>
-<li><b>Enforced, the hook does what the post says, on the post's own metric.</b> Lines of the big file that Claude read fell 87%. Count what reached the model through every tool and it's 51%. Count what the frontier model was billed for and it went up 41%. Same sessions, three answers, and only the last one is on the invoice.</li>
-<li><b>The model delegates about one block in twenty.</b> 4 of 96 blocks went to the bulk-reader skill; 53 went to grep or a shell search. Given a neutral refusal and a skill it has never used, the model reaches for the tool it already knows.</li>
-<li><b>Delegation is the expensive path even when it works.</b> With correct line numbers the summary ends the search in one extra check instead of six, and the delegated runs still cost +57% over stock. The worker is cheap. The four turns it takes to get to it are not.</li>
+<li><b>The published hook doesn't enforce the block it claims to make.</b> Its offset/limit exception let the model page around {ab1.get('Read(paged)',0)} of {o1['blocks']} blocks, and on those the file came in anyway, in slices, a turn later. Installed today, the plugin is a wash where it doesn't fire and a small tax where it does: {pct(cost1)} overall, with a paired interval that spans zero.</li>
+<li><b>Enforced, the hook does what the post says, on the post's own metric.</b> Lines of the big file that Claude read fell {read_pct:.0f}%. Count what reached the model through every tool and it's {any_pct2:.0f}%. Count what the frontier model was billed for and it went up {fin2:.0f}%. Same sessions, three answers, and only the last one is on the invoice.</li>
+<li><b>The model delegates about one block in twenty.</b> {ab2.get('Skill',0)} of {o2['blocks']} blocks went to the bulk-reader skill; {ab2.get('Grep',0)+ab2.get('Bash',0)} went to grep or a shell search. Given a neutral refusal and a skill it has never used, the model reaches for the tool it already knows.</li>
+<li><b>Delegation is the expensive path even when it works.</b> With correct line numbers the summary ends the search in one extra check instead of six, and the delegated runs still cost {pct(deleg['cost_pct_paired_mean'])} over stock. The worker is cheap. The four turns it takes to get to it are not.</li>
 <li><b>Whether a task comes out cheaper is decided by the task.</b> Twelve of 21 tasks land on the same side of stock on all three runs. Answer is a slice of the file: the block saves money. Answer is the whole file: the block costs money. A line count can't tell which is which.</li>
-<li><b>The bill went up because of turns, not tokens.</b> +8% as shipped, +19% as described, at the same pass rate. Every block that becomes another call is another full resent-conversation cycle, and those cycles are what the money paid for.</li>
+<li><b>The bill went up because of turns, not tokens.</b> {pct(cost1)} as shipped, {pct(cost2)} as described, at the same pass rate. Every block that becomes another call is another full resent-conversation cycle, and those cycles are what the money paid for.</li>
 </ul>
 
 <h3>Why a token avoided isn't a dollar saved</h3>
@@ -442,7 +436,7 @@ the internet." \
 
 <p>The biggest thing is a long interactive session. Every run here is headless, single-task, and done in about a minute. Spotify's case for the hook is strongest in a session that runs for an hour: a file that entered context at turn 3 is resent on every turn after it, and whenever the human pauses longer than the cache lifetime, the whole context, big file included, is rewritten at the full cache-write rate. On these numbers a 770-line file costs about two cents to read and a fifth of a cent per turn to carry, so a forty-turn session with three or four cache rewrites is roughly where carrying the file starts to cost what delegating it costs. I didn't test that regime, and it's the one where their number and mine could both be right.</p>
 
-<p>Three smaller gaps. Sonnet 5 greps by default; a model that reads whole files by default would trigger the hook more and might delegate more, so this is a Sonnet result until someone runs it on another main model. The worker is Haiku through a headless call, not Gemini Flash through Portal, so its cost is reported separately, and the comparison holds with it excluded: on the main model alone the enforced hook is still +16% over stock. And the code-generation tasks are graded by a checklist, not a compiler, which is the weakest grader in the set. A 90% cut in tokens sent to the frontier model is not automatically a 90% cut in the bill on any stack, including theirs — that's the whole argument here — but exactly how their bill moved is a question only Spotify's own telemetry can answer.</p>
+<p>Three smaller gaps. Sonnet 5 greps by default; a model that reads whole files by default would trigger the hook more and might delegate more, so this is a Sonnet result until someone runs it on another main model. The worker is Haiku through a headless call, not Gemini Flash through Portal, so its cost is reported separately, and the comparison holds with it excluded: on the main model alone the enforced hook is still {d(o2['cost_mean'][0], o2['cost_mean'][1] - o2['worker_cost']/o2['runs'][1]) if o2.get('worker_cost') else 'more expensive'} over stock. And the code-generation tasks are graded by a checklist, not a compiler, which is the weakest grader in the set. A 90% cut in tokens sent to the frontier model is not automatically a 90% cut in the bill on any stack, including theirs — that's the whole argument here — but exactly how their bill moved is a question only Spotify's own telemetry can answer.</p>
 
 <h3>What I'd test next</h3>
 
@@ -453,3 +447,11 @@ the internet." \
 <p>A PreToolUse hook can stop one tool call. It cannot choose the next one, and it has no idea what the next one costs. Spotify's plugin, as shipped, is a suggestion the model takes a third of the time; enforced, it's a wall the model climbs with grep nineteen times out of twenty and delegates over once. Either way, the tokens Spotify counted really do go away, and the bill really does go up, because the unit the invoice counts is the turn, and every block adds at least one. What isn't a direction, on any stack: tokens written to a cache once are nearly free to revisit. A turn is not, and no hook that only watches the tool call in front of it can tell the difference.</p>
 
 </main>
+'''
+out = HEAD + body
+# guard against any leftover placeholder or stale number
+assert not re.findall(r'\{[a-z_0-9]+\}', out.replace('${lines}', '').replace('${reason}', '').replace('${MIN_LINES', '')), 'placeholder left'
+for stale in ('twelve tasks', 'two arms'):
+    assert stale not in out, stale
+open(os.path.join(ROOT, 'post.html'), 'w').write(out)
+print('post.html written', len(out), 'chars')
