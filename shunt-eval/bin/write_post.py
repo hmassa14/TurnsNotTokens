@@ -127,9 +127,25 @@ body = f'''<main>
 
 <blockquote class="tldr">TLDR; Spotify's evals check the hook's arithmetic and time a script. Mine puts a model on the other side of the block and watches what it does.</blockquote>
 
+<h3>Why Kafka stands in for Spotify's monorepo</h3>
+
+<p>Spotify's code is private, so the test needs a public repository that looks like theirs in the one way the hook cares about: lots of files over 350 lines, in a language their benchmark used. There's a second constraint that isn't obvious until you read Claude Code's own limits. Stock Claude Code already refuses to read very large files (over 256 KB) and pages anything over about 25,000 tokens, so on a huge file the hook would never get the chance to fire first. The target files have to sit in the band between Spotify's threshold and Claude Code's own gates: over 350 lines, under 100 KB. A repo is only useful here if a lot of its code lives in that band.</p>
+
+<p>I looked at two candidates. Backstage is Spotify's own open-source project, TypeScript, and would have been the obvious pick, except that only 7.5% of its files are over 350 lines and they hold 38% of the code. Apache Kafka, Java and Scala, has 6,448 source files, 1,096 of them over 350 lines, and those files hold 64% of the code. On Kafka the hook has real work to do on most of what a developer touches; on Backstage it would mostly sit idle. Kafka is pinned at commit <code>0ffb4f5</code> so every run and every reader gets the same tree, every task's target file is between 616 and 1,879 lines, and each session gets a fresh copy with no git history.</p>
+
+{TABLE}
+<thead><tr><th {TH}></th><th {THR}>Kafka (Java + Scala), used</th><th {THR}>Backstage (TypeScript), rejected</th></tr></thead>
+<tbody>
+<tr><td {TD}>Source files</td><td {TDR}>6,448</td><td {TDR}>7,348</td></tr>
+<tr><td {TD}>Files over 350 lines</td><td {TDR}>1,096 (17%)</td><td {TDR}>549 (7.5%)</td></tr>
+<tr><td {TD}>Share of the code in those files</td><td {TDR}>64%</td><td {TDR}>38%</td></tr>
+</tbody></table></div>
+
+<p>One honest limit of the stand-in: it's a repository the model has seen in training, which Spotify's code is not. That's why every session in the final grid is cut off from the internet and told to answer from the checkout (section 2, controls), and why every run records whether the model actually touched the target file before it answered. In the final grid, all 189 did.</p>
+
 <h3>Tasks: five categories, twenty-one questions</h3>
 
-<p>The corpus is Apache Kafka at one pinned commit: about 6,400 source files, 1,096 of them over 350 lines, holding 64% of the code. It's a public stand-in for the kind of large Java monorepo Spotify's post describes, and it's big enough that the hook has real work to do. Every question is asked the way a developer would, with no file path given, so the session has to find the file before it can read it. The categories are named by what they test; the prefix on each task's id says which one it belongs to.</p>
+<p>Every question is asked the way a developer would, with no file path given, so the session has to find the file before it can read it. The categories are named by what they test; the prefix on each task's id says which one it belongs to.</p>
 
 <ul>
 <li><b>SB, Spotify's benchmark, one to one (4 tasks).</b> Their four benchmark rows rebuilt on Kafka at the same file sizes: list everything a 616-line config class exports; explain how three broker classes relate (770 plus two small files); which methods a 62-line class has and which a 125-line test would cover; write that test. Two of the four use small files, exactly as theirs do, so the hook can't fire on them.</li>
