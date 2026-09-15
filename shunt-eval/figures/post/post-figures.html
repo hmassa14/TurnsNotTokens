@@ -51,7 +51,7 @@
 
   <figure id="fig-hook">
     <span class="fig-n">Figure A · where the hook sits</span>
-    <svg viewBox="0 0 900 460" role="img" aria-label="Claude Code's tool loop with Spotify's PreToolUse hook in the path of a Read call, and what the model did next after a block. As shipped, 26 blocks: a paged read allowed through 9 times, grep 14 times, the worker never. As described, 96 blocks: a paged read tried and refused 33 times, grep or a shell search 53 times, the worker script 4 times.">
+    <svg viewBox="0 0 900 460" role="img" aria-label="Claude Code's tool loop with Spotify's PreToolUse hook in the path of a Read call, and what the model did next after a block. As shipped, 26 blocks: a paged read allowed through 9 times, grep 14 times, the worker never; 3 more blocks were an unpaged re-read or happened in a subagent with no main-model next call. As described, 96 blocks: a paged read tried and refused 33 times, grep or a shell search 53 times, the worker script 4 times; 6 more were an unpaged re-read, an edit, or a subagent block.">
       <defs>
         <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
         <marker id="ar-hook" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--hook)"/></marker>
@@ -106,7 +106,7 @@
       <text x="735" y="428" text-anchor="middle" class="small mono">shipped 9/26 · described 33 tried, refused</text>
       <text x="735" y="443" text-anchor="middle" class="small">the loophole; closed in one setup</text>
     </svg>
-    <figcaption><b>Where the hook sits, and the three ways out.</b> A PreToolUse hook runs between the model's tool call and the tool. On allow, the file comes back whole. On block, only the hook's message comes back, and the model chooses its next call. Spotify's design assumes that choice is the worker script. As shipped, across 26 blocks, it never was: the model paged around the block 9 times and grepped 14. With the paging exit closed, across 96 blocks, the model still tried it 33 times, grepped 53 times, and reached for the worker 4 times.</figcaption>
+    <figcaption><b>Where the hook sits, and the three ways out.</b> A PreToolUse hook runs between the model's tool call and the tool. On allow, the file comes back whole. On block, only the hook's message comes back, and the model chooses its next call. Spotify's design assumes that choice is the worker script. As shipped, across 26 blocks, it never was: the model paged around the block 9 times and grepped 14, and 3 more blocks were an unpaged re-read or fell in a subagent with no main-model call to categorize. With the paging exit closed, across 96 blocks, the model still tried it 33 times, grepped 53 times, reached for the worker 4 times, and 6 more were an unpaged re-read, an edit, or a subagent block. The three boxes above are the model's dominant responses, not an exhaustive partition.</figcaption>
   </figure>
   <figure id="fig-setup">
     <span class="fig-n">Figure B · the setup</span>

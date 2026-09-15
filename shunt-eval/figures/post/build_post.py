@@ -19,13 +19,14 @@ ab1, ab2 = O1['after_block'], O2['after_block']
 b1, b2 = O1['blocks'], O2['blocks']
 grep1 = ab1.get('Grep', 0) + ab1.get('Bash', 0); grep2 = ab2.get('Grep', 0) + ab2.get('Bash', 0)
 paged1 = ab1.get('Read(paged)', 0); paged2 = ab2.get('Read(paged)', 0)
-skill2 = ab2.get('Skill', 0)
+skill1 = ab1.get('Skill', 0); skill2 = ab2.get('Skill', 0)
+rem1 = b1 - (skill1 + grep1 + paged1); rem2 = b2 - (skill2 + grep2 + paged2)
 old_strip = figA[figA.index('<!-- three columns'):figA.index('</svg>')]
 new_strip = f'''<!-- three columns: x = 30, 320, 610 ; width 250 -->
       <rect x="30" y="358" width="250" height="52" rx="6" class="box hook-s" stroke-width="1.6"/>
       <text x="155" y="379" text-anchor="middle" font-weight="600">Spotify's worker script</text>
       <text x="155" y="396" text-anchor="middle" class="small">bulk-read → Haiku reads the file → summary</text>
-      <text x="155" y="428" text-anchor="middle" class="small mono">shipped 0/{b1} · described {skill2}/{b2}</text>
+      <text x="155" y="428" text-anchor="middle" class="small mono">shipped {skill1}/{b1} · described {skill2}/{b2}</text>
       <text x="155" y="443" text-anchor="middle" class="small">what the design assumes</text>
 
       <rect x="320" y="358" width="250" height="52" rx="6" class="box hook-s" stroke-width="1.6"/>
@@ -41,8 +42,8 @@ new_strip = f'''<!-- three columns: x = 30, 320, 610 ; width 250 -->
       <text x="735" y="443" text-anchor="middle" class="small">the loophole; closed in one setup</text>
     '''
 figA = figA.replace(old_strip, new_strip)
-figA = re.sub(r'aria-label="[^"]*"', f'aria-label="Claude Code\'s tool loop with Spotify\'s PreToolUse hook in the path of a Read call, and what the model did next after a block. As shipped, {b1} blocks: a paged read allowed through {paged1} times, grep {grep1} times, the worker never. As described, {b2} blocks: a paged read tried and refused {paged2} times, grep or a shell search {grep2} times, the worker script {skill2} times."', figA, count=1)
-figA = re.sub(r'<figcaption>.*?</figcaption>', f'<figcaption><b>Where the hook sits, and the three ways out.</b> A PreToolUse hook runs between the model\'s tool call and the tool. On allow, the file comes back whole. On block, only the hook\'s message comes back, and the model chooses its next call. Spotify\'s design assumes that choice is the worker script. As shipped, across {b1} blocks, it never was: the model paged around the block {paged1} times and grepped {grep1}. With the paging exit closed, across {b2} blocks, the model still tried it {paged2} times, grepped {grep2} times, and reached for the worker {skill2} times.</figcaption>', figA, flags=re.S)
+figA = re.sub(r'aria-label="[^"]*"', f'aria-label="Claude Code\'s tool loop with Spotify\'s PreToolUse hook in the path of a Read call, and what the model did next after a block. As shipped, {b1} blocks: a paged read allowed through {paged1} times, grep {grep1} times, the worker never; {rem1} more blocks were an unpaged re-read or happened in a subagent with no main-model next call. As described, {b2} blocks: a paged read tried and refused {paged2} times, grep or a shell search {grep2} times, the worker script {skill2} times; {rem2} more were an unpaged re-read, an edit, or a subagent block."', figA, count=1)
+figA = re.sub(r'<figcaption>.*?</figcaption>', f'<figcaption><b>Where the hook sits, and the three ways out.</b> A PreToolUse hook runs between the model\'s tool call and the tool. On allow, the file comes back whole. On block, only the hook\'s message comes back, and the model chooses its next call. Spotify\'s design assumes that choice is the worker script. As shipped, across {b1} blocks, it never was: the model paged around the block {paged1} times and grepped {grep1}, and {rem1} more blocks were an unpaged re-read or fell in a subagent with no main-model call to categorize. With the paging exit closed, across {b2} blocks, the model still tried it {paged2} times, grepped {grep2} times, reached for the worker {skill2} times, and {rem2} more were an unpaged re-read, an edit, or a subagent block. The three boxes above are the model\'s dominant responses, not an exhaustive partition.</figcaption>', figA, flags=re.S)
 figA = figA.replace('<figure>', '<figure id="fig-hook">', 1)
 
 # ---------- B: setup, three setups ----------
