@@ -1,0 +1,246 @@
+{
+ "summary": {
+  "requests_total": 3,
+  "requests_main": 3,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 3,
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 15274,
+    "cache_read_input_tokens": 91195,
+    "output_tokens": 559
+   }
+  },
+  "tool_mix": {
+   "Grep": 2,
+   "Read": 1
+  },
+  "tool_calls_total": 3,
+  "reads_total": 1,
+  "reads_whole_file": 0,
+  "reads_targeted": 1,
+  "reads_blocked_by_hook": 0,
+  "sandbox_blocks": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {},
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 0,
+  "lines_entered_context": 65,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 3,
+  "files_read": [
+   "LocalLog.java"
+  ],
+  "tool_latency_ms": {
+   "Grep": 80,
+   "Read": 41
+  },
+  "api_gap_ms_p50": 2655,
+  "api_gap_ms_max": 2655,
+  "final_text_chars": 373
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf4HS846zKE49ytXHYvS5",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5679,
+    "cache_read_input_tokens": 23995,
+    "output_tokens": 290,
+    "output_tokens_details": {
+     "thinking_tokens": 47
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5679
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 290,
+      "cache_read_input_tokens": 23995,
+      "cache_creation_input_tokens": 5679,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5679,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:32:44.605Z",
+   "blocks": [
+    "thinking",
+    "tool_use",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4HSRbndU2ydUcF9sbbj",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 7852,
+    "cache_read_input_tokens": 29674,
+    "output_tokens": 142,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 7852
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 142,
+      "cache_read_input_tokens": 29674,
+      "cache_creation_input_tokens": 7852,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 7852,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:32:48.018Z",
+   "blocks": [
+    "text",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4HSciXMUhn4fchDdaer",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1743,
+    "cache_read_input_tokens": 37526,
+    "output_tokens": 127,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1743
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 127,
+      "cache_read_input_tokens": 37526,
+      "cache_creation_input_tokens": 1743,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1743,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:32:51.474Z",
+   "blocks": [
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01EGrbHUxbt1n9siVB1LJgiC",
+   "name": "Grep",
+   "input": {
+    "pattern": "already exists",
+    "path": ".",
+    "output_mode": "content",
+    "-n": true,
+    "-i": true
+   },
+   "ts_use": "2026-09-15T00:32:45.569Z",
+   "request_id": "req_011Cf4HS846zKE49ytXHYvS5",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:32:45.666Z",
+   "is_error": false,
+   "result_head": "core/src/main/scala/kafka/cluster/Partition.scala:328:          trace(s\"${if (isFutureReplica) \"Future UnifiedLog\" else \"UnifiedLog\"} already exists.\")\nraft/src/main/java/org/apache/kafka/raft/RaftLog.java:250:     * snapshot already exists or it is less than log start offset then return an\nraft/src",
+   "result_chars": 19292,
+   "result_lines": 0,
+   "latency_ms": 96,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01L74XTNtfZ18uM8H34fKZRH",
+   "name": "Grep",
+   "input": {
+    "pattern": "class LocalLog",
+    "path": ".",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-15T00:32:46.163Z",
+   "request_id": "req_011Cf4HS846zKE49ytXHYvS5",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:32:46.228Z",
+   "is_error": false,
+   "result_head": "Found 3 files\nstorage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java\nstorage/src/test/java/org/apache/kafka/server/log/remote/storage/LocalTieredStorageTest.java\nstorage/src/test/java/org/apache/kafka/storage/internals/log/LocalLogTest.java",
+   "result_chars": 260,
+   "result_lines": 0,
+   "latency_ms": 64,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01Cq4rZgLBfgBo4eDNyeAEP4",
+   "name": "Read",
+   "input": {
+    "file_path": "storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java",
+    "offset": 575,
+    "limit": 65
+   },
+   "ts_use": "2026-09-15T00:32:48.777Z",
+   "request_id": "req_011Cf4HSRbndU2ydUcF9sbbj",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:32:48.818Z",
+   "is_error": false,
+   "result_head": "575\t\n576\t    /**\n577\t     * Roll the log over to a new active segment starting with the current logEndOffset.\n578\t     * This will trim the index to the exact size of the number of entries it currently contains.\n579\t     *\n580\t     * @param expectedNextOffset The expected next offset after the segme",
+   "result_chars": 4732,
+   "result_lines": 65,
+   "latency_ms": 41,
+   "flags": [
+    "read_targeted"
+   ]
+  }
+ ]
+}

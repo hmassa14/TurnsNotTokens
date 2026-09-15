@@ -1,0 +1,239 @@
+{
+ "summary": {
+  "requests_total": 3,
+  "requests_main": 3,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 3,
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 12492,
+    "cache_read_input_tokens": 85617,
+    "output_tokens": 692
+   }
+  },
+  "tool_mix": {
+   "Grep": 3
+  },
+  "tool_calls_total": 3,
+  "reads_total": 0,
+  "reads_whole_file": 0,
+  "reads_targeted": 0,
+  "reads_blocked_by_hook": 0,
+  "sandbox_blocks": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {},
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 0,
+  "lines_entered_context": 0,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 3,
+  "files_read": [],
+  "tool_latency_ms": {
+   "Grep": 70
+  },
+  "api_gap_ms_p50": 1938,
+  "api_gap_ms_max": 1938,
+  "final_text_chars": 387
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf4H7MVx429vk7gTBGo2F",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5687,
+    "cache_read_input_tokens": 23995,
+    "output_tokens": 320,
+    "output_tokens_details": {
+     "thinking_tokens": 90
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5687
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 320,
+      "cache_read_input_tokens": 23995,
+      "cache_creation_input_tokens": 5687,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5687,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:28:29.297Z",
+   "blocks": [
+    "thinking",
+    "tool_use",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4H7bbHBw4c84ecpZFvB",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 2258,
+    "cache_read_input_tokens": 29682,
+    "output_tokens": 195,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 2258
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 195,
+      "cache_read_input_tokens": 29682,
+      "cache_creation_input_tokens": 2258,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 2258,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:28:32.794Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4H7k4Wrs8FM9yF4gEDW",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 4547,
+    "cache_read_input_tokens": 31940,
+    "output_tokens": 177,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 4547
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 177,
+      "cache_read_input_tokens": 31940,
+      "cache_creation_input_tokens": 4547,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 4547,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:28:34.528Z",
+   "blocks": [
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01FJ6gq1b89YXWjQmEbv5Zqr",
+   "name": "Grep",
+   "input": {
+    "pattern": "REBOOTSTRAP",
+    "path": ".",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-15T00:28:30.097Z",
+   "request_id": "req_011Cf4H7MVx429vk7gTBGo2F",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:28:30.194Z",
+   "is_error": false,
+   "result_head": "Found 21 files\nclients/src/main/java/org/apache/kafka/clients/admin/AdminClientConfig.java\nclients/src/main/java/org/apache/kafka/clients/admin/KafkaAdminClient.java\nclients/src/main/java/org/apache/kafka/clients/ClientUtils.java\nclients/src/main/java/org/apache/kafka/clients/CommonClientConfigs.jav",
+   "result_chars": 1563,
+   "result_lines": 0,
+   "latency_ms": 97,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01QdH6RpJM2859Pih7HSNay6",
+   "name": "Grep",
+   "input": {
+    "pattern": "metadata.recovery.strategy|MetadataRecoveryStrategy",
+    "path": ".",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-15T00:28:30.778Z",
+   "request_id": "req_011Cf4H7MVx429vk7gTBGo2F",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:28:30.855Z",
+   "is_error": false,
+   "result_head": "Found 31 files\nclients/src/main/java/org/apache/kafka/clients/admin/AdminClientConfig.java\nclients/src/main/java/org/apache/kafka/clients/admin/KafkaAdminClient.java\nclients/src/main/java/org/apache/kafka/clients/ClientUtils.java\nclients/src/main/java/org/apache/kafka/clients/CommonClientConfigs.jav",
+   "result_chars": 2423,
+   "result_lines": 0,
+   "latency_ms": 76,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01TVfvse9JG5FVPqbNwVSHfn",
+   "name": "Grep",
+   "input": {
+    "pattern": "rebootstrap|REBOOTSTRAP|metadataRecoveryStrategy",
+    "path": "clients/src/main/java/org/apache/kafka/clients/NetworkClient.java",
+    "output_mode": "content",
+    "-n": true,
+    "-C": 4
+   },
+   "ts_use": "2026-09-15T00:28:32.794Z",
+   "request_id": "req_011Cf4H7bbHBw4c84ecpZFvB",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:28:32.831Z",
+   "is_error": false,
+   "result_head": "124-\n125-    /* time in ms to wait before retrying to create connection to a server */\n126-    private final long reconnectBackoffMs;\n127-\n128:    /* Timeout starting from an attempt to fetch metadata after which client rebootstraps */\n129:    private final long rebootstrapTriggerMs;\n130-\n131:    pr",
+   "result_chars": 11541,
+   "result_lines": 0,
+   "latency_ms": 37,
+   "flags": []
+  }
+ ]
+}

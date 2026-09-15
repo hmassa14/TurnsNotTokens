@@ -11,6 +11,7 @@ figures page or for rendering to PNG.
 import html
 import json
 import os
+import re
 import sys
 
 RATES = {"haiku": (1.0, 5.0), "sonnet": (2.0, 10.0), "opus": (5.0, 25.0), "fable": (10.0, 50.0)}
@@ -120,7 +121,9 @@ def render_run(run_dir, rows=None, tokens=True, label=None):
             p(f'<div class="col"><span class="lbl">Model decided</span>{"(thought first) " if thinking else ""}{html.escape(dec)}<div class="meta">{u.get("output_tokens", 0)} output tokens</div></div>')
             kind, text = describe_result(t)
             if kind == "hook":
-                p(f'<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read. The model got this instead of the file:<div class="quote">{html.escape(text)}</div></div>')
+                mm = re.match(r"File is (\d+) lines \(threshold: (\d+)\)", text or "")
+                seen = f"{mm.group(1)} &gt; {mm.group(2)}" if mm else "the line count over the threshold"
+                p(f'<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw {seen}, and refused the read. The model got this instead of the file:<div class="quote">{html.escape(text)}</div></div>')
             elif kind == "error":
                 p(f'<div class="col"><span class="lbl">Tool returned an error</span><div class="quote">{html.escape(text[:240])}</div></div>')
             else:

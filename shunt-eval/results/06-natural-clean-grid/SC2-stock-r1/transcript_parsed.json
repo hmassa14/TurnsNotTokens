@@ -1,0 +1,665 @@
+{
+ "summary": {
+  "requests_total": 10,
+  "requests_main": 10,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 10,
+    "input_tokens": 20,
+    "cache_creation_input_tokens": 32718,
+    "cache_read_input_tokens": 360525,
+    "output_tokens": 6730
+   }
+  },
+  "tool_mix": {
+   "Grep": 6,
+   "Read": 3
+  },
+  "tool_calls_total": 9,
+  "reads_total": 3,
+  "reads_whole_file": 1,
+  "reads_targeted": 2,
+  "reads_blocked_by_hook": 0,
+  "sandbox_blocks": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {},
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 0,
+  "lines_entered_context": 1082,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 9,
+  "files_read": [
+   "GroupCoordinatorRecordHelpers.java",
+   "GroupCoordinatorShard.java",
+   "StreamsCoordinatorRecordHelpers.java"
+  ],
+  "tool_latency_ms": {
+   "Grep": 40,
+   "Read": 76
+  },
+  "api_gap_ms_p50": 2380,
+  "api_gap_ms_max": 15984,
+  "final_text_chars": 3762
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf4Jc1dYA39kJEVn8PxyX",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5571,
+    "cache_read_input_tokens": 23995,
+    "output_tokens": 224,
+    "output_tokens_details": {
+     "thinking_tokens": 57
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5571
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 224,
+      "cache_read_input_tokens": 23995,
+      "cache_creation_input_tokens": 5571,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5571,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:48:04.574Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4JcDJ1sADuoNymrpZrG",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 363,
+    "cache_read_input_tokens": 29566,
+    "output_tokens": 235,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 363
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 235,
+      "cache_read_input_tokens": 29566,
+      "cache_creation_input_tokens": 363,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 363,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:48:08.091Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4JcNqk9jgdMwyuJpxse",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 717,
+    "cache_read_input_tokens": 29929,
+    "output_tokens": 168,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 717
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 168,
+      "cache_read_input_tokens": 29929,
+      "cache_creation_input_tokens": 717,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 717,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:48:09.801Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4JcWRQLjkriURQ6NjFh",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 3531,
+    "cache_read_input_tokens": 30646,
+    "output_tokens": 272,
+    "output_tokens_details": {
+     "thinking_tokens": 124
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 3531
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 272,
+      "cache_read_input_tokens": 30646,
+      "cache_creation_input_tokens": 3531,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 3531,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:48:11.964Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4JcjVDXQUQPjEUu1mPk",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 527,
+    "cache_read_input_tokens": 34177,
+    "output_tokens": 207,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 527
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 207,
+      "cache_read_input_tokens": 34177,
+      "cache_creation_input_tokens": 527,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 527,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:48:14.846Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4JcsuyJwAzRPsWCrbff",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1320,
+    "cache_read_input_tokens": 34704,
+    "output_tokens": 322,
+    "output_tokens_details": {
+     "thinking_tokens": 110
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1320
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 322,
+      "cache_read_input_tokens": 34704,
+      "cache_creation_input_tokens": 1320,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1320,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:48:17.266Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4Jd9Rd4RTX6rvDNwoSK",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 855,
+    "cache_read_input_tokens": 36024,
+    "output_tokens": 502,
+    "output_tokens_details": {
+     "thinking_tokens": 373
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 855
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 502,
+      "cache_read_input_tokens": 36024,
+      "cache_creation_input_tokens": 855,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 855,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:48:23.143Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4JdZZSf19jQUZcaCePN",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 14326,
+    "cache_read_input_tokens": 36879,
+    "output_tokens": 415,
+    "output_tokens_details": {
+     "thinking_tokens": 179
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 14326
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 415,
+      "cache_read_input_tokens": 36879,
+      "cache_creation_input_tokens": 14326,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 14326,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:48:26.837Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4JduZE1ZdeED3c8fE5u",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 2195,
+    "cache_read_input_tokens": 51205,
+    "output_tokens": 2371,
+    "output_tokens_details": {
+     "thinking_tokens": 2194
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 2195
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 2371,
+      "cache_read_input_tokens": 51205,
+      "cache_creation_input_tokens": 2195,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 2195,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:48:44.794Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4JfCcffvkVJtP4XJHzD",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 3313,
+    "cache_read_input_tokens": 53400,
+    "output_tokens": 2014,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 3313
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 2014,
+      "cache_read_input_tokens": 53400,
+      "cache_creation_input_tokens": 3313,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 3313,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:48:59.793Z",
+   "blocks": [
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01XBB89bgk877kJKX4BBDpY8",
+   "name": "Grep",
+   "input": {
+    "pattern": "replay",
+    "path": "/var/tmp/shunt-ws/SC2__natural__stock__r1__20260915-004756",
+    "glob": "*GroupCoordinatorShard*",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-15T00:48:05.801Z",
+   "request_id": "req_011Cf4Jc1dYA39kJEVn8PxyX",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:48:05.857Z",
+   "is_error": false,
+   "result_head": "Found 2 files\ngroup-coordinator/src/main/java/org/apache/kafka/coordinator/group/GroupCoordinatorShard.java\ngroup-coordinator/src/test/java/org/apache/kafka/coordinator/group/GroupCoordinatorShardTest.java",
+   "result_chars": 205,
+   "result_lines": 0,
+   "latency_ms": 55,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01AYWjNRZoTLSUrds5LQyYQH",
+   "name": "Grep",
+   "input": {
+    "pattern": "void replay|case [A-Z_]+_RECORD|groupMetadataManager\\.replay|offsetMetadataManager\\.replay",
+    "path": "/var/tmp/shunt-ws/SC2__natural__stock__r1__20260915-004756/group-coordinator/src/main/java/org/apache/kafka/coordinator/group/GroupCoordinatorShard.java",
+    "output_mode": "content",
+    "-n": true
+   },
+   "ts_use": "2026-09-15T00:48:08.091Z",
+   "request_id": "req_011Cf4JcDJ1sADuoNymrpZrG",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:48:08.128Z",
+   "is_error": false,
+   "result_head": "1298:    public void replay(\n1317:                offsetMetadataManager.replay(\n1326:                offsetMetadataManager.replay(\n1335:                groupMetadataManager.replay(\n1342:                groupMetadataManager.replay(\n1349:                groupMetadataManager.replay(\n1356:              ",
+   "result_chars": 1262,
+   "result_lines": 0,
+   "latency_ms": 36,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_0128B3TVr7BZzSbeGdwvSyQJ",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/SC2__natural__stock__r1__20260915-004756/group-coordinator/src/main/java/org/apache/kafka/coordinator/group/GroupCoordinatorShard.java",
+    "offset": 1290,
+    "limit": 185
+   },
+   "ts_use": "2026-09-15T00:48:09.801Z",
+   "request_id": "req_011Cf4JcNqk9jgdMwyuJpxse",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:48:09.834Z",
+   "is_error": false,
+   "result_head": "1290\t     * @param offset        The offset of the record in the log.\n1291\t     * @param producerId    The producer id.\n1292\t     * @param producerEpoch The producer epoch.\n1293\t     * @param record        The record to apply to the state machine.\n1294\t     * @throws RuntimeException\n1295\t     */\n12",
+   "result_chars": 8189,
+   "result_lines": 185,
+   "latency_ms": 32,
+   "flags": [
+    "read_targeted"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01WCUSDTTaeThtWnQLghhYyc",
+   "name": "Grep",
+   "input": {
+    "pattern": "class.*RecordHelpers",
+    "path": "/var/tmp/shunt-ws/SC2__natural__stock__r1__20260915-004756/group-coordinator",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-15T00:48:12.843Z",
+   "request_id": "req_011Cf4JcWRQLjkriURQ6NjFh",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:48:12.885Z",
+   "is_error": false,
+   "result_head": "Found 4 files\ngroup-coordinator/src/main/java/org/apache/kafka/coordinator/group/GroupCoordinatorRecordHelpers.java\ngroup-coordinator/src/main/java/org/apache/kafka/coordinator/group/streams/StreamsCoordinatorRecordHelpers.java\ngroup-coordinator/src/test/java/org/apache/kafka/coordinator/group/Group",
+   "result_chars": 449,
+   "result_lines": 0,
+   "latency_ms": 42,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01NRfVNFWWVFKPJKyVwy5JH8",
+   "name": "Grep",
+   "input": {
+    "pattern": "public static CoordinatorRecord new",
+    "path": "/var/tmp/shunt-ws/SC2__natural__stock__r1__20260915-004756/group-coordinator/src/main/java/org/apache/kafka/coordinator/group/GroupCoordinatorRecordHelpers.java",
+    "output_mode": "content",
+    "-n": true
+   },
+   "ts_use": "2026-09-15T00:48:14.846Z",
+   "request_id": "req_011Cf4JcjVDXQUQPjEUu1mPk",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:48:14.886Z",
+   "is_error": false,
+   "result_head": "82:    public static CoordinatorRecord newConsumerGroupMemberSubscriptionRecord(\n115:    public static CoordinatorRecord newConsumerGroupMemberSubscriptionTombstoneRecord(\n132:    public static CoordinatorRecord newConsumerGroupSubscriptionMetadataTombstoneRecord(\n149:    public static CoordinatorRe",
+   "result_chars": 2432,
+   "result_lines": 0,
+   "latency_ms": 39,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_013wcpYimf2wNksbTybNp32m",
+   "name": "Grep",
+   "input": {
+    "pattern": "public static CoordinatorRecord new",
+    "path": "/var/tmp/shunt-ws/SC2__natural__stock__r1__20260915-004756/group-coordinator/src/main/java/org/apache/kafka/coordinator/group/streams/StreamsCoordinatorRecordHelpers.java",
+    "output_mode": "content",
+    "-n": true
+   },
+   "ts_use": "2026-09-15T00:48:18.472Z",
+   "request_id": "req_011Cf4JcsuyJwAzRPsWCrbff",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:48:18.505Z",
+   "is_error": false,
+   "result_head": "47:    public static CoordinatorRecord newStreamsGroupMemberRecord(\n85:    public static CoordinatorRecord newStreamsGroupMemberTombstoneRecord(\n99:    public static CoordinatorRecord newStreamsGroupMetadataRecord(\n139:    public static CoordinatorRecord newStreamsGroupEpochTombstoneRecord(\n150:    ",
+   "result_chars": 1097,
+   "result_lines": 0,
+   "latency_ms": 33,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01NAJsienZNAcf4u6rgGGXyV",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/SC2__natural__stock__r1__20260915-004756/group-coordinator/src/main/java/org/apache/kafka/coordinator/group/GroupCoordinatorRecordHelpers.java"
+   },
+   "ts_use": "2026-09-15T00:48:23.998Z",
+   "request_id": "req_011Cf4Jd9Rd4RTX6rvDNwoSK",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:48:24.161Z",
+   "is_error": false,
+   "result_head": "1\t/*\n2\t * Licensed to the Apache Software Foundation (ASF) under one or more\n3\t * contributor license agreements. See the NOTICE file distributed with\n4\t * this work for additional information regarding copyright ownership.\n5\t * The ASF licenses this file to You under the Apache License, Version 2.0",
+   "result_chars": 34782,
+   "result_lines": 842,
+   "latency_ms": 163,
+   "flags": [
+    "read_whole"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01GjfLmrPFx47bA9njqqDuLZ",
+   "name": "Grep",
+   "input": {
+    "pattern": "ConsumerGroupPartitionMetadata|newConsumerGroupSubscriptionMetadata",
+    "path": "/var/tmp/shunt-ws/SC2__natural__stock__r1__20260915-004756/group-coordinator/src/main/java/org/apache/kafka/coordinator/group",
+    "output_mode": "content",
+    "-n": true,
+    "glob": "*.java"
+   },
+   "ts_use": "2026-09-15T00:48:28.771Z",
+   "request_id": "req_011Cf4JdZZSf19jQUZcaCePN",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:48:28.809Z",
+   "is_error": false,
+   "result_head": "group-coordinator/src/main/java/org/apache/kafka/coordinator/group/modern/consumer/ConsumerGroup.java:773:        records.add(GroupCoordinatorRecordHelpers.newConsumerGroupSubscriptionMetadataTombstoneRecord(groupId));\ngroup-coordinator/src/main/java/org/apache/kafka/coordinator/group/modern/consume",
+   "result_chars": 3878,
+   "result_lines": 0,
+   "latency_ms": 38,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01Cd6pdqxF5KAEkVthHcq4QA",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/SC2__natural__stock__r1__20260915-004756/group-coordinator/src/main/java/org/apache/kafka/coordinator/group/streams/StreamsCoordinatorRecordHelpers.java",
+    "offset": 95,
+    "limit": 55
+   },
+   "ts_use": "2026-09-15T00:48:46.357Z",
+   "request_id": "req_011Cf4JduZE1ZdeED3c8fE5u",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:48:46.392Z",
+   "is_error": false,
+   "result_head": "95\t                .setMemberId(memberId)\n96\t        );\n97\t    }\n98\t\n99\t    public static CoordinatorRecord newStreamsGroupMetadataRecord(\n100\t        String groupId,\n101\t        int newGroupEpoch,\n102\t        long metadataHash,\n103\t        int validatedTopologyEpoch,\n104\t        Map<String, String>",
+   "result_chars": 2217,
+   "result_lines": 55,
+   "latency_ms": 34,
+   "flags": [
+    "read_targeted"
+   ]
+  }
+ ]
+}

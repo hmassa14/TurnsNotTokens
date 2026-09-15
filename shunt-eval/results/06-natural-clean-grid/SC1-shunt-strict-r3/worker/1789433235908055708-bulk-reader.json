@@ -1,0 +1,102 @@
+{
+  "duration_api_ms": 15922,
+  "stop_reason": "end_turn",
+  "session_id": "dcaa2de8-6489-574c-aeef-bb9a81f8414e",
+  "total_cost_usd": 0.02316575,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 11527,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 1751,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 11527
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 1751,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 11527,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 11527,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5": {
+      "inputTokens": 2,
+      "outputTokens": 1751,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 11527,
+      "webSearchRequests": 0,
+      "costUSD": 0.02316575,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "# Inner Classes Implementing EventQueue.Event\n\n## Initial State Value\n- **Line 131**: `private volatile BrokerState state = BrokerState.NOT_RUNNING;`\n\n---\n\n## Event Classes (in order of appearance)\n\n### 1. ResendBrokerRegistrationEvent\n- **Lines 303-309**\n- **Triggered by**: Line 300 — `eventQueue.append(new ResendBrokerRegistrationEvent())` from public method `resendBrokerRegistration()`\n- **State transitions in run()**: None (does not set state)\n- **Other actions**: Sets `registered = false` (line 306), calls `scheduleNextCommunicationImmediately()` (line 307)\n\n### 2. BeginControlledShutdownEvent\n- **Lines 335-354**\n- **Triggered by**: Line 361 — `eventQueue.append(new BeginControlledShutdownEvent())` from public method `beginControlledShutdown()`\n- **State transitions in run()**:\n  - **Line 343**: `state = BrokerState.PENDING_CONTROLLED_SHUTDOWN;` (when current state is RUNNING)\n  - Does not modify state when already PENDING_CONTROLLED_SHUTDOWN or in default cases (those call `beginShutdown()`)\n\n### 3. SetReadyToUnfenceEvent\n- **Lines 379-385**\n- **Triggered by**: Line 272 — `eventQueue.append(new SetReadyToUnfenceEvent())` from public method `setReadyToUnfence()`\n- **State transitions in run()**: None (does not set state)\n- **Other actions**: Sets `readyToUnfence = true` (line 382), calls `scheduleNextCommunicationImmediately()` (line 383)\n\n### 4. OfflineDirEvent\n- **Lines 387-402**\n- **Triggered by**: Line 282 — `eventQueue.append(new OfflineDirEvent(directory))` from public method `propagateDirectoryFailure()`\n- **State transitions in run()**: None (does not set state)\n- **Other actions**: Adds directory to `offlineDirs` map (line 397), conditionally calls `scheduleNextCommunicationImmediately()` (line 399)\n\n### 5. OfflineDirBrokerFailureEvent\n- **Lines 404-419**\n- **Triggered by**: Line 286 — `eventQueue.scheduleDeferred(...)` with `new OfflineDirBrokerFailureEvent(directory)` from public method `propagateDirectoryFailure()`\n- **State transitions in run()**: None (does not set state)\n- **Other actions**: Calls `shutdownHook.run()` if directory not successfully communicated (line 416)\n\n### 6. CordonedDirEvent\n- **Lines 421-436**\n- **Triggered by**: Line 295 — `eventQueue.append(new CordonedDirEvent(directories))` from public method `propagateDirectoryCordoned()`\n- **State transitions in run()**: None (does not set state)\n- **Other actions**: Sets `cordonedLogDirs = dirs` (line 431), conditionally calls `scheduleNextCommunicationImmediately()` (line 433)\n\n### 7. StartupEvent\n- **Lines 438-473**\n- **Triggered by**: Line 267 — `eventQueue.append(new StartupEvent(...))` from public method `start()`\n- **State transitions in run()**:\n  - **Line 463**: `state = BrokerState.STARTING;`\n\n### 8. BrokerRegistrationResponseEvent\n- **Lines 519-562**\n- **Triggered by**:\n  - Line 509 — `eventQueue.prepend(new BrokerRegistrationResponseEvent(response, false))` from `BrokerRegistrationResponseHandler.onComplete()`\n  - Line 515 — `eventQueue.prepend(new BrokerRegistrationResponseEvent(null, true))` from `BrokerRegistrationResponseHandler.onTimeout()`\n- **State transitions in run()**: None (does not set state)\n- **Other actions**: Sets `brokerEpoch` (line 551), `registered = true` (line 552), `initialRegistrationSucceeded = true` (line 553) on success\n\n### 9. BrokerHeartbeatResponseEvent\n- **Lines 607-709**\n- **Triggered by**:\n  - Line 597 — `eventQueue.prepend(new BrokerHeartbeatResponseEvent(response, false, currentOfflineDirs))` from `BrokerHeartbeatResponseHandler.onComplete()`\n  - Line 603 — `eventQueue.prepend(new BrokerHeartbeatResponseEvent(null, true, currentOfflineDirs))` from `BrokerHeartbeatResponseHandler.onTimeout()`\n- **State transitions in run()** (within switch on line 645):\n  - **Line 649**: `state = BrokerState.RECOVERY;` (when state is STARTING and `responseData.isCaughtUp()`)\n  - **Line 668**: `state = BrokerState.RUNNING;` (when state is RECOVERY and `!responseData.isFenced()`)\n\n### 10. RegistrationTimeoutEvent\n- **Lines 732-740**\n- **Triggered by**: Line 467 — `eventQueue.scheduleDeferred(\"initialRegistrationTimeout\", ..., new RegistrationTimeoutEvent())`\n- **State transitions in run()**: None (does not set state)\n- **Other actions**: Calls `eventQueue.beginShutdown()` if registration failed (line 737)\n\n### 11. CommunicationEvent\n- **Lines 742-754**\n- **Triggered by**: Line 729 — `eventQueue.scheduleDeferred(\"communication\", ..., new CommunicationEvent())` from `scheduleNextCommunication()`\n- **State transitions in run()**: None (does not set state)\n- **Other actions**: Sends broker heartbeat or registration depending on `registered` flag (lines 749-751)\n\n### 12. ShutdownEvent\n- **Lines 756-769**\n- **Triggered by**: Line 247 — Constructor passes `new ShutdownEvent()` to KafkaEventQueue as shutdown event\n- **State transitions in run()**:\n  - **Line 760**: `state = BrokerState.SHUTTING_DOWN;`\n\n---\n\n## Summary of All State Transitions\n\n| Line | From State | To State | Context |\n|------|-----------|----------|---------|\n| 131 | — | NOT_RUNNING | Initial declaration |\n| 463 | NOT_RUNNING | STARTING | StartupEvent.run() |\n| 649 | STARTING | RECOVERY | BrokerHeartbeatResponseEvent.run() (when caught up) |\n| 668 | RECOVERY | RUNNING | BrokerHeartbeatResponseEvent.run() (when unfenced) |\n| 343 | RUNNING | PENDING_CONTROLLED_SHUTDOWN | BeginControlledShutdownEvent.run() |\n| 760 | any | SHUTTING_DOWN | ShutdownEvent.run() |",
+  "ttft_ms": 15960,
+  "type": "result",
+  "duration_ms": 16008,
+  "uuid": "dff2a1a9-5b65-4183-b611-6355d9523243",
+  "ttft_stream_ms": 615,
+  "time_to_request_ms": 85,
+  "first_content_frame_ms": 615,
+  "time_to_request_from_spawn_ms": 6210526,
+  "warm_spare_claimed": false,
+  "time_origin_ms": 1789433235915.956,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "transport": "cli",
+  "model": "claude-haiku-4-5"
+}

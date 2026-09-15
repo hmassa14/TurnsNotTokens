@@ -1,0 +1,286 @@
+{
+ "summary": {
+  "requests_total": 4,
+  "requests_main": 4,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 4,
+    "input_tokens": 8,
+    "cache_creation_input_tokens": 8829,
+    "cache_read_input_tokens": 115936,
+    "output_tokens": 752
+   }
+  },
+  "tool_mix": {
+   "Grep": 2,
+   "Edit": 1
+  },
+  "tool_calls_total": 3,
+  "reads_total": 0,
+  "reads_whole_file": 0,
+  "reads_targeted": 0,
+  "reads_blocked_by_hook": 0,
+  "sandbox_blocks": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {},
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 1,
+  "lines_entered_context": 0,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 3,
+  "files_read": [],
+  "tool_latency_ms": {
+   "Grep": 57,
+   "Edit": 49
+  },
+  "api_gap_ms_p50": 1986,
+  "api_gap_ms_max": 2547,
+  "final_text_chars": 200
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf5FLqDDAyDKvc2RrwbUh",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5719,
+    "cache_read_input_tokens": 23995,
+    "output_tokens": 118,
+    "output_tokens_details": {
+     "thinking_tokens": 32
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5719
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 118,
+      "cache_read_input_tokens": 23995,
+      "cache_creation_input_tokens": 5719,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5719,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T12:45:54.677Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5FM3CHFtvCdyvyEAmbn",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 203,
+    "cache_read_input_tokens": 29714,
+    "output_tokens": 208,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 203
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 208,
+      "cache_read_input_tokens": 29714,
+      "cache_creation_input_tokens": 203,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 203,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T12:45:57.736Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5FMEF3iNtc6r8nqi76G",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 2393,
+    "cache_read_input_tokens": 29917,
+    "output_tokens": 374,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 2393
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 374,
+      "cache_read_input_tokens": 29917,
+      "cache_creation_input_tokens": 2393,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 2393,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T12:45:59.683Z",
+   "blocks": [
+    "text",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5FMZgMADKNLcR4Pwgqe",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 514,
+    "cache_read_input_tokens": 32310,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 514
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 52,
+      "cache_read_input_tokens": 32310,
+      "cache_creation_input_tokens": 514,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 514,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T12:46:04.337Z",
+   "blocks": [
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01RW3qCeAEpNUqaVpp4v5f42",
+   "name": "Grep",
+   "input": {
+    "pattern": "KAFKA-6388",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-15T12:45:55.112Z",
+   "request_id": "req_011Cf5FLqDDAyDKvc2RrwbUh",
+   "agent": "main",
+   "ts_result": "2026-09-15T12:45:55.189Z",
+   "is_error": false,
+   "result_head": "Found 1 file\nstorage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java",
+   "result_chars": 87,
+   "result_lines": 0,
+   "latency_ms": 76,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01UU2AcxDk6FvpKJT7wZMHEE",
+   "name": "Grep",
+   "input": {
+    "pattern": "KAFKA-6388|Rolled new log segment",
+    "path": "storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java",
+    "output_mode": "content",
+    "-n": true,
+    "-B": 15,
+    "-A": 30
+   },
+   "ts_use": "2026-09-15T12:45:57.736Z",
+   "request_id": "req_011Cf5FM3CHFtvCdyvyEAmbn",
+   "agent": "main",
+   "ts_result": "2026-09-15T12:45:57.775Z",
+   "is_error": false,
+   "result_head": "581-     *\n582-     * @return The newly rolled segment\n583-     */\n584-    public LogSegment roll(Long expectedNextOffset) {\n585-        return maybeHandleIOException(\n586-            () -> \"Error while rolling log segment for \" + topicPartition + \" in dir \" + dir.getParent(),\n587-            () -> ",
+   "result_chars": 6380,
+   "result_lines": 0,
+   "latency_ms": 39,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01Lb4Afvu6S7aNk6sYMQmAXo",
+   "name": "Edit",
+   "input": {
+    "replace_all": false,
+    "file_path": "/var/tmp/shunt-ws/HM3__natural__shunt__r3__20260915-124544/storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java",
+    "old_string": "                        updateLogEndOffset(nextOffsetMetadata.messageOffset);\n                        logger.info(\"Rolled new log segment at offset {} in {} ms.\", newOffset, time.hiResClockMs() - start);\n                        return newSegment;\n                    } else {",
+    "new_string": "                        updateLogEndOffset(nextOffsetMetadata.messageOffset);\n                        logger.warn(\"Rolled new log segment at offset {} in {} ms.\", newOffset, time.hiResClockMs() - start);\n                        return newSegment;\n                    } else {"
+   },
+   "ts_use": "2026-09-15T12:46:02.300Z",
+   "request_id": "req_011Cf5FMEF3iNtc6r8nqi76G",
+   "agent": "main",
+   "ts_result": "2026-09-15T12:46:02.350Z",
+   "is_error": false,
+   "result_head": "The file /var/tmp/shunt-ws/HM3__natural__shunt__r3__20260915-124544/storage/src/main/java/org/apache/kafka/storage/internals/log/LocalLog.java has been updated successfully. (file state is current in your context \u2014 no need to Read it back)",
+   "result_chars": 239,
+   "result_lines": 0,
+   "latency_ms": 49,
+   "flags": [
+    "edit"
+   ]
+  }
+ ]
+}

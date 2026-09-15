@@ -1,0 +1,102 @@
+{
+  "duration_api_ms": 19567,
+  "stop_reason": "end_turn",
+  "session_id": "dcaa2de8-6489-574c-aeef-bb9a81f8414e",
+  "total_cost_usd": 0.028472,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 12940,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 2459,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 12940
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 2459,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 12940,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 12940,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5": {
+      "inputTokens": 2,
+      "outputTokens": 2459,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 12940,
+      "webSearchRequests": 0,
+      "costUSD": 0.028472,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "# TimestampConverterTest.java Structure\n\n## 1) License Header, Package, Imports\n\n```java\n/*\n * Licensed to the Apache Software Foundation (ASF) under one or more\n * contributor license agreements. See the NOTICE file distributed with\n * this work for additional information regarding copyright ownership.\n * The ASF licenses this file to You under the Apache License, Version 2.0\n * (the \"License\"); you may not use this file except in compliance with\n * the License. You may obtain a copy of the License at\n *\n *    http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\npackage org.apache.kafka.connect.transforms;\n\nimport org.apache.kafka.common.config.ConfigException;\nimport org.apache.kafka.common.utils.internals.AppInfoParser;\nimport org.apache.kafka.connect.data.Date;\nimport org.apache.kafka.connect.data.Schema;\nimport org.apache.kafka.connect.data.SchemaBuilder;\nimport org.apache.kafka.connect.data.Struct;\nimport org.apache.kafka.connect.data.Time;\nimport org.apache.kafka.connect.data.Timestamp;\nimport org.apache.kafka.connect.source.SourceRecord;\n\nimport org.junit.jupiter.api.AfterEach;\nimport org.junit.jupiter.api.Test;\nimport org.junit.jupiter.params.ParameterizedTest;\nimport org.junit.jupiter.params.provider.Arguments;\nimport org.junit.jupiter.params.provider.MethodSource;\n\nimport java.util.Calendar;\nimport java.util.GregorianCalendar;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.TimeZone;\nimport java.util.stream.Stream;\n\nimport static org.apache.kafka.connect.transforms.util.Requirements.requireStruct;\nimport static org.junit.jupiter.api.Assertions.assertDoesNotThrow;\nimport static org.junit.jupiter.api.Assertions.assertEquals;\nimport static org.junit.jupiter.api.Assertions.assertNull;\nimport static org.junit.jupiter.api.Assertions.assertThrows;\n```\n\n## 2) Class Declaration and Instance Fields\n\n```java\npublic class TimestampConverterTest {\n    private static final TimeZone UTC = TimeZone.getTimeZone(\"UTC\");\n    private static final Calendar EPOCH;\n    private static final Calendar TIME;\n    private static final Calendar DATE;\n    private static final Calendar DATE_PLUS_TIME;\n    private static final long DATE_PLUS_TIME_UNIX;\n    private static final long DATE_PLUS_TIME_UNIX_MICROS;\n    private static final long DATE_PLUS_TIME_UNIX_NANOS;\n    private static final long DATE_PLUS_TIME_UNIX_SECONDS;\n    private static final String STRING_DATE_FMT = \"yyyy MM dd HH mm ss SSS z\";\n    private static final String DATE_PLUS_TIME_STRING;\n\n    private final TimestampConverter<SourceRecord> xformKey = new TimestampConverter.Key<>();\n    private final TimestampConverter<SourceRecord> xformValue = new TimestampConverter.Value<>();\n```\n\n## 3) @AfterEach Teardown Method\n\n```java\n    @AfterEach\n    public void teardown() {\n        xformKey.close();\n        xformValue.close();\n    }\n```\n\n## 4) Representative Test Methods (2-3 examples)\n\n```java\n    @Test\n    public void testSchemalessIdentity() {\n        xformValue.configure(Map.of(TimestampConverter.TARGET_TYPE_CONFIG, \"Timestamp\"));\n        SourceRecord transformed = xformValue.apply(createRecordSchemaless(DATE_PLUS_TIME.getTime()));\n\n        assertNull(transformed.valueSchema());\n        assertEquals(DATE_PLUS_TIME.getTime(), transformed.value());\n    }\n\n    @Test\n    public void testWithSchemaTimestampToDate() {\n        xformValue.configure(Map.of(TimestampConverter.TARGET_TYPE_CONFIG, \"Date\"));\n        SourceRecord transformed = xformValue.apply(createRecordWithSchema(Timestamp.SCHEMA, DATE_PLUS_TIME.getTime()));\n\n        assertEquals(Date.SCHEMA, transformed.valueSchema());\n        assertEquals(DATE.getTime(), transformed.value());\n    }\n\n    @Test\n    public void testWithSchemaFieldConversion() {\n        Map<String, String> config = new HashMap<>();\n        config.put(TimestampConverter.TARGET_TYPE_CONFIG, \"Timestamp\");\n        config.put(TimestampConverter.FIELD_CONFIG, \"ts\");\n        xformValue.configure(config);\n\n        // ts field is a unix timestamp\n        Schema structWithTimestampFieldSchema = SchemaBuilder.struct()\n                .field(\"ts\", Schema.INT64_SCHEMA)\n                .field(\"other\", Schema.STRING_SCHEMA)\n                .build();\n        Struct original = new Struct(structWithTimestampFieldSchema);\n        original.put(\"ts\", DATE_PLUS_TIME_UNIX);\n        original.put(\"other\", \"test\");\n\n        SourceRecord transformed = xformValue.apply(createRecordWithSchema(structWithTimestampFieldSchema, original));\n\n        Schema expectedSchema = SchemaBuilder.struct()\n                .field(\"ts\", Timestamp.SCHEMA)\n                .field(\"other\", Schema.STRING_SCHEMA)\n                .build();\n        assertEquals(expectedSchema, transformed.valueSchema());\n        assertEquals(DATE_PLUS_TIME.getTime(), ((Struct) transformed.value()).get(\"ts\"));\n        assertEquals(\"test\", ((Struct) transformed.value()).get(\"other\"));\n    }\n```\n\n## 5) Config-Related Tests\n\n```java\n    @Test\n    public void testConfigNoTargetType() {\n        assertThrows(ConfigException.class, () -> xformValue.configure(Map.of()));\n    }\n\n    @Test\n    public void testConfigInvalidTargetType() {\n        assertThrows(ConfigException.class,\n            () -> xformValue.configure(Map.of(TimestampConverter.TARGET_TYPE_CONFIG, \"invalid\")));\n    }\n\n    @Test\n    public void testConfigValidUnixPrecision() {\n        Map<String, String> config = new HashMap<>();\n        config.put(TimestampConverter.TARGET_TYPE_CONFIG, \"unix\");\n        config.put(TimestampConverter.UNIX_PRECISION_CONFIG, \"seconds\");\n        assertDoesNotThrow(() -> xformValue.configure(config));\n    }\n\n    @Test\n    public void testConfigMissingFormat() {\n        assertThrows(ConfigException.class,\n            () -> xformValue.configure(Map.of(TimestampConverter.TARGET_TYPE_CONFIG, \"string\")));\n    }\n```\n\n## 6) JUnit Imports and Static Assertion Imports\n\n```java\nimport org.junit.jupiter.api.AfterEach;\nimport org.junit.jupiter.api.Test;\nimport org.junit.jupiter.params.ParameterizedTest;\nimport org.junit.jupiter.params.provider.Arguments;\nimport org.junit.jupiter.params.provider.MethodSource;\n\nimport static org.junit.jupiter.api.Assertions.assertDoesNotThrow;\nimport static org.junit.jupiter.api.Assertions.assertEquals;\nimport static org.junit.jupiter.api.Assertions.assertNull;\nimport static org.junit.jupiter.api.Assertions.assertThrows;\n```\n\n## 7) Null Record / Tombstone Handling Tests\n\n```java\n    @Test\n    public void testSchemalessNullValueToString() {\n        testSchemalessNullValueConversion(\"string\");\n        testSchemalessNullFieldConversion(\"string\");\n    }\n\n    private void testSchemalessNullValueConversion(String targetType) {\n        Map<String, String> config = new HashMap<>();\n        config.put(TimestampConverter.TARGET_TYPE_CONFIG, targetType);\n        config.put(TimestampConverter.FORMAT_CONFIG, STRING_DATE_FMT);\n        xformValue.configure(config);\n        SourceRecord transformed = xformValue.apply(createRecordSchemaless(null));\n\n        assertNull(transformed.valueSchema());\n        assertNull(transformed.value());\n    }\n\n    @Test\n    public void testWithSchemaNullValueToTimestamp() {\n        testWithSchemaNullValueConversion(\"Timestamp\", Schema.OPTIONAL_INT64_SCHEMA, TimestampConverter.OPTIONAL_TIMESTAMP_SCHEMA);\n        testWithSchemaNullValueConversion(\"Timestamp\", TimestampConverter.OPTIONAL_TIME_SCHEMA, TimestampConverter.OPTIONAL_TIMESTAMP_SCHEMA);\n        testWithSchemaNullValueConversion(\"Timestamp\", TimestampConverter.OPTIONAL_DATE_SCHEMA, TimestampConverter.OPTIONAL_TIMESTAMP_SCHEMA);\n        testWithSchemaNullValueConversion(\"Timestamp\", Schema.OPTIONAL_STRING_SCHEMA, TimestampConverter.OPTIONAL_TIMESTAMP_SCHEMA);\n        testWithSchemaNullValueConversion(\"Timestamp\", TimestampConverter.OPTIONAL_TIMESTAMP_SCHEMA, TimestampConverter.OPTIONAL_TIMESTAMP_SCHEMA);\n    }\n\n    private void testWithSchemaNullValueConversion(String targetType, Schema originalSchema, Schema expectedSchema) {\n        Map<String, String> config = new HashMap<>();\n        config.put(TimestampConverter.TARGET_TYPE_CONFIG, targetType);\n        config.put(TimestampConverter.FORMAT_CONFIG, STRING_DATE_FMT);\n        xformValue.configure(config);\n        SourceRecord transformed = xformValue.apply(createRecordWithSchema(originalSchema, null));\n\n        assertEquals(expectedSchema, transformed.valueSchema());\n        assertNull(transformed.value());\n    }\n```",
+  "ttft_ms": 19610,
+  "type": "result",
+  "duration_ms": 19648,
+  "uuid": "d83841f1-9879-42a4-ad20-9ffd830a7274",
+  "ttft_stream_ms": 621,
+  "time_to_request_ms": 78,
+  "first_content_frame_ms": 621,
+  "time_to_request_from_spawn_ms": 501123,
+  "warm_spare_claimed": false,
+  "time_origin_ms": 1789474972049.8904,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "transport": "cli",
+  "model": "claude-haiku-4-5"
+}

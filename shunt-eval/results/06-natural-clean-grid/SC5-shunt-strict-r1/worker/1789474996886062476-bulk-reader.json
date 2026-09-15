@@ -1,0 +1,102 @@
+{
+  "duration_api_ms": 7255,
+  "stop_reason": "end_turn",
+  "session_id": "dcaa2de8-6489-574c-aeef-bb9a81f8414e",
+  "total_cost_usd": 0.020202,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 12856,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 826,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 12856
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 826,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 12856,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 12856,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5": {
+      "inputTokens": 2,
+      "outputTokens": 826,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 12856,
+      "webSearchRequests": 0,
+      "costUSD": 0.020202,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "• **createRecordWithSchema(Schema schema, Object value)** — lines 732-734\n  - Code: `private SourceRecord createRecordWithSchema(Schema schema, Object value) { return new SourceRecord(null, null, \"topic\", 0, schema, value); }`\n  - Constructor arguments: `null, null, \"topic\", 0, schema, value`\n\n• **createRecordSchemaless(Object value)** — lines 736-738\n  - Code: `private SourceRecord createRecordSchemaless(Object value) { return createRecordWithSchema(null, value); }`\n  - Constructor arguments: delegates to `createRecordWithSchema(null, value)`\n\n• **Topic name and partition constant**\n  - Topic name: `\"topic\"` (string literal, line 733)\n  - Partition: `0` (integer literal, line 733)\n  - Not defined as a field constant; used directly in constructor calls\n\n• **Test method names (in order)**\n  - testConfigNoTargetType\n  - testConfigInvalidTargetType\n  - testConfigInvalidUnixPrecision\n  - testConfigValidUnixPrecision\n  - testConfigMissingFormat\n  - testConfigInvalidFormat\n  - testSchemalessIdentity\n  - testSchemalessTimestampToDate\n  - testSchemalessTimestampToTime\n  - testSchemalessTimestampToUnix\n  - testSchemalessTimestampToString\n  - testSchemalessDateToTimestamp\n  - testSchemalessTimeToTimestamp\n  - testSchemalessUnixToTimestamp\n  - testSchemalessStringToTimestamp\n  - testWithSchemaIdentity\n  - testWithSchemaTimestampToDate\n  - testWithSchemaTimestampToTime\n  - testWithSchemaTimestampToUnix\n  - testWithSchemaTimestampToString\n  - testSchemalessNullValueToString\n  - testSchemalessNullValueToDate\n  - testSchemalessNullValueToTimestamp\n  - testSchemalessNullValueToUnix\n  - testSchemalessNullValueToTime\n  - testWithSchemaNullValueToTimestamp\n  - testWithSchemaNullFieldToTimestamp\n  - testWithSchemaNullValueToUnix\n  - testWithSchemaNullFieldToUnix\n  - testWithSchemaNullValueToTime\n  - testWithSchemaNullFieldToTime\n  - testWithSchemaNullValueToDate\n  - testWithSchemaNullFieldToDate\n  - testWithSchemaNullValueToString\n  - testWithSchemaNullFieldToString\n  - testWithSchemaDateToTimestamp\n  - testWithSchemaTimeToTimestamp\n  - testWithSchemaUnixToTimestamp\n  - testWithSchemaStringToTimestamp\n  - testSchemalessFieldConversion\n  - testWithSchemaFieldConversion\n  - testWithSchemaNullFieldWithDefaultConversion\n  - testWithSchemaFieldConversion_Micros\n  - testWithSchemaFieldConversion_Nanos\n  - testWithSchemaFieldConversion_Seconds\n  - testSchemalessStringToUnix_Micros\n  - testSchemalessStringToUnix_Nanos\n  - testSchemalessStringToUnix_Seconds\n  - testKey\n  - testTimestampConverterVersionRetrievedFromAppInfoParser",
+  "ttft_ms": 7290,
+  "type": "result",
+  "duration_ms": 7340,
+  "uuid": "70efae2b-13dc-4166-9938-ed51fad2f681",
+  "ttft_stream_ms": 586,
+  "time_to_request_ms": 83,
+  "first_content_frame_ms": 586,
+  "time_to_request_from_spawn_ms": 525989,
+  "warm_spare_claimed": false,
+  "time_origin_ms": 1789474996894.164,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "transport": "cli",
+  "model": "claude-haiku-4-5"
+}

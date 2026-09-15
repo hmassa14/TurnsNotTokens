@@ -1,96 +1,120 @@
 <div class="sb">
 <section class="run stock">
-<h3><span class="arm">A · stock</span> 5 requests · $0.129 · 42 s · pass</h3>
+<h3><span class="arm">A · stock</span> 3 requests · $0.104 · 39 s · pass</h3>
 <div class="step">
-<div class="n">3</div>
+<div class="n">2</div>
 <div class="cols">
 <div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
-<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java`, the whole file<div class="meta">124 output tokens</div></div>
-<div class="col"><span class="lbl">Came back</span><div class="quote">771 numbered lines of the file</div><div class="meta">36,294 chars, 151 ms</div></div>
+<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java`, the whole file<div class="meta">113 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">771 numbered lines of the file</div><div class="meta">36,294 chars, 180 ms</div></div>
 </div>
-<div class="cost">running cost ≈ 5.0¢</div>
+<div class="cost">running cost ≈ 3.6¢</div>
 </div>
-<div class="skip">… request 5 skipped … running total 13.7¢</div>
+<div class="skip">… request 3 skipped … running total 11.2¢</div>
 </section>
 <section class="run hook">
-<h3><span class="arm">B · Spotify&#x27;s hook, enforced</span> 15 requests · $0.225 · 157 s · pass</h3>
+<h3><span class="arm">B · as shipped</span> 9 requests · $0.167 · 45 s · pass</h3>
 <div class="step">
 <div class="n">3</div>
 <div class="cols">
-<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
-<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java`, the whole file<div class="meta">128 output tokens</div></div>
-<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read. The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly.</div></div>
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Glob result</div>
+<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java`, the whole file<div class="meta">114 output tokens</div></div>
+<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read. The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly. If you need exact content for editing, re-read with an offset/limit for just the section you need.</div></div>
 </div>
-<div class="cost">running cost ≈ 4.8¢</div>
+<div class="cost">running cost ≈ 4.4¢</div>
 </div>
-<div class="skip">… request 4 skipped … running total 5.8¢</div>
+<div class="skip">… request 4 skipped … running total 5.3¢</div>
 <div class="step">
 <div class="n">5</div>
 <div class="cols">
 <div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
-<div class="col"><span class="lbl">Model decided</span>(thought first) Read `BrokerLifecycleManager.java` lines 1 to 351<div class="meta">412 output tokens</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Read `BrokerLifecycleManager.java` lines 120 to 400<div class="meta">224 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">280 numbered lines of the file</div><div class="meta">11,260 chars, 41 ms</div></div>
+</div>
+<div class="cost">running cost ≈ 6.5¢</div>
+</div>
+<div class="step">
+<div class="n">6</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Read result</div>
+<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java` lines 400 to 770<div class="meta">158 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">370 numbered lines of the file</div><div class="meta">19,636 chars, 32 ms</div></div>
+</div>
+<div class="cost">running cost ≈ 8.4¢</div>
+</div>
+<div class="skip">… request 9 skipped … running total 17.5¢</div>
+</section>
+<section class="run hook">
+<h3><span class="arm">C · as described</span> 9 requests · $0.124 · 65 s · pass</h3>
+<div class="step">
+<div class="n">2</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
+<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java`, the whole file<div class="meta">117 output tokens</div></div>
 <div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read. The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly.</div></div>
 </div>
-<div class="cost">running cost ≈ 7.1¢</div>
+<div class="cost">running cost ≈ 3.7¢</div>
+</div>
+<div class="skip">… request 4 skipped … running total 5.6¢</div>
+<div class="step">
+<div class="n">5</div>
+<div class="cols">
+<div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
+<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java` lines 1 to 141<div class="meta">180 output tokens</div></div>
+<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read. The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly.</div></div>
+</div>
+<div class="cost">running cost ≈ 6.7¢</div>
 </div>
 <div class="step">
 <div class="n">6</div>
 <div class="cols">
 <div class="col"><span class="lbl">Sent to the model</span>everything above + the hook&#x27;s message</div>
-<div class="col"><span class="lbl">Model decided</span>(thought first) Skill `bulk-reader`<div class="meta">504 output tokens</div></div>
-<div class="col"><span class="lbl">Came back</span><div class="quote">Launching skill: bulk-reader</div><div class="meta">28 chars, 45 ms</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Skill `bulk-reader`<div class="meta">351 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">Launching skill: bulk-reader</div><div class="meta">28 chars, 32 ms</div></div>
 </div>
-<div class="cost">running cost ≈ 8.4¢</div>
+<div class="cost">running cost ≈ 7.8¢</div>
 </div>
 <div class="step">
 <div class="n">7</div>
 <div class="cols">
 <div class="col"><span class="lbl">Sent to the model</span>everything above + that Skill result</div>
-<div class="col"><span class="lbl">Model decided</span>(thought first) Bash: `.claude/shunt/scripts/bulk-read --question &quot;Read this file in full and answer: (1) What Br`<div class="meta">511 output tokens</div></div>
-<div class="col"><span class="lbl">Came back</span><div class="quote"># Analysis of BrokerLifecycleManager.java
+<div class="col"><span class="lbl">Model decided</span>(thought first) Bash: `/var/tmp/shunt-ws/SC1__natural__shunt-strict__r3__20260915-004640/.claude/shunt/scripts/bu`<div class="meta">366 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote"># Inner Classes Implementing EventQueue.Event
 
-## (1) Initial BrokerState Value
-- **Line 154**: `private volatile BrokerState state = BrokerState.NOT_RUNNING;`
+## Initial State Value
+- **Line 131**: `private volatile BrokerState state = BrokerState.NOT_RUNNING;`
 
 ---
 
-## (2) Event Classes Implementing EventQueue.Event (in order)
+## Event Classes (in order of appearance)
 
-1. **Line 317**</div><div class="meta">7,656 chars, 75064 ms</div></div>
+### 1. ResendBrokerRegistrationEvent
+- **</div><div class="meta">5,478 chars, 18085 ms</div></div>
 </div>
-<div class="cost">running cost ≈ 9.9¢</div>
+<div class="cost">running cost ≈ 9.0¢</div>
 </div>
 <div class="step">
 <div class="n">8</div>
 <div class="cols">
 <div class="col"><span class="lbl">Sent to the model</span>everything above + that Bash result</div>
-<div class="col"><span class="lbl">Model decided</span>(thought first) Grep for `private class BeginControlledShutdownEvent|private class Bro` in `BrokerLifecycleManager.java`<div class="meta">519 output tokens</div></div>
-<div class="col"><span class="lbl">Came back</span><div class="quote">131:    private volatile BrokerState state = BrokerState.NOT_RUNNING;
-132-
-133-    /**
-134-     * A thread-safe callback function which gives this manager the current highest metadata
-135-     * offset.  This variable can only be read or wr</div><div class="meta">4,433 chars, 34 ms</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) Grep for `public void (start|beginControlledShutdown|resendBrokerRegis` in `BrokerLifecycleManager.java`<div class="meta">439 output tokens</div></div>
+<div class="col"><span class="lbl">Came back</span><div class="quote">241-        this.rack = config.rack();
+242-        this.initialTimeoutNs = MILLISECONDS.toNanos(config.initialRegistrationTimeoutMs());
+243:        this.eventQueue = new KafkaEventQueue(
+--
+245-                logContext,
+246-              </div><div class="meta">1,074 chars, 46 ms</div></div>
 </div>
-<div class="cost">running cost ≈ 12.1¢</div>
+<div class="cost">running cost ≈ 10.8¢</div>
 </div>
 <div class="step">
 <div class="n">9</div>
 <div class="cols">
 <div class="col"><span class="lbl">Sent to the model</span>everything above + that Grep result</div>
-<div class="col"><span class="lbl">Model decided</span>Read `BrokerLifecycleManager.java` lines 632 to 732<div class="meta">272 output tokens</div></div>
-<div class="col hook-hit"><span class="lbl">Hook intervened</span>PreToolUse ran <code>wc -l</code>, saw 770 &gt; 350, and refused the read. The model got this instead of the file:<div class="quote">File is 770 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly.</div></div>
+<div class="col"><span class="lbl">Model decided</span>(thought first) write the answer<div class="meta">1516 output tokens</div></div>
+<div class="col"><span class="lbl">The answer begins</span><div class="quote">This confirms the bulk-reader&#x27;s findings. I now have a complete, verified picture.  ## `BrokerLifecycleManager` (server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java)  ### Initial state `state` starts as **`BrokerState.NOT_RUNNING`** (field…</div></div>
 </div>
-<div class="cost">running cost ≈ 13.7¢</div>
-</div>
-<div class="skip">… request 14 skipped … running total 20.3¢</div>
-<div class="step">
-<div class="n">15</div>
-<div class="cols">
-<div class="col"><span class="lbl">Sent to the model</span>everything above + that Read result</div>
-<div class="col"><span class="lbl">Model decided</span>(thought first) write the answer<div class="meta">1829 output tokens</div></div>
-<div class="col"><span class="lbl">The answer begins</span><div class="quote">I have everything needed to give a complete, verified answer.  ## `BrokerLifecycleManager` (`server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java`)  ### Starting state `state` is a `volatile BrokerState` field initialized to **`BrokerState.…</div></div>
-</div>
-<div class="cost">running cost ≈ 23.4¢</div>
+<div class="cost">running cost ≈ 13.3¢</div>
 </div>
 </section>
 </div>

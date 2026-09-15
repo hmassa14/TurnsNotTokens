@@ -1,0 +1,539 @@
+{
+ "summary": {
+  "requests_total": 8,
+  "requests_main": 8,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 8,
+    "input_tokens": 16,
+    "cache_creation_input_tokens": 10974,
+    "cache_read_input_tokens": 240755,
+    "output_tokens": 1978
+   }
+  },
+  "tool_mix": {
+   "Bash": 1,
+   "Glob": 1,
+   "Read": 1,
+   "Grep": 4
+  },
+  "tool_calls_total": 7,
+  "reads_total": 1,
+  "reads_whole_file": 1,
+  "reads_targeted": 0,
+  "reads_blocked_by_hook": 1,
+  "sandbox_blocks": 1,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {
+   "Grep": 1
+  },
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 0,
+  "lines_entered_context": 0,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 7,
+  "files_read": [
+   "BatchAccumulator.java"
+  ],
+  "tool_latency_ms": {
+   "Bash": 39,
+   "Glob": 50,
+   "Read": 26,
+   "Grep": 34
+  },
+  "api_gap_ms_p50": 2060,
+  "api_gap_ms_max": 3071,
+  "final_text_chars": 765
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf4KwGBYRiBy5LL4HeP9u",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5665,
+    "cache_read_input_tokens": 23995,
+    "output_tokens": 108,
+    "output_tokens_details": {
+     "thinking_tokens": 34
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5665
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 108,
+      "cache_read_input_tokens": 23995,
+      "cache_creation_input_tokens": 5665,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5665,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T01:05:32.423Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4KwPgjYtzXTN7Cbe8Tu",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 221,
+    "cache_read_input_tokens": 29660,
+    "output_tokens": 61,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 221
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 61,
+      "cache_read_input_tokens": 29660,
+      "cache_creation_input_tokens": 221,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 221,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T01:05:33.807Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4KwTuz79hj5GmgnrWbw",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 178,
+    "cache_read_input_tokens": 29881,
+    "output_tokens": 116,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 178
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 116,
+      "cache_read_input_tokens": 29881,
+      "cache_creation_input_tokens": 178,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 178,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T01:05:35.235Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4KwZxNeaFEXjDdmAxgq",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 241,
+    "cache_read_input_tokens": 30059,
+    "output_tokens": 231,
+    "output_tokens_details": {
+     "thinking_tokens": 16
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 241
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 231,
+      "cache_read_input_tokens": 30059,
+      "cache_creation_input_tokens": 241,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 241,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T01:05:36.341Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4Kwm3cpZxdeoRcDQDYw",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 584,
+    "cache_read_input_tokens": 30300,
+    "output_tokens": 332,
+    "output_tokens_details": {
+     "thinking_tokens": 107
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 584
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 332,
+      "cache_read_input_tokens": 30300,
+      "cache_creation_input_tokens": 584,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 584,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T01:05:40.079Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4Kx3d2GPgrxmChrJxJK",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 442,
+    "cache_read_input_tokens": 30884,
+    "output_tokens": 488,
+    "output_tokens_details": {
+     "thinking_tokens": 202
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 442
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 488,
+      "cache_read_input_tokens": 30884,
+      "cache_creation_input_tokens": 442,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 442,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T01:05:43.820Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4KxKLphbfe4aS9q7ZMN",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 3324,
+    "cache_read_input_tokens": 31326,
+    "output_tokens": 270,
+    "output_tokens_details": {
+     "thinking_tokens": 74
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 3324
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 270,
+      "cache_read_input_tokens": 31326,
+      "cache_creation_input_tokens": 3324,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 3324,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T01:05:47.976Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4KxbCKCcBXioUWF1ZUP",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 319,
+    "cache_read_input_tokens": 34650,
+    "output_tokens": 372,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 319
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 372,
+      "cache_read_input_tokens": 34650,
+      "cache_creation_input_tokens": 319,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 319,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T01:05:52.181Z",
+   "blocks": [
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01Uk7KpKXgZguLMXor31pHEo",
+   "name": "Bash",
+   "input": {
+    "command": "find / -iname \"BatchAccumulator*.java\" 2>/dev/null"
+   },
+   "ts_use": "2026-09-15T01:05:32.832Z",
+   "request_id": "req_011Cf4KwGBYRiBy5LL4HeP9u",
+   "agent": "main",
+   "ts_result": "2026-09-15T01:05:32.871Z",
+   "is_error": true,
+   "result_head": "This evaluation is offline and limited to the repository checked out at /var/tmp/shunt-ws/SC3__natural__shunt__r3__20260915-010520. Answer from the files in it.",
+   "result_chars": 160,
+   "result_lines": 0,
+   "latency_ms": 39,
+   "flags": [
+    "sandbox_blocked"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_017ojFEgDv2isKED5yKYBJMP",
+   "name": "Glob",
+   "input": {
+    "pattern": "**/BatchAccumulator*.java"
+   },
+   "ts_use": "2026-09-15T01:05:33.807Z",
+   "request_id": "req_011Cf4KwPgjYtzXTN7Cbe8Tu",
+   "agent": "main",
+   "ts_result": "2026-09-15T01:05:33.857Z",
+   "is_error": false,
+   "result_head": "raft/src/test/java/org/apache/kafka/raft/internals/BatchAccumulatorTest.java\nraft/src/main/java/org/apache/kafka/raft/internals/BatchAccumulator.java",
+   "result_chars": 149,
+   "result_lines": 0,
+   "latency_ms": 50,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01CiK1KJN4JZSNCCmVMid5Dm",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/SC3__natural__shunt__r3__20260915-010520/raft/src/main/java/org/apache/kafka/raft/internals/BatchAccumulator.java"
+   },
+   "ts_use": "2026-09-15T01:05:35.235Z",
+   "request_id": "req_011Cf4KwTuz79hj5GmgnrWbw",
+   "agent": "main",
+   "ts_result": "2026-09-15T01:05:35.261Z",
+   "is_error": true,
+   "result_head": "File is 646 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly. If you need exact content for editing, re-read with an offset/limit for just the section you need.",
+   "result_chars": 223,
+   "result_lines": 0,
+   "latency_ms": 26,
+   "flags": [
+    "read_whole",
+    "hook_blocked"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01Vv1tj6DD5C36g7Pq2bakzz",
+   "name": "Grep",
+   "input": {
+    "pattern": "^\\s*public\\s+.*\\(.*\\)|^\\s*public\\s+\\w+.*;",
+    "path": "/var/tmp/shunt-ws/SC3__natural__shunt__r3__20260915-010520/raft/src/main/java/org/apache/kafka/raft/internals/BatchAccumulator.java",
+    "output_mode": "content",
+    "-n": true
+   },
+   "ts_use": "2026-09-15T01:05:37.816Z",
+   "request_id": "req_011Cf4KwZxNeaFEXjDdmAxgq",
+   "agent": "main",
+   "ts_result": "2026-09-15T01:05:37.857Z",
+   "is_error": false,
+   "result_head": "118:    public long append(int epoch, List<T> records, boolean delayDrain) {\n217:    public void allowDrain() {\n231:    public long appendControlMessages(MemoryRecordsCreator valueCreator) {\n401:    public void forceDrain() {\n444:    public boolean needsDrain(long currentTimeMs) {\n455:    public lon",
+   "result_chars": 837,
+   "result_lines": 0,
+   "latency_ms": 41,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01552hkEVr1XicEjdKRQePcn",
+   "name": "Grep",
+   "input": {
+    "pattern": "public BatchAccumulator|class BatchAccumulator|public long append\\(|public.*bufferedBytes|@Override\"",
+    "path": "/var/tmp/shunt-ws/SC3__natural__shunt__r3__20260915-010520/raft/src/main/java/org/apache/kafka/raft/internals/BatchAccumulator.java",
+    "output_mode": "content",
+    "-n": true
+   },
+   "ts_use": "2026-09-15T01:05:41.726Z",
+   "request_id": "req_011Cf4Kwm3cpZxdeoRcDQDYw",
+   "agent": "main",
+   "ts_result": "2026-09-15T01:05:41.759Z",
+   "is_error": false,
+   "result_head": "47:public class BatchAccumulator<T> implements Closeable {\n81:    public BatchAccumulator(\n118:    public long append(int epoch, List<T> records, boolean delayDrain) {",
+   "result_chars": 167,
+   "result_lines": 0,
+   "latency_ms": 32,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_017mwbgSsuMzH2aMxLZTHcLn",
+   "name": "Grep",
+   "input": {
+    "pattern": "\\.append\\(|\\.allowDrain\\(|\\.appendControlMessages\\(|\\.forceDrain\\(|\\.needsDrain\\(|\\.timeUntilDrain\\(|\\.epoch\\(\\)|\\.drain\\(\\)|\\.isEmpty\\(\\)|\\.close\\(\\)",
+    "path": "/var/tmp/shunt-ws/SC3__natural__shunt__r3__20260915-010520/raft/src/test/java/org/apache/kafka/raft/internals/BatchAccumulatorTest.java",
+    "output_mode": "content",
+    "-n": true
+   },
+   "ts_use": "2026-09-15T01:05:45.412Z",
+   "request_id": "req_011Cf4Kx3d2GPgrxmChrJxJK",
+   "agent": "main",
+   "ts_result": "2026-09-15T01:05:45.444Z",
+   "is_error": false,
+   "result_head": "92:        assertTrue(acc.needsDrain(time.milliseconds()));\n94:        List<BatchAccumulator.CompletedBatch<String>> batches = acc.drain();\n122:        assertEquals(baseOffset, acc.append(leaderEpoch, records.subList(0, 1), false));\n123:        assertEquals(baseOffset + 2, acc.append(leaderEpoch, re",
+   "result_chars": 6241,
+   "result_lines": 0,
+   "latency_ms": 32,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01GgndjTSvQ4qYtff7yyMaob",
+   "name": "Grep",
+   "input": {
+    "pattern": "\\.epoch\\(\\)",
+    "path": "/var/tmp/shunt-ws/SC3__natural__shunt__r3__20260915-010520/raft/src/test/java/org/apache/kafka/raft/internals/BatchAccumulatorTest.java",
+    "output_mode": "content",
+    "-n": true
+   },
+   "ts_use": "2026-09-15T01:05:49.078Z",
+   "request_id": "req_011Cf4KxKLphbfe4aS9q7ZMN",
+   "agent": "main",
+   "ts_result": "2026-09-15T01:05:49.110Z",
+   "is_error": false,
+   "result_head": "No matches found",
+   "result_chars": 16,
+   "result_lines": 0,
+   "latency_ms": 31,
+   "flags": []
+  }
+ ]
+}

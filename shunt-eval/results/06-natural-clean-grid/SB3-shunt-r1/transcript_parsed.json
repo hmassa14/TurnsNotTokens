@@ -1,0 +1,425 @@
+{
+ "summary": {
+  "requests_total": 6,
+  "requests_main": 6,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 6,
+    "input_tokens": 12,
+    "cache_creation_input_tokens": 11926,
+    "cache_read_input_tokens": 181945,
+    "output_tokens": 2049
+   }
+  },
+  "tool_mix": {
+   "Bash": 3,
+   "Read": 3
+  },
+  "tool_calls_total": 6,
+  "reads_total": 3,
+  "reads_whole_file": 3,
+  "reads_targeted": 0,
+  "reads_blocked_by_hook": 0,
+  "sandbox_blocks": 1,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {},
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 0,
+  "lines_entered_context": 263,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 6,
+  "files_read": [
+   "Filter.java",
+   "InsertHeaderTest.java",
+   "Transformation.java"
+  ],
+  "tool_latency_ms": {
+   "Bash": 171,
+   "Read": 39
+  },
+  "api_gap_ms_p50": 2483,
+  "api_gap_ms_max": 8049,
+  "final_text_chars": 1650
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf4FMYhoW6sX67iuEjkcp",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5689,
+    "cache_read_input_tokens": 23995,
+    "output_tokens": 122,
+    "output_tokens_details": {
+     "thinking_tokens": 36
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5689
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 122,
+      "cache_read_input_tokens": 23995,
+      "cache_creation_input_tokens": 5689,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5689,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:05:29.898Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4FMpb2d8XJVybyLxxEM",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 235,
+    "cache_read_input_tokens": 29684,
+    "output_tokens": 159,
+    "output_tokens_details": {
+     "thinking_tokens": 13
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 235
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 159,
+      "cache_read_input_tokens": 29684,
+      "cache_creation_input_tokens": 235,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 235,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:05:32.029Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4FN29Z3ZSqBWoM5GyKq",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 322,
+    "cache_read_input_tokens": 29919,
+    "output_tokens": 235,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 322
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 235,
+      "cache_read_input_tokens": 29919,
+      "cache_creation_input_tokens": 322,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 322,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:05:35.342Z",
+   "blocks": [
+    "tool_use",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4FNDtVWKV9mTg3urAAz",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 3447,
+    "cache_read_input_tokens": 30241,
+    "output_tokens": 651,
+    "output_tokens_details": {
+     "thinking_tokens": 549
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 3447
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 651,
+      "cache_read_input_tokens": 30241,
+      "cache_creation_input_tokens": 3447,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 3447,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:05:43.623Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4FNuq5RCHDWYFJyvHmv",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 730,
+    "cache_read_input_tokens": 33688,
+    "output_tokens": 115,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 730
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 115,
+      "cache_read_input_tokens": 33688,
+      "cache_creation_input_tokens": 730,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 730,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:05:47.714Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4FP7peMBMjxCWM4XVRn",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1503,
+    "cache_read_input_tokens": 34418,
+    "output_tokens": 767,
+    "output_tokens_details": {
+     "thinking_tokens": 75
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1503
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 767,
+      "cache_read_input_tokens": 34418,
+      "cache_creation_input_tokens": 1503,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1503,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:05:49.632Z",
+   "blocks": [
+    "thinking",
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01CXK51hicFEqLn64jab1wJ6",
+   "name": "Bash",
+   "input": {
+    "command": "find / -type d -iname \"*kafka*\" 2>/dev/null | grep -v \"/proc/\" | head -50"
+   },
+   "ts_use": "2026-09-15T00:05:30.120Z",
+   "request_id": "req_011Cf4FMYhoW6sX67iuEjkcp",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:05:30.168Z",
+   "is_error": true,
+   "result_head": "This evaluation is offline and limited to the repository checked out at /var/tmp/shunt-ws/SB3__natural__shunt__r1__20260915-000517. Answer from the files in it.",
+   "result_chars": 160,
+   "result_lines": 0,
+   "latency_ms": 48,
+   "flags": [
+    "sandbox_blocked"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01F6cpZuVuBEtbt7xKtLDipR",
+   "name": "Bash",
+   "input": {
+    "command": "find . -iname \"*Filter*.java\" -path \"*transforms*\" 2>/dev/null; echo \"---\"; find . -iname \"*InsertHeader*\" 2>/dev/null"
+   },
+   "ts_use": "2026-09-15T00:05:32.488Z",
+   "request_id": "req_011Cf4FMpb2d8XJVybyLxxEM",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:05:32.859Z",
+   "is_error": false,
+   "result_head": "./connect/transforms/src/main/java/org/apache/kafka/connect/transforms/Filter.java\n---\n./connect/transforms/src/test/java/org/apache/kafka/connect/transforms/InsertHeaderTest.java\n./connect/transforms/src/main/java/org/apache/kafka/connect/transforms/InsertHeader.java",
+   "result_chars": 268,
+   "result_lines": 0,
+   "latency_ms": 371,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01WkjaSrRrNxyULTgNqbTWWr",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/SB3__natural__shunt__r1__20260915-000517/connect/transforms/src/main/java/org/apache/kafka/connect/transforms/Filter.java"
+   },
+   "ts_use": "2026-09-15T00:05:35.342Z",
+   "request_id": "req_011Cf4FN29Z3ZSqBWoM5GyKq",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:05:35.382Z",
+   "is_error": false,
+   "result_head": "1\t/*\n2\t * Licensed to the Apache Software Foundation (ASF) under one or more\n3\t * contributor license agreements. See the NOTICE file distributed with\n4\t * this work for additional information regarding copyright ownership.\n5\t * The ASF licenses this file to You under the Apache License, Version 2.0",
+   "result_chars": 2311,
+   "result_lines": 63,
+   "latency_ms": 39,
+   "flags": [
+    "read_whole"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01HehhoRVv3TsMXumW8m6D2p",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/SB3__natural__shunt__r1__20260915-000517/connect/transforms/src/test/java/org/apache/kafka/connect/transforms/InsertHeaderTest.java"
+   },
+   "ts_use": "2026-09-15T00:05:35.533Z",
+   "request_id": "req_011Cf4FN29Z3ZSqBWoM5GyKq",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:05:35.574Z",
+   "is_error": false,
+   "result_head": "1\t/*\n2\t * Licensed to the Apache Software Foundation (ASF) under one or more\n3\t * contributor license agreements. See the NOTICE file distributed with\n4\t * this work for additional information regarding copyright ownership.\n5\t * The ASF licenses this file to You under the Apache License, Version 2.0",
+   "result_chars": 5444,
+   "result_lines": 126,
+   "latency_ms": 40,
+   "flags": [
+    "read_whole"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_014fxPo2sdSk5yW8oPY5hZva",
+   "name": "Bash",
+   "input": {
+    "command": "find . -path \"*transforms/Transformation.java\""
+   },
+   "ts_use": "2026-09-15T00:05:44.757Z",
+   "request_id": "req_011Cf4FNDtVWKV9mTg3urAAz",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:05:44.851Z",
+   "is_error": false,
+   "result_head": "./connect/api/src/main/java/org/apache/kafka/connect/transforms/Transformation.java",
+   "result_chars": 83,
+   "result_lines": 0,
+   "latency_ms": 94,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01TNjiQHuy7hN2DUYXX8BRnd",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/SB3__natural__shunt__r1__20260915-000517/connect/api/src/main/java/org/apache/kafka/connect/transforms/Transformation.java"
+   },
+   "ts_use": "2026-09-15T00:05:47.714Z",
+   "request_id": "req_011Cf4FNuq5RCHDWYFJyvHmv",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:05:47.754Z",
+   "is_error": false,
+   "result_head": "1\t/*\n2\t * Licensed to the Apache Software Foundation (ASF) under one or more\n3\t * contributor license agreements. See the NOTICE file distributed with\n4\t * this work for additional information regarding copyright ownership.\n5\t * The ASF licenses this file to You under the Apache License, Version 2.0",
+   "result_chars": 3605,
+   "result_lines": 74,
+   "latency_ms": 39,
+   "flags": [
+    "read_whole"
+   ]
+  }
+ ]
+}

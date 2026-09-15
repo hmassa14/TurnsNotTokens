@@ -1,0 +1,102 @@
+{
+  "duration_api_ms": 2861,
+  "stop_reason": "end_turn",
+  "session_id": "dcaa2de8-6489-574c-aeef-bb9a81f8414e",
+  "total_cost_usd": 0.01755075,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 12855,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 296,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 12855
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 296,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 12855,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 12855,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5": {
+      "inputTokens": 2,
+      "outputTokens": 296,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 12855,
+      "webSearchRequests": 0,
+      "costUSD": 0.01755075,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "• **testKey() method (lines 716-723)**\n  ```java\n  @Test\n  public void testKey() {\n      xformKey.configure(Map.of(TimestampConverter.TARGET_TYPE_CONFIG, \"Timestamp\"));\n      SourceRecord transformed = xformKey.apply(new SourceRecord(null, null, \"topic\", 0, null, DATE_PLUS_TIME.getTime(), null, null));\n\n      assertNull(transformed.keySchema());\n      assertEquals(DATE_PLUS_TIME.getTime(), transformed.key());\n  }\n  ```\n\n• **testTimestampConverterVersionRetrievedFromAppInfoParser() method (lines 725-730)**\n  ```java\n  @Test\n  public void testTimestampConverterVersionRetrievedFromAppInfoParser() {\n      assertEquals(AppInfoParser.getVersion(), xformKey.version());\n      assertEquals(AppInfoParser.getVersion(), xformValue.version());\n      assertEquals(xformKey.version(), xformValue.version());\n  }\n  ```\n\n• **BeforeEach import**\n  - NOT present in file\n\n• **@Test import**\n  - YES, present at line 31: `import org.junit.jupiter.api.Test;`",
+  "ttft_ms": 2894,
+  "type": "result",
+  "duration_ms": 2944,
+  "uuid": "a69db1bc-9906-45a6-832b-f83391a650e2",
+  "ttft_stream_ms": 672,
+  "time_to_request_ms": 81,
+  "first_content_frame_ms": 673,
+  "time_to_request_from_spawn_ms": 541088,
+  "warm_spare_claimed": false,
+  "time_origin_ms": 1789475012044.3674,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "transport": "cli",
+  "model": "claude-haiku-4-5"
+}

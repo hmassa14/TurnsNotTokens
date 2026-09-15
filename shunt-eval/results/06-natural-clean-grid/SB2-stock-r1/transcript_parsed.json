@@ -1,0 +1,263 @@
+{
+ "summary": {
+  "requests_total": 3,
+  "requests_main": 3,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 3,
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 23243,
+    "cache_read_input_tokens": 83656,
+    "output_tokens": 2030
+   }
+  },
+  "tool_mix": {
+   "Grep": 1,
+   "Read": 3
+  },
+  "tool_calls_total": 4,
+  "reads_total": 3,
+  "reads_whole_file": 3,
+  "reads_targeted": 0,
+  "reads_blocked_by_hook": 0,
+  "sandbox_blocks": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {},
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 0,
+  "lines_entered_context": 1011,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 4,
+  "files_read": [
+   "BrokerLifecycleManager.java",
+   "BrokerRegistrationTracker.java",
+   "BrokerState.java"
+  ],
+  "tool_latency_ms": {
+   "Grep": 92,
+   "Read": 73
+  },
+  "api_gap_ms_p50": 6582,
+  "api_gap_ms_max": 6582,
+  "final_text_chars": 2345
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf4EiCLfTnZEeZZwYY1FB",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5625,
+    "cache_read_input_tokens": 23995,
+    "output_tokens": 187,
+    "output_tokens_details": {
+     "thinking_tokens": 60
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5625
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 187,
+      "cache_read_input_tokens": 23995,
+      "cache_creation_input_tokens": 5625,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5625,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T23:57:02.142Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4EiS6QSfzVxFewaLbHG",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 421,
+    "cache_read_input_tokens": 29620,
+    "output_tokens": 338,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 421
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 338,
+      "cache_read_input_tokens": 29620,
+      "cache_creation_input_tokens": 421,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 421,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T23:57:05.949Z",
+   "blocks": [
+    "tool_use",
+    "tool_use",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4Eija8Lb5yMYegjGaUh",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 17197,
+    "cache_read_input_tokens": 30041,
+    "output_tokens": 1505,
+    "output_tokens_details": {
+     "thinking_tokens": 486
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 17197
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 1505,
+      "cache_read_input_tokens": 30041,
+      "cache_creation_input_tokens": 17197,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 17197,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-14T23:57:13.622Z",
+   "blocks": [
+    "thinking",
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01MaeRbQ7tai3aYAyCPdFuGp",
+   "name": "Grep",
+   "input": {
+    "pattern": "class BrokerLifecycleManager|enum BrokerState|class BrokerRegistrationTracker|interface BrokerRegistrationTracker",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-14T23:57:02.855Z",
+   "request_id": "req_011Cf4EiCLfTnZEeZZwYY1FB",
+   "agent": "main",
+   "ts_result": "2026-09-14T23:57:02.948Z",
+   "is_error": false,
+   "result_head": "Found 5 files\ncore/src/test/scala/unit/kafka/server/BrokerLifecycleManagerTest.scala\nmetadata/src/main/java/org/apache/kafka/image/publisher/BrokerRegistrationTracker.java\nmetadata/src/main/java/org/apache/kafka/metadata/BrokerState.java\nmetadata/src/test/java/org/apache/kafka/image/publisher/Broker",
+   "result_chars": 401,
+   "result_lines": 0,
+   "latency_ms": 92,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01Kinv7vd91N6XBWM3LCr1zv",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/SB2__natural__stock__r1__20260914-235651/metadata/src/main/java/org/apache/kafka/metadata/BrokerState.java"
+   },
+   "ts_use": "2026-09-14T23:57:05.949Z",
+   "request_id": "req_011Cf4EiS6QSfzVxFewaLbHG",
+   "agent": "main",
+   "ts_result": "2026-09-14T23:57:05.981Z",
+   "is_error": false,
+   "result_head": "1\t/*\n2\t * Licensed to the Apache Software Foundation (ASF) under one or more\n3\t * contributor license agreements. See the NOTICE file distributed with\n4\t * this work for additional information regarding copyright ownership.\n5\t * The ASF licenses this file to You under the Apache License, Version 2.0",
+   "result_chars": 3054,
+   "result_lines": 108,
+   "latency_ms": 32,
+   "flags": [
+    "read_whole"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_017H446gSSQY64E5Z9f1qGdJ",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/SB2__natural__stock__r1__20260914-235651/metadata/src/main/java/org/apache/kafka/image/publisher/BrokerRegistrationTracker.java"
+   },
+   "ts_use": "2026-09-14T23:57:06.535Z",
+   "request_id": "req_011Cf4EiS6QSfzVxFewaLbHG",
+   "agent": "main",
+   "ts_result": "2026-09-14T23:57:06.563Z",
+   "is_error": false,
+   "result_head": "1\t/*\n2\t * Licensed to the Apache Software Foundation (ASF) under one or more\n3\t * contributor license agreements. See the NOTICE file distributed with\n4\t * this work for additional information regarding copyright ownership.\n5\t * The ASF licenses this file to You under the Apache License, Version 2.0",
+   "result_chars": 6052,
+   "result_lines": 132,
+   "latency_ms": 27,
+   "flags": [
+    "read_whole"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01TzwZWVWbo83LUF9XAL4Syh",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/SB2__natural__stock__r1__20260914-235651/server/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java"
+   },
+   "ts_use": "2026-09-14T23:57:06.879Z",
+   "request_id": "req_011Cf4EiS6QSfzVxFewaLbHG",
+   "agent": "main",
+   "ts_result": "2026-09-14T23:57:07.039Z",
+   "is_error": false,
+   "result_head": "1\t/*\n2\t * Licensed to the Apache Software Foundation (ASF) under one or more\n3\t * contributor license agreements. See the NOTICE file distributed with\n4\t * this work for additional information regarding copyright ownership.\n5\t * The ASF licenses this file to You under the Apache License, Version 2.0",
+   "result_chars": 36294,
+   "result_lines": 771,
+   "latency_ms": 160,
+   "flags": [
+    "read_whole"
+   ]
+  }
+ ]
+}

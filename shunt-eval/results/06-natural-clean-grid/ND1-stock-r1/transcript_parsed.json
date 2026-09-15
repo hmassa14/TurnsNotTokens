@@ -1,0 +1,225 @@
+{
+ "summary": {
+  "requests_total": 3,
+  "requests_main": 3,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 3,
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 8626,
+    "cache_read_input_tokens": 85095,
+    "output_tokens": 639
+   }
+  },
+  "tool_mix": {
+   "Grep": 1,
+   "Read": 1
+  },
+  "tool_calls_total": 2,
+  "reads_total": 1,
+  "reads_whole_file": 0,
+  "reads_targeted": 1,
+  "reads_blocked_by_hook": 0,
+  "sandbox_blocks": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {},
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 0,
+  "lines_entered_context": 35,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 2,
+  "files_read": [
+   "RecordAccumulator.java"
+  ],
+  "tool_latency_ms": {
+   "Grep": 82,
+   "Read": 39
+  },
+  "api_gap_ms_p50": 2891,
+  "api_gap_ms_max": 2891,
+  "final_text_chars": 547
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf4Gaa2A5TKcQYJHzKJU7",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5563,
+    "cache_read_input_tokens": 23995,
+    "output_tokens": 221,
+    "output_tokens_details": {
+     "thinking_tokens": 34
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5563
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 221,
+      "cache_read_input_tokens": 23995,
+      "cache_creation_input_tokens": 5563,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5563,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:21:31.177Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4Ganq65j3uoMfaKWHax",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1984,
+    "cache_read_input_tokens": 29558,
+    "output_tokens": 187,
+    "output_tokens_details": {
+     "thinking_tokens": 24
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1984
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 187,
+      "cache_read_input_tokens": 29558,
+      "cache_creation_input_tokens": 1984,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1984,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:21:34.070Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4GazEwMYSXFDZadmQ2Y",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1079,
+    "cache_read_input_tokens": 31542,
+    "output_tokens": 231,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1079
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 231,
+      "cache_read_input_tokens": 31542,
+      "cache_creation_input_tokens": 1079,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1079,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:21:38.480Z",
+   "blocks": [
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01Fy8Y3jXniF66EPCrUSR8YL",
+   "name": "Grep",
+   "input": {
+    "pattern": "class ReadyCheckResult|ReadyCheckResult ready\\(|nextReadyCheckDelayMs",
+    "path": "/var/tmp/shunt-ws/ND1__natural__stock__r1__20260915-002121",
+    "output_mode": "content",
+    "-n": true
+   },
+   "ts_use": "2026-09-15T00:21:32.831Z",
+   "request_id": "req_011Cf4Gaa2A5TKcQYJHzKJU7",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:21:32.914Z",
+   "is_error": false,
+   "result_head": "jmh-benchmarks/src/main/java/org/apache/kafka/jmh/producer/RecordAccumulatorReadyBenchmark.java:170:    public RecordAccumulator.ReadyCheckResult ready() {\nclients/src/main/java/org/apache/kafka/clients/producer/internals/Sender.java:442:        long pollTimeout = Math.min(result.nextReadyCheckDelay",
+   "result_chars": 3921,
+   "result_lines": 0,
+   "latency_ms": 82,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01HdU14s2WDXF1dDskqRgPHv",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/ND1__natural__stock__r1__20260915-002121/clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java",
+    "offset": 870,
+    "limit": 35
+   },
+   "ts_use": "2026-09-15T00:21:35.549Z",
+   "request_id": "req_011Cf4Ganq65j3uoMfaKWHax",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:21:35.589Z",
+   "is_error": false,
+   "result_head": "870\t\n871\t    /**\n872\t     * Get a list of nodes whose partitions are ready to be sent, and the earliest time at which any non-sendable\n873\t     * partition will be ready; Also return the flag for whether there are any unknown leaders for the accumulated\n874\t     * partition batches.\n875\t     * <p>\n8",
+   "result_chars": 2069,
+   "result_lines": 35,
+   "latency_ms": 39,
+   "flags": [
+    "read_targeted"
+   ]
+  }
+ ]
+}

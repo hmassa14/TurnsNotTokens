@@ -1,0 +1,221 @@
+{
+ "summary": {
+  "requests_total": 3,
+  "requests_main": 3,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 3,
+    "input_tokens": 6,
+    "cache_creation_input_tokens": 7909,
+    "cache_read_input_tokens": 84104,
+    "output_tokens": 335
+   }
+  },
+  "tool_mix": {
+   "Grep": 1,
+   "Read": 1
+  },
+  "tool_calls_total": 2,
+  "reads_total": 1,
+  "reads_whole_file": 1,
+  "reads_targeted": 0,
+  "reads_blocked_by_hook": 0,
+  "sandbox_blocks": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {},
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 0,
+  "lines_entered_context": 108,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 2,
+  "files_read": [
+   "BrokerState.java"
+  ],
+  "tool_latency_ms": {
+   "Grep": 78,
+   "Read": 39
+  },
+  "api_gap_ms_p50": 1615,
+  "api_gap_ms_max": 1615,
+  "final_text_chars": 152
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf5KiUjjnazU6XijBP9oG",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5694,
+    "cache_read_input_tokens": 23995,
+    "output_tokens": 145,
+    "output_tokens_details": {
+     "thinking_tokens": 28
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5694
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 145,
+      "cache_read_input_tokens": 23995,
+      "cache_creation_input_tokens": 5694,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5694,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T13:43:14.618Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5Kidfkc9DkS4pCJrEu8",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 731,
+    "cache_read_input_tokens": 29689,
+    "output_tokens": 115,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 731
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 115,
+      "cache_read_input_tokens": 29689,
+      "cache_creation_input_tokens": 731,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 731,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T13:43:16.997Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5KikqcJQ1pZcmrFxYxo",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1484,
+    "cache_read_input_tokens": 30420,
+    "output_tokens": 75,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1484
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 75,
+      "cache_read_input_tokens": 30420,
+      "cache_creation_input_tokens": 1484,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1484,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T13:43:18.391Z",
+   "blocks": [
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_018CsUVMBEPLdfG2FZaZMVke",
+   "name": "Grep",
+   "input": {
+    "pattern": "PENDING_CONTROLLED_SHUTDOWN",
+    "output_mode": "content",
+    "-n": true
+   },
+   "ts_use": "2026-09-15T13:43:15.303Z",
+   "request_id": "req_011Cf5KiUjjnazU6XijBP9oG",
+   "agent": "main",
+   "ts_result": "2026-09-15T13:43:15.381Z",
+   "is_error": false,
+   "result_head": "core/src/test/scala/unit/kafka/server/BrokerLifecycleManagerTest.scala:179:      assertEquals(BrokerState.PENDING_CONTROLLED_SHUTDOWN, manager.state)\nserver/src/main/java/org/apache/kafka/server/BrokerLifecycleManager.java:339:                case PENDING_CONTROLLED_SHUTDOWN ->\nserver/src/main/java/",
+   "result_chars": 1123,
+   "result_lines": 0,
+   "latency_ms": 78,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_019Yvk44HJSmxvDbi4e5cXgG",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/CT3__natural__shunt-strict__r2__20260915-134303/metadata/src/main/java/org/apache/kafka/metadata/BrokerState.java"
+   },
+   "ts_use": "2026-09-15T13:43:16.997Z",
+   "request_id": "req_011Cf5Kidfkc9DkS4pCJrEu8",
+   "agent": "main",
+   "ts_result": "2026-09-15T13:43:17.037Z",
+   "is_error": false,
+   "result_head": "1\t/*\n2\t * Licensed to the Apache Software Foundation (ASF) under one or more\n3\t * contributor license agreements. See the NOTICE file distributed with\n4\t * this work for additional information regarding copyright ownership.\n5\t * The ASF licenses this file to You under the Apache License, Version 2.0",
+   "result_chars": 3054,
+   "result_lines": 108,
+   "latency_ms": 39,
+   "flags": [
+    "read_whole"
+   ]
+  }
+ ]
+}

@@ -160,7 +160,7 @@ Arms, three, all on the same 21 tasks, 3 reps each (controls included this time)
 
 ## Results
 
-The grid described here ran on 2026-09-14 as `results/05-natural-second-grid` (114 runs). Its README carries the headline numbers, the per-category table with paired intervals, the after-block counts, the grader notes (ND4 ambiguity, checklist-graded code-gen) and the parser fix made during grading. `summary.json` in that folder is what the post's figures G and H and its results section are built from.
+The grid described here ran twice: as `results/05-natural-second-grid` (114 runs, superseded after its contamination audit) and, with the sandbox and three setups above, as `results/06-natural-clean-grid` (189 runs), which is the one the post reports. Its README carries the headline numbers, the per-category table with paired intervals, the after-block counts, the grader notes (ND4 ambiguity, checklist-graded code-gen) and the parser fix made during grading. `summary.json` in that folder is what the post's figures G and H and its results section are built from.
 
 ## What the first grid still supports
 

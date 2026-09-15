@@ -1,0 +1,1426 @@
+{
+ "summary": {
+  "metric_names": {
+   "claude_code.session.count": 1,
+   "claude_code.cost.usage": 12,
+   "claude_code.token.usage": 12,
+   "claude_code.active_time.total": 1
+  },
+  "tokens_by_model_type": {
+   "claude-sonnet-5|input": 24.0,
+   "claude-sonnet-5|output": 9616.0,
+   "claude-sonnet-5|cacheRead": 415428.0,
+   "claude-sonnet-5|cacheCreation": 19992.0
+  },
+  "cost_by_model_usd": {
+   "claude-sonnet-5": 0.2292736
+  },
+  "event_counts": {
+   "hook_registered": 4,
+   "user_prompt": 1,
+   "hook_execution_start": 11,
+   "api_request": 12,
+   "assistant_response": 4,
+   "hook_execution_complete": 11,
+   "tool_decision": 11,
+   "tool_result": 8
+  },
+  "api_requests": 12,
+  "api_latency_ms_p50": 4636.0,
+  "api_latency_ms_max": 56026.0,
+  "tool_decisions": [
+   {
+    "tool": "Bash",
+    "decision": "reject",
+    "source": "hook"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "reject",
+    "source": "hook"
+   },
+   {
+    "tool": "Read",
+    "decision": "reject",
+    "source": "hook"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   }
+  ],
+  "span_counts": {},
+  "hook_ms_total": 0
+ },
+ "events": [
+  {
+   "event": "hook_registered",
+   "ts": "1789477815671000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-15T13:10:15.671Z",
+    "event.sequence": 0,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "projectSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Read"
+   }
+  },
+  {
+   "event": "hook_registered",
+   "ts": "1789477815671000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-15T13:10:15.671Z",
+    "event.sequence": 1,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "projectSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Bash"
+   }
+  },
+  {
+   "event": "hook_registered",
+   "ts": "1789477815672000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-15T13:10:15.672Z",
+    "event.sequence": 2,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "flagSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Bash"
+   }
+  },
+  {
+   "event": "hook_registered",
+   "ts": "1789477815672000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-15T13:10:15.672Z",
+    "event.sequence": 3,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "flagSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Read|Grep|Glob"
+   }
+  },
+  {
+   "event": "user_prompt",
+   "ts": "1789477816611000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "user_prompt",
+    "event.timestamp": "2026-09-15T13:10:16.611Z",
+    "event.sequence": 4,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "prompt_length": "207",
+    "prompt": "<REDACTED>",
+    "message.uuid": "82c50110-0de2-4571-ab05-4cf2e2bee021"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789477820616000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T13:10:20.616Z",
+    "event.sequence": 5,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789477820632000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T13:10:20.632Z",
+    "event.sequence": 6,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 222,
+    "cache_read_tokens": 23995,
+    "cache_creation_tokens": 5678,
+    "cost_usd": 0.021218,
+    "cost_usd_micros": 21218,
+    "duration_ms": 3956,
+    "ttft_ms": 1880,
+    "request_id": "req_011Cf5HCmh939cHTasZGNPSU",
+    "client_request_id": "9bd51ac4-af85-4581-8d45-58e4e2bc2947",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789477820633000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-15T13:10:20.633Z",
+    "event.sequence": 7,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "response_length": 93,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf5HCmh939cHTasZGNPSU",
+    "message.uuid": "d0f295a0-f732-4cfd-bbd3-d794fbb9c00b",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789477820647000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T13:10:20.647Z",
+    "event.sequence": 8,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "1",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "28",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789477820649000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T13:10:20.649Z",
+    "event.sequence": 9,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "decision": "reject",
+    "source": "hook",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_0142Q4JhJeBT5KnqjNgfRauc",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -maxdepth 6 -iname \\\"RecordAccumulator.java\\\" 2>/dev/null\",\"description\":\"Locate RecordAccumulator.java in the repository\"}"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789477823994000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T13:10:23.994Z",
+    "event.sequence": 10,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789477824006000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T13:10:24.006Z",
+    "event.sequence": 11,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 163,
+    "cache_read_tokens": 29673,
+    "cache_creation_tokens": 338,
+    "cost_usd": 0.0084136,
+    "cost_usd_micros": 8414,
+    "duration_ms": 3337,
+    "ttft_ms": 2162,
+    "request_id": "req_011Cf5HD4g6QKHgQZUBvJP24",
+    "client_request_id": "7db6ef8c-5abb-48ed-86b3-b94b08434211",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789477824029000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T13:10:24.029Z",
+    "event.sequence": 12,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "33",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789477824037000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T13:10:24.037Z",
+    "event.sequence": 13,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01WZzGHBrygqv3wrraqZ1eYu",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find . -iname \\\"RecordAccumulator.java\\\" 2>/dev/null\",\"description\":\"Locate RecordAccumulator.java in the repository\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789477824398000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T13:10:24.398Z",
+    "event.sequence": 14,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01WZzGHBrygqv3wrraqZ1eYu",
+    "success": "true",
+    "duration_ms": "359",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find . -iname \\\"RecordAccumulator.java\\\" 2>/dev/null\",\"description\":\"Locate RecordAccumulator.java in the repository\"}",
+    "tool_input": "{\"command\":\"find . -iname \\\"RecordAccumulator.java\\\" 2>/dev/null\",\"description\":\"Locate RecordAccumulator.java in the repository\"}",
+    "tool_input_size_bytes": "130",
+    "tool_result_size_bytes": "90"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789477827529000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T13:10:27.529Z",
+    "event.sequence": 15,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789477827544000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T13:10:27.544Z",
+    "event.sequence": 16,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 260,
+    "cache_read_tokens": 30011,
+    "cache_creation_tokens": 246,
+    "cost_usd": 0.009221199999999999,
+    "cost_usd_micros": 9221,
+    "duration_ms": 3125,
+    "ttft_ms": 1293,
+    "request_id": "req_011Cf5HDLhFa8ngf9ZuBqZsp",
+    "client_request_id": "97680d6d-b77a-4493-bc06-a5bca39aa62c",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789477827559000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T13:10:27.559Z",
+    "event.sequence": 17,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "28",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789477827566000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T13:10:27.566Z",
+    "event.sequence": 18,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_018PWgsPN7AJDGoFjQmWTRRq",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"wc\",\"full_command\":\"wc -l clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java && grep -n \\\"public.*append\\\\|private.*append\\\\|synchronized\\\\|class RecordAccumulator\\\\|Deque<\\\\|ConcurrentMap\\\\|CopyOnWrite\\\" clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java\",\"description\":\"Find append-related methods and concurrency primitives\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789477827595000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T13:10:27.595Z",
+    "event.sequence": 19,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_018PWgsPN7AJDGoFjQmWTRRq",
+    "success": "true",
+    "duration_ms": "29",
+    "tool_parameters": "{\"bash_command\":\"wc\",\"full_command\":\"wc -l clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java && grep -n \\\"public.*append\\\\|private.*append\\\\|synchronized\\\\|class RecordAccumulator\\\\|Deque<\\\\|ConcurrentMap\\\\|CopyOnWrite\\\" clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java\",\"description\":\"Find append-related methods and concurrency primitives\"}",
+    "tool_input": "{\"command\":\"wc -l clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java && grep -n \\\"public.*append\\\\|private.*append\\\\|synchronized\\\\|class RecordAccumulator\\\\|Deque<\\\\|ConcurrentMap\\\\|CopyOnWrite\\\" clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java\",\"description\":\"Find append-related methods and concurrency primitives\"}",
+    "tool_input_size_bytes": "396",
+    "tool_result_size_bytes": "3089"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789477831335000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T13:10:31.335Z",
+    "event.sequence": 20,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789477831353000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T13:10:31.353Z",
+    "event.sequence": 21,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 191,
+    "cache_read_tokens": 30257,
+    "cache_creation_tokens": 1593,
+    "cost_usd": 0.011947900000000001,
+    "cost_usd_micros": 11948,
+    "duration_ms": 3743,
+    "ttft_ms": 1396,
+    "request_id": "req_011Cf5HDaLYLvrhF93dA7ty8",
+    "client_request_id": "16e2e8d1-0b02-489d-b3f2-fb2a3d6ca28d",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789477831353000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-15T13:10:31.353Z",
+    "event.sequence": 22,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "response_length": 88,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf5HDaLYLvrhF93dA7ty8",
+    "message.uuid": "f471bd8d-4a30-4d2b-8438-17eccf3cd4d1",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789477831357000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T13:10:31.357Z",
+    "event.sequence": 23,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "1",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "19",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789477831358000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T13:10:31.357Z",
+    "event.sequence": 24,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "decision": "reject",
+    "source": "hook",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01QJKXNiVJ6nn3DK7WALUfir",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789477835400000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T13:10:35.400Z",
+    "event.sequence": 25,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789477835416000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T13:10:35.416Z",
+    "event.sequence": 26,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 299,
+    "cache_read_tokens": 31850,
+    "cache_creation_tokens": 290,
+    "cost_usd": 0.010089,
+    "cost_usd_micros": 10089,
+    "duration_ms": 4043,
+    "ttft_ms": 1382,
+    "request_id": "req_011Cf5HDrQS1CFsNfUS9PS2f",
+    "client_request_id": "8d9d704e-4bdc-4b06-96e5-07b0c51b7e1a",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789477835424000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T13:10:35.424Z",
+    "event.sequence": 27,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "1",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "22",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789477835425000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T13:10:35.425Z",
+    "event.sequence": 28,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "decision": "reject",
+    "source": "hook",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_012B1mzPXLmWpJxFCJPa7Lbb",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789477841902000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T13:10:41.902Z",
+    "event.sequence": 29,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789477841924000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T13:10:41.924Z",
+    "event.sequence": 30,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 465,
+    "cache_read_tokens": 32140,
+    "cache_creation_tokens": 398,
+    "cost_usd": 0.012077000000000001,
+    "cost_usd_micros": 12077,
+    "duration_ms": 6481,
+    "ttft_ms": 1578,
+    "request_id": "req_011Cf5HE9sevW8SV97FSntPw",
+    "client_request_id": "892b398b-ffd1-41a5-8f1d-1c0ee024452b",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789477841924000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-15T13:10:41.924Z",
+    "event.sequence": 31,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "response_length": 114,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf5HE9sevW8SV97FSntPw",
+    "message.uuid": "92351b27-ce27-4fbe-8307-396d83d97316",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789477841934000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T13:10:41.934Z",
+    "event.sequence": 32,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "30",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789477841938000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T13:10:41.938Z",
+    "event.sequence": 33,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01VakeoG1nruow546bwU9oHe",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"sed\",\"full_command\":\"sed -n '240,470p' clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java\",\"description\":\"Show lines 240-470 of RecordAccumulator.java\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789477841971000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T13:10:41.971Z",
+    "event.sequence": 34,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01VakeoG1nruow546bwU9oHe",
+    "success": "true",
+    "duration_ms": "33",
+    "tool_parameters": "{\"bash_command\":\"sed\",\"full_command\":\"sed -n '240,470p' clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java\",\"description\":\"Show lines 240-470 of RecordAccumulator.java\"}",
+    "tool_input": "{\"command\":\"sed -n '240,470p' clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java\",\"description\":\"Show lines 240-470 of RecordAccumulator.java\"}",
+    "tool_input_size_bytes": "181",
+    "tool_result_size_bytes": "13061"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789477845826000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T13:10:45.826Z",
+    "event.sequence": 35,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789477845842000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T13:10:45.842Z",
+    "event.sequence": 36,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 211,
+    "cache_read_tokens": 32538,
+    "cache_creation_tokens": 4930,
+    "cost_usd": 0.020946600000000003,
+    "cost_usd_micros": 20947,
+    "duration_ms": 3854,
+    "ttft_ms": 1385,
+    "request_id": "req_011Cf5HEdttNiVyhuBv8sCwz",
+    "client_request_id": "80926283-0fa2-4b3b-bad7-fb82118bb113",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789477845861000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T13:10:45.861Z",
+    "event.sequence": 37,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "34",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789477845866000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T13:10:45.866Z",
+    "event.sequence": 38,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01P3Fib2SM6B65koGuXcs8Zt",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"sed\",\"full_command\":\"sed -n '470,560p' clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java\",\"description\":\"Show lines 470-560 of RecordAccumulator.java\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789477845902000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T13:10:45.902Z",
+    "event.sequence": 39,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01P3Fib2SM6B65koGuXcs8Zt",
+    "success": "true",
+    "duration_ms": "34",
+    "tool_parameters": "{\"bash_command\":\"sed\",\"full_command\":\"sed -n '470,560p' clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java\",\"description\":\"Show lines 470-560 of RecordAccumulator.java\"}",
+    "tool_input": "{\"command\":\"sed -n '470,560p' clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java\",\"description\":\"Show lines 470-560 of RecordAccumulator.java\"}",
+    "tool_input_size_bytes": "181",
+    "tool_result_size_bytes": "4820"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789477862240000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T13:11:02.240Z",
+    "event.sequence": 40,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789477862257000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T13:11:02.257Z",
+    "event.sequence": 41,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 1584,
+    "cache_read_tokens": 37468,
+    "cache_creation_tokens": 2104,
+    "cost_usd": 0.0285976,
+    "cost_usd_micros": 28598,
+    "duration_ms": 16331,
+    "ttft_ms": 1554,
+    "request_id": "req_011Cf5HEvoNjp7mDkdri8b9u",
+    "client_request_id": "9c068f07-43b8-4ea1-bb02-4c173960fb8b",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789477862277000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T13:11:02.277Z",
+    "event.sequence": 42,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "36",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789477862287000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T13:11:02.287Z",
+    "event.sequence": 43,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01BKfX54hXkzCxKvTjrp2ae2",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"grep\",\"full_command\":\"grep -n \\\"synchronized\\\\|tryAppend\\\\|class ProducerBatch\\\\|closeForRecordAppends\\\\|isFull\\\\|private.*lock\\\\|this.lock\\\" clients/src/main/java/org/apache/kafka/clients/producer/internals/ProducerBatch.java | head -60\",\"description\":\"Check ProducerBatch's own synchronization for tryAppend\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789477862323000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T13:11:02.323Z",
+    "event.sequence": 44,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01BKfX54hXkzCxKvTjrp2ae2",
+    "success": "true",
+    "duration_ms": "36",
+    "tool_parameters": "{\"bash_command\":\"grep\",\"full_command\":\"grep -n \\\"synchronized\\\\|tryAppend\\\\|class ProducerBatch\\\\|closeForRecordAppends\\\\|isFull\\\\|private.*lock\\\\|this.lock\\\" clients/src/main/java/org/apache/kafka/clients/producer/internals/ProducerBatch.java | head -60\",\"description\":\"Check ProducerBatch's own synchronization for tryAppend\"}",
+    "tool_input": "{\"command\":\"grep -n \\\"synchronized\\\\|tryAppend\\\\|class ProducerBatch\\\\|closeForRecordAppends\\\\|isFull\\\\|private.*lock\\\\|this.lock\\\" clients/src/main/java/org/apache/kafka/clients/producer/internals/ProducerBatch.java | head -60\",\"description\":\"Check ProducerBatch's own synchronization for tryAppend\"}",
+    "tool_input_size_bytes": "301",
+    "tool_result_size_bytes": "810"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789477867402000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T13:11:07.402Z",
+    "event.sequence": 45,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789477867417000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T13:11:07.417Z",
+    "event.sequence": 46,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 345,
+    "cache_read_tokens": 39572,
+    "cache_creation_tokens": 1953,
+    "cost_usd": 0.016250900000000002,
+    "cost_usd_micros": 16251,
+    "duration_ms": 5067,
+    "ttft_ms": 1432,
+    "request_id": "req_011Cf5HG8tRsTRMbyw6KaDhH",
+    "client_request_id": "dbd22680-a314-462d-81b1-87d0d01bbada",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789477867431000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T13:11:07.431Z",
+    "event.sequence": 47,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "28",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789477867435000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T13:11:07.435Z",
+    "event.sequence": 48,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_014VYJV2y4LuAZAZodwa7cvQ",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"sed\",\"full_command\":\"sed -n '150,200p' clients/src/main/java/org/apache/kafka/clients/producer/internals/ProducerBatch.java\",\"description\":\"Show ProducerBatch.tryAppend implementation\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789477867475000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T13:11:07.475Z",
+    "event.sequence": 49,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_014VYJV2y4LuAZAZodwa7cvQ",
+    "success": "true",
+    "duration_ms": "38",
+    "tool_parameters": "{\"bash_command\":\"sed\",\"full_command\":\"sed -n '150,200p' clients/src/main/java/org/apache/kafka/clients/producer/internals/ProducerBatch.java\",\"description\":\"Show ProducerBatch.tryAppend implementation\"}",
+    "tool_input": "{\"command\":\"sed -n '150,200p' clients/src/main/java/org/apache/kafka/clients/producer/internals/ProducerBatch.java\",\"description\":\"Show ProducerBatch.tryAppend implementation\"}",
+    "tool_input_size_bytes": "176",
+    "tool_result_size_bytes": "2858"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789477874431000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T13:11:14.431Z",
+    "event.sequence": 50,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789477874445000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T13:11:14.445Z",
+    "event.sequence": 51,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 401,
+    "cache_read_tokens": 41525,
+    "cache_creation_tokens": 1359,
+    "cost_usd": 0.0157165,
+    "cost_usd_micros": 15717,
+    "duration_ms": 6947,
+    "ttft_ms": 2337,
+    "request_id": "req_011Cf5HGWwErefyFEaWcrFHV",
+    "client_request_id": "42b9fbae-207c-4648-9851-c94177778dd5",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789477874463000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T13:11:14.463Z",
+    "event.sequence": 52,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "31",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789477874471000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T13:11:14.471Z",
+    "event.sequence": 53,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01FQ2NMvzMVgzs4vfPJMq4hC",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"grep\",\"full_command\":\"grep -n \\\"synchronized (dq)\\\\|tryResult = tryAppend\\\\|partitionChanged(topic\\\" clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java | head -10\",\"description\":\"Get exact line numbers for the append race\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789477874505000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T13:11:14.505Z",
+    "event.sequence": 54,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01FQ2NMvzMVgzs4vfPJMq4hC",
+    "success": "true",
+    "duration_ms": "33",
+    "tool_parameters": "{\"bash_command\":\"grep\",\"full_command\":\"grep -n \\\"synchronized (dq)\\\\|tryResult = tryAppend\\\\|partitionChanged(topic\\\" clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java | head -10\",\"description\":\"Get exact line numbers for the append race\"}",
+    "tool_input": "{\"command\":\"grep -n \\\"synchronized (dq)\\\\|tryResult = tryAppend\\\\|partitionChanged(topic\\\" clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java | head -10\",\"description\":\"Get exact line numbers for the append race\"}",
+    "tool_input_size_bytes": "251",
+    "tool_result_size_bytes": "467"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789477879152000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T13:11:19.152Z",
+    "event.sequence": 55,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789477879164000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T13:11:19.164Z",
+    "event.sequence": 56,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 315,
+    "cache_read_tokens": 42884,
+    "cache_creation_tokens": 631,
+    "cost_usd": 0.013308300000000002,
+    "cost_usd_micros": 13308,
+    "duration_ms": 4636,
+    "ttft_ms": 1308,
+    "request_id": "req_011Cf5HH2y1kx2fR9wUvdsHw",
+    "client_request_id": "13eca464-af7a-431d-9fc6-c8b20e365406",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789477879186000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T13:11:19.186Z",
+    "event.sequence": 57,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "33",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789477879202000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T13:11:19.202Z",
+    "event.sequence": 58,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01XJC4Mvn1r1nsASeGBP7fok",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"git\",\"full_command\":\"git log --oneline -5 -- clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java && git log -p -1 --follow -- clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java | grep -n \\\"tryResult = tryAppend\\\\|synchronized (dq)\\\" \",\"description\":\"Check recent git history for the append method changes\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789477879263000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T13:11:19.263Z",
+    "event.sequence": 59,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01XJC4Mvn1r1nsASeGBP7fok",
+    "success": "true",
+    "duration_ms": "60",
+    "tool_parameters": "{\"bash_command\":\"git\",\"full_command\":\"git log --oneline -5 -- clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java && git log -p -1 --follow -- clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java | grep -n \\\"tryResult = tryAppend\\\\|synchronized (dq)\\\" \",\"description\":\"Check recent git history for the append method changes\"}",
+    "tool_input": "{\"command\":\"git log --oneline -5 -- clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java && git log -p -1 --follow -- clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java | grep -n \\\"tryResult = tryAppend\\\\|synchronized (dq)\\\" \",\"description\":\"Check recent git history for the append method changes\"}",
+    "tool_input_size_bytes": "372",
+    "tool_result_size_bytes": "289"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789477935308000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T13:12:15.308Z",
+    "event.sequence": 60,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 5160,
+    "cache_read_tokens": 43515,
+    "cache_creation_tokens": 472,
+    "cost_usd": 0.06148699999999999,
+    "cost_usd_micros": 61487,
+    "duration_ms": 56026,
+    "ttft_ms": 3946,
+    "request_id": "req_011Cf5HHPFewUSEJ4oxS5WPK",
+    "client_request_id": "1c9a6405-710a-45c1-9ff1-e9a41b91f4b5",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789477935309000000",
+   "attrs": {
+    "run.id": "HM5__natural__shunt-strict__r2__20260915-131007",
+    "session.id": "264acbe2-8a1c-44e6-bdc6-f3f41358a16c",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-15T13:12:15.309Z",
+    "event.sequence": 61,
+    "prompt.id": "19d9103a-2661-489d-9d75-2421b57ad485",
+    "response_length": 3734,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf5HHPFewUSEJ4oxS5WPK",
+    "message.uuid": "fc5d556b-76a5-4103-bfc1-fca0088ab243",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  }
+ ],
+ "spans": []
+}

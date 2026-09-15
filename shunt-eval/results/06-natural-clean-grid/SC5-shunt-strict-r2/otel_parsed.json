@@ -1,0 +1,2059 @@
+{
+ "summary": {
+  "metric_names": {
+   "claude_code.session.count": 1,
+   "claude_code.cost.usage": 17,
+   "claude_code.token.usage": 17,
+   "claude_code.lines_of_code.count": 1,
+   "claude_code.code_edit_tool.decision": 1,
+   "claude_code.active_time.total": 1
+  },
+  "tokens_by_model_type": {
+   "claude-sonnet-5|input": 34.0,
+   "claude-sonnet-5|output": 7022.0,
+   "claude-sonnet-5|cacheRead": 625593.0,
+   "claude-sonnet-5|cacheCreation": 23912.0
+  },
+  "cost_by_model_usd": {
+   "claude-sonnet-5": 0.2551866
+  },
+  "event_counts": {
+   "hook_registered": 4,
+   "user_prompt": 1,
+   "hook_execution_start": 16,
+   "api_request": 17,
+   "hook_execution_complete": 16,
+   "tool_decision": 17,
+   "tool_result": 14,
+   "assistant_response": 5
+  },
+  "api_requests": 17,
+  "api_latency_ms_p50": 3797.0,
+  "api_latency_ms_max": 14669.0,
+  "tool_decisions": [
+   {
+    "tool": "Bash",
+    "decision": "reject",
+    "source": "hook"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "reject",
+    "source": "hook"
+   },
+   {
+    "tool": "Read",
+    "decision": "reject",
+    "source": "hook"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Write",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Bash",
+    "decision": "accept",
+    "source": "config"
+   }
+  ],
+  "span_counts": {},
+  "hook_ms_total": 0
+ },
+ "events": [
+  {
+   "event": "hook_registered",
+   "ts": "1789475285795000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-15T12:28:05.795Z",
+    "event.sequence": 0,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "projectSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Read"
+   }
+  },
+  {
+   "event": "hook_registered",
+   "ts": "1789475285796000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-15T12:28:05.796Z",
+    "event.sequence": 1,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "projectSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Bash"
+   }
+  },
+  {
+   "event": "hook_registered",
+   "ts": "1789475285796000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-15T12:28:05.796Z",
+    "event.sequence": 2,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "flagSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Bash"
+   }
+  },
+  {
+   "event": "hook_registered",
+   "ts": "1789475285796000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-15T12:28:05.796Z",
+    "event.sequence": 3,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "flagSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Read|Grep|Glob"
+   }
+  },
+  {
+   "event": "user_prompt",
+   "ts": "1789475286985000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "user_prompt",
+    "event.timestamp": "2026-09-15T12:28:06.985Z",
+    "event.sequence": 4,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "prompt_length": "264",
+    "prompt": "<REDACTED>",
+    "message.uuid": "99431b46-d130-4152-a102-9ce4da4c8049"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475289978000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:28:09.978Z",
+    "event.sequence": 5,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475289989000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:28:09.989Z",
+    "event.sequence": 6,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 141,
+    "cache_read_tokens": 23995,
+    "cache_creation_tokens": 5702,
+    "cost_usd": 0.020468,
+    "cost_usd_micros": 20468,
+    "duration_ms": 2945,
+    "ttft_ms": 1808,
+    "request_id": "req_011Cf5DzJYp4kgaxYjGLqpeL",
+    "client_request_id": "8b82a648-c58b-4447-85d5-a6bd191ba509",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475290016000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:28:10.016Z",
+    "event.sequence": 7,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "1",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "36",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475290019000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:28:10.019Z",
+    "event.sequence": 8,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "reject",
+    "source": "hook",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01YG4mdx1JpZRXzboYaQr58B",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find / -type f -name \\\"Filter.java\\\" -path \\\"*transforms*\\\" 2>/dev/null; echo \\\"---\\\"; find / -type f -name \\\"TimestampConverterTest.java\\\" 2>/dev/null\"}"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475292613000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:28:12.613Z",
+    "event.sequence": 9,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475292642000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:28:12.642Z",
+    "event.sequence": 10,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 181,
+    "cache_read_tokens": 29697,
+    "cache_creation_tokens": 258,
+    "cost_usd": 0.0083984,
+    "cost_usd_micros": 8398,
+    "duration_ms": 2602,
+    "ttft_ms": 1527,
+    "request_id": "req_011Cf5DzX77WHndmZnGhgj7R",
+    "client_request_id": "f0148b24-887f-4a80-add8-cfaf788daaa1",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475292647000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:28:12.647Z",
+    "event.sequence": 11,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "32",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475292660000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:28:12.660Z",
+    "event.sequence": 12,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01QvfXU5bSikMSnfjpR5Xqao",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find . -type f -name \\\"Filter.java\\\" 2>/dev/null; echo \\\"---\\\"; find . -type f -name \\\"TimestampConverterTest.java\\\" 2>/dev/null; echo \\\"---\\\"; find . -type f -iname \\\"*filter*\\\" -path \\\"*transform*\\\" 2>/dev/null\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475293015000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:28:13.015Z",
+    "event.sequence": 13,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01QvfXU5bSikMSnfjpR5Xqao",
+    "success": "true",
+    "duration_ms": "353",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find . -type f -name \\\"Filter.java\\\" 2>/dev/null; echo \\\"---\\\"; find . -type f -name \\\"TimestampConverterTest.java\\\" 2>/dev/null; echo \\\"---\\\"; find . -type f -iname \\\"*filter*\\\" -path \\\"*transform*\\\" 2>/dev/null\"}",
+    "tool_input": "{\"command\":\"find . -type f -name \\\"Filter.java\\\" 2>/dev/null; echo \\\"---\\\"; find . -type f -name \\\"TimestampConverterTest.java\\\" 2>/dev/null; echo \\\"---\\\"; find . -type f -iname \\\"*filter*\\\" -path \\\"*transform*\\\" 2>/dev/null\"}",
+    "tool_input_size_bytes": "226",
+    "tool_result_size_bytes": "272"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475296244000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:28:16.244Z",
+    "event.sequence": 14,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475296265000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:28:16.265Z",
+    "event.sequence": 15,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "20",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475296271000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:28:16.271Z",
+    "event.sequence": 16,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_011esQSp7Dv9WaBWYYZ983Ef",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475296277000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:28:16.277Z",
+    "event.sequence": 17,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_011esQSp7Dv9WaBWYYZ983Ef",
+    "success": "true",
+    "duration_ms": "5",
+    "tool_input": "{\"file_path\":\"/var/tmp/shunt-ws/SC5__natural__shunt-strict__r2__20260915-122757/connect/transforms/src/main/java/org/apache/kafka/connect/transforms/Filter.java\"}",
+    "tool_input_size_bytes": "162",
+    "tool_result_size_bytes": "2311"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475296812000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:28:16.812Z",
+    "event.sequence": 18,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475296831000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:28:16.831Z",
+    "event.sequence": 19,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 253,
+    "cache_read_tokens": 29955,
+    "cache_creation_tokens": 343,
+    "cost_usd": 0.0093825,
+    "cost_usd_micros": 9383,
+    "duration_ms": 3797,
+    "ttft_ms": 2239,
+    "request_id": "req_011Cf5DzjyWsbeyEiskrkLQ9",
+    "client_request_id": "460f0f82-6381-4e99-9efd-ae878e551a9f",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789475296831000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-15T12:28:16.831Z",
+    "event.sequence": 20,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "response_length": 35,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf5DzjyWsbeyEiskrkLQ9",
+    "message.uuid": "a16e447f-20d8-485c-9cd5-9cdc79d0b369",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475296835000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:28:16.835Z",
+    "event.sequence": 21,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "1",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "21",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475296836000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:28:16.836Z",
+    "event.sequence": 22,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "reject",
+    "source": "hook",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01UdnKEFqr8LgjjeqCYGsCmx",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475300946000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:28:20.946Z",
+    "event.sequence": 23,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475300964000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:28:20.964Z",
+    "event.sequence": 24,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 221,
+    "cache_read_tokens": 30298,
+    "cache_creation_tokens": 1304,
+    "cost_usd": 0.011533600000000001,
+    "cost_usd_micros": 11534,
+    "duration_ms": 4098,
+    "ttft_ms": 1300,
+    "request_id": "req_011Cf5E12Nza3GhZi6xMz6Yy",
+    "client_request_id": "f00655d0-6451-4989-9cff-de18a7dae99b",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475300972000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:28:20.972Z",
+    "event.sequence": 25,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "1",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "25",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475300973000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:28:20.973Z",
+    "event.sequence": 26,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "reject",
+    "source": "hook",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01RSxDUkEuc7JXtYZyT4nmPb",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475304482000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:28:24.482Z",
+    "event.sequence": 27,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475304514000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:28:24.514Z",
+    "event.sequence": 28,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "30",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475304518000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:28:24.518Z",
+    "event.sequence": 29,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_017MjBWKDyvAiHTp4yZWqETc",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"sed\",\"full_command\":\"sed -n '1,120p' connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475304550000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:28:24.550Z",
+    "event.sequence": 30,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_017MjBWKDyvAiHTp4yZWqETc",
+    "success": "true",
+    "duration_ms": "30",
+    "tool_parameters": "{\"bash_command\":\"sed\",\"full_command\":\"sed -n '1,120p' connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java\"}",
+    "tool_input": "{\"command\":\"sed -n '1,120p' connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java\"}",
+    "tool_input_size_bytes": "126",
+    "tool_result_size_bytes": "4703"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475304555000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:28:24.555Z",
+    "event.sequence": 31,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 241,
+    "cache_read_tokens": 31602,
+    "cache_creation_tokens": 319,
+    "cost_usd": 0.0095319,
+    "cost_usd_micros": 9532,
+    "duration_ms": 3565,
+    "ttft_ms": 1652,
+    "request_id": "req_011Cf5E1KtT9BTTo5XqSywXQ",
+    "client_request_id": "9a6e5faa-902b-4828-afc6-b59917d92a0f",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475311138000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:28:31.138Z",
+    "event.sequence": 32,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475311153000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:28:31.153Z",
+    "event.sequence": 33,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 412,
+    "cache_read_tokens": 31921,
+    "cache_creation_tokens": 2382,
+    "cost_usd": 0.016463199999999997,
+    "cost_usd_micros": 16463,
+    "duration_ms": 6582,
+    "ttft_ms": 1654,
+    "request_id": "req_011Cf5E1bbGV7kHmzPsKbqts",
+    "client_request_id": "61aed67e-6de4-4d17-a8bd-05a42ae7888c",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475311174000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:28:31.174Z",
+    "event.sequence": 34,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "34",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475311185000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:28:31.185Z",
+    "event.sequence": 35,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01CxStV7smWmBS3YQ6nfUADG",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"grep\",\"full_command\":\"grep -n \\\"new SourceRecord\\\" connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java | head -20\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475311217000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:28:31.217Z",
+    "event.sequence": 36,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01CxStV7smWmBS3YQ6nfUADG",
+    "success": "true",
+    "duration_ms": "32",
+    "tool_parameters": "{\"bash_command\":\"grep\",\"full_command\":\"grep -n \\\"new SourceRecord\\\" connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java | head -20\"}",
+    "tool_input": "{\"command\":\"grep -n \\\"new SourceRecord\\\" connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java | head -20\"}",
+    "tool_input_size_bytes": "150",
+    "tool_result_size_bytes": "216"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475313359000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:28:33.359Z",
+    "event.sequence": 37,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475313379000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:28:33.379Z",
+    "event.sequence": 38,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 137,
+    "cache_read_tokens": 34303,
+    "cache_creation_tokens": 550,
+    "cost_usd": 0.0096096,
+    "cost_usd_micros": 9610,
+    "duration_ms": 2146,
+    "ttft_ms": 1433,
+    "request_id": "req_011Cf5E25p9PJgRqfThGrCAu",
+    "client_request_id": "7d074b45-0e28-48ca-a5aa-a0a5bbfb9971",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475313392000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:28:33.392Z",
+    "event.sequence": 39,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "30",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475313396000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:28:33.396Z",
+    "event.sequence": 40,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01NP1StifNcyLHN6AgWyB4Wh",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"sed\",\"full_command\":\"sed -n '690,739p' connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475313430000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:28:33.430Z",
+    "event.sequence": 41,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01NP1StifNcyLHN6AgWyB4Wh",
+    "success": "true",
+    "duration_ms": "34",
+    "tool_parameters": "{\"bash_command\":\"sed\",\"full_command\":\"sed -n '690,739p' connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java\"}",
+    "tool_input": "{\"command\":\"sed -n '690,739p' connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java\"}",
+    "tool_input_size_bytes": "128",
+    "tool_result_size_bytes": "2182"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475323007000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:28:43.007Z",
+    "event.sequence": 42,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475323023000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:28:43.023Z",
+    "event.sequence": 43,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 692,
+    "cache_read_tokens": 34853,
+    "cache_creation_tokens": 1117,
+    "cost_usd": 0.0166871,
+    "cost_usd_micros": 16687,
+    "duration_ms": 9579,
+    "ttft_ms": 1604,
+    "request_id": "req_011Cf5E2FHuVuT3P5gssjLCx",
+    "client_request_id": "e280e5ef-faa7-4825-a554-2e90c377f398",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475323039000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:28:43.039Z",
+    "event.sequence": 44,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "30",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475323048000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:28:43.048Z",
+    "event.sequence": 45,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01FWFHyRurgB5HYFkGqfHKUC",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"cd\",\"full_command\":\"cd /var/tmp/shunt-ws/SC5__natural__shunt-strict__r2__20260915-122757/connect/transforms/src/test/java/org/apache/kafka/connect/transforms && ls | sort\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475323081000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:28:43.081Z",
+    "event.sequence": 46,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01FWFHyRurgB5HYFkGqfHKUC",
+    "success": "true",
+    "duration_ms": "32",
+    "tool_parameters": "{\"bash_command\":\"cd\",\"full_command\":\"cd /var/tmp/shunt-ws/SC5__natural__shunt-strict__r2__20260915-122757/connect/transforms/src/test/java/org/apache/kafka/connect/transforms && ls | sort\"}",
+    "tool_input": "{\"command\":\"cd /var/tmp/shunt-ws/SC5__natural__shunt-strict__r2__20260915-122757/connect/transforms/src/test/java/org/apache/kafka/connect/transforms && ls | sort\"}",
+    "tool_input_size_bytes": "164",
+    "tool_result_size_bytes": "340"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475326356000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:28:46.356Z",
+    "event.sequence": 47,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475326373000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:28:46.373Z",
+    "event.sequence": 48,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 192,
+    "cache_read_tokens": 35970,
+    "cache_creation_tokens": 1196,
+    "cost_usd": 0.012108,
+    "cost_usd_micros": 12108,
+    "duration_ms": 3272,
+    "ttft_ms": 1775,
+    "request_id": "req_011Cf5E2xbqbYJMhu2h33Vnm",
+    "client_request_id": "a546f2f3-3ca0-4834-9c40-1711e5c0c7a6",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475326381000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:28:46.381Z",
+    "event.sequence": 49,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "23",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475326386000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:28:46.386Z",
+    "event.sequence": 50,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01RjFntPktCMY3m8Mvtsjzio",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475326390000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:28:46.390Z",
+    "event.sequence": 51,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01RjFntPktCMY3m8Mvtsjzio",
+    "success": "true",
+    "duration_ms": "3",
+    "tool_input": "{\"file_path\":\"/var/tmp/shunt-ws/SC5__natural__shunt-strict__r2__20260915-122757/connect/transforms/src/test/java/org/apache/kafka/connect/transforms/DropHeadersTest.java\"}",
+    "tool_input_size_bytes": "171",
+    "tool_result_size_bytes": "5195"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475341065000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:29:01.065Z",
+    "event.sequence": 52,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Grep",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475341080000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:29:01.080Z",
+    "event.sequence": 53,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Grep",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "15",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475341084000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:29:01.083Z",
+    "event.sequence": 54,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01Wgg5GwPui3b7QMYkMfcsRy",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475341087000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:29:01.087Z",
+    "event.sequence": 55,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 1460,
+    "cache_read_tokens": 37166,
+    "cache_creation_tokens": 2332,
+    "cost_usd": 0.0278672,
+    "cost_usd_micros": 27867,
+    "duration_ms": 14669,
+    "ttft_ms": 2134,
+    "request_id": "req_011Cf5E3CgAyD4YXy7Wb1n6S",
+    "client_request_id": "3d4802cb-a73f-44bd-8711-728d14032cde",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475341098000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:29:01.098Z",
+    "event.sequence": 56,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01Wgg5GwPui3b7QMYkMfcsRy",
+    "success": "true",
+    "duration_ms": "14",
+    "tool_input": "{\"pattern\":\"\\\\.config\\\\(\\\\)\",\"path\":\"/var/tmp/shunt-ws/SC5__natural__shunt-strict__r2__20260915-122757/connect/transforms/src/test/java/org/apache/kafka/connect/transforms\",\"output_mode\":\"content\",\"-n\":true}",
+    "tool_input_size_bytes": "207",
+    "tool_result_size_bytes": "564"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475346473000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:29:06.473Z",
+    "event.sequence": 57,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475346506000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:29:06.506Z",
+    "event.sequence": 58,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 381,
+    "cache_read_tokens": 39498,
+    "cache_creation_tokens": 1756,
+    "cost_usd": 0.0161036,
+    "cost_usd_micros": 16104,
+    "duration_ms": 5390,
+    "ttft_ms": 2098,
+    "request_id": "req_011Cf5E4HWRE8s9NeShEFwgG",
+    "client_request_id": "af53adce-aa40-4d6f-842a-b1ec5f4afe47",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475346508000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:29:06.508Z",
+    "event.sequence": 59,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "33",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475346515000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:29:06.515Z",
+    "event.sequence": 60,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_017VNtfS9Py6q3mDs3tcSLMF",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"cd\",\"full_command\":\"cd /var/tmp/shunt-ws/SC5__natural__shunt-strict__r2__20260915-122757 && grep -n \\\"^    //\\\\|@Test\\\\|@ParameterizedTest\\\\|@AfterEach\\\" connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475346548000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:29:06.548Z",
+    "event.sequence": 61,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_017VNtfS9Py6q3mDs3tcSLMF",
+    "success": "true",
+    "duration_ms": "32",
+    "tool_parameters": "{\"bash_command\":\"cd\",\"full_command\":\"cd /var/tmp/shunt-ws/SC5__natural__shunt-strict__r2__20260915-122757 && grep -n \\\"^    //\\\\|@Test\\\\|@ParameterizedTest\\\\|@AfterEach\\\" connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java\"}",
+    "tool_input": "{\"command\":\"cd /var/tmp/shunt-ws/SC5__natural__shunt-strict__r2__20260915-122757 && grep -n \\\"^    //\\\\|@Test\\\\|@ParameterizedTest\\\\|@AfterEach\\\" connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java\"}",
+    "tool_input_size_bytes": "244",
+    "tool_result_size_bytes": "1286"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475350611000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:29:10.611Z",
+    "event.sequence": 62,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475350634000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:29:10.634Z",
+    "event.sequence": 63,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 259,
+    "cache_read_tokens": 41254,
+    "cache_creation_tokens": 1120,
+    "cost_usd": 0.013644800000000002,
+    "cost_usd_micros": 13645,
+    "duration_ms": 4068,
+    "ttft_ms": 1661,
+    "request_id": "req_011Cf5E4gva4iTT3WN53rEoh",
+    "client_request_id": "cd97bb93-d516-4cc6-9300-2ed449017aa1",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475350641000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:29:10.641Z",
+    "event.sequence": 64,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "29",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475350645000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:29:10.645Z",
+    "event.sequence": 65,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01PwcT8Lyedasyp3RLhBD3mE",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"sed\",\"full_command\":\"sed -n '294,320p' connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475350672000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:29:10.672Z",
+    "event.sequence": 66,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01PwcT8Lyedasyp3RLhBD3mE",
+    "success": "true",
+    "duration_ms": "25",
+    "tool_parameters": "{\"bash_command\":\"sed\",\"full_command\":\"sed -n '294,320p' connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java\"}",
+    "tool_input": "{\"command\":\"sed -n '294,320p' connect/transforms/src/test/java/org/apache/kafka/connect/transforms/TimestampConverterTest.java\"}",
+    "tool_input_size_bytes": "128",
+    "tool_result_size_bytes": "897"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475362707000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:29:22.707Z",
+    "event.sequence": 67,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Write",
+    "tool_use_id": "toolu_01LgfkUMuqnH1CUdSBaEe1Wt",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475362721000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:29:22.721Z",
+    "event.sequence": 68,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Write",
+    "tool_use_id": "toolu_01LgfkUMuqnH1CUdSBaEe1Wt",
+    "success": "true",
+    "duration_ms": "14",
+    "tool_input": "{\"file_path\":\"/var/tmp/shunt-ws/SC5__natural__shunt-strict__r2__20260915-122757/connect/transforms/src/test/java/org/apache/kafka/connect/transforms/FilterTest.java\",\"content\":\"/*\\n * Licensed to the Apache Software Foundation (ASF) under one or more\\n * contributor license agreements. See the NOTICE file \u2026[3685 chars]\"}",
+    "tool_input_size_bytes": "4000",
+    "tool_result_size_bytes": "246"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475362726000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:29:22.726Z",
+    "event.sequence": 69,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 1646,
+    "cache_read_tokens": 42374,
+    "cache_creation_tokens": 651,
+    "cost_usd": 0.0265663,
+    "cost_usd_micros": 26566,
+    "duration_ms": 12036,
+    "ttft_ms": 1530,
+    "request_id": "req_011Cf5E4zT25A1XqMJpD82N3",
+    "client_request_id": "88491043-b24a-4811-850a-2571416a2925",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789475362726000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-15T12:29:22.726Z",
+    "event.sequence": 70,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "response_length": 250,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf5E4zT25A1XqMJpD82N3",
+    "message.uuid": "9980335a-4046-42b8-9208-bff8d165c743",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475365575000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:29:25.575Z",
+    "event.sequence": 71,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475365592000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:29:25.592Z",
+    "event.sequence": 72,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 177,
+    "cache_read_tokens": 43025,
+    "cache_creation_tokens": 1789,
+    "cost_usd": 0.0148515,
+    "cost_usd_micros": 14852,
+    "duration_ms": 2844,
+    "ttft_ms": 1629,
+    "request_id": "req_011Cf5E5tCG7nki8EiBkzbSG",
+    "client_request_id": "24c759bb-5b7c-4fa1-8c17-4ad2f17d12dc",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789475365592000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-15T12:29:25.592Z",
+    "event.sequence": 73,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "response_length": 40,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf5E5tCG7nki8EiBkzbSG",
+    "message.uuid": "3910f031-307f-477a-85b6-401fc31e840b",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475365605000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:29:25.605Z",
+    "event.sequence": 74,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "29",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475365617000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:29:25.617Z",
+    "event.sequence": 75,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01CRT1voxjK547m3WUMTgi2m",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"ls\",\"full_command\":\"ls gradlew 2>/dev/null && timeout 300 ./gradlew :connect:transforms:test --tests \\\"org.apache.kafka.connect.transforms.FilterTest\\\" -q 2>&1 | tail -100\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475388692000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:29:48.692Z",
+    "event.sequence": 76,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01CRT1voxjK547m3WUMTgi2m",
+    "success": "true",
+    "duration_ms": "23074",
+    "tool_parameters": "{\"bash_command\":\"ls\",\"full_command\":\"ls gradlew 2>/dev/null && timeout 300 ./gradlew :connect:transforms:test --tests \\\"org.apache.kafka.connect.transforms.FilterTest\\\" -q 2>&1 | tail -100\"}",
+    "tool_input": "{\"command\":\"ls gradlew 2>/dev/null && timeout 300 ./gradlew :connect:transforms:test --tests \\\"org.apache.kafka.connect.transforms.FilterTest\\\" -q 2>&1 | tail -100\"}",
+    "tool_input_size_bytes": "165",
+    "tool_result_size_bytes": "3740"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475392363000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:29:52.363Z",
+    "event.sequence": 77,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475392383000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:29:52.383Z",
+    "event.sequence": 78,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 152,
+    "cache_read_tokens": 44814,
+    "cache_creation_tokens": 2428,
+    "cost_usd": 0.0165568,
+    "cost_usd_micros": 16557,
+    "duration_ms": 3672,
+    "ttft_ms": 1789,
+    "request_id": "req_011Cf5E7o3WaV4opHERKNQ6y",
+    "client_request_id": "fae2208b-c1d9-427a-bd5a-295534540e0b",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789475392383000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-15T12:29:52.383Z",
+    "event.sequence": 79,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "response_length": 102,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf5E7o3WaV4opHERKNQ6y",
+    "message.uuid": "fc405e1e-3580-4537-ba19-c8fd8d895f59",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475392393000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:29:52.393Z",
+    "event.sequence": 80,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "29",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475392397000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:29:52.397Z",
+    "event.sequence": 81,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01Xr2dseGuGZRut876gEyXd9",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find connect/transforms/build/test-results -iname \\\"*FilterTest*\\\" 2>/dev/null\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475392426000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:29:52.426Z",
+    "event.sequence": 82,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01Xr2dseGuGZRut876gEyXd9",
+    "success": "true",
+    "duration_ms": "27",
+    "tool_parameters": "{\"bash_command\":\"find\",\"full_command\":\"find connect/transforms/build/test-results -iname \\\"*FilterTest*\\\" 2>/dev/null\"}",
+    "tool_input": "{\"command\":\"find connect/transforms/build/test-results -iname \\\"*FilterTest*\\\" 2>/dev/null\"}",
+    "tool_input_size_bytes": "92",
+    "tool_result_size_bytes": "98"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789475394820000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T12:29:54.820Z",
+    "event.sequence": 83,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475394843000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:29:54.843Z",
+    "event.sequence": 84,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 151,
+    "cache_read_tokens": 47242,
+    "cache_creation_tokens": 384,
+    "cost_usd": 0.011922400000000001,
+    "cost_usd_micros": 11922,
+    "duration_ms": 2401,
+    "ttft_ms": 1593,
+    "request_id": "req_011Cf5E84zD7rfaLzhvZifgm",
+    "client_request_id": "be74bc15-94ca-468e-af42-ecd718cefb30",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789475394851000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T12:29:54.851Z",
+    "event.sequence": 85,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Bash",
+    "num_hooks": "2",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "2",
+    "num_cancelled": "0",
+    "total_duration_ms": "30",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789475394858000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T12:29:54.858Z",
+    "event.sequence": 86,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01TCo8ZwtiRpRnMZ5hSEMzKu",
+    "tool_source": "builtin",
+    "tool_parameters": "{\"bash_command\":\"grep\",\"full_command\":\"grep -E \\\"tests=|failures=|errors=\\\" connect/transforms/build/test-results/test/TEST-org.apache.kafka.connect.transforms.FilterTest.xml | head -1\"}"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789475394884000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T12:29:54.883Z",
+    "event.sequence": 87,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01TCo8ZwtiRpRnMZ5hSEMzKu",
+    "success": "true",
+    "duration_ms": "25",
+    "tool_parameters": "{\"bash_command\":\"grep\",\"full_command\":\"grep -E \\\"tests=|failures=|errors=\\\" connect/transforms/build/test-results/test/TEST-org.apache.kafka.connect.transforms.FilterTest.xml | head -1\"}",
+    "tool_input": "{\"command\":\"grep -E \\\"tests=|failures=|errors=\\\" connect/transforms/build/test-results/test/TEST-org.apache.kafka.connect.transforms.FilterTest.xml | head -1\"}",
+    "tool_input_size_bytes": "159",
+    "tool_result_size_bytes": "174"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789475399238000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T12:29:59.238Z",
+    "event.sequence": 88,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 326,
+    "cache_read_tokens": 47626,
+    "cache_creation_tokens": 281,
+    "cost_usd": 0.0134917,
+    "cost_usd_micros": 13492,
+    "duration_ms": 4340,
+    "ttft_ms": 1301,
+    "request_id": "req_011Cf5E8FTVirczELaTUDQaT",
+    "client_request_id": "ea177436-f58a-4821-bf9b-4147d12ca9f5",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789475399238000000",
+   "attrs": {
+    "run.id": "SC5__natural__shunt-strict__r2__20260915-122757",
+    "session.id": "a7a03541-b904-4db8-9624-178072cac05a",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-15T12:29:59.238Z",
+    "event.sequence": 89,
+    "prompt.id": "377595c7-69bc-406f-86d7-e1bf17d976f5",
+    "response_length": 837,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf5E8FTVirczELaTUDQaT",
+    "message.uuid": "a7738a22-a0e5-466a-be94-d3dfe0c5718b",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  }
+ ],
+ "spans": []
+}

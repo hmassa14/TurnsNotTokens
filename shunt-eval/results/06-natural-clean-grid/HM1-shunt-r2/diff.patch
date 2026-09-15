@@ -1,0 +1,13 @@
+diff --git a/core/src/main/java/kafka/server/share/SharePartitionManager.java b/core/src/main/java/kafka/server/share/SharePartitionManager.java
+index dcd2ccd..0639475 100644
+--- a/core/src/main/java/kafka/server/share/SharePartitionManager.java
++++ b/core/src/main/java/kafka/server/share/SharePartitionManager.java
+@@ -423,7 +423,7 @@ public class SharePartitionManager implements AutoCloseable {
+         // Remove the share session from the cache.
+         ShareSessionKey key = shareSessionKey(groupId, memberId);
+         if (cache.remove(key) == null) {
+-            log.error("Share session error for {}: no such share session found", key);
++            log.warn("Share session error for {}: no such share session found", key);
+             return CompletableFuture.failedFuture(Errors.SHARE_SESSION_NOT_FOUND.exception());
+         } else {
+             log.debug("Removed share session with key {}", key);

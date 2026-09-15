@@ -1,0 +1,662 @@
+{
+ "summary": {
+  "requests_total": 10,
+  "requests_main": 10,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 10,
+    "input_tokens": 20,
+    "cache_creation_input_tokens": 24242,
+    "cache_read_input_tokens": 355525,
+    "output_tokens": 7125
+   }
+  },
+  "tool_mix": {
+   "Grep": 4,
+   "Read": 4,
+   "Write": 1
+  },
+  "tool_calls_total": 9,
+  "reads_total": 4,
+  "reads_whole_file": 2,
+  "reads_targeted": 2,
+  "reads_blocked_by_hook": 0,
+  "sandbox_blocks": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {},
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 1,
+  "lines_entered_context": 437,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 9,
+  "files_read": [
+   "ProcessorNodeMetrics.java",
+   "StreamsMetricsImpl.java",
+   "TopicMetrics.java"
+  ],
+  "tool_latency_ms": {
+   "Grep": 61,
+   "Read": 32,
+   "Write": 24
+  },
+  "api_gap_ms_p50": 2252,
+  "api_gap_ms_max": 17093,
+  "final_text_chars": 708
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf5JpJYcSUFsegCSo78at",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5618,
+    "cache_read_input_tokens": 23995,
+    "output_tokens": 122,
+    "output_tokens_details": {
+     "thinking_tokens": 31
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5618
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 122,
+      "cache_read_input_tokens": 23995,
+      "cache_creation_input_tokens": 5618,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5618,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T13:31:26.692Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5JpSCjdWMvKpuQDc3HP",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 267,
+    "cache_read_input_tokens": 29613,
+    "output_tokens": 126,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 267
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 126,
+      "cache_read_input_tokens": 29613,
+      "cache_creation_input_tokens": 267,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 267,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T13:31:29.186Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5JpaR6eQRBVN3nfGJvG",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5469,
+    "cache_read_input_tokens": 29880,
+    "output_tokens": 320,
+    "output_tokens_details": {
+     "thinking_tokens": 215
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5469
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 320,
+      "cache_read_input_tokens": 29880,
+      "cache_creation_input_tokens": 5469,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5469,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T13:31:32.211Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5JprEMgbLGcLT99Q6z5",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 489,
+    "cache_read_input_tokens": 35349,
+    "output_tokens": 466,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 489
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 466,
+      "cache_read_input_tokens": 35349,
+      "cache_creation_input_tokens": 489,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 489,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T13:31:34.696Z",
+   "blocks": [
+    "text",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5JqBTzaabdpAQ4wVJzp",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1378,
+    "cache_read_input_tokens": 35838,
+    "output_tokens": 262,
+    "output_tokens_details": {
+     "thinking_tokens": 92
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1378
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 262,
+      "cache_read_input_tokens": 35838,
+      "cache_creation_input_tokens": 1378,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1378,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T13:31:39.081Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5JqQ8FKtLyB5w5bXDzs",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1653,
+    "cache_read_input_tokens": 37216,
+    "output_tokens": 213,
+    "output_tokens_details": {
+     "thinking_tokens": 43
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1653
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 213,
+      "cache_read_input_tokens": 37216,
+      "cache_creation_input_tokens": 1653,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1653,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T13:31:41.985Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5JqfqZQd75QtbnSvrdF",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1561,
+    "cache_read_input_tokens": 38869,
+    "output_tokens": 504,
+    "output_tokens_details": {
+     "thinking_tokens": 332
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1561
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 504,
+      "cache_read_input_tokens": 38869,
+      "cache_creation_input_tokens": 1561,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1561,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T13:31:48.197Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5Jr8WfubRXgjVmZWA46",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 596,
+    "cache_read_input_tokens": 40430,
+    "output_tokens": 257,
+    "output_tokens_details": {
+     "thinking_tokens": 135
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 596
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 257,
+      "cache_read_input_tokens": 40430,
+      "cache_creation_input_tokens": 596,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 596,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T13:31:52.565Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5JrM7xL5QbPhS32SZZt",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 2283,
+    "cache_read_input_tokens": 41026,
+    "output_tokens": 4638,
+    "output_tokens_details": {
+     "thinking_tokens": 1929
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 2283
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 4638,
+      "cache_read_input_tokens": 41026,
+      "cache_creation_input_tokens": 2283,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 2283,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T13:32:10.330Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf5Ju6RFG3V4uKHGYiKQc",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 4928,
+    "cache_read_input_tokens": 43309,
+    "output_tokens": 217,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 4928
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 217,
+      "cache_read_input_tokens": 43309,
+      "cache_creation_input_tokens": 4928,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 4928,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T13:32:32.912Z",
+   "blocks": [
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01BHCWpTsKo8mvqN9n6KpCTV",
+   "name": "Grep",
+   "input": {
+    "pattern": "class ProcessorNodeMetrics",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-15T13:31:27.204Z",
+   "request_id": "req_011Cf5JpJYcSUFsegCSo78at",
+   "agent": "main",
+   "ts_result": "2026-09-15T13:31:27.292Z",
+   "is_error": false,
+   "result_head": "Found 2 files\nstreams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/ProcessorNodeMetrics.java\nstreams/src/test/java/org/apache/kafka/streams/processor/internals/metrics/ProcessorNodeMetricsTest.java",
+   "result_chars": 219,
+   "result_lines": 0,
+   "latency_ms": 88,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01NQcELjgDCycmZ4pvWh7Sgr",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/CT2__natural__stock__r2__20260915-133117/streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/ProcessorNodeMetrics.java"
+   },
+   "ts_use": "2026-09-15T13:31:29.186Z",
+   "request_id": "req_011Cf5JpSCjdWMvKpuQDc3HP",
+   "agent": "main",
+   "ts_result": "2026-09-15T13:31:29.224Z",
+   "is_error": false,
+   "result_head": "1\t/*\n2\t * Licensed to the Apache Software Foundation (ASF) under one or more\n3\t * contributor license agreements. See the NOTICE file distributed with\n4\t * this work for additional information regarding copyright ownership.\n5\t * The ASF licenses this file to You under the Apache License, Version 2.0",
+   "result_chars": 12050,
+   "result_lines": 214,
+   "latency_ms": 37,
+   "flags": [
+    "read_whole"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_018FoPeUaJazgwvxWpSaSQNA",
+   "name": "Grep",
+   "input": {
+    "pattern": "SinkNodeMetrics|records-sent|bytes-sent|send-latency",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-15T13:31:32.859Z",
+   "request_id": "req_011Cf5JpaR6eQRBVN3nfGJvG",
+   "agent": "main",
+   "ts_result": "2026-09-15T13:31:32.936Z",
+   "is_error": false,
+   "result_head": "Found 3 files\nclients/src/main/java/org/apache/kafka/common/network/Selector.java\nconnect/mirror/src/main/java/org/apache/kafka/connect/mirror/MirrorSourceLegacyMetrics.java\nconnect/mirror/src/main/java/org/apache/kafka/connect/mirror/MirrorSourceMetrics.java",
+   "result_chars": 259,
+   "result_lines": 0,
+   "latency_ms": 77,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_017UgUsAnrHfpsVJts7kL6JD",
+   "name": "Grep",
+   "input": {
+    "pattern": "RATE_OF_SUM_DESCRIPTION_PREFIX|BYTE_RATE|RATE_DESCRIPTION_PREFIX|addRateOfSumAndSumMetricsToSensor|addAvgAndMaxToSensor|addInvocationRateAndCountToSensor|AVG_LATENCY_DESCRIPTION|MAX_LATENCY_DESCRIPTION|LATENCY_SUFFIX|LATENCY_DESCRIPTION_SUFFIX|TOTAL_DESCRIPTION\\b",
+    "path": "/var/tmp/shunt-ws/CT2__natural__stock__r2__20260915-133117/streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java",
+    "output_mode": "content"
+   },
+   "ts_use": "2026-09-15T13:31:37.390Z",
+   "request_id": "req_011Cf5JprEMgbLGcLT99Q6z5",
+   "agent": "main",
+   "ts_result": "2026-09-15T13:31:37.434Z",
+   "is_error": false,
+   "result_head": "130:    public static final String LATENCY_SUFFIX = \"-latency\";\n151:    public static final String TOTAL_DESCRIPTION = \"The total number of \";\n153:    public static final String AVG_LATENCY_DESCRIPTION = \"The average latency of \";\n154:    public static final String MAX_LATENCY_DESCRIPTION = \"The max",
+   "result_chars": 1830,
+   "result_lines": 0,
+   "latency_ms": 43,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01NKDoMiKmy3LnAwAFb2HE4J",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/CT2__natural__stock__r2__20260915-133117/streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java",
+    "offset": 140,
+    "limit": 40
+   },
+   "ts_use": "2026-09-15T13:31:40.365Z",
+   "request_id": "req_011Cf5JqBTzaabdpAQ4wVJzp",
+   "agent": "main",
+   "ts_result": "2026-09-15T13:31:40.396Z",
+   "is_error": false,
+   "result_head": "140\t    public static final String GROUP_PREFIX = GROUP_PREFIX_WO_DELIMITER + \"-\";\n141\t    public static final String GROUP_SUFFIX = \"-metrics\";\n142\t    public static final String CLIENT_LEVEL_GROUP = GROUP_PREFIX_WO_DELIMITER + GROUP_SUFFIX;\n143\t    public static final String THREAD_LEVEL_GROUP = G",
+   "result_chars": 2946,
+   "result_lines": 40,
+   "latency_ms": 30,
+   "flags": [
+    "read_targeted"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01TFxPntenn9B4bxjR6Dq1V1",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/CT2__natural__stock__r2__20260915-133117/streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java",
+    "offset": 820,
+    "limit": 90
+   },
+   "ts_use": "2026-09-15T13:31:44.023Z",
+   "request_id": "req_011Cf5JqQ8FKtLyB5w5bXDzs",
+   "agent": "main",
+   "ts_result": "2026-09-15T13:31:44.057Z",
+   "is_error": false,
+   "result_head": "820\t    public static void addInvocationRateAndCountToSensor(final Sensor sensor,\n821\t                                                         final String group,\n822\t                                                         final Map<String, String> tags,\n823\t                                        ",
+   "result_chars": 4889,
+   "result_lines": 90,
+   "latency_ms": 33,
+   "flags": [
+    "read_targeted"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01LMZ8MT6kjHJTDVXbYDLZX2",
+   "name": "Grep",
+   "input": {
+    "pattern": "records-produced|bytes-produced|produce-rate|record-send-rate|byte-send-rate",
+    "path": "/var/tmp/shunt-ws/CT2__natural__stock__r2__20260915-133117/streams/src/main/java",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-15T13:31:50.276Z",
+   "request_id": "req_011Cf5JqfqZQd75QtbnSvrdF",
+   "agent": "main",
+   "ts_result": "2026-09-15T13:31:50.313Z",
+   "is_error": false,
+   "result_head": "Found 1 file\nstreams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/TopicMetrics.java",
+   "result_chars": 105,
+   "result_lines": 0,
+   "latency_ms": 36,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_012tQ34HNUgx5m9TSsJaNAxT",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/CT2__natural__stock__r2__20260915-133117/streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/TopicMetrics.java"
+   },
+   "ts_use": "2026-09-15T13:31:53.208Z",
+   "request_id": "req_011Cf5Jr8WfubRXgjVmZWA46",
+   "agent": "main",
+   "ts_result": "2026-09-15T13:31:53.236Z",
+   "is_error": false,
+   "result_head": "1\t/*\n2\t * Licensed to the Apache Software Foundation (ASF) under one or more\n3\t * contributor license agreements. See the NOTICE file distributed with\n4\t * this work for additional information regarding copyright ownership.\n5\t * The ASF licenses this file to You under the Apache License, Version 2.0",
+   "result_chars": 4686,
+   "result_lines": 93,
+   "latency_ms": 28,
+   "flags": [
+    "read_whole"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01VT1Ngsfa2EDLrcsLSJKrqW",
+   "name": "Write",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/CT2__natural__stock__r2__20260915-133117/streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/SinkNodeMetrics.java",
+    "content": "/*\n * Licensed to the Apache Software Foundation (ASF) under one or more\n * contributor license agreements. See the NOTICE file distributed with\n * this work for additional information regarding copyright ownership.\n * The ASF licenses this file to You under the Apache License, Version 2.0\n * (the \"License\"); you may not use this file except in compliance with\n * the License. You may obtain a copy of the License at\n *\n *    http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage org.apache.kafka.streams.processor.internals.metrics;\n\nimport org.apache.kafka.common.metrics.Sensor;\nimport org.apache.kafka.common.metrics.Sensor.RecordingLevel;\n\nimport java.util.Map;\n\nimport static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.AVG_LATENCY_DESCRIPTION;\nimport static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.LATENCY_DESCRIPTION_SUFFIX;\nimport static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.LATENCY_SUFFIX;\nimport static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.MAX_LATENCY_DESCRIPTION;\nimport static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.PROCESSOR_NODE_LEVEL_GROUP;\nimport static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.TOTAL_DESCRIPTION;\nimport static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.addAvgAndMaxToSensor;\nimport static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.addInvocationRateAndCountToSensor;\nimport static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.addRateOfSumAndSumMetricsToSensor;\n\npublic class SinkNodeMetrics {\n    private SinkNodeMetrics() {}\n\n    private static final String RATE_DESCRIPTION_PREFIX = \"The average number of \";\n    private static final String RATE_DESCRIPTION_SUFFIX = \" per second\";\n\n    private static final String RECORDS_SENT = \"records-sent\";\n    private static final String RECORDS_SENT_DESCRIPTION = \"records sent\";\n    private static final String RECORDS_SENT_RATE_DESCRIPTION =\n        RATE_DESCRIPTION_PREFIX + RECORDS_SENT_DESCRIPTION + RATE_DESCRIPTION_SUFFIX;\n    private static final String RECORDS_SENT_TOTAL_DESCRIPTION = TOTAL_DESCRIPTION + RECORDS_SENT_DESCRIPTION;\n\n    private static final String BYTES_SENT = \"bytes-sent\";\n    private static final String BYTES_SENT_DESCRIPTION = \"bytes sent\";\n    private static final String BYTES_SENT_RATE_DESCRIPTION =\n        RATE_DESCRIPTION_PREFIX + BYTES_SENT_DESCRIPTION + RATE_DESCRIPTION_SUFFIX;\n    private static final String BYTES_SENT_TOTAL_DESCRIPTION = TOTAL_DESCRIPTION + BYTES_SENT_DESCRIPTION;\n\n    private static final String SEND = \"send\";\n    private static final String SEND_LATENCY = SEND + LATENCY_SUFFIX;\n    private static final String SEND_DESCRIPTION = \"calls to send\";\n    private static final String SEND_AVG_LATENCY_DESCRIPTION = AVG_LATENCY_DESCRIPTION + SEND_DESCRIPTION + LATENCY_DESCRIPTION_SUFFIX;\n    private static final String SEND_MAX_LATENCY_DESCRIPTION = MAX_LATENCY_DESCRIPTION + SEND_DESCRIPTION + LATENCY_DESCRIPTION_SUFFIX;\n\n    public static Sensor recordsSentSensor(final String threadId,\n                                           final String taskId,\n                                           final String processorNodeId,\n                                           final StreamsMetricsImpl streamsMetrics) {\n        final Sensor sensor = streamsMetrics.nodeLevelSensor(threadId, taskId, processorNodeId, RECORDS_SENT, RecordingLevel.DEBUG);\n        final Map<String, String> tagMap = streamsMetrics.nodeLevelTagMap(threadId, taskId, processorNodeId);\n        addInvocationRateAndCountToSensor(\n            sensor,\n            PROCESSOR_NODE_LEVEL_GROUP,\n            tagMap,\n            RECORDS_SENT,\n            RECORDS_SENT_RATE_DESCRIPTION,\n            RECORDS_SENT_TOTAL_DESCRIPTION\n        );\n        return sensor;\n    }\n\n    public static Sensor bytesSentSensor(final String threadId,\n                                         final String taskId,\n                                         final String processorNodeId,\n                                         final StreamsMetricsImpl streamsMetrics) {\n        final Sensor sensor = streamsMetrics.nodeLevelSensor(threadId, taskId, processorNodeId, BYTES_SENT, RecordingLevel.DEBUG);\n        final Map<String, String> tagMap = streamsMetrics.nodeLevelTagMap(threadId, taskId, processorNodeId);\n        addRateOfSumAndSumMetricsToSensor(\n            sensor,\n            PROCESSOR_NODE_LEVEL_GROUP,\n            tagMap,\n            BYTES_SENT,\n            BYTES_SENT_RATE_DESCRIPTION,\n            BYTES_SENT_TOTAL_DESCRIPTION\n        );\n        return sensor;\n    }\n\n    public static Sensor sendLatencySensor(final String threadId,\n                                           final String taskId,\n                                           final String processorNodeId,\n                                           final StreamsMetricsImpl streamsMetrics) {\n        final Sensor sensor = streamsMetrics.nodeLevelSensor(threadId, taskId, processorNodeId, SEND_LATENCY, RecordingLevel.DEBUG);\n        final Map<String, String> tagMap = streamsMetrics.nodeLevelTagMap(threadId, taskId, processorNodeId);\n        addAvgAndMaxToSensor(\n            sensor,\n            PROCESSOR_NODE_LEVEL_GROUP,\n            tagMap,\n            SEND_LATENCY,\n            SEND_AVG_LATENCY_DESCRIPTION,\n            SEND_MAX_LATENCY_DESCRIPTION\n        );\n        return sensor;\n    }\n\n}\n"
+   },
+   "ts_use": "2026-09-15T13:32:26.549Z",
+   "request_id": "req_011Cf5JrM7xL5QbPhS32SZZt",
+   "agent": "main",
+   "ts_result": "2026-09-15T13:32:26.574Z",
+   "is_error": false,
+   "result_head": "File created successfully at: /var/tmp/shunt-ws/CT2__natural__stock__r2__20260915-133117/streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/SinkNodeMetrics.java (file state is current in your context \u2014 no need to Read it back)",
+   "result_chars": 250,
+   "result_lines": 0,
+   "latency_ms": 24,
+   "flags": [
+    "edit"
+   ]
+  }
+ ]
+}

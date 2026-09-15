@@ -1,0 +1,494 @@
+{
+ "summary": {
+  "metric_names": {
+   "claude_code.session.count": 1,
+   "claude_code.cost.usage": 4,
+   "claude_code.token.usage": 4,
+   "claude_code.active_time.total": 1
+  },
+  "tokens_by_model_type": {
+   "claude-sonnet-5|input": 8.0,
+   "claude-sonnet-5|output": 812.0,
+   "claude-sonnet-5|cacheRead": 116921.0,
+   "claude-sonnet-5|cacheCreation": 10013.0
+  },
+  "cost_by_model_usd": {
+   "claude-sonnet-5": 0.056552700000000004
+  },
+  "event_counts": {
+   "hook_registered": 2,
+   "user_prompt": 1,
+   "hook_execution_start": 3,
+   "hook_execution_complete": 3,
+   "tool_decision": 3,
+   "api_request": 4,
+   "tool_result": 3,
+   "assistant_response": 2
+  },
+  "api_requests": 4,
+  "api_latency_ms_p50": 2403.0,
+  "api_latency_ms_max": 2918.0,
+  "tool_decisions": [
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Grep",
+    "decision": "accept",
+    "source": "config"
+   },
+   {
+    "tool": "Read",
+    "decision": "accept",
+    "source": "config"
+   }
+  ],
+  "span_counts": {},
+  "hook_ms_total": 0
+ },
+ "events": [
+  {
+   "event": "hook_registered",
+   "ts": "1789431853447000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-15T00:24:13.447Z",
+    "event.sequence": 0,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "flagSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Bash"
+   }
+  },
+  {
+   "event": "hook_registered",
+   "ts": "1789431853447000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "hook_registered",
+    "event.timestamp": "2026-09-15T00:24:13.447Z",
+    "event.sequence": 1,
+    "hook_event": "PreToolUse",
+    "hook_type": "command",
+    "hook_source": "flagSettings",
+    "safe_mode": "false",
+    "hook_matcher": "Read|Grep|Glob"
+   }
+  },
+  {
+   "event": "user_prompt",
+   "ts": "1789431854227000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "user_prompt",
+    "event.timestamp": "2026-09-15T00:24:14.227Z",
+    "event.sequence": 2,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "prompt_length": "240",
+    "prompt": "<REDACTED>",
+    "message.uuid": "f3bd5ac2-3152-440c-9f8f-6706a28a07e3"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789431857186000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T00:24:17.186Z",
+    "event.sequence": 3,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Grep",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789431857208000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T00:24:17.208Z",
+    "event.sequence": 4,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Grep",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "20",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789431857214000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T00:24:17.214Z",
+    "event.sequence": 5,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01Y59T4Q2o25Zkn35kNi7jN6",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789431857219000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T00:24:17.219Z",
+    "event.sequence": 6,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 223,
+    "cache_read_tokens": 23995,
+    "cache_creation_tokens": 5563,
+    "cost_usd": 0.0209405,
+    "cost_usd_micros": 20941,
+    "duration_ms": 2918,
+    "ttft_ms": 595,
+    "request_id": "req_011Cf4GngmJANZWvXpi7TWJH",
+    "client_request_id": "3d851717-6652-4d39-b702-0ee63ee2a8b2",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789431857228000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T00:24:17.227Z",
+    "event.sequence": 7,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01Y59T4Q2o25Zkn35kNi7jN6",
+    "success": "false",
+    "duration_ms": "12",
+    "error_type": "RipgrepUsageError",
+    "error": "Search failed \u2014 ripgrep rejected the pattern, glob, or file type without searching:\nrg: regex parse error:\n    (?:class ReadyCheckResult|ready(Cluster|nextReadyCheckDelayMs)\n    ^\nerror: unclosed group",
+    "tool_input": "{\"pattern\":\"class ReadyCheckResult|ready(Cluster|nextReadyCheckDelayMs\",\"path\":\"/var/tmp/shunt-ws/ND1__natural__stock__r3__20260915-002403\",\"output_mode\":\"content\",\"-n\":true}",
+    "tool_input_size_bytes": "174"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789431858837000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T00:24:18.837Z",
+    "event.sequence": 8,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Grep",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789431858855000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T00:24:18.855Z",
+    "event.sequence": 9,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Grep",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "17",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789431858859000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T00:24:18.859Z",
+    "event.sequence": 10,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01EMGLU1g137EbDaT2M6xYbY",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789431858862000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T00:24:18.862Z",
+    "event.sequence": 11,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 170,
+    "cache_read_tokens": 29558,
+    "cache_creation_tokens": 361,
+    "cost_usd": 0.0085181,
+    "cost_usd_micros": 8518,
+    "duration_ms": 1617,
+    "ttft_ms": 639,
+    "request_id": "req_011Cf4GnuGsYLRrHTZYEHiwa",
+    "client_request_id": "53c216fd-9310-46c8-8dd6-9f2c24c6b328",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789431858920000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T00:24:18.920Z",
+    "event.sequence": 12,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "tool_name": "Grep",
+    "tool_use_id": "toolu_01EMGLU1g137EbDaT2M6xYbY",
+    "success": "true",
+    "duration_ms": "51",
+    "tool_input": "{\"pattern\":\"ReadyCheckResult|nextReadyCheckDelayMs\",\"path\":\"/var/tmp/shunt-ws/ND1__natural__stock__r3__20260915-002403\",\"output_mode\":\"content\",\"-n\":true}",
+    "tool_input_size_bytes": "154",
+    "tool_result_size_bytes": "7627"
+   }
+  },
+  {
+   "event": "hook_execution_start",
+   "ts": "1789431860851000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_start",
+    "event.timestamp": "2026-09-15T00:24:20.851Z",
+    "event.sequence": 13,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789431860868000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T00:24:20.868Z",
+    "event.sequence": 14,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 184,
+    "cache_read_tokens": 29919,
+    "cache_creation_tokens": 3530,
+    "cost_usd": 0.016652800000000002,
+    "cost_usd_micros": 16653,
+    "duration_ms": 1926,
+    "ttft_ms": 523,
+    "request_id": "req_011Cf4Go2VT8o8x7hjcNs1eB",
+    "client_request_id": "9b946ad9-1ead-4ea3-a4cc-63044fa42d5e",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789431860868000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-15T00:24:20.868Z",
+    "event.sequence": 15,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "response_length": 67,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf4Go2VT8o8x7hjcNs1eB",
+    "message.uuid": "776d1957-96ee-49af-a7d5-bc6172c90c6c",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  },
+  {
+   "event": "hook_execution_complete",
+   "ts": "1789431860871000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "hook_execution_complete",
+    "event.timestamp": "2026-09-15T00:24:20.871Z",
+    "event.sequence": 16,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "hook_event": "PreToolUse",
+    "hook_name": "PreToolUse:Read",
+    "num_hooks": "1",
+    "num_success": "0",
+    "num_blocking": "0",
+    "num_non_blocking_error": "1",
+    "num_cancelled": "0",
+    "total_duration_ms": "19",
+    "managed_only": "false",
+    "hook_source": "merged",
+    "safe_mode": "false"
+   }
+  },
+  {
+   "event": "tool_decision",
+   "ts": "1789431860875000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "tool_decision",
+    "event.timestamp": "2026-09-15T00:24:20.875Z",
+    "event.sequence": 17,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "decision": "accept",
+    "source": "config",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01C25kwAxDf6peFbiTFd4h3g",
+    "tool_source": "builtin"
+   }
+  },
+  {
+   "event": "tool_result",
+   "ts": "1789431860882000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "tool_result",
+    "event.timestamp": "2026-09-15T00:24:20.882Z",
+    "event.sequence": 18,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "tool_name": "Read",
+    "tool_use_id": "toolu_01C25kwAxDf6peFbiTFd4h3g",
+    "success": "true",
+    "duration_ms": "6",
+    "tool_input": "{\"file_path\":\"/var/tmp/shunt-ws/ND1__natural__stock__r3__20260915-002403/clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java\",\"offset\":1455,\"limit\":20}",
+    "tool_input_size_bytes": "188",
+    "tool_result_size_bytes": "801"
+   }
+  },
+  {
+   "event": "api_request",
+   "ts": "1789431863317000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "api_request",
+    "event.timestamp": "2026-09-15T00:24:23.317Z",
+    "event.sequence": 19,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "model": "claude-sonnet-5",
+    "input_tokens": 2,
+    "output_tokens": 235,
+    "cache_read_tokens": 33449,
+    "cache_creation_tokens": 559,
+    "cost_usd": 0.0104413,
+    "cost_usd_micros": 10441,
+    "duration_ms": 2403,
+    "ttft_ms": 573,
+    "request_id": "req_011Cf4GoAvTrgweiKsrCEEU4",
+    "client_request_id": "9a153ee8-7d43-4e4c-b344-6cd2944e916e",
+    "speed": "normal",
+    "query_source": "sdk",
+    "effort": "high"
+   }
+  },
+  {
+   "event": "assistant_response",
+   "ts": "1789431863317000000",
+   "attrs": {
+    "run.id": "ND1__natural__stock__r3__20260915-002403",
+    "session.id": "34ac670c-fbf6-4db3-871c-2d7334a03d29",
+    "terminal.type": "linux",
+    "event.name": "assistant_response",
+    "event.timestamp": "2026-09-15T00:24:23.317Z",
+    "event.sequence": 20,
+    "prompt.id": "0145f768-9a31-408e-a112-83a0cbf42027",
+    "response_length": 561,
+    "response": "<REDACTED>",
+    "request_id": "req_011Cf4GoAvTrgweiKsrCEEU4",
+    "message.uuid": "7d90608d-773e-458b-8354-e8d621d512eb",
+    "model": "claude-sonnet-5",
+    "query_source": "sdk"
+   }
+  }
+ ],
+ "spans": []
+}

@@ -1,0 +1,569 @@
+{
+ "summary": {
+  "requests_total": 8,
+  "requests_main": 8,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 8,
+    "input_tokens": 16,
+    "cache_creation_input_tokens": 15504,
+    "cache_read_input_tokens": 267148,
+    "output_tokens": 2840
+   }
+  },
+  "tool_mix": {
+   "Grep": 2,
+   "Read": 2,
+   "Glob": 1,
+   "Write": 1,
+   "Bash": 3
+  },
+  "tool_calls_total": 9,
+  "reads_total": 2,
+  "reads_whole_file": 2,
+  "reads_targeted": 0,
+  "reads_blocked_by_hook": 0,
+  "sandbox_blocks": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {},
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 1,
+  "lines_entered_context": 189,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 9,
+  "files_read": [
+   "Filter.java",
+   "InsertHeaderTest.java"
+  ],
+  "tool_latency_ms": {
+   "Grep": 69,
+   "Read": 38,
+   "Glob": 49,
+   "Write": 26,
+   "Bash": 8209
+  },
+  "api_gap_ms_p50": 2453,
+  "api_gap_ms_max": 4026,
+  "final_text_chars": 753
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf4GDkT8reGKP6ZrDHqnF",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5701,
+    "cache_read_input_tokens": 23995,
+    "output_tokens": 196,
+    "output_tokens_details": {
+     "thinking_tokens": 30
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5701
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 196,
+      "cache_read_input_tokens": 23995,
+      "cache_creation_input_tokens": 5701,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5701,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:16:49.611Z",
+   "blocks": [
+    "thinking",
+    "tool_use",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4GDye8sJ9rwZHWfFZTD",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 685,
+    "cache_read_input_tokens": 29696,
+    "output_tokens": 241,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 685
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 241,
+      "cache_read_input_tokens": 29696,
+      "cache_creation_input_tokens": 685,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 685,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:16:53.737Z",
+   "blocks": [
+    "tool_use",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4GEGCneFUBCzp2hiA5z",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 3453,
+    "cache_read_input_tokens": 30381,
+    "output_tokens": 317,
+    "output_tokens_details": {
+     "thinking_tokens": 236
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 3453
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 317,
+      "cache_read_input_tokens": 30381,
+      "cache_creation_input_tokens": 3453,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 3453,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:16:58.479Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4GEaZbdnu6LMUHar6Gs",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 966,
+    "cache_read_input_tokens": 33834,
+    "output_tokens": 1455,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 966
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 1455,
+      "cache_read_input_tokens": 33834,
+      "cache_creation_input_tokens": 966,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 966,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:17:01.206Z",
+   "blocks": [
+    "text",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4GFPrhJe8XYrKYhtpg3",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1598,
+    "cache_read_input_tokens": 34800,
+    "output_tokens": 183,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 1598
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 183,
+      "cache_read_input_tokens": 34800,
+      "cache_creation_input_tokens": 1598,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 1598,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:17:11.938Z",
+   "blocks": [
+    "text",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4GHR5vCbsnUMKWBGBgi",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 2428,
+    "cache_read_input_tokens": 36398,
+    "output_tokens": 160,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 2428
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 160,
+      "cache_read_input_tokens": 36398,
+      "cache_creation_input_tokens": 2428,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 2428,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:17:40.216Z",
+   "blocks": [
+    "text",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4GHitV9UpKVvijtn5DC",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 392,
+    "cache_read_input_tokens": 38826,
+    "output_tokens": 151,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 392
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 151,
+      "cache_read_input_tokens": 38826,
+      "cache_creation_input_tokens": 392,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 392,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:17:43.648Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4GHtqX2Y8z9hH7GXYcb",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 281,
+    "cache_read_input_tokens": 39218,
+    "output_tokens": 137,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 281
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 137,
+      "cache_read_input_tokens": 39218,
+      "cache_creation_input_tokens": 281,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 281,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:17:45.976Z",
+   "blocks": [
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01JECEzgc1pQxSKZaAGhMb29",
+   "name": "Grep",
+   "input": {
+    "pattern": "class InsertHeaderTest",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-15T00:16:50.167Z",
+   "request_id": "req_011Cf4GDkT8reGKP6ZrDHqnF",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:16:50.246Z",
+   "is_error": false,
+   "result_head": "Found 1 file\nconnect/transforms/src/test/java/org/apache/kafka/connect/transforms/InsertHeaderTest.java",
+   "result_chars": 103,
+   "result_lines": 0,
+   "latency_ms": 78,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01EJRgzoWYK3J5kFwUmcoNAS",
+   "name": "Grep",
+   "input": {
+    "pattern": "class Filter",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-15T00:16:50.525Z",
+   "request_id": "req_011Cf4GDkT8reGKP6ZrDHqnF",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:16:50.587Z",
+   "is_error": false,
+   "result_head": "Found 9 files\nclients/src/main/java/org/apache/kafka/clients/admin/DeleteAclsResult.java\nclients/src/main/java/org/apache/kafka/common/header/internals/RecordHeaders.java\nclients/src/main/java/org/apache/kafka/common/record/internal/MemoryRecords.java\nclients/src/test/java/org/apache/kafka/clients/c",
+   "result_chars": 776,
+   "result_lines": 0,
+   "latency_ms": 61,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01GU18mnQXNytdpfSH7azJAp",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/SB4__natural__shunt-strict__r2__20260915-001637/connect/transforms/src/test/java/org/apache/kafka/connect/transforms/InsertHeaderTest.java"
+   },
+   "ts_use": "2026-09-15T00:16:53.737Z",
+   "request_id": "req_011Cf4GDye8sJ9rwZHWfFZTD",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:16:53.777Z",
+   "is_error": false,
+   "result_head": "1\t/*\n2\t * Licensed to the Apache Software Foundation (ASF) under one or more\n3\t * contributor license agreements. See the NOTICE file distributed with\n4\t * this work for additional information regarding copyright ownership.\n5\t * The ASF licenses this file to You under the Apache License, Version 2.0",
+   "result_chars": 5444,
+   "result_lines": 126,
+   "latency_ms": 39,
+   "flags": [
+    "read_whole"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01Fc6X5u3dLvSZMKxZL4AKz9",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/SB4__natural__shunt-strict__r2__20260915-001637/connect/transforms/src/main/java/org/apache/kafka/connect/transforms/Filter.java"
+   },
+   "ts_use": "2026-09-15T00:16:54.415Z",
+   "request_id": "req_011Cf4GDye8sJ9rwZHWfFZTD",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:16:54.453Z",
+   "is_error": false,
+   "result_head": "1\t/*\n2\t * Licensed to the Apache Software Foundation (ASF) under one or more\n3\t * contributor license agreements. See the NOTICE file distributed with\n4\t * this work for additional information regarding copyright ownership.\n5\t * The ASF licenses this file to You under the Apache License, Version 2.0",
+   "result_chars": 2311,
+   "result_lines": 63,
+   "latency_ms": 38,
+   "flags": [
+    "read_whole"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01BYqfSLjkFfqqrG1pXy438a",
+   "name": "Glob",
+   "input": {
+    "pattern": "connect/transforms/src/test/java/org/apache/kafka/connect/transforms/*.java"
+   },
+   "ts_use": "2026-09-15T00:16:58.703Z",
+   "request_id": "req_011Cf4GEGCneFUBCzp2hiA5z",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:16:58.753Z",
+   "is_error": false,
+   "result_head": "connect/transforms/src/test/java/org/apache/kafka/connect/transforms/ValueToKeyTest.java\nconnect/transforms/src/test/java/org/apache/kafka/connect/transforms/InsertHeaderTest.java\nconnect/transforms/src/test/java/org/apache/kafka/connect/transforms/InsertFieldTest.java\nconnect/transforms/src/test/ja",
+   "result_chars": 1353,
+   "result_lines": 0,
+   "latency_ms": 49,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01KHmGD93e7jpHEGPkPRuYhk",
+   "name": "Write",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/SB4__natural__shunt-strict__r2__20260915-001637/connect/transforms/src/test/java/org/apache/kafka/connect/transforms/FilterTest.java",
+    "content": "/*\n * Licensed to the Apache Software Foundation (ASF) under one or more\n * contributor license agreements. See the NOTICE file distributed with\n * this work for additional information regarding copyright ownership.\n * The ASF licenses this file to You under the Apache License, Version 2.0\n * (the \"License\"); you may not use this file except in compliance with\n * the License. You may obtain a copy of the License at\n *\n *    http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage org.apache.kafka.connect.transforms;\n\nimport org.apache.kafka.common.utils.internals.AppInfoParser;\nimport org.apache.kafka.connect.data.Schema;\nimport org.apache.kafka.connect.header.ConnectHeaders;\nimport org.apache.kafka.connect.source.SourceRecord;\n\nimport org.junit.jupiter.api.Test;\n\nimport java.util.HashMap;\nimport java.util.Map;\n\nimport static org.junit.jupiter.api.Assertions.assertEquals;\nimport static org.junit.jupiter.api.Assertions.assertNull;\n\npublic class FilterTest {\n\n    private final Filter<SourceRecord> xform = new Filter<>();\n\n    private Map<String, ?> config() {\n        return new HashMap<>();\n    }\n\n    @Test\n    public void dropsRecordWithoutHeaders() {\n        xform.configure(config());\n        SourceRecord original = sourceRecord(new ConnectHeaders());\n        SourceRecord xformed = xform.apply(original);\n        assertNull(xformed);\n    }\n\n    @Test\n    public void dropsRecordWithHeaders() {\n        xform.configure(config());\n        ConnectHeaders headers = new ConnectHeaders();\n        headers.addString(\"existing\", \"existing-value\");\n        SourceRecord original = sourceRecord(headers);\n        SourceRecord xformed = xform.apply(original);\n        assertNull(xformed);\n    }\n\n    @Test\n    public void dropsRecordWithNullValue() {\n        xform.configure(config());\n        SourceRecord original = sourceRecord(new ConnectHeaders());\n        original = new SourceRecord(original.sourcePartition(), original.sourceOffset(), original.topic(),\n                original.kafkaPartition(), original.keySchema(), original.key(), null, null,\n                original.timestamp(), original.headers());\n        SourceRecord xformed = xform.apply(original);\n        assertNull(xformed);\n    }\n\n    private SourceRecord sourceRecord(ConnectHeaders headers) {\n        Map<String, ?> sourcePartition = Map.of(\"foo\", \"bar\");\n        Map<String, ?> sourceOffset = Map.of(\"baz\", \"quxx\");\n        String topic = \"topic\";\n        Integer partition = 0;\n        Schema keySchema = null;\n        Object key = \"key\";\n        Schema valueSchema = null;\n        Object value = \"value\";\n        Long timestamp = 0L;\n\n        return new SourceRecord(sourcePartition, sourceOffset, topic, partition,\n                keySchema, key, valueSchema, value, timestamp, headers);\n    }\n\n    @Test\n    public void testFilterVersionRetrievedFromAppInfoParser() {\n        assertEquals(AppInfoParser.getVersion(), xform.version());\n    }\n}\n"
+   },
+   "ts_use": "2026-09-15T00:17:09.756Z",
+   "request_id": "req_011Cf4GEaZbdnu6LMUHar6Gs",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:17:09.782Z",
+   "is_error": false,
+   "result_head": "File created successfully at: /var/tmp/shunt-ws/SB4__natural__shunt-strict__r2__20260915-001637/connect/transforms/src/test/java/org/apache/kafka/connect/transforms/FilterTest.java (file state is current in your context \u2014 no need to Read it back)",
+   "result_chars": 246,
+   "result_lines": 0,
+   "latency_ms": 26,
+   "flags": [
+    "edit"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01VV3E3poZ2FEU3UfkAQfqnV",
+   "name": "Bash",
+   "input": {
+    "command": "./gradlew :connect:transforms:test --tests \"org.apache.kafka.connect.transforms.FilterTest\" -q 2>&1 | tail -100",
+    "timeout": 300000
+   },
+   "ts_use": "2026-09-15T00:17:12.756Z",
+   "request_id": "req_011Cf4GFPrhJe8XYrKYhtpg3",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:17:37.219Z",
+   "is_error": false,
+   "result_head": "Picked up JAVA_TOOL_OPTIONS: -Djavax.net.ssl.trustStore=/root/.ccr/java-truststore.p12 -Djavax.net.ssl.trustStorePassword=changeit -Djavax.net.ssl.trustStoreType=PKCS12 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=40385 -Dhttp.nonProxyHosts=localhost|127.0.0.1|::1|127.*|0.*|::|169.254.*|api.anthrop",
+   "result_chars": 3732,
+   "result_lines": 0,
+   "latency_ms": 24463,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01VL2LFcTfSdUnXcoG4tpMG2",
+   "name": "Bash",
+   "input": {
+    "command": "find connect/transforms/build/test-results -name \"*FilterTest*\" 2>/dev/null"
+   },
+   "ts_use": "2026-09-15T00:17:41.307Z",
+   "request_id": "req_011Cf4GHR5vCbsnUMKWBGBgi",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:17:41.389Z",
+   "is_error": false,
+   "result_head": "connect/transforms/build/test-results/test/TEST-org.apache.kafka.connect.transforms.FilterTest.xml",
+   "result_chars": 98,
+   "result_lines": 0,
+   "latency_ms": 82,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_018v4YyHeAzonHs17PTZU1tA",
+   "name": "Bash",
+   "input": {
+    "command": "grep -E \"tests=|failures=|errors=\" connect/transforms/build/test-results/test/TEST-org.apache.kafka.connect.transforms.FilterTest.xml | head -1"
+   },
+   "ts_use": "2026-09-15T00:17:43.648Z",
+   "request_id": "req_011Cf4GHitV9UpKVvijtn5DC",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:17:43.731Z",
+   "is_error": false,
+   "result_head": "<testsuite name=\"org.apache.kafka.connect.transforms.FilterTest\" tests=\"4\" skipped=\"0\" failures=\"0\" errors=\"0\" timestamp=\"2026-09-15T00:17:36.996Z\" hostname=\"vm\" time=\"0.038\">",
+   "result_chars": 175,
+   "result_lines": 0,
+   "latency_ms": 82,
+   "flags": []
+  }
+ ]
+}

@@ -1,0 +1,411 @@
+{
+ "summary": {
+  "requests_total": 6,
+  "requests_main": 6,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 6,
+    "input_tokens": 12,
+    "cache_creation_input_tokens": 7930,
+    "cache_read_input_tokens": 176032,
+    "output_tokens": 1099
+   }
+  },
+  "tool_mix": {
+   "Grep": 4,
+   "Read": 1
+  },
+  "tool_calls_total": 5,
+  "reads_total": 1,
+  "reads_whole_file": 0,
+  "reads_targeted": 1,
+  "reads_blocked_by_hook": 1,
+  "sandbox_blocks": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {
+   "Grep": 1
+  },
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 0,
+  "lines_entered_context": 0,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 5,
+  "files_read": [
+   "RecordAccumulator.java"
+  ],
+  "tool_latency_ms": {
+   "Grep": 46,
+   "Read": 28
+  },
+  "api_gap_ms_p50": 2638,
+  "api_gap_ms_max": 3184,
+  "final_text_chars": 503
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf4GrKg9dJXYHvBCZZeog",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5686,
+    "cache_read_input_tokens": 23995,
+    "output_tokens": 164,
+    "output_tokens_details": {
+     "thinking_tokens": 41
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5686
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 164,
+      "cache_read_input_tokens": 23995,
+      "cache_creation_input_tokens": 5686,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5686,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:25:06.201Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4GrZVrRmEpiyVpf3DF2",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 314,
+    "cache_read_input_tokens": 29681,
+    "output_tokens": 86,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 314
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 86,
+      "cache_read_input_tokens": 29681,
+      "cache_creation_input_tokens": 314,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 314,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:25:08.886Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4GriUqxnibHc5rANyGi",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 301,
+    "cache_read_input_tokens": 29995,
+    "output_tokens": 185,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 301
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 185,
+      "cache_read_input_tokens": 29995,
+      "cache_creation_input_tokens": 301,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 301,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:25:11.591Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4GruojcATg2VwRv2Gm6",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 623,
+    "cache_read_input_tokens": 30296,
+    "output_tokens": 128,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 623
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 128,
+      "cache_read_input_tokens": 30296,
+      "cache_creation_input_tokens": 623,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 623,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:25:14.238Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4Gs72feEpSVfs3eH3NP",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 227,
+    "cache_read_input_tokens": 30919,
+    "output_tokens": 307,
+    "output_tokens_details": {
+     "thinking_tokens": 121
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 227
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 307,
+      "cache_read_input_tokens": 30919,
+      "cache_creation_input_tokens": 227,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 227,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:25:17.139Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4GsNRNmr4gJ5VqHrm8V",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 779,
+    "cache_read_input_tokens": 31146,
+    "output_tokens": 229,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 779
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 229,
+      "cache_read_input_tokens": 31146,
+      "cache_creation_input_tokens": 779,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 779,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:25:20.998Z",
+   "blocks": [
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01TtMGdKjveXRegP628XFFB2",
+   "name": "Grep",
+   "input": {
+    "pattern": "class ReadyCheckResult|ready(Cluster|Set<Node> readyNodes|nextReadyCheckDelayMs",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-15T00:25:06.830Z",
+   "request_id": "req_011Cf4GrKg9dJXYHvBCZZeog",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:25:06.879Z",
+   "is_error": true,
+   "result_head": "Search failed \u2014 ripgrep rejected the pattern, glob, or file type without searching:\nrg: regex parse error:\n    (?:class ReadyCheckResult|ready(Cluster|Set<Node> readyNodes|nextReadyCheckDelayMs)\n    ^\nerror: unclosed group",
+   "result_chars": 222,
+   "result_lines": 0,
+   "latency_ms": 49,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01EaY3WJj4gMQYFvX3bYP1mz",
+   "name": "Grep",
+   "input": {
+    "pattern": "ReadyCheckResult",
+    "output_mode": "files_with_matches"
+   },
+   "ts_use": "2026-09-15T00:25:08.886Z",
+   "request_id": "req_011Cf4GrZVrRmEpiyVpf3DF2",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:25:08.953Z",
+   "is_error": false,
+   "result_head": "Found 4 files\nclients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java\nclients/src/main/java/org/apache/kafka/clients/producer/internals/Sender.java\nclients/src/test/java/org/apache/kafka/clients/producer/internals/RecordAccumulatorTest.java\njmh-benchmarks/src/main/ja",
+   "result_chars": 369,
+   "result_lines": 0,
+   "latency_ms": 67,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01PKDdbRp1yhWzq6vLBoxjF2",
+   "name": "Grep",
+   "input": {
+    "pattern": "ReadyCheckResult|Long.MAX_VALUE|public ReadyCheckResult ready",
+    "path": "clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java",
+    "output_mode": "content",
+    "-n": true
+   },
+   "ts_use": "2026-09-15T00:25:11.591Z",
+   "request_id": "req_011Cf4GriUqxnibHc5rANyGi",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:25:11.629Z",
+   "is_error": false,
+   "result_head": "99:    private long nextBatchExpiryTimeMs = Long.MAX_VALUE; // the earliest time (absolute) a batch will expire.\n390:     * Adds {@code maxTimeToBlock} to {@code nowMs}, capped at {@link Long#MAX_VALUE} so that a large\n394:        return maxTimeToBlock > Long.MAX_VALUE - nowMs ? Long.MAX_VALUE : now",
+   "result_chars": 789,
+   "result_lines": 0,
+   "latency_ms": 37,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01K9LETqgVYTxCuRKky1LxVD",
+   "name": "Read",
+   "input": {
+    "file_path": "clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java",
+    "offset": 880,
+    "limit": 30
+   },
+   "ts_use": "2026-09-15T00:25:14.238Z",
+   "request_id": "req_011Cf4GruojcATg2VwRv2Gm6",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:25:14.266Z",
+   "is_error": true,
+   "result_head": "File is 1500 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly.",
+   "result_chars": 125,
+   "result_lines": 0,
+   "latency_ms": 28,
+   "flags": [
+    "read_targeted",
+    "hook_blocked"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01YbcZVEr5ceX9uERXGTL7VG",
+   "name": "Grep",
+   "input": {
+    "pattern": "public ReadyCheckResult ready",
+    "path": "clients/src/main/java/org/apache/kafka/clients/producer/internals/RecordAccumulator.java",
+    "output_mode": "content",
+    "-n": true,
+    "-A": 15
+   },
+   "ts_use": "2026-09-15T00:25:17.780Z",
+   "request_id": "req_011Cf4Gs72feEpSVfs3eH3NP",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:25:17.813Z",
+   "is_error": false,
+   "result_head": "892:    public ReadyCheckResult ready(MetadataSnapshot metadataSnapshot, long nowMs) {\n893-        Set<Node> readyNodes = new HashSet<>();\n894-        long nextReadyCheckDelayMs = Long.MAX_VALUE;\n895-        Set<String> unknownLeaderTopics = new HashSet<>();\n896-        // Go topic by topic so that ",
+   "result_chars": 979,
+   "result_lines": 0,
+   "latency_ms": 32,
+   "flags": []
+  }
+ ]
+}

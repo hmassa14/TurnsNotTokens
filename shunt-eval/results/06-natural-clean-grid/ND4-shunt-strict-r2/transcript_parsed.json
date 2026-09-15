@@ -1,0 +1,418 @@
+{
+ "summary": {
+  "requests_total": 6,
+  "requests_main": 6,
+  "models": [
+   "claude-sonnet-5"
+  ],
+  "agent_spawn_models": [],
+  "usage_by_model": {
+   "claude-sonnet-5": {
+    "requests": 6,
+    "input_tokens": 12,
+    "cache_creation_input_tokens": 7542,
+    "cache_read_input_tokens": 174897,
+    "output_tokens": 997
+   }
+  },
+  "tool_mix": {
+   "Grep": 3,
+   "Read": 2
+  },
+  "tool_calls_total": 5,
+  "reads_total": 2,
+  "reads_whole_file": 0,
+  "reads_targeted": 2,
+  "reads_blocked_by_hook": 2,
+  "sandbox_blocks": 0,
+  "reads_gated_by_stock": 0,
+  "reads_dedup_reminders": 0,
+  "hook_bypass_via_paging": 0,
+  "bash_reads": 0,
+  "agent_spawns": 0,
+  "skill_invocations": 0,
+  "after_block": {
+   "Read(paged)": 1,
+   "Grep": 1
+  },
+  "worker_calls": 0,
+  "reread_after_delegation": 0,
+  "edits": 0,
+  "lines_entered_context": 0,
+  "lines_entered_subagents": 0,
+  "tool_calls_main": 5,
+  "files_read": [
+   "StateDirectory.java"
+  ],
+  "tool_latency_ms": {
+   "Grep": 52,
+   "Read": 28
+  },
+  "api_gap_ms_p50": 1686,
+  "api_gap_ms_max": 2282,
+  "final_text_chars": 375
+ },
+ "requests": [
+  {
+   "request_id": "req_011Cf4HfzBU2nS8e4vn3b7Mq",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5670,
+    "cache_read_input_tokens": 23995,
+    "output_tokens": 139,
+    "output_tokens_details": {
+     "thinking_tokens": 40
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 5670
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 139,
+      "cache_read_input_tokens": 23995,
+      "cache_creation_input_tokens": 5670,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 5670,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:35:51.692Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4Hg9V4nphzzLCpyhYCr",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 247,
+    "cache_read_input_tokens": 29665,
+    "output_tokens": 164,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 247
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 164,
+      "cache_read_input_tokens": 29665,
+      "cache_creation_input_tokens": 247,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 247,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:35:54.698Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4HgKYJaJL2VW1fKoHnt",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 263,
+    "cache_read_input_tokens": 29912,
+    "output_tokens": 164,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 263
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 164,
+      "cache_read_input_tokens": 29912,
+      "cache_creation_input_tokens": 263,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 263,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:35:56.413Z",
+   "blocks": [
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4HgSns5GrpoCGAADR3m",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 263,
+    "cache_read_input_tokens": 30175,
+    "output_tokens": 187,
+    "output_tokens_details": {
+     "thinking_tokens": 36
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 263
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 187,
+      "cache_read_input_tokens": 30175,
+      "cache_creation_input_tokens": 263,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 263,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:35:57.950Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4HgcZEpUsRJAKnunV3B",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 274,
+    "cache_read_input_tokens": 30438,
+    "output_tokens": 202,
+    "output_tokens_details": {
+     "thinking_tokens": 27
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 274
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 202,
+      "cache_read_input_tokens": 30438,
+      "cache_creation_input_tokens": 274,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 274,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:36:00.045Z",
+   "blocks": [
+    "thinking",
+    "tool_use"
+   ],
+   "agent": "main"
+  },
+  {
+   "request_id": "req_011Cf4HgmbhymzFvd2yv8i5Y",
+   "model": "claude-sonnet-5",
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 825,
+    "cache_read_input_tokens": 30712,
+    "output_tokens": 141,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 825
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 141,
+      "cache_read_input_tokens": 30712,
+      "cache_creation_input_tokens": 825,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 825,
+       "ephemeral_1h_input_tokens": 0
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard"
+   },
+   "first_ts": "2026-09-15T00:36:02.949Z",
+   "blocks": [
+    "text"
+   ],
+   "agent": "main"
+  }
+ ],
+ "tool_calls": [
+  {
+   "tool_use_id": "toolu_01VQAf84WTZA5nCYKMRV2cjx",
+   "name": "Grep",
+   "input": {
+    "pattern": "already locked",
+    "output_mode": "content",
+    "-n": true
+   },
+   "ts_use": "2026-09-15T00:35:52.335Z",
+   "request_id": "req_011Cf4HfzBU2nS8e4vn3b7Mq",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:35:52.416Z",
+   "is_error": false,
+   "result_head": "streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java:358:            log.error(\"Unable to obtain lock as state directory is already locked by another process\");",
+   "result_chars": 194,
+   "result_lines": 0,
+   "latency_ms": 80,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01QLeX5KgdZbMdHZ6dEC3pne",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/ND4__natural__shunt-strict__r2__20260915-003539/streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java",
+    "offset": 330,
+    "limit": 40
+   },
+   "ts_use": "2026-09-15T00:35:54.698Z",
+   "request_id": "req_011Cf4Hg9V4nphzzLCpyhYCr",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:35:54.727Z",
+   "is_error": true,
+   "result_head": "File is 1019 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly.",
+   "result_chars": 125,
+   "result_lines": 0,
+   "latency_ms": 29,
+   "flags": [
+    "read_targeted",
+    "hook_blocked"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_01KDZBW3Rj1rUEuAf2hugx1R",
+   "name": "Read",
+   "input": {
+    "file_path": "/var/tmp/shunt-ws/ND4__natural__shunt-strict__r2__20260915-003539/streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java",
+    "offset": 330,
+    "limit": 40
+   },
+   "ts_use": "2026-09-15T00:35:56.413Z",
+   "request_id": "req_011Cf4HgKYJaJL2VW1fKoHnt",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:35:56.441Z",
+   "is_error": true,
+   "result_head": "File is 1019 lines (threshold: 350). Use the /bulk-reader skill to delegate this read to AiKA instead of reading it directly.",
+   "result_chars": 125,
+   "result_lines": 0,
+   "latency_ms": 27,
+   "flags": [
+    "read_targeted",
+    "hook_blocked"
+   ]
+  },
+  {
+   "tool_use_id": "toolu_015T7TufNuNQEiKF6UWkBqjR",
+   "name": "Grep",
+   "input": {
+    "pattern": "already locked",
+    "path": "streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java",
+    "-B": 20,
+    "-A": 15
+   },
+   "ts_use": "2026-09-15T00:35:58.709Z",
+   "request_id": "req_011Cf4HgSns5GrpoCGAADR3m",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:35:58.749Z",
+   "is_error": false,
+   "result_head": "Found 1 file\nstreams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java",
+   "result_chars": 99,
+   "result_lines": 0,
+   "latency_ms": 39,
+   "flags": []
+  },
+  {
+   "tool_use_id": "toolu_01Vyvbk2gHseVLdbjGGfcGcf",
+   "name": "Grep",
+   "input": {
+    "pattern": "already locked",
+    "path": "streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java",
+    "output_mode": "content",
+    "-B": 20,
+    "-A": 15
+   },
+   "ts_use": "2026-09-15T00:36:00.827Z",
+   "request_id": "req_011Cf4HgcZEpUsRJAKnunV3B",
+   "agent": "main",
+   "ts_result": "2026-09-15T00:36:00.865Z",
+   "is_error": false,
+   "result_head": "338-                }\n339-                offsetSum += offset;\n340-                if (offsetSum < 0) {\n341-                    log.warn(\"Sum of changelog offsets for task {} overflowed, pinning to Long.MAX_VALUE\", taskId);\n342-                    return Long.MAX_VALUE;\n343-                }\n344-   ",
+   "result_chars": 1747,
+   "result_lines": 0,
+   "latency_ms": 38,
+   "flags": []
+  }
+ ]
+}
