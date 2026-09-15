@@ -14,6 +14,7 @@ import argparse
 import glob
 import json
 import os
+import shutil
 import socket
 import subprocess
 import sys
@@ -81,10 +82,32 @@ def main():
                "--otlp-port", str(args.otlp_port), "--max-turns", str(args.max_turns), "--timeout", str(args.timeout)]
         if args.keep_workspace:
             cmd.append("--keep-workspace")
-        p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        run_dir = p.stdout.strip().splitlines()[-1] if p.stdout.strip() else ""
-        if p.returncode != 0 or not os.path.isdir(run_dir):
-            print(f"[{i}/{len(cells)}] {task} {arm} r{rep}: run.py failed\n{p.stderr[-2000:]}", file=sys.stderr)
+        # A cell whose session exits non-zero with no cost is not a result (usage limit, auth, outage):
+        # discard it, wait, retry; after several failures in a row stop the grid rather than burn cells.
+        attempt = 0
+        while True:
+            p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            run_dir = p.stdout.strip().splitlines()[-1] if p.stdout.strip() else ""
+            if p.returncode != 0 or not os.path.isdir(run_dir):
+                print(f"[{i}/{len(cells)}] {task} {arm} r{rep}: run.py failed\n{p.stderr[-2000:]}", file=sys.stderr)
+                run_dir = ""
+                break
+            try:
+                mres = json.load(open(os.path.join(run_dir, "meta.json")))
+                cost = (json.load(open(os.path.join(run_dir, "result.json"))).get("total_cost_usd") or 0)
+            except Exception:
+                mres, cost = {}, 0
+            if mres.get("exit_code") == 0 and cost > 0:
+                break
+            err = open(os.path.join(run_dir, "stderr.txt")).read()[-300:] if os.path.isfile(os.path.join(run_dir, "stderr.txt")) else ""
+            print(f"[{i}/{len(cells)}] {task} {arm} r{rep}: session failed (exit {mres.get('exit_code')}, cost {cost}); discarding. {err.strip()}", file=sys.stderr, flush=True)
+            shutil.rmtree(run_dir, ignore_errors=True)
+            attempt += 1
+            if attempt >= 4:
+                print(f"stopping the grid: {attempt} consecutive session failures on {task} {arm} r{rep}", file=sys.stderr, flush=True)
+                sys.exit(3)
+            time.sleep(300 * attempt)
+        if not run_dir:
             continue
         time.sleep(3)  # let the last OTLP export land before parsing
         rep_path = os.path.join(run_dir, "report.md")
