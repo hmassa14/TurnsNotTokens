@@ -50,8 +50,8 @@
   <p class="lede">In post order. A: the mechanism. B: the setup. C and D: the two traces the findings rest on. E and F: why stock was cheapest. G: the headline result. H: what Explore is, for the section that explains it.</p>
   <!-- ============ FIGURE 1 ============ -->
   <figure>
-    <span class="fig-n">Figure A · where the hook sits</span>
-    <svg viewBox="0 0 900 460" role="img" aria-label="Claude Code's tool loop with Spotify's PreToolUse hook in the path of a Read call, and the three routes the model took after a block: Spotify's worker, never; a paged read, every block under the shipped hook; grep, every run under the strict hook.">
+    <span class="fig-n">Figure A · why the hook, and what it does</span>
+    <svg viewBox="0 0 900 460" role="img" aria-label="Diagram: the main model calls Read on a file. A PreToolUse hook checks the line count first. Under 350 lines, the file is read whole. Over 350 lines, the hook blocks the call and returns a message pointing the model at the bulk-reader skill. The skill hands the file to a cheap worker model, which reads it in full and returns a summary; only that summary is meant to enter the main model's context.">
       <defs>
         <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker>
         <marker id="ar-hook" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--hook)"/></marker>
@@ -75,38 +75,26 @@
       <text x="582" y="113" text-anchor="middle" font-weight="600">Read tool</text>
       <text x="582" y="130" text-anchor="middle" class="small">file from disk</text>
       <path d="M642 117 C 760 117, 760 40, 95 40 L 95 148" fill="none" stroke="currentColor" stroke-width="1.2" marker-end="url(#ar)"/>
-      <text x="420" y="34" text-anchor="middle" class="small">whole file enters context, 770 lines</text>
+      <text x="420" y="34" text-anchor="middle" class="small">whole file enters context, at frontier prices</text>
       <!-- block path -->
       <line x1="422" y1="192" x2="520" y2="230" stroke="var(--hook)" stroke-width="1.6" marker-end="url(#ar-hook)"/>
       <text x="470" y="228" text-anchor="middle" class="small" fill="var(--hook)">yes · block</text>
       <rect x="522" y="208" width="120" height="50" rx="6" class="box hook-s" stroke-width="1.6"/>
       <text x="582" y="229" text-anchor="middle" font-weight="600">Block reason</text>
       <text x="582" y="246" text-anchor="middle" class="small">"use /bulk-reader"</text>
-      <path d="M642 233 C 700 233, 700 296, 95 296 L 95 216" fill="none" stroke="var(--hook)" stroke-width="1.6" marker-end="url(#ar-hook)"/>
-      <text x="400" y="313" text-anchor="middle" class="small" fill="var(--hook)">only the reason text enters context; the model decides again</text>
-      <!-- the three exits -->
-      <line x1="30" y1="322" x2="870" y2="322" stroke="currentColor" stroke-width="0.6" opacity="0.35"/>
-      <text x="30" y="344" font-weight="600">After a block, the model's next call was</text>
-      <!-- three columns: x = 30, 320, 610 ; width 250 -->
-      <rect x="30" y="358" width="250" height="52" rx="6" class="box dim" stroke-dasharray="5 4"/>
-      <text x="155" y="379" text-anchor="middle" font-weight="600" class="dim">Spotify's worker script</text>
-      <text x="155" y="396" text-anchor="middle" class="small">bulk-read → Haiku reads the file → summary</text>
-      <text x="155" y="428" text-anchor="middle" class="small mono">0 of 24 runs</text>
-      <text x="155" y="443" text-anchor="middle" class="small">what the design assumes</text>
-
-      <rect x="320" y="358" width="250" height="52" rx="6" class="box hook-s" stroke-width="1.6"/>
-      <text x="445" y="379" text-anchor="middle" font-weight="600">Read(file, offset, limit)</text>
-      <text x="445" y="396" text-anchor="middle" class="small">the hook allows it; slices enter context</text>
-      <text x="445" y="428" text-anchor="middle" class="small mono">9 of 9 blocks</text>
-      <text x="445" y="443" text-anchor="middle" class="small">shipped hook, exception open</text>
-
-      <rect x="610" y="358" width="250" height="52" rx="6" class="box hook-s" stroke-width="1.6"/>
-      <text x="735" y="379" text-anchor="middle" font-weight="600">Grep(pattern, file)</text>
-      <text x="735" y="396" text-anchor="middle" class="small">never blocked; matching lines enter context</text>
-      <text x="735" y="428" text-anchor="middle" class="small mono">every run</text>
-      <text x="735" y="443" text-anchor="middle" class="small">strict hook, paged reads closed too</text>
+      <!-- the designed fallback: skill hands off to a cheap worker, which returns a summary -->
+      <line x1="582" y1="258" x2="582" y2="288" stroke="var(--hook)" stroke-width="1.6" marker-end="url(#ar-hook)"/>
+      <rect x="472" y="290" width="220" height="56" rx="6" class="box hook-s" stroke-width="1.6"/>
+      <text x="582" y="311" text-anchor="middle" font-weight="600">Skill: bulk-reader</text>
+      <text x="582" y="329" text-anchor="middle" class="small">instructions for handing the file off</text>
+      <line x1="582" y1="346" x2="582" y2="376" stroke="var(--hook)" stroke-width="1.6" marker-end="url(#ar-hook)"/>
+      <rect x="472" y="378" width="220" height="56" rx="6" class="box hook-s" stroke-width="1.6"/>
+      <text x="582" y="399" text-anchor="middle" font-weight="600">Worker model</text>
+      <text x="582" y="417" text-anchor="middle" class="small">cheap model reads the file in full</text>
+      <path d="M472 406 C 210 406, 210 260, 95 260 L 95 216" fill="none" stroke="var(--hook)" stroke-width="1.6" marker-end="url(#ar-hook)"/>
+      <text x="290" y="443" text-anchor="middle" class="small" fill="var(--hook)">only the worker's summary is meant to enter context</text>
     </svg>
-    <figcaption><b>Where the hook sits, and the three ways out.</b> A PreToolUse hook runs between the model's tool call and the tool. On allow, the file comes back whole. On block, only the hook's message comes back, and the model chooses its next call. Spotify's design assumes that choice is the worker script. In 24 runs it never was: with the shipped hook the model re-read the file in slices, which the hook permits; with the exception closed it grepped instead.</figcaption>
+    <figcaption><b>Why the hook, and what it does.</b> Spotify's monorepo burns tokens on two kinds of non-reasoning work: reading a large file to check a fraction of it, and generating templated code where the structure is already known. A PreToolUse hook intercepts a Read over 350 lines before the frontier model sees the bytes, and blocks it with a message pointing the model at the bulk-reader skill, which hands the file to a cheaper worker model and is designed to return only a summary. On allow, the file still comes back whole.</figcaption>
   </figure>
 
   <figure id="fig-setup">
