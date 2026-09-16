@@ -97,7 +97,7 @@ body = f'''<main>
 
 <h2>Experiment Design</h2>
 
-<p>Every task ran under three setups, each one change from the last: <em>stock</em> Claude Code, nothing added; <em>as shipped</em>, stock plus Spotify's plugin exactly as published, including a rule that lets a <code>Read</code> with an offset through even on a big file; and <em>as described</em>, the same plugin with that one rule removed, so the hook actually does what their post says it does. The worker behind both hook setups is the same substitute — a one-turn call to Haiku instead of Spotify's hosted Gemini model, since I don't have access to their internal Portal system — so it's never what explains a difference between the two hook setups.</p>
+<p>Every task ran under three setups, each one step from the last. <em>Stock</em> is Claude Code with nothing added. <em>As shipped</em> is stock plus Spotify's plugin exactly as published, offset/limit exception included. <em>As described</em> is the same plugin with that one exception removed, so the hook actually does what their post says it does. Both hook setups substitute a one-turn Haiku call for Spotify's hosted Gemini model, since I don't have access to their internal Portal system — the same substitute in both, so it's never what explains a difference between them.</p>
 
 <h3>Why Kafka</h3>
 
