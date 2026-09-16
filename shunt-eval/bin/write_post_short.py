@@ -171,7 +171,15 @@ the internet." \\
 
 <h2>Results</h2>
 
-<p>Take one real question, carried through every setup as a worked example: <em>how does the broker lifecycle manager move between states?</em> The file is 770 lines. Stock greps for the class, reads it whole, answers — three turns, ten cents. As shipped, the read gets refused, and the model pages around the block with an offset, which the hook allows; the whole file ends up in context anyway, one turn later, in nine turns total, seventeen cents. As described, with that loophole closed, the model does what Spotify actually designed: opens the skill, calls the worker, gets a real summary back, checks one thing with a grep, and answers — also nine turns, fifteen cents including the worker. Every answer is correct. The enforced setup is the one working exactly as intended, and it's still the most expensive of the three.</p>
+<p>Take one real question, carried through every setup as a worked example: <em>how does the broker lifecycle manager move between states?</em> The file is 770 lines.</p>
+
+<p><b>Stock</b> greps for the class and reads it whole. Three turns, ten cents.</p>
+
+<p><b>As shipped</b>, the read gets refused — but the hook still allows a paged read with an offset, so the model pages around the block and the whole file ends up in context anyway, one turn later. Nine turns, seventeen cents.</p>
+
+<p><b>As described</b>, with that loophole closed, the model does what Spotify actually designed: it opens the skill, calls the worker, gets a real summary back, checks one thing with a grep, and answers. Also nine turns, fifteen cents including the worker.</p>
+
+<p>Every answer is correct. The enforced setup is the one working exactly as intended, and it's still the most expensive of the three.</p>
 
 <h3>Their metric, then the real one</h3>
 
