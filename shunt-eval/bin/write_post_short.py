@@ -195,7 +195,20 @@ the internet." \\
 
 <h2>Results</h2>
 
-<p>Take one real question, carried through every setup as a worked example: <em>how does the broker lifecycle manager move between states?</em> The file is 770 lines.</p>
+<p>Across all 189 sessions, both hook setups deliver on Spotify's own measure — less of the big file in the expensive model's context — and both cost more than stock anyway. Here's that headline first, then one real question traced through all three setups to show why it plays out that way.</p>
+
+<h3>The headline numbers</h3>
+
+<figure>
+  <img src="figures/post/G-headline.png" alt="Three small-multiple bar charts, stock against the hook as shipped and as described, means per run: target-file tokens in context {o1['tgt_tokens_mean'][0]:,.0f}, {o1['tgt_tokens_mean'][1]:,.0f}, {o2['tgt_tokens_mean'][1]:,.0f}; API requests {o1['requests_mean'][0]:.1f}, {o1['requests_mean'][1]:.1f}, {o2['requests_mean'][1]:.1f}; cost ${o1['cost_mean'][0]:.3f}, ${o1['cost_mean'][1]:.3f}, ${o2['cost_mean'][1]:.3f}.">
+  <figcaption>Figure G · twenty-one tasks, three runs each</figcaption>
+</figure>
+
+<p><b>Performance</b> is unchanged: {o1['pass_rate'][0]*100:.0f}% of stock runs passed, {o1['pass_rate'][1]*100:.0f}% as shipped, {o2['pass_rate'][1]*100:.0f}% as described — three failures in 189, one of them a checklist grader on a code-generation control, not the hook. <b>Cost</b> rose {cost1:.0f}% as shipped and {cost2:.0f}% as described, worker included; paired per task, the enforced hook's own 95% interval is {ci(o2)}, which doesn't cross zero. <b>Latency</b> rose with it: {o1['requests_mean'][0]:.1f} turns a run for stock, {o1['requests_mean'][1]:.1f} as shipped, {o2['requests_mean'][1]:.1f} as described; wall time from {o1['wall_mean'][0]:.0f} seconds to {o2['wall_mean'][1]:.0f}. And on <b>behavior</b>: given a neutral refusal and a skill it's never opened before, the model delegated to the worker on {o2['worker_calls']} of {o2['blocks']} blocks — about one in twenty — and grepped or ran a shell search around the rest.</p>
+
+<h3>One traced example</h3>
+
+<p>Here's what those numbers look like on one real question, carried through every setup: <em>how does the broker lifecycle manager move between states?</em> The file is 770 lines.</p>
 
 <p><b>Stock</b> greps for the class and reads it whole. Three turns, ten cents.</p>
 
@@ -212,15 +225,6 @@ the internet." \\
 {token_table}
 
 <p>Count lines of the big file Claude actually reads, and the enforced hook delivers the 90%: down {read_pct:.0f}%. Count what reaches the model through <em>any</em> tool and the cut is a smaller {any_pct2:.0f}%, because grep results fill part of the gap back in. Count what the frontier model is actually billed for, and it goes <em>up</em>, {fin1:.0f}% as shipped and {fin2:.0f}% as described.</p>
-
-<h3>Performance, cost, latency</h3>
-
-<figure>
-  <img src="figures/post/G-headline.png" alt="Three small-multiple bar charts, stock against the hook as shipped and as described, means per run: target-file tokens in context {o1['tgt_tokens_mean'][0]:,.0f}, {o1['tgt_tokens_mean'][1]:,.0f}, {o2['tgt_tokens_mean'][1]:,.0f}; API requests {o1['requests_mean'][0]:.1f}, {o1['requests_mean'][1]:.1f}, {o2['requests_mean'][1]:.1f}; cost ${o1['cost_mean'][0]:.3f}, ${o1['cost_mean'][1]:.3f}, ${o2['cost_mean'][1]:.3f}.">
-  <figcaption>Figure G · twenty-one tasks, three runs each</figcaption>
-</figure>
-
-<p><b>Performance</b> is unchanged: {o1['pass_rate'][0]*100:.0f}% of stock runs passed, {o1['pass_rate'][1]*100:.0f}% as shipped, {o2['pass_rate'][1]*100:.0f}% as described — three failures in 189, one of them a checklist grader on a code-generation control, not the hook. <b>Cost</b> rose {cost1:.0f}% as shipped and {cost2:.0f}% as described, worker included; paired per task, the enforced hook's own 95% interval is {ci(o2)}, which doesn't cross zero. <b>Latency</b> rose with it: {o1['requests_mean'][0]:.1f} turns a run for stock, {o1['requests_mean'][1]:.1f} as shipped, {o2['requests_mean'][1]:.1f} as described; wall time from {o1['wall_mean'][0]:.0f} seconds to {o2['wall_mean'][1]:.0f}. And on <b>behavior</b>: given a neutral refusal and a skill it's never opened before, the model delegated to the worker on {o2['worker_calls']} of {o2['blocks']} blocks — about one in twenty — and grepped or ran a shell search around the rest.</p>
 
 <h3>By task type</h3>
 
