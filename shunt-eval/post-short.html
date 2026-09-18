@@ -202,7 +202,7 @@ the internet." \
   <figcaption>Three ways to count what "90% fewer tokens" could mean, means per run across the same 189 sessions.</figcaption>
 </figure>
 
-<p>Count lines of the big file Claude actually reads, and the claim holds: down 87% with the loophole closed. Count everything that reaches the model through <em>any</em> tool, grep results included, and it's a smaller 51%. Count what the frontier model is actually billed for — the number the invoice runs on — and it goes the other way, up 21% as shipped and 41% as described.</p>
+<p>Count lines pulled in through <code>Read</code> specifically, and the claim holds: down 87% with the loophole closed. Widen that to tokens — same Read content, plus whatever <code>Grep</code> or <code>Bash</code> separately turned up about the file — and it's a smaller 51% down, because a block that stops one Read doesn't stop the greps that follow it. Count what the frontier model is actually billed for across the whole session — the number the invoice runs on — and it goes the other way, up 21% as shipped and 41% as described.</p>
 
 <p>The reason isn't the greps or the worker — both are cheap on their own: a grep result is a few hundred characters, and the whole worker call, numbered file in and summary out, runs about two cents. It's something a <code>PreToolUse</code> hook has no way to see, because it only ever looks at the one tool call directly in front of it, never at the conversation as a whole.</p>
 

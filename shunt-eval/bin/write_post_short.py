@@ -213,7 +213,7 @@ the internet." \\
 
 {token_table}
 
-<p>Count lines of the big file Claude actually reads, and the claim holds: down {read_pct:.0f}% with the loophole closed. Count everything that reaches the model through <em>any</em> tool, grep results included, and it's a smaller {any_pct2:.0f}%. Count what the frontier model is actually billed for — the number the invoice runs on — and it goes the other way, up {fin1:.0f}% as shipped and {fin2:.0f}% as described.</p>
+<p>Count lines pulled in through <code>Read</code> specifically, and the claim holds: down {read_pct:.0f}% with the loophole closed. Widen that to tokens — same Read content, plus whatever <code>Grep</code> or <code>Bash</code> separately turned up about the file — and it's a smaller {any_pct2:.0f}% down, because a block that stops one Read doesn't stop the greps that follow it. Count what the frontier model is actually billed for across the whole session — the number the invoice runs on — and it goes the other way, up {fin1:.0f}% as shipped and {fin2:.0f}% as described.</p>
 
 <p>The reason isn't the greps or the worker — both are cheap on their own: a grep result is a few hundred characters, and the whole worker call, numbered file in and summary out, runs about two cents. It's something a <code>PreToolUse</code> hook has no way to see, because it only ever looks at the one tool call directly in front of it, never at the conversation as a whole.</p>
 
