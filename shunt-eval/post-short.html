@@ -182,7 +182,7 @@ the internet." \
 
 <h2>Results</h2>
 
-<p>Across all 189 sessions, both hook setups deliver on Spotify's own measure — less of the big file in the expensive model's context — and both cost more than stock anyway. Here's that headline first, then one real question traced through all three setups to show why it plays out that way.</p>
+<p>Across all 189 sessions, both hook setups deliver on Spotify's own measure — less of the big file in the expensive model's context — and both cost more than stock. Here's the headline first, then one real question traced through all three setups to show what that looks like in practice.</p>
 
 <h3>The headline numbers</h3>
 
@@ -205,17 +205,6 @@ the internet." \
 
 <p>Every answer is correct. The enforced setup is the one working exactly as intended, and it's still the most expensive of the three.</p>
 
-<h3>What "90% fewer tokens" actually means</h3>
-
-<p>Spotify's own formula depends on the worker actually being called: it was never called as shipped, and defined on only 5 of 63 runs as described, so there's no clean before-and-after number to set next to stock's. Three other counts are means per run across the same 189 sessions, and all three do have one:</p>
-
-<figure>
-  <img src="figures/post/table-token-comparison.png" alt="Table: three ways to count 90% fewer tokens. Lines of the target read: 450 stock, 232 as shipped (-48%), 59 as described (-87%). Target content reaching the model by any tool: 6,016 stock, 3,721 as shipped (-38%), 2,919 as described (-51%). Input tokens the frontier model was billed for: 229,697 stock, 277,146 as shipped (+21%), 324,523 as described (+41%).">
-  <figcaption>Three ways to count what "90% fewer tokens" could mean, means per run across the same 189 sessions.</figcaption>
-</figure>
-
-<p>Count lines of the big file Claude actually reads, and the enforced hook delivers the 90%: down 87%. Count what reaches the model through <em>any</em> tool and the cut is a smaller 51%, because grep results fill part of the gap back in. Count what the frontier model is actually billed for, and it goes <em>up</em>, 21% as shipped and 41% as described.</p>
-
 <h3>By task type</h3>
 
 <figure>
@@ -228,13 +217,26 @@ the internet." \
   <figcaption>Hook cost relative to stock, by category, paired per task.</figcaption>
 </figure>
 
-<p>On 12 of the 21 tasks, all three repetitions land on the same side of stock — the split by category isn't noise, and what it means is next.</p>
+<p>On 12 of the 21 tasks, all three repetitions land on the same side of stock — the split by category isn't noise.</p>
+
+<h3>What "90% fewer tokens" actually means</h3>
+
+<p>Depending on how you count it, "90% fewer tokens" is right, half right, or backwards. Spotify's own formula can't even be computed for most of this grid — it depends on the worker actually being called, which it was never was as shipped and on only 5 of 63 runs as described, so there's no clean before-and-after number to set next to stock's. The three counts below can be computed for every run, and each tells a different story:</p>
+
+<figure>
+  <img src="figures/post/table-token-comparison.png" alt="Table: three ways to count 90% fewer tokens. Lines of the target read: 450 stock, 232 as shipped (-48%), 59 as described (-87%). Target content reaching the model by any tool: 6,016 stock, 3,721 as shipped (-38%), 2,919 as described (-51%). Input tokens the frontier model was billed for: 229,697 stock, 277,146 as shipped (+21%), 324,523 as described (+41%).">
+  <figcaption>Three ways to count what "90% fewer tokens" could mean, means per run across the same 189 sessions.</figcaption>
+</figure>
+
+<p>Count lines of the big file Claude actually reads, and the claim holds: down 87% with the loophole closed. Count everything that reaches the model through <em>any</em> tool, grep results included, and it's a smaller 51%. Count what the frontier model is actually billed for — the number the invoice runs on — and it goes the other way, up 21% as shipped and 41% as described.</p>
+
+<p>Two questions are still open: why billing would go up when less of the file enters context, and why the split by category looks the way it does. Discussion takes both in turn.</p>
 
 <h2>Discussion</h2>
 
 <h3>What's actually driving the cost</h3>
 
-<p>Not the greps, and not the worker. Both are cheap: a grep result is a few hundred characters, and the whole worker call, numbered file in and summary out, runs about two cents. It's caching, and specifically the part of caching a <code>PreToolUse</code> hook has no way to see. Claude Code writes a file to its prompt cache once, at 1.25 times the price of a fresh input token, and reads it back on every later turn at a tenth the input price — deliberately cheap. On the traced example, that write is about two cents in every setup, stock included. That bucket barely moves between setups.</p>
+<p>Go back to the broker-lifecycle question from Results: three turns for stock, nine for both hook setups. Not the greps, and not the worker — both are cheap: a grep result is a few hundred characters, and the whole worker call, numbered file in and summary out, runs about two cents. It's caching, and specifically the part of caching a <code>PreToolUse</code> hook has no way to see. Claude Code writes a file to its prompt cache once, at 1.25 times the price of a fresh input token, and reads it back on every later turn at a tenth the input price — deliberately cheap. On that question, that write is about two cents in every setup, stock included. That bucket barely moves between setups.</p>
 
 <p>What moves is the bucket the hook never looks at, because it only ever sees the one tool call directly in front of it: the entire conversation so far, resent from cache at that cheap rate on every single turn, plus a fresh round of the model's own thinking at the end of each one, priced fifty times higher than a cache read. Stock pays that cost three times on the traced question. Both hook setups pay it nine times — not because any one grep or the worker call is expensive, but because refusing the read didn't remove the need to know what was in the file. It just meant paying to ask six more times.</p>
 
@@ -247,7 +249,7 @@ the internet." \
 
 <h3>Why the split by task shape</h3>
 
-<p>Where the answer is a small slice of a big file — how three classes relate, which methods lack tests — the enforced hook is cheaper on every run, because a targeted grep does the job the whole-file read would have, at the same or fewer turns. Where the answer is most of the file — list every config key, generate a class from a 616-line reference, make a precise edit — it costs more on every run, because the content has to come in one way or another and the block just adds the turns it takes to get there. The category table above is that pattern in numbers: Spotify's own four benchmark tasks and their scaled-up shapes are exactly where the block fires most and pays for it least, because those are enumerate-the-whole-file questions by construction. A line-count threshold has no way to tell "which of these" from "all of these" apart, and that distinction, not file size, is what actually predicts whether a block will pay off.</p>
+<p>Where the answer is a small slice of a big file — how three classes relate, which methods lack tests — the enforced hook is cheaper on every run, because a targeted grep does the job the whole-file read would have, at the same or fewer turns. Where the answer is most of the file — list every config key, generate a class from a 616-line reference, make a precise edit — it costs more on every run, because the content has to come in one way or another and the block just adds the turns it takes to get there. The category table back in Results is that pattern in numbers: Spotify's own four benchmark tasks and their scaled-up shapes are exactly where the block fires most and pays for it least, because those are enumerate-the-whole-file questions by construction. A line-count threshold has no way to tell "which of these" from "all of these" apart, and that distinction, not file size, is what actually predicts whether a block will pay off.</p>
 
 <h3>Let Claude Be Claude</h3>
 
