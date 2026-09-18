@@ -3,9 +3,10 @@
 
 Structure, matching a research paper: What Spotify built > Experiment Design (Why Kafka, Why
 We Ran It Through Claude, How It Ran) > Evaluation Design (Why These Tasks, Why These Metrics)
-> Results (the traced example as data, the three-way token table, performance/cost/latency
-numbers, the category table) > Discussion (what's actually driving the cost, the split by task
-shape, Let Claude Be Claude) > Conclusion. Same skeleton as the long post, each section shorter.
+> Results (headline numbers, why cost rises even though less of the file enters context, one
+traced example, by task type and why — each finding paired with its explanation in place) >
+Discussion (Let Claude Be Claude) > Conclusion (with a takeaways list). Same skeleton as the
+long post, each section shorter.
 
 Usage: python3 bin/write_post_short.py   (writes shunt-eval/post-short.html; CSS head copied from post.html)
 Does NOT touch post.html, the long paper-style version.
@@ -195,7 +196,7 @@ the internet." \\
 
 <h2>Results</h2>
 
-<p>Across all 189 sessions, both hook setups deliver on Spotify's own measure — less of the big file in the expensive model's context — and both cost more than stock. Here's the headline first, then one real question traced through all three setups to show what that looks like in practice.</p>
+<p>Across all 189 sessions, both hook setups deliver on Spotify's own measure — less of the big file in the expensive model's context — and both cost more than stock. Each finding below comes with the reason for it, right there, rather than deferred to a separate section.</p>
 
 <h3>The headline numbers</h3>
 
@@ -206,9 +207,19 @@ the internet." \\
 
 <p><b>Performance</b> is unchanged: {o1['pass_rate'][0]*100:.0f}% of stock runs passed, {o1['pass_rate'][1]*100:.0f}% as shipped, {o2['pass_rate'][1]*100:.0f}% as described — three failures in 189, one of them a checklist grader on a code-generation control, not the hook. <b>Cost</b> rose {cost1:.0f}% as shipped and {cost2:.0f}% as described, worker included; paired per task, the enforced hook's own 95% interval is {ci(o2)}, which doesn't cross zero. <b>Latency</b> rose with it: {o1['requests_mean'][0]:.1f} turns a run for stock, {o1['requests_mean'][1]:.1f} as shipped, {o2['requests_mean'][1]:.1f} as described; wall time from {o1['wall_mean'][0]:.0f} seconds to {o2['wall_mean'][1]:.0f}. And on <b>behavior</b>: given a neutral refusal and a skill it's never opened before, the model delegated to the worker on {o2['worker_calls']} of {o2['blocks']} blocks — about one in twenty — and grepped or ran a shell search around the rest.</p>
 
+<h3>Why cost rises even though less of the file enters context</h3>
+
+<p>Depending on how you count it, "90% fewer tokens" is right, half right, or backwards. Spotify's own formula can't even be computed for most of this grid — it depends on the worker actually being called, which it was never was as shipped and on only {o2['runs_with_worker']} of 63 runs as described, so there's no clean before-and-after number to set next to stock's. The three counts below can be computed for every run, and each tells a different story:</p>
+
+{token_table}
+
+<p>Count lines of the big file Claude actually reads, and the claim holds: down {read_pct:.0f}% with the loophole closed. Count everything that reaches the model through <em>any</em> tool, grep results included, and it's a smaller {any_pct2:.0f}%. Count what the frontier model is actually billed for — the number the invoice runs on — and it goes the other way, up {fin1:.0f}% as shipped and {fin2:.0f}% as described.</p>
+
+<p>The reason is caching, and specifically the part of caching a <code>PreToolUse</code> hook has no way to see. A grep result is a few hundred characters, and the whole worker call, numbered file in and summary out, runs about two cents — neither is what moves the bill. Claude Code writes a file to its prompt cache once, at 1.25 times the price of a fresh input token, and reads it back on every later turn at a tenth the input price, deliberately cheap; that bucket barely moves between setups. What moves is the bucket the hook never looks at, because it only ever sees the one tool call directly in front of it: the entire conversation so far, resent from cache at that cheap rate on every single turn, plus a fresh round of the model's own thinking at the end of each one, priced fifty times higher than a cache read. Refusing a read doesn't remove the need to know what was in the file — it just means asking again, and every one of those extra turns resends everything that came before it. Caching is the whole reason a token avoided isn't automatically a dollar saved: the tokens the hook is counting are nearly free to keep around once they're cached. The tokens it never counts, the ones spent asking again, are not.</p>
+
 <h3>One traced example</h3>
 
-<p>Here's what those numbers look like on one real question, carried through every setup: <em>how does the broker lifecycle manager move between states?</em> The file is 770 lines.</p>
+<p>Here's that mechanism on one real question instead of an average, so "asking again" has an actual receipt. The question is one any Kafka developer might ask: <em>how does the broker lifecycle manager move between states?</em> The file that answers it is 770 lines, and it's carried through all three setups below.</p>
 
 <p><b>Stock</b> greps for the class and reads it whole. Three turns, ten cents.</p>
 
@@ -218,7 +229,14 @@ the internet." \\
 
 <p>Every answer is correct. The enforced setup is the one working exactly as intended, and it's still the most expensive of the three.</p>
 
-<h3>By task type</h3>
+<figure>
+  <img src="figures/post/F-where-the-money-went.png" alt="Stacked bar chart in cents for the three runs on the broker-lifecycle question: stock about 10 cents in 3 requests, as shipped about 17 cents in 9, as described about 15 cents in 9 including the worker. The bucket that grows in both hook runs is the re-sent conversation, not the file itself.">
+  <figcaption>Figure F · where the money actually went, same question, from the OpenTelemetry trace</figcaption>
+</figure>
+
+<p>This is the caching mechanism from above, on this one question, from the actual OpenTelemetry trace. The file-write bucket is about two cents in every setup, stock included, and barely moves. What grows is the resent-conversation bucket: paid three times by stock, nine times by both hook setups. The read the hook refused would have cost about two cents to write to cache. Paging around it added six cents of exactly this kind of resend. Delegating it added four, only two of which were the worker itself.</p>
+
+<h3>By task type, and why</h3>
 
 <figure>
   <img src="figures/post/H-by-category.png" alt="Horizontal bars of hook cost relative to stock by task type with 95% intervals, two bars per row for as shipped and as described: Spotify's four tasks {pct(c1['SB']['cost_pct_paired_mean'])} and {pct(c2['SB']['cost_pct_paired_mean'])}; needle reads, harm tasks and controls near zero; Spotify's shapes on big files positive; as described where the worker was called {pct(deleg['cost_pct_paired_mean'])}.">
@@ -227,36 +245,9 @@ the internet." \\
 
 {cat_table}
 
-<p>On 12 of the 21 tasks, all three repetitions land on the same side of stock — the split by category isn't noise.</p>
-
-<h3>What "90% fewer tokens" actually means</h3>
-
-<p>Depending on how you count it, "90% fewer tokens" is right, half right, or backwards. Spotify's own formula can't even be computed for most of this grid — it depends on the worker actually being called, which it was never was as shipped and on only {o2['runs_with_worker']} of 63 runs as described, so there's no clean before-and-after number to set next to stock's. The three counts below can be computed for every run, and each tells a different story:</p>
-
-{token_table}
-
-<p>Count lines of the big file Claude actually reads, and the claim holds: down {read_pct:.0f}% with the loophole closed. Count everything that reaches the model through <em>any</em> tool, grep results included, and it's a smaller {any_pct2:.0f}%. Count what the frontier model is actually billed for — the number the invoice runs on — and it goes the other way, up {fin1:.0f}% as shipped and {fin2:.0f}% as described.</p>
-
-<p>Two questions are still open: why billing would go up when less of the file enters context, and why the split by category looks the way it does. Discussion takes both in turn.</p>
+<p>On 12 of the 21 tasks, all three repetitions land on the same side of stock — the split isn't noise, and the shape of the question explains it. Where the answer is a small slice of a big file — how three classes relate, which methods lack tests — the enforced hook is cheaper on every run, because a targeted grep does the job the whole-file read would have, at the same or fewer turns. Where the answer is most of the file — list every config key, generate a class from a 616-line reference, make a precise edit — it costs more on every run, because the content has to come in one way or another and the block just adds the turns it takes to get there. The table above is that pattern in numbers: Spotify's own four benchmark tasks and their scaled-up shapes are exactly where the block fires most and pays for it least, because those are enumerate-the-whole-file questions by construction. A line-count threshold has no way to tell "which of these" from "all of these" apart, and that distinction, not file size, is what actually predicts whether a block will pay off.</p>
 
 <h2>Discussion</h2>
-
-<h3>What's actually driving the cost</h3>
-
-<p>Go back to the broker-lifecycle question from Results: three turns for stock, nine for both hook setups. Not the greps, and not the worker — both are cheap: a grep result is a few hundred characters, and the whole worker call, numbered file in and summary out, runs about two cents. It's caching, and specifically the part of caching a <code>PreToolUse</code> hook has no way to see. Claude Code writes a file to its prompt cache once, at 1.25 times the price of a fresh input token, and reads it back on every later turn at a tenth the input price — deliberately cheap. On that question, that write is about two cents in every setup, stock included. That bucket barely moves between setups.</p>
-
-<p>What moves is the bucket the hook never looks at, because it only ever sees the one tool call directly in front of it: the entire conversation so far, resent from cache at that cheap rate on every single turn, plus a fresh round of the model's own thinking at the end of each one, priced fifty times higher than a cache read. Stock pays that cost three times on the traced question. Both hook setups pay it nine times — not because any one grep or the worker call is expensive, but because refusing the read didn't remove the need to know what was in the file. It just meant paying to ask six more times.</p>
-
-<figure>
-  <img src="figures/post/F-where-the-money-went.png" alt="Stacked bar chart in cents for the three runs on the broker-lifecycle question: stock about 10 cents in 3 requests, as shipped about 17 cents in 9, as described about 15 cents in 9 including the worker. The bucket that grows in both hook runs is the re-sent conversation, not the file itself.">
-  <figcaption>Figure F · where the money actually went, same question, from the OpenTelemetry trace</figcaption>
-</figure>
-
-<p>The read the hook refused would have cost about two cents to write to cache. Paging around it added six cents of exactly this. Delegating it added four, only two of which were the worker itself. Caching is the whole reason a token avoided isn't automatically a dollar saved: the tokens the hook is counting are nearly free to keep around once they're cached. The tokens it never counts, the ones spent asking again, are not.</p>
-
-<h3>Why the split by task shape</h3>
-
-<p>Where the answer is a small slice of a big file — how three classes relate, which methods lack tests — the enforced hook is cheaper on every run, because a targeted grep does the job the whole-file read would have, at the same or fewer turns. Where the answer is most of the file — list every config key, generate a class from a 616-line reference, make a precise edit — it costs more on every run, because the content has to come in one way or another and the block just adds the turns it takes to get there. The category table back in Results is that pattern in numbers: Spotify's own four benchmark tasks and their scaled-up shapes are exactly where the block fires most and pays for it least, because those are enumerate-the-whole-file questions by construction. A line-count threshold has no way to tell "which of these" from "all of these" apart, and that distinction, not file size, is what actually predicts whether a block will pay off.</p>
 
 <h3>Let Claude Be Claude</h3>
 
@@ -269,6 +260,16 @@ the internet." \\
 <p>Spotify's number is real, and it's the wrong number. "File size avoided, divided by four" measures exactly how many tokens a whole-file read would have cost, and once the hook actually enforces the block, it delivers most of that. What it never measures is the response to the block — a refusal is an instruction, not a delegation, and in this test the instruction was followed about one time in twenty. The other nineteen times, the model found its own way back to the same information, and paid the caching-priced cost of asking again to do it.</p>
 
 <p>The honest limit on all of this: every run here is a single headless task, done in under a minute. Spotify's case is strongest in a long interactive session, where a big file sitting in context gets resent turn after turn for an hour, sometimes at a full cache rewrite — I didn't test that regime, and it's the one place their number and mine could both be right. But the general point survives it: a token avoided isn't automatically a dollar saved, a turn is the unit the invoice actually counts, and no hook that only watches the tool call in front of it — while the harness underneath it keeps getting better on its own — can tell the difference.</p>
+
+<p>The five things worth remembering:</p>
+
+<ul>
+<li><b>The token metric is real, on its own terms.</b> With the hook enforced, Claude read {read_pct:.0f}% fewer lines of the big files — Spotify's own measure holds exactly as they defined it.</li>
+<li><b>The bill went up anyway.</b> {cost1:.0f}% as shipped, {cost2:.0f}% as described, because Claude Code's own prompt caching prices the resent conversation, not the file, and a block just adds turns.</li>
+<li><b>Whether a task got cheaper depended on the question, not the plugin.</b> Narrow, targeted questions got cheaper on every run; enumerate-the-whole-file questions got more expensive on every run.</li>
+<li><b>The model followed the redirect about one time in twenty.</b> A hook can block a read; it has no say over what the model tries next.</li>
+<li><b>If the goal is spend, the fix isn't a bigger hook.</b> It's watching what caching and the model's own defaults already do for free, and aiming any rule at the specific question shapes that don't benefit from them.</li>
+</ul>
 
 <p class="byline" style="margin-top:8px">The full write-up, with the deviations table, the metrics as equations, the validation checklist, and all 189 runs, is at <a href="https://github.com/hmassa14/TurnsNotTokens">github.com/hmassa14/TurnsNotTokens</a>.</p>
 
