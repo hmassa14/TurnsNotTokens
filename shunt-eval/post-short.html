@@ -204,7 +204,17 @@ the internet." \
 
 <p>Count lines of the big file Claude actually reads, and the claim holds: down 87% with the loophole closed. Count everything that reaches the model through <em>any</em> tool, grep results included, and it's a smaller 51%. Count what the frontier model is actually billed for — the number the invoice runs on — and it goes the other way, up 21% as shipped and 41% as described.</p>
 
-<p>The reason is caching, and specifically the part of caching a <code>PreToolUse</code> hook has no way to see. A grep result is a few hundred characters, and the whole worker call, numbered file in and summary out, runs about two cents — neither is what moves the bill. Claude Code writes a file to its prompt cache once, at 1.25 times the price of a fresh input token, and reads it back on every later turn at a tenth the input price, deliberately cheap; that bucket barely moves between setups. What moves is the bucket the hook never looks at, because it only ever sees the one tool call directly in front of it: the entire conversation so far, resent from cache at that cheap rate on every single turn, plus a fresh round of the model's own thinking at the end of each one, priced fifty times higher than a cache read. Refusing a read doesn't remove the need to know what was in the file — it just means asking again, and every one of those extra turns resends everything that came before it. Caching is the whole reason a token avoided isn't automatically a dollar saved: the tokens the hook is counting are nearly free to keep around once they're cached. The tokens it never counts, the ones spent asking again, are not.</p>
+<p>The reason isn't the greps or the worker — both are cheap on their own: a grep result is a few hundred characters, and the whole worker call, numbered file in and summary out, runs about two cents. It's something a <code>PreToolUse</code> hook has no way to see, because it only ever looks at the one tool call directly in front of it, never at the conversation as a whole.</p>
+
+<p>Here's what's actually happening on every turn. Claude Code has no memory between API calls, so the model sees the whole conversation so far, sent again from scratch, every single time it's asked anything. Three different costs show up in that exchange, and they're priced nothing alike:</p>
+
+<ul>
+<li><b>Writing new content to the cache, the first time it's read.</b> A one-time cost, at 1.25 times the price of a normal input token — a couple of cents for a file this size.</li>
+<li><b>Reading everything already in the cache back, on every later turn.</b> This is the resend itself, and it's deliberately cheap: a tenth of the price of a fresh input token.</li>
+<li><b>The model's own fresh thinking and answer, once per turn.</b> Brand new, never cached, priced about fifty times higher than a cache read.</li>
+</ul>
+
+<p>A hook only sees the one read it's blocking — it has no way to know how many more turns, each with its own full-price round of thinking, it'll take the model to get the same information a different way. Refusing the read doesn't remove the need to know what was in the file; it just delays it. That's the whole reason a token avoided isn't automatically a dollar saved: two of these three costs are nearly free. The one that isn't gets paid again on every extra turn it takes to ask a second, third, or ninth time.</p>
 
 <h3>One traced example</h3>
 
