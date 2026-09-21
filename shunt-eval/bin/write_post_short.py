@@ -284,6 +284,8 @@ the internet." \\
 <li><b>If the goal is spend, the fix isn't a bigger hook.</b> It's watching what caching and the model's own defaults already do for free, and aiming any rule at the specific question shapes that don't benefit from them.</li>
 </ul>
 
+<p>One last thing, since it shipped while this was in progress: Anthropic now ships <code>claude plugin eval</code>, which runs a plugin against a suite of test cases and scores it against a no-plugin baseline — the same basic comparison this whole piece is built on. What it doesn't do, as far as the docs describe it, is this piece's actual angle: break a session down turn by turn and bucket by bucket to explain why a plugin that passes its own tests can still cost more than doing nothing.</p>
+
 <p class="byline" style="margin-top:8px">The full write-up, with the deviations table, the metrics as equations, the validation checklist, and all 189 runs, is at <a href="https://github.com/hmassa14/TurnsNotTokens">github.com/hmassa14/TurnsNotTokens</a>.</p>
 
 </main>
