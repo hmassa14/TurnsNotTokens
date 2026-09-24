@@ -77,7 +77,7 @@ body = f'''<main>
 <li><b>Templated code generation</b>: writing boilerplate, configs, or scaffolding, where the structure is already known.</li>
 </ul>
 
-<p>Because Claude Code resends the whole conversation on every request, any large file that's entered into context once stays there and keeps getting rebilled on every turn after it. Spotify didn't want to keep paying frontier prices to carry around the parts of a file nobody asked about. (More on exactly how that resending and billing works below, right before the numbers.)</p>
+<p>Because Claude Code resends the whole conversation on every request, any large file that's entered into context once stays there and keeps getting rebilled on every turn after it. Spotify didn't want to keep paying frontier prices to carry around the parts of a file nobody asked about.</p>
 
 <p><b>The what:</b> to fix this, Spotify implemented a more deterministic workflow for these task types. This deterministic workflow sends these requests to a smaller model to process and return key insights to Claude as context. They chose the Gemini 2.5 Flash model for this implementation, which takes the large file input, reads the files, and returns key context for Claude Code to read. They published it as a plugin called <em>shunt</em>, in their <a href="https://github.com/spotify/portal-ai-plugins/tree/b5ed620c6850f1ea7327b7cd9d0696aae0bf2d89/plugins/shunt">portal-ai-plugins</a> repository.</p>
 
@@ -95,7 +95,7 @@ body = f'''<main>
 
 <p>Spotify built two skills, bulk-reader and code-writer, disclosed when a request matches one of the two workflows above — really just instructions for how to hand a task off to the cheaper model and what to do with what comes back. The hook is what's supposed to force the choice: a <code>PreToolUse</code> hook checks a <code>Read</code> call's file against the 350-line threshold, and if it's over, blocks the call outright and points the model to bulk-reader instead of the raw file. A skill only helps if the model opens it. The hook is the enforcer layer that's meant to make sure it has to.</p>
 
-<p>Here's the assumption everything rests on: when the model is refused a read, it does what the hook's message tells it to. Nothing about a <code>PreToolUse</code> hook enforces that — it can stop one tool call, but it has no say over what the model tries next.</p>
+<p>The assumption everything rests on: when the model is refused a read, it does what the hook's message tells it to. Nothing about a <code>PreToolUse</code> hook enforces that — it can stop one tool call, but it has no say over what the model tries next.</p>
 
 <blockquote class="tldr">TLDR; the skill is the manual. The hook is supposed to force the model to open it. Whether that actually holds is the seam this whole piece pulls on.</blockquote>
 
@@ -196,14 +196,12 @@ the internet." \\
 
 <h2>Two things worth knowing before the numbers</h2>
 
-<p>Tokens, you already know. Two other mechanics matter for what's coming, and they're worth being precise about first.</p>
+<p>Tokens, you already know. Two other mechanics decide most of what follows.</p>
 
 <ul>
-<li><b>No memory between turns.</b> The model itself remembers nothing on its own — not here, not in ChatGPT, not anywhere; no model works that way. Every time Claude Code asks it anything, it rebuilds the entire conversation so far — every earlier message, every file it's read, every tool result — and sends the whole thing again, fresh. A session feels continuous because Claude Code is doing that reconstruction and resending, every turn, not because the model remembers.</li>
-<li><b>Prompt caching.</b> A discount, not a memory upgrade. If the same content was already sent to the model in the last few minutes, sending it again is billed at a tenth of the normal price instead of full price. It changes what resending costs. It doesn't change whether resending happens — that still happens on every turn, cache or no cache.</li>
+<li><b>No memory between turns.</b> The model remembers nothing on its own — not here, not in ChatGPT, not anywhere; no model works that way. Every time Claude Code asks it anything, it rebuilds the entire conversation so far — every earlier message, every file it's read, every tool result — and sends the whole thing again, fresh. A session feels continuous because Claude Code is doing that reconstruction, every turn, not because the model remembers.</li>
+<li><b>Prompt caching.</b> A discount, not a memory upgrade. Content already sent to the model in the last few minutes is billed at a tenth of the normal price on resend instead of full price. It changes what resending costs, not whether resending happens.</li>
 </ul>
-
-<p>Keep those two in mind. They're the reason the numbers below don't move the way you'd expect.</p>
 
 <h2>Results</h2>
 
@@ -213,13 +211,9 @@ the internet." \\
 
 <p>Every turn bills for two things, priced nothing alike: resending everything said so far (cheap — a tenth the price of a fresh token, read straight from cache) and the model's own fresh thinking that turn (brand new, never cached, about fifty times a cache read). Neither a grep nor the worker is what costs money — a grep result is a few hundred characters, and the whole worker call runs about two cents. What costs money is that a <code>PreToolUse</code> hook only sees the one tool call in front of it — it has no way to know how many more expensive thinking-turns it'll take to get the same information a different way. Refusing a read doesn't remove that cost. It just spreads it over more turns.</p>
 
-<p>One small, real example. The task: find one fact — which states a record accumulator's ready-check moves through — buried in an 1,100-line file. Both setups get it exactly right.</p>
+<p>One small, real example: find which states a record accumulator's ready-check moves through, buried in an 1,100-line file. Both setups get it exactly right. <b>Stock</b>: one grep, one Read, one turn to answer — three turns, 4.5 cents. <b>With the hook enforced</b>: a blocked <code>Read</code>, a second blocked <code>Read</code> at a different offset, then three progressively narrower greps to find the same fact — six turns, 6.8 cents, 50% more for the identical answer.</p>
 
-<p><b>Stock</b>: one grep to find the class, one Read of the whole file, one turn to answer. Three turns, 4.5 cents.</p>
-
-<p><b>With the hook enforced</b>: the model tries paging around the block with a targeted <code>Read</code> — blocked. Tries again with a different offset — blocked again. Only then does it fall back to grep, taking three progressively narrower searches to zero in on the same fact a single Read would have handed over. Six turns, 6.8 cents — 50% more, for the identical correct answer.</p>
-
-<p>Nothing here was wasted — every tool call was a reasonable next move. The extra cost is just three more turns: two blocked page-arounds, then three greps to do by search what one Read would have done directly. That's the whole mechanism, on one file, with real numbers attached.</p>
+<p>Nothing here was wasted — every tool call was reasonable. The extra cost is three more turns: two blocked page-arounds, then three greps doing by search what one Read would have done directly.</p>
 
 <h3>The headline numbers</h3>
 
@@ -230,20 +224,20 @@ the internet." \\
 
 <p><b>Performance</b> is unchanged: {o1['pass_rate'][0]*100:.0f}% of stock runs passed, {o1['pass_rate'][1]*100:.0f}% as shipped, {o2['pass_rate'][1]*100:.0f}% as described — three failures in 189, one of them a checklist grader on a code-generation control, not the hook. <b>Cost</b> rose {cost1:.0f}% as shipped and {cost2:.0f}% as described, worker included; paired per task, the enforced hook's own 95% interval is {ci(o2)}, which doesn't cross zero. <b>Latency</b> rose with it: {o1['requests_mean'][0]:.1f} turns a run for stock, {o1['requests_mean'][1]:.1f} as shipped, {o2['requests_mean'][1]:.1f} as described; wall time from {o1['wall_mean'][0]:.0f} seconds to {o2['wall_mean'][1]:.0f}. And on <b>behavior</b>: given a neutral refusal and a skill it's never opened before, the model delegated to the worker on {o2['worker_calls']} of {o2['blocks']} blocks — about one in twenty — and grepped or ran a shell search around the rest, the same pattern as the needle example above.</p>
 
-<h3>Another traced example, with the full cost breakdown</h3>
+<h3>Same mechanism, a bigger question</h3>
 
-<p>The needle question above is small on purpose. The same mechanism, on a bigger question, traced through the actual OpenTelemetry data: <em>how does the broker lifecycle manager move between states?</em>, answered from a 770-line file. <b>Stock</b> greps for the class and reads it whole — three turns, ten cents. <b>As shipped</b>, the read gets refused, but the offset exception lets the model page around it and get the whole file anyway — nine turns, seventeen cents. <b>As described</b>, with that loophole closed, the model does what Spotify designed: opens the skill, calls the worker, checks one thing with a grep, and answers — also nine turns, fifteen cents including the worker. Every answer is correct. The enforced setup is the one working exactly as intended, and it's still the most expensive of the three.</p>
+<p>Traced through the actual OpenTelemetry data this time: <em>how does the broker lifecycle manager move between states?</em>, from a 770-line file. Every answer below is correct — the enforced setup is working exactly as intended, and it's still the most expensive of the three.</p>
 
 <figure>
   <img src="figures/post/F-where-the-money-went.png" alt="Stacked bar chart in cents for the three runs on the broker-lifecycle question: stock about 10 cents in 3 requests, as shipped about 17 cents in 9, as described about 15 cents in 9 including the worker. The bucket that grows in both hook runs is the re-sent conversation, not the file itself.">
   <figcaption>Figure F · where the money actually went, same question, from the OpenTelemetry trace</figcaption>
 </figure>
 
-<p>The file-write bucket — two cents in every setup — barely moves. What grows is the resent-conversation bucket: paid three times by stock, nine times by both hook setups. Paging around the block added six cents of that resend; delegating to the worker added four, only two of which were the worker itself.</p>
+<p>The file-write bucket — two cents everywhere — barely moves. What grows is the resent-conversation bucket: three requests for stock, nine for both hook setups.</p>
 
 <h3>What "90% fewer tokens" actually means</h3>
 
-<p>One more thing worth being precise about: depending on how you count it, "90% fewer tokens" is right, half right, or backwards. Spotify's own formula can't be computed for most of this grid — it needs the worker to be called, which happened on 0 shipped runs and only {o2['runs_with_worker']} of 63 described. The three counts below can be computed for every run:</p>
+<p>Depending on how you count it, "90% fewer tokens" is right, half right, or backwards. Spotify's own formula can't be computed for most of this grid — it needs the worker called, which happened on 0 shipped runs and only {o2['runs_with_worker']} of 63 described. Three counts can be computed for every run:</p>
 
 {token_table}
 
