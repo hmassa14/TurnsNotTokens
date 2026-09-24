@@ -211,9 +211,14 @@ the internet." \\
 
 <p>Every turn bills for two different things, priced very differently. Resending the conversation so far is cheap — read straight from cache, at a tenth the price of a normal token. The model's fresh thinking that turn is not cached, and costs about fifty times more. A hook can only block one read at a time — it has no way to know how many extra turns, each with its own expensive round of thinking, it'll take to get the same answer a different way. Refusing a read doesn't remove that cost. It just spreads it across more turns.</p>
 
-<p>One small example: find which states a record accumulator's ready-check moves through, in an 1,100-line file. <b>Stock</b> takes three turns and costs 4.5 cents: one grep, one Read, one answer.</p>
+<p>One small example: find which states a record accumulator's ready-check moves through, in an 1,100-line file.</p>
 
-<p><b>The hook-enforced setup</b> takes six turns and costs 6.8 cents — 50% more. It tries a blocked <code>Read</code>, then another blocked <code>Read</code> at a different offset, then three separate greps to find the same fact by search. Both setups land on the same correct answer; nothing here was wasted, every tool call was reasonable. The extra turns are simply the price of finding it without ever reading the whole file.</p>
+<ul>
+<li><b>Stock</b> takes three turns and costs 4.5 cents: one grep, one Read, one answer.</li>
+<li><b>The hook-enforced setup</b> takes six turns and costs 6.8 cents — 50% more. It tries a blocked <code>Read</code>, then another blocked <code>Read</code> at a different offset, then three separate greps to find the same fact by search.</li>
+</ul>
+
+<p>Both setups land on the same correct answer; nothing here was wasted, every tool call was reasonable. The extra turns are simply the price of finding it without ever reading the whole file.</p>
 
 <h3>The headline numbers</h3>
 
@@ -222,7 +227,14 @@ the internet." \\
   <figcaption>Figure G · twenty-one tasks, three runs each</figcaption>
 </figure>
 
-<p><b>Performance</b> is unchanged: {o1['pass_rate'][0]*100:.0f}% of stock runs passed, {o1['pass_rate'][1]*100:.0f}% as shipped, {o2['pass_rate'][1]*100:.0f}% as described — three failures in 189, one of them a checklist grader on a code-generation control, not the hook. <b>Cost</b> rose {cost1:.0f}% as shipped and {cost2:.0f}% as described, worker included; paired per task, the enforced hook's own 95% interval is {ci(o2)}, which doesn't cross zero. <b>Latency</b> rose with it: {o1['requests_mean'][0]:.1f} turns a run for stock, {o1['requests_mean'][1]:.1f} as shipped, {o2['requests_mean'][1]:.1f} as described; wall time from {o1['wall_mean'][0]:.0f} seconds to {o2['wall_mean'][1]:.0f}. And on <b>behavior</b>: given a neutral refusal and a skill it's never opened before, the model delegated to the worker on {o2['worker_calls']} of {o2['blocks']} blocks — about one in twenty — and grepped or ran a shell search around the rest, the same pattern as the needle example above.</p>
+<p>Overall, on the same three-dimension triangle from the start of this piece, plus the fourth dimension it earned along the way:</p>
+
+<ul>
+<li><b>Performance</b> is unchanged: {o1['pass_rate'][0]*100:.0f}% of stock runs passed, {o1['pass_rate'][1]*100:.0f}% as shipped, {o2['pass_rate'][1]*100:.0f}% as described — three failures in 189, one of them a checklist grader on a code-generation control, not the hook.</li>
+<li><b>Cost</b> rose {cost1:.0f}% as shipped and {cost2:.0f}% as described, worker included; paired per task, the enforced hook's own 95% interval is {ci(o2)}, which doesn't cross zero.</li>
+<li><b>Latency</b> rose with it: {o1['requests_mean'][0]:.1f} turns a run for stock, {o1['requests_mean'][1]:.1f} as shipped, {o2['requests_mean'][1]:.1f} as described; wall time from {o1['wall_mean'][0]:.0f} seconds to {o2['wall_mean'][1]:.0f}.</li>
+<li><b>Behavior</b>: given a neutral refusal and a skill it's never opened before, the model delegated to the worker on {o2['worker_calls']} of {o2['blocks']} blocks — about one in twenty — and grepped or ran a shell search around the rest, the same pattern as the needle example above.</li>
+</ul>
 
 <h3>Same mechanism, a bigger question</h3>
 
@@ -237,22 +249,29 @@ the internet." \\
 
 <h3>What "90% fewer tokens" actually means</h3>
 
-<p>Depending on how you count it, "90% fewer tokens" is right, half right, or backwards. Spotify's own formula can't be computed for most of this grid — it needs the worker called, which happened on 0 shipped runs and only {o2['runs_with_worker']} of 63 described. Three counts can be computed for every run:</p>
+<p>Depending on how you count it, "90% fewer tokens" is right, half right, or backwards. Spotify's own formula can't be computed for most of this grid — it needs the worker called, which happened on 0 shipped runs and only {o2['runs_with_worker']} of 63 described.</p>
 
 {token_table}
 
-<p>Count lines pulled in through <code>Read</code>, and the claim holds: down {read_pct:.0f}%. Widen that to tokens — Read content plus whatever <code>Grep</code> or <code>Bash</code> separately turned up — and it's a smaller {any_pct2:.0f}% down, because a block that stops one Read doesn't stop the greps that follow it. Count what the frontier model is actually billed for — the number on the invoice — and it goes the other way: up {fin1:.0f}% as shipped, {fin2:.0f}% as described. That last number is the one that matters.</p>
+<ul>
+<li>Lines pulled in through <code>Read</code>: down {read_pct:.0f}%.</li>
+<li>Tokens reaching the model by any tool — Read plus whatever <code>Grep</code> or <code>Bash</code> separately turned up: down {any_pct2:.0f}%.</li>
+<li>Tokens the frontier model was actually billed for — the number on the invoice: up {fin1:.0f}% as shipped, {fin2:.0f}% as described. That's the one that matters.</li>
+</ul>
 
 <h3>By task type, and why</h3>
 
-<figure>
-  <img src="figures/post/H-by-category.png" alt="Horizontal bars of hook cost relative to stock by task type with 95% intervals, two bars per row for as shipped and as described: Spotify's four tasks {pct(c1['SB']['cost_pct_paired_mean'])} and {pct(c2['SB']['cost_pct_paired_mean'])}; needle reads, harm tasks and controls near zero; Spotify's shapes on big files positive; as described where the worker was called {pct(deleg['cost_pct_paired_mean'])}.">
-  <figcaption>Figure H · cost change by task type, paired per task</figcaption>
-</figure>
+<p>On 12 of the 21 tasks, all three repetitions land on the same side of stock — the shape of the question explains it.</p>
+
+<ul>
+<li>A small slice of a big file (how three classes relate, which methods lack tests): cheaper with the hook every time — a targeted grep does the job a whole-file read would have.</li>
+<li>Most of the file (every config key, a generated class, a precise edit): costs more every time — the content has to come in one way or another, and the block just adds turns to get there.</li>
+<li>Spotify's own four benchmark tasks land squarely in the second camp — enumerate-the-whole-file questions by construction, so the block fires most and pays off least.</li>
+</ul>
+
+<p>A line-count threshold can't tell "which of these" from "all of these" apart, and that distinction — not file size — predicts whether a block pays off.</p>
 
 {cat_table}
-
-<p>On 12 of the 21 tasks, all three repetitions land on the same side of stock — the shape of the question explains it. A small slice of a big file (how three classes relate, which methods lack tests) is cheaper with the hook every time: a targeted grep does the job a whole-file read would have. Most of the file (every config key, a generated class, a precise edit) costs more every time, because the content has to come in one way or another and the block just adds turns to get there. That's exactly where Spotify's own four benchmark tasks land — enumerate-the-whole-file questions by construction, so the block fires most and pays off least. A line-count threshold can't tell "which of these" from "all of these" apart, and that distinction, not file size, is what predicts whether a block pays off.</p>
 
 <h2>Discussion</h2>
 
