@@ -195,11 +195,11 @@ the internet." \
 
 <h3>Why an extra turn costs money even when it works</h3>
 
-<p>Every turn bills for two things, priced nothing alike: resending everything said so far (cheap — a tenth the price of a fresh token, read straight from cache) and the model's own fresh thinking that turn (brand new, never cached, about fifty times a cache read). Neither a grep nor the worker is what costs money — a grep result is a few hundred characters, and the whole worker call runs about two cents. What costs money is that a <code>PreToolUse</code> hook only sees the one tool call in front of it — it has no way to know how many more expensive thinking-turns it'll take to get the same information a different way. Refusing a read doesn't remove that cost. It just spreads it over more turns.</p>
+<p>Every turn bills for two different things, priced very differently. Resending the conversation so far is cheap — read straight from cache, at a tenth the price of a normal token. The model's fresh thinking that turn is not cached, and costs about fifty times more. A hook can only block one read at a time — it has no way to know how many extra turns, each with its own expensive round of thinking, it'll take to get the same answer a different way. Refusing a read doesn't remove that cost. It just spreads it across more turns.</p>
 
-<p>One small, real example: find which states a record accumulator's ready-check moves through, buried in an 1,100-line file. Both setups get it exactly right. <b>Stock</b>: one grep, one Read, one turn to answer — three turns, 4.5 cents. <b>With the hook enforced</b>: a blocked <code>Read</code>, a second blocked <code>Read</code> at a different offset, then three progressively narrower greps to find the same fact — six turns, 6.8 cents, 50% more for the identical answer.</p>
+<p>One small example: find which states a record accumulator's ready-check moves through, in an 1,100-line file. Both setups get it right. <b>Stock</b> takes three turns and costs 4.5 cents: one grep, one Read, one answer.</p>
 
-<p>Nothing here was wasted — every tool call was reasonable. The extra cost is three more turns: two blocked page-arounds, then three greps doing by search what one Read would have done directly.</p>
+<p><b>The hook-enforced setup</b> takes six turns and costs 6.8 cents — 50% more, for the same correct answer. It tries a blocked <code>Read</code>, then another blocked <code>Read</code> at a different offset, then three separate greps to find the same fact by search. Nothing here was wasted; every tool call was reasonable. The extra turns are simply the price of finding the answer without ever reading the whole file.</p>
 
 <h3>The headline numbers</h3>
 
