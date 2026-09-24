@@ -213,8 +213,8 @@ the internet." \
 <h3>The Headline Numbers</h3>
 
 <figure>
-  <img src="figures/post/G-headline.png" alt="Three small-multiple bar charts, stock against the hook as shipped and as described, means per run: target-file tokens in context 6,016, 3,721, 2,919; API requests 6.1, 7.7, 9.2; cost $0.121, $0.131, $0.144.">
-  <figcaption>Figure G · twenty-one tasks, three runs each</figcaption>
+  <img src="figures/post/short-C-headline.png" alt="Three small-multiple bar charts, stock against the hook as shipped and as described, means per run: target-file tokens in context 6,016, 3,721, 2,919; API requests 6.1, 7.7, 9.2; cost $0.121, $0.131, $0.144.">
+  <figcaption>Figure C · twenty-one tasks, three runs each</figcaption>
 </figure>
 
 <p>Here's how the three setups compare on the evaluation triangle, averaged across all tasks:</p>
@@ -231,8 +231,8 @@ the internet." \
 <p>This time, traced through the full request log: how does the broker lifecycle manager move between states? The answer is in a 770-line file. All three setups answered correctly, and the enforced setup, working exactly as intended, was still the most expensive.</p>
 
 <figure>
-  <img src="figures/post/F-where-the-money-went.png" alt="Stacked bar chart in cents for the three runs on the broker-lifecycle question: stock about 10 cents in 3 requests, as shipped about 17 cents in 9, as described about 15 cents in 9 including the worker. The bucket that grows in both hook runs is the re-sent conversation, not the file itself.">
-  <figcaption>Figure F · where the money actually went, same question, from the OpenTelemetry trace</figcaption>
+  <img src="figures/post/short-D-where-the-money-went.png" alt="Stacked bar chart in cents for the three runs on the broker-lifecycle question: stock about 10 cents in 3 requests, as shipped about 17 cents in 9, as described about 15 cents in 9 including the worker. The bucket that grows in both hook runs is the re-sent conversation, not the file itself.">
+  <figcaption>Figure D · where the money actually went, same question, from the OpenTelemetry trace</figcaption>
 </figure>
 
 <p>Storing the file in the cache costs about two cents in every setup and barely changes. What grows is the cost of resending the conversation: three requests for stock, nine for both hook setups.</p>
