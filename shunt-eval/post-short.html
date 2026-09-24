@@ -197,9 +197,9 @@ the internet." \
 
 <p>Every turn bills for two different things, priced very differently. Resending the conversation so far is cheap — read straight from cache, at a tenth the price of a normal token. The model's fresh thinking that turn is not cached, and costs about fifty times more. A hook can only block one read at a time — it has no way to know how many extra turns, each with its own expensive round of thinking, it'll take to get the same answer a different way. Refusing a read doesn't remove that cost. It just spreads it across more turns.</p>
 
-<p>One small example: find which states a record accumulator's ready-check moves through, in an 1,100-line file. Both setups get it right. <b>Stock</b> takes three turns and costs 4.5 cents: one grep, one Read, one answer.</p>
+<p>One small example: find which states a record accumulator's ready-check moves through, in an 1,100-line file. <b>Stock</b> takes three turns and costs 4.5 cents: one grep, one Read, one answer.</p>
 
-<p><b>The hook-enforced setup</b> takes six turns and costs 6.8 cents — 50% more, for the same correct answer. It tries a blocked <code>Read</code>, then another blocked <code>Read</code> at a different offset, then three separate greps to find the same fact by search. Nothing here was wasted; every tool call was reasonable. The extra turns are simply the price of finding the answer without ever reading the whole file.</p>
+<p><b>The hook-enforced setup</b> takes six turns and costs 6.8 cents — 50% more. It tries a blocked <code>Read</code>, then another blocked <code>Read</code> at a different offset, then three separate greps to find the same fact by search. Both setups land on the same correct answer; nothing here was wasted, every tool call was reasonable. The extra turns are simply the price of finding it without ever reading the whole file.</p>
 
 <h3>The headline numbers</h3>
 
