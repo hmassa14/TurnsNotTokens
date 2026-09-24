@@ -205,7 +205,7 @@ the internet." \\
 
 <h2>Results</h2>
 
-<p>Across all 189 sessions, two things are true at once, and on the surface they shouldn't both be: with the hook enforced, less of the big file reaches the model — Spotify's own measure holds up. And the hook still costs more than stock. Why: <b>a correct answer doesn't make the turns it took to get there free.</b> Refusing one read doesn't erase the need for that file's information — the model still has to go get it, just a different way, and every extra step it takes is its own full-price round trip, success or not.</p>
+<p>Across all 189 sessions, Spotify's own metric holds up: with the hook enforced, Claude read {read_pct:.0f}% fewer lines of the big files. That didn't translate to cost savings — the hook cost more than stock, not less.</p>
 
 <h3>Why an extra turn costs money even when it works</h3>
 
