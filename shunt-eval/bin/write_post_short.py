@@ -277,9 +277,9 @@ the internet." \\
 
 <h3>Let Claude Be Claude</h3>
 
-<p>There's a broader case here, and it's not really about shunt specifically. Prompt caching — the mechanism doing the damage above — is a relatively recent, platform-level pricing choice, not something any plugin author built around. And in this test's own stock arm, with no hook at all, the model already defaulted to grepping instead of reading the whole file on most needle and harm tasks. That's not something I configured — it's what Sonnet 5 already does inside Claude Code, for free.</p>
+<p>There's a broader case here, and it's not really about shunt specifically. In this test's own stock arm — no hook, no instructions to do it — the model already defaulted to grepping instead of reading the whole file on most needle and harm tasks. I didn't configure that. It's what Sonnet 5 already does inside Claude Code, for free, and it's the same behavior shunt's hook is trying to force with a rule.</p>
 
-<p>Both are the harness getting cheaper on its own schedule, independent of any plugin. A hook keyed to a static proxy — file length — is betting against a moving target: every time the platform gets better at exactly what the hook is trying to force, the stock baseline it's compared to improves for free, and the hook's case gets weaker. Token count was never a perfect stand-in for dollar cost, and it's a worse one with every release. The more durable move, if the goal is spend, is to let Claude be Claude — trust the platform's own defaults, and look for savings in the shape of your questions, not in a rule that assumes today's defaults are the ceiling.</p>
+<p>That's not a fluke; it tracks with how Anthropic itself has been talking about Claude Code lately. Boris Cherny, who leads the product, has reportedly told developers to delete their CLAUDE.md, their skills, and their hooks every six months and see what the model does without them — and said the team cut roughly 80% of Claude Code's own system prompt for Opus 5, on the reasoning that a lot of what a system prompt accumulates is patches for a model that's since gotten better. I'd take that with a grain of salt if it were the only evidence — it's a vendor's own claim about their own product, exactly the kind of thing this piece exists to pressure-test, not repeat. But it lines up with what actually happened in my stock arm, and a hook keyed to a static proxy — file length — is betting against a target this piece's own baseline shows is already moving: every time the platform gets better at exactly what the hook is trying to force, the baseline it's compared to improves for free, and the hook's case gets weaker with it. Token count was never a perfect stand-in for dollar cost, and it's a worse one with every release. The more durable move, if the goal is spend, is to trust the platform's own defaults and look for savings in the shape of your questions — not in a rule that assumes today's defaults are the ceiling.</p>
 
 <h2>Conclusion</h2>
 
@@ -287,17 +287,17 @@ the internet." \\
 
 <p>The honest limit on all of this: every run here is a single headless task, done in under a minute. Spotify's case is strongest in a long interactive session, where a big file sitting in context gets resent turn after turn for an hour, sometimes at a full cache rewrite — I didn't test that regime, and it's the one place their number and mine could both be right. But the general point survives it: a token avoided isn't automatically a dollar saved, a turn is the unit the invoice actually counts, and no hook that only watches the tool call in front of it — while the harness underneath it keeps getting better on its own — can tell the difference.</p>
 
+<p>One last thing, since it shipped while this was in progress: Anthropic now ships <code>claude plugin eval</code>, which runs a plugin against a suite of test cases and scores it against a no-plugin baseline — the same basic comparison this whole piece is built on. What it doesn't do, as far as the docs describe it, is this piece's actual angle: break a session down turn by turn and bucket by bucket to explain why a plugin that passes its own tests can still cost more than doing nothing.</p>
+
 <p>The five things worth remembering:</p>
 
 <ul>
 <li><b>The token metric is real, on its own terms.</b> With the hook enforced, Claude read {read_pct:.0f}% fewer lines of the big files — Spotify's own measure holds exactly as they defined it.</li>
-<li><b>The bill went up anyway — even on runs that got the exact right answer.</b> {cost1:.0f}% as shipped, {cost2:.0f}% as described. An extra turn costs the same whether it ends in success or a dead end, and Claude Code's own caching prices the resent conversation, not the file — a block just adds turns.</li>
+<li><b>The bill went up anyway.</b> {cost1:.0f}% as shipped, {cost2:.0f}% as described — Claude Code's own caching prices the resent conversation, not the file, and a block just adds turns.</li>
 <li><b>Whether a task got cheaper depended on the question, not the plugin.</b> Narrow, targeted questions got cheaper on every run; enumerate-the-whole-file questions got more expensive on every run.</li>
 <li><b>The model followed the redirect about one time in twenty.</b> A hook can block a read; it has no say over what the model tries next.</li>
 <li><b>If the goal is spend, the fix isn't a bigger hook.</b> It's watching what caching and the model's own defaults already do for free, and aiming any rule at the specific question shapes that don't benefit from them.</li>
 </ul>
-
-<p>One last thing, since it shipped while this was in progress: Anthropic now ships <code>claude plugin eval</code>, which runs a plugin against a suite of test cases and scores it against a no-plugin baseline — the same basic comparison this whole piece is built on. What it doesn't do, as far as the docs describe it, is this piece's actual angle: break a session down turn by turn and bucket by bucket to explain why a plugin that passes its own tests can still cost more than doing nothing.</p>
 
 <p class="byline" style="margin-top:8px">The full write-up, with the deviations table, the metrics as equations, the validation checklist, and all 189 runs, is at <a href="https://github.com/hmassa14/TurnsNotTokens">github.com/hmassa14/TurnsNotTokens</a>.</p>
 
