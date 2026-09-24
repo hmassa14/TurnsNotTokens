@@ -193,13 +193,13 @@ the internet." \
 
 <h2>Results</h2>
 
-<p>Across all 189 sessions, two things are true at once, and on the surface they shouldn't both be: with the hook enforced, less of the big file reaches the model — Spotify's own measure holds up. And the hook still costs more than stock. Here's the idea that resolves that tension, before any of the numbers: <b>a correct answer doesn't make the turns it took to get there free.</b> Refusing one read doesn't erase the need for that file's information — it just means the model has to go get it a different way, and every extra step it takes to do that is its own full-price round trip, success or not.</p>
+<p>Across all 189 sessions, two things are true at once, and on the surface they shouldn't both be: with the hook enforced, less of the big file reaches the model — Spotify's own measure holds up. And the hook still costs more than stock. Why: <b>a correct answer doesn't make the turns it took to get there free.</b> Refusing one read doesn't erase the need for that file's information — the model still has to go get it, just a different way, and every extra step it takes is its own full-price round trip, success or not.</p>
 
 <h3>Why an extra turn costs money even when it works</h3>
 
 <p>Every turn bills for two things, priced nothing alike: resending everything said so far (cheap — a tenth the price of a fresh token, read straight from cache) and the model's own fresh thinking that turn (brand new, never cached, about fifty times a cache read). Neither a grep nor the worker is what costs money — a grep result is a few hundred characters, and the whole worker call runs about two cents. What costs money is that a <code>PreToolUse</code> hook only sees the one tool call in front of it — it has no way to know how many more expensive thinking-turns it'll take to get the same information a different way. Refusing a read doesn't remove that cost. It just spreads it over more turns.</p>
 
-<p>Here's that in one small, real example. The task: find one fact — which states a record accumulator's ready-check moves through — buried in an 1,100-line file. Both setups get it exactly right.</p>
+<p>One small, real example. The task: find one fact — which states a record accumulator's ready-check moves through — buried in an 1,100-line file. Both setups get it exactly right.</p>
 
 <p><b>Stock</b>: one grep to find the class, one Read of the whole file, one turn to answer. Three turns, 4.5 cents.</p>
 
@@ -218,7 +218,7 @@ the internet." \
 
 <h3>Another traced example, with the full cost breakdown</h3>
 
-<p>The needle question above is small on purpose. Here's the same mechanism on a bigger question, traced through the actual OpenTelemetry data: <em>how does the broker lifecycle manager move between states?</em>, answered from a 770-line file. <b>Stock</b> greps for the class and reads it whole — three turns, ten cents. <b>As shipped</b>, the read gets refused, but the offset exception lets the model page around it and get the whole file anyway — nine turns, seventeen cents. <b>As described</b>, with that loophole closed, the model does what Spotify designed: opens the skill, calls the worker, checks one thing with a grep, and answers — also nine turns, fifteen cents including the worker. Every answer is correct. The enforced setup is the one working exactly as intended, and it's still the most expensive of the three.</p>
+<p>The needle question above is small on purpose. The same mechanism, on a bigger question, traced through the actual OpenTelemetry data: <em>how does the broker lifecycle manager move between states?</em>, answered from a 770-line file. <b>Stock</b> greps for the class and reads it whole — three turns, ten cents. <b>As shipped</b>, the read gets refused, but the offset exception lets the model page around it and get the whole file anyway — nine turns, seventeen cents. <b>As described</b>, with that loophole closed, the model does what Spotify designed: opens the skill, calls the worker, checks one thing with a grep, and answers — also nine turns, fifteen cents including the worker. Every answer is correct. The enforced setup is the one working exactly as intended, and it's still the most expensive of the three.</p>
 
 <figure>
   <img src="figures/post/F-where-the-money-went.png" alt="Stacked bar chart in cents for the three runs on the broker-lifecycle question: stock about 10 cents in 3 requests, as shipped about 17 cents in 9, as described about 15 cents in 9 including the worker. The bucket that grows in both hook runs is the re-sent conversation, not the file itself.">
