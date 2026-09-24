@@ -46,26 +46,26 @@
 <p class="dek">Spotify published a Claude Code plugin that blocks the model from reading big files and hands them to a cheap worker instead, claiming a 90% cut in tokens. I rebuilt it on a real repo and measured the bill. The number they reported is real. The bill went up anyway.</p>
 <p class="byline">Twenty-one tasks, three Claude Code setups, 189 offline sessions on one Java monorepo.</p>
 
-<p>I feel like everyone's caught wind of the term <em>tokenomics</em> recently. From customer calls to consultants' LinkedIn posts, people are becoming more and more aware of AI spend and looking for a better way to quantify it. You can't price it for teams as a simple price per question. Instead, we need to think about question complexity and model power. Teams are measuring that complexity by the tokens needed. Makes sense.</p>
+<p>I feel like everyone has caught wind of the term <em>tokenomics</em> recently. From customer calls to consultants' LinkedIn posts, people are becoming more and more aware of AI spend and looking for a better way to quantify it. You can't price it for teams as a simple price per question. Instead, we need to think about question complexity and model power. Teams are measuring that complexity by the tokens needed. Makes sense.</p>
 
-<p>That's led a lot of cost-wary teams to start building their own token optimizers. Seeing the trend take off, I wanted to dig into one of these examples myself. Last week, Spotify published a blog post that bounced around Hacker News and Reddit about a Claude Code plugin claiming a 90% cut in tokens. So in this piece, I'm taking you with me as we rebuild it and look under the hood.</p>
+<p>That's led a lot of cost-wary teams to start building their own token optimizers. Seeing the trend take off, I wanted to dig into one of these examples myself. A few weeks ago, Spotify published a blog post that bounced around Hacker News and Reddit about a Claude Code plugin claiming a 90% cut in tokens. So in this piece, I'm taking you with me as we rebuild it and look under the hood.</p>
 
-<blockquote class="tldr">TLDR; the token reduction Spotify reported is real on the metric they used: with their hook enforced, Claude read 87% fewer lines of the big files. The tokens the frontier model was actually billed for went up 41%, and the dollar cost went up 8% with the plugin as they shipped it and 19% with the hook doing what their post describes, at the same pass rate. Whether a given task came out cheaper was decided by the task, not by the plugin, and the reason isn't the greps or the worker — it's how Claude Code's own prompt caching prices a turn. A line count can't see any of that.</blockquote>
+<blockquote class="tldr">TLDR; Spotify's number is real: with their hook enforced, Claude read 87% fewer lines of the big files. But the bill went up — 8% with the plugin as they shipped it, 19% with the hook working the way their post describes — at the same pass rate. The culprit isn't the plugin itself. It's how Claude Code prices every extra turn it takes to get an answer.</blockquote>
 
-<h2>What Spotify built, and why</h2>
+<h2>What Spotify Built, and Why</h2>
 
-<p><b>The why:</b> the Spotify team noticed a trend in their Claude Code usage. A huge share of the tokens Claude Code used went toward tasks that didn't need the frontier-level reasoning power of high-powered LLMs.</p>
+<p><b>The why:</b> The Spotify team noticed a trend in their Claude Code usage. A huge share of the tokens Claude Code used went toward tasks that didn't need the frontier-level reasoning power of high-powered LLMs.</p>
 
 <p>For their use case, Spotify works on a large monorepo. In that repo, most of their questions or work end up falling into:</p>
 
 <ul>
-<li><b>Bulk file reads</b>: loading 700-plus-line files into context just to check a pattern or answer a question about a fraction of it.</li>
-<li><b>Templated code generation</b>: writing boilerplate, configs, or scaffolding, where the structure is already known.</li>
+<li><b>Bulk file reads:</b> loading 700-plus-line files into context just to check a pattern or answer a question about a fraction of it.</li>
+<li><b>Templated code generation:</b> writing boilerplate, configs, or scaffolding, where the structure is already known.</li>
 </ul>
 
 <p>Because Claude Code resends the whole conversation on every request, any large file that's entered into context once stays there and keeps getting rebilled on every turn after it. Spotify didn't want to keep paying frontier prices to carry around the parts of a file nobody asked about.</p>
 
-<p><b>The what:</b> to fix this, Spotify implemented a more deterministic workflow for these task types. This deterministic workflow sends these requests to a smaller model to process and return key insights to Claude as context. They chose the Gemini 2.5 Flash model for this implementation, which takes the large file input, reads the files, and returns key context for Claude Code to read. They published it as a plugin called <em>shunt</em>, in their <a href="https://github.com/spotify/portal-ai-plugins/tree/b5ed620c6850f1ea7327b7cd9d0696aae0bf2d89/plugins/shunt">portal-ai-plugins</a> repository.</p>
+<p><b>The what:</b> To fix this, Spotify implemented a more deterministic workflow for these task types. This deterministic workflow sends these requests to a smaller model to process and return key insights to Claude as context. They chose Gemini 2.5 Flash as this cheaper <em>worker</em>: it takes the large file, reads it, and hands back the key context for Claude Code. They published it as a plugin called <em>shunt</em>, in their <a href="https://github.com/spotify/portal-ai-plugins/tree/b5ed620c6850f1ea7327b7cd9d0696aae0bf2d89/plugins/shunt">portal-ai-plugins</a> repository.</p>
 
 <figure>
   <img src="figures/post/A-hook-in-the-loop.png" alt="Two straight pipelines. Top, reading a large file: the model calls Read on a file over 350 lines, a PreToolUse hook blocks the call, the bulk-reader skill hands the file to AiKA, and only a summary re-enters the model's context. Bottom, generating templated code: no hook is involved — the model recognizes a boilerplate task on its own, the code-writer skill hands a spec and reference file to AiKA, and only a line-count confirmation re-enters context, since the generated code is written straight to the target file.">
@@ -79,32 +79,23 @@
 <li><b>Hooks</b> are a checkpoint in front of a tool call, able to block or redirect it before the model ever sees the result.</li>
 </ul>
 
-<p>Spotify built two skills, bulk-reader and code-writer, disclosed when a request matches one of the two workflows above — really just instructions for how to hand a task off to the cheaper model and what to do with what comes back. The hook is what's supposed to force the choice: a <code>PreToolUse</code> hook checks a <code>Read</code> call's file against the 350-line threshold, and if it's over, blocks the call outright and points the model to bulk-reader instead of the raw file. A skill only helps if the model opens it. The hook is the enforcer layer that's meant to make sure it has to.</p>
+<p>Spotify built two skills, bulk-reader and code-writer, disclosed when a request matches one of the two workflows above (really just instructions for how to hand a task off to the cheaper model and what to do with what comes back). The hook is what's supposed to force the choice: a <code>PreToolUse</code> hook checks a <code>Read</code> call's file against the 350-line threshold, and if it's over, blocks the call outright and points the model to bulk-reader instead of the raw file. A skill only helps if the model opens it. The hook is the enforcer layer that's meant to make sure it has to.</p>
 
-<p>The assumption everything rests on: when the model is refused a read, it does what the hook's message tells it to. Nothing about a <code>PreToolUse</code> hook enforces that — it can stop one tool call, but it has no say over what the model tries next.</p>
+<p>The assumption they're making is that fewer tokens sent to the expensive model reads as a proportionally smaller bill. That equivalence (a token avoided is a dollar saved) is exactly what the rest of this post tests.</p>
 
-<blockquote class="tldr">TLDR; the skill is the manual. The hook is supposed to force the model to open it. Whether that actually holds is the seam this whole piece pulls on.</blockquote>
+<h2>Our Experiment</h2>
 
-<p>The assumption they're making is that fewer tokens sent to the expensive model reads as a proportionally smaller bill. That equivalence, a token avoided is a dollar saved, is exactly what the rest of this post tests.</p>
-
-<h2>Our Experiment: Building a Framework to Copy Theirs</h2>
-
-<p>Does cutting tokens actually cut cost? That became the thesis of this evaluation. But as I began experimenting, I knew I wanted a holistic evaluation of the workflow the team had developed. I believe that all AI workflows, whether predictive, generative, or agentic, need to fit into the same evaluation triangle.</p>
-
-<figure>
-  <p style="border:1px dashed #999; padding:10px; color:#666; font-style:italic;">[Figure: the evaluation triangle — performance, latency, and cost. Pending design.]</p>
-  <figcaption>The evaluation triangle</figcaption>
-</figure>
+<p>Does cutting tokens actually cut cost? That became the thesis of this evaluation. However, as I began experimenting, I knew I wanted a holistic evaluation of the workflow the team had developed. I believe that all AI workflows (whether predictive, generative, or agentic) need to fit into the evaluation triangle: performance, latency, and cost.</p>
 
 <p>Getting a fair read on all three meant reproducing Spotify's setup as closely as an outsider reading a blog post can: their kind of repo, their hook, their two workflows, run against the plain baseline they're implicitly comparing themselves to.</p>
 
 <h2>Experiment Design</h2>
 
-<p>Every task ran under three setups, each one step from the last. <em>Stock</em> is Claude Code with nothing added. <em>As shipped</em> is stock plus Spotify's plugin exactly as published, offset/limit exception included. <em>As described</em> is the same plugin with that one exception removed, so the hook actually does what their post says it does. Both hook setups substitute a one-turn Haiku call for Spotify's hosted Gemini model, since I don't have access to their internal Portal system — the same substitute in both, so it's never what explains a difference between them.</p>
+<p>Every task ran under three setups: <em>stock</em>, Claude Code with nothing added; <em>as shipped</em>, stock plus Spotify's plugin exactly as published; and <em>as described</em>, the same plugin with one loophole closed so the hook actually blocks. Both hook setups use a one-turn Haiku call in place of Spotify's hosted Gemini model, since I don't have access to their internal system.</p>
 
 <h3>Why Kafka</h3>
 
-<p>Spotify's code is private, so this needs a public repo that looks like theirs in the one way the hook cares about: lots of files over 350 lines, in a language their benchmark used. (There's a second, less obvious constraint: stock Claude Code already refuses to read very large files and pages anything over about 25,000 tokens on its own, so the target files have to sit between Spotify's 350-line threshold and Claude Code's own gates, or the hook never gets the chance to fire first.)</p>
+<p>Spotify's code is private, so this needs a public repo that looks like theirs in the one way the hook cares about: lots of files over 350 lines, in a language their benchmark used. (There's a second, less obvious constraint. Stock Claude Code already refuses to read very large files and pages anything over about 25,000 tokens on its own, so the target files have to sit between Spotify's 350-line threshold and Claude Code's own gates, or the hook never gets the chance to fire first.)</p>
 
 <p>Backstage, Spotify's own open-source project, was the obvious first pick and lost: only 7.5% of its files clear 350 lines, holding 38% of its code. Apache Kafka has 17% of its files over that line, holding 64% of the code. The corpus is the Kafka trunk, pinned to one commit, in Java and Scala.</p>
 
@@ -113,17 +104,17 @@
   <figcaption>Why Kafka was used as the corpus instead of Spotify's own open-source Backstage.</figcaption>
 </figure>
 
-<p>One honest limit: Kafka is a repo the model has seen in training, and Spotify's code is not. So every session in the final grid runs offline and sandboxed — no web tools, no network commands, no reading anything outside the checkout, a private empty <code>/tmp</code> per session, and a system-prompt line telling the model to answer from the repository, not memory. This constraint, Claude Code cut off from the internet, was applied to all three setups.</p>
+<p>One honest limit: Kafka is a repo the model has seen in training, and Spotify's code is not. So every session runs offline and sandboxed — no web tools, no network commands, no reading anything outside the checkout, a private empty <code>/tmp</code> per session, and a system-prompt line telling the model to answer from the repository, not memory. That constraint — Claude Code cut off from the internet — was applied to every test.</p>
 
 <h3>Why We Ran It Through Claude</h3>
 
-<p>One interesting thing I found in their codebase: Spotify's own benchmark never sends a single request through Claude Code. The eval is done explicitly on token count — the original file's token count compared against the summarized Gemini output.</p>
+<p>One interesting thing I found in their codebase: Spotify's own benchmark never sends a single request through Claude Code. The eval compares the original file's token count against the summarized Gemini output.</p>
 
-<p>To more thoroughly test the plugin, this evaluation runs through an actual Claude Code session. Every task runs the whole way through: one live, headless <code>claude -p</code> session per task per setup — the real Claude Code model, on the real repo, making its own tool calls, hitting the real hook, and choosing its own next move after a block. That's how this actually tests whether the model opens the skill, deals with the block, loads tokens into context, and drives the resulting cost.</p>
+<p>To test the plugin more thoroughly, this eval runs real Claude Code sessions. Every task runs the whole way through: one live, headless <code>claude -p</code> session per task per setup — the real Claude Code model, on the real repo, making its own tool calls, hitting the real hook, and choosing its own next move after a block. That's how we really test whether the model opens the skills, how it deals with the block, what it loads into context, and what that costs.</p>
 
 <h3>How It Ran</h3>
 
-<p>So now we have Kafka, and we know we want to run it through Claude — I'm not going to sit there and prompt my Claude Code UI by hand. Nothing here is interactive: the harness unpacks a fresh, historyless Kafka checkout, drops in one setup's <code>.claude</code> folder — Spotify's plugin lives there as a project config, not a plugin install — and calls Claude Code once in headless mode with the task's question as the argument. This is the actual command, the same for all three setups:</p>
+<p>So now we have Kafka, and we know we want to run it through Claude — but I'm not going to sit and prompt my Claude Code UI by hand. Nothing is interactive. It all runs from a script, with Claude Code in headless mode and the same files, constraints, and setup across every task. This is the actual command, the same for all three setups:</p>
 
 <pre class="code">CLAUDE_CODE_ENABLE_TELEMETRY=1 \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 \
@@ -139,12 +130,12 @@ the internet." \
   --max-turns 40 \
   --output-format json</pre>
 
-<p>The cache-TTL pin makes sure every setup pays the same rate for writing a file to the prompt cache, so the comparison can't be skewed by Claude Code silently switching billing tiers mid-run — that turns out to matter a lot in Discussion, below.</p>
+<p>The cache-TTL pin makes sure every setup pays the same rate for writing a file to the prompt cache, so the comparison can't be skewed by Claude Code silently switching billing tiers mid-run — that turns out to matter a lot in the results below.</p>
 
 <ul>
-<li><code>--model</code> pins every setup to the same Sonnet 5 baseline, so no comparison is skewed by which model is running.</li>
-<li><code>--settings</code> loads the offline sandbox.</li>
-<li><code>unshare</code> gives the session its own empty <code>/tmp</code> so nothing it writes can be found by a later run.</li>
+<li><code>--model</code>: every setup runs on the same baseline Sonnet model.</li>
+<li><code>--settings</code>: loads the offline sandbox.</li>
+<li><code>unshare</code>: gives the session its own empty <code>/tmp</code> so nothing it writes can be found by a later run.</li>
 </ul>
 
 <p>When it exits, the harness collects the billed cost and token usage, the full transcript, and the OpenTelemetry trace, diffs the workspace against the starting commit, grades the answer, and deletes the workspace. The next run starts clean.</p>
@@ -153,47 +144,47 @@ the internet." \
 
 <h3>Why These Tasks</h3>
 
-<p>As a non-Kafka expert, I'll admit I cheated a little and used Claude to think through which synthetic workflows or examples would make the most sense. I focused on five key workflow categories that I felt represented what Spotify explicitly named, in their blog, as workflows and future ideas. For each category, I wrote a handful of tasks, a small but early representative sample:</p>
+<p>As a non-Kafka expert, I'll admit I cheated and used Claude to think through which synthetic workflows would make the most sense. I focused on five workflow categories that I felt represented what Spotify explicitly named as workflows and future ideas in their blog, with 3–5 tasks each for a small but early representative sample:</p>
 
 <ul>
 <li><b>Spotify's own benchmark (4 tasks).</b> Their four rows, rebuilt on Kafka at the same shapes and file sizes — so the comparison is theirs first.</li>
 <li><b>Needle reads (4 tasks).</b> One fact buried in a file of 1,000 to 1,900 lines. This is the case Spotify's own motivation describes — read 700 lines to check one thing — and the case their benchmark never tests.</li>
 <li><b>Their shapes at real file sizes (5 tasks).</b> The same question shapes as their four rows, but on files big enough to actually trip the 350-line threshold, which two of theirs never do.</li>
-<li><b>Harm (5 tasks).</b> Precise edits and debugging — the two task types Spotify's own post says the approach isn't for. The hook only sees a line count, so it fires on these anyway; worth testing whether that comes at a cost.</li>
+<li><b>Harm (5 tasks).</b> Precise edits and debugging — the two task types Spotify's own post says the approach isn't for. The hook only sees a line count, so it fires on these anyway — worth testing whether that gets costly.</li>
 <li><b>Controls (3 tasks).</b> The same shapes on small files, where the hook can't fire at all, to measure what the plugin costs just by being installed.</li>
 </ul>
 
-<p>I ran three repetitions of every task, interleaved by setup so time of day never lines up with one setup by coincidence: 189 sessions, about $30 at list price.</p>
+<p>I also ran three repetitions of every task, interleaved by setup so time of day never lines up with one setup by coincidence: 189 sessions, about $30 at list price.</p>
 
 <h3>Why These Metrics</h3>
 
-<p>Spotify's own evaluation was driven by a single metric: tokens avoided. I kept that metric to check their findings against my own, but it's not robust enough on its own to answer what this piece is actually asking: it never checks whether the answer was even correct, it says nothing about how many turns it took to get there, and it bakes in the exact assumption under test — that a token avoided is a dollar saved — instead of checking it. So I added three more dimensions from the evaluation triangle above, to get the fuller picture:</p>
+<p>Spotify's own evaluation was driven by one metric: tokens avoided. I kept it to check their findings against my own, but added the rest of the evaluation triangle, plus one more:</p>
 
 <ul>
-<li><b>Performance</b> — whether the task actually got done, since a cheaper answer isn't worth much if it's missing the point. Measured two ways: was the answer correct, and separately, was the right file even found — a correct answer that never touched the file is flagged as lucky, not counted as evidence the setup worked.</li>
-<li><b>Cost</b> — what the headless Claude Code session actually cost, recomputed turn by turn from the transcript at list price and checked against what Claude Code itself billed. The headline number is paired per task: each task's own before-and-after difference, then the mean of those differences with an interval, not one pooled average across twenty-one very different questions.</li>
-<li><b>Latency</b> — in agent work this tends to track cost almost 1:1, but it's worth measuring on its own for what it actually feels like to the person waiting on it. Wall clock, turns per run, per-turn duration, from OpenTelemetry.</li>
-<li><b>Behavior</b> — the piece Spotify's own evals never produce, because nothing in their harness runs long enough to have a "next call" at all: what the model's very next call was after each block, and whether that call was the worker, a grep, or a paged read.</li>
+<li><b>Performance:</b> did the task actually get done? A cheaper solution isn't great if it misses major pieces of information. Measured by whether the answer was correct and whether the right file was found.</li>
+<li><b>Cost:</b> what each headless Claude Code session actually cost, broken down per turn and by what the context was billed as.</li>
+<li><b>Latency:</b> in agents, this tends to track cost pretty closely, but I was curious what it feels like for the person waiting. Measured by wall clock, turns per run, and per-turn duration.</li>
+<li><b>Behavior:</b> what the model did right after a block. Was the next call the worker, a grep, or a paged read?</li>
 </ul>
 
-<p>Behavior earned its place the hard way. After the first pass at this grid, I realized Spotify's hook as published wasn't actually blocking — the offset/limit exception let the model page around it and get the whole file anyway. So I built a third setup, with that exception removed, to actually test the workflow enforced the way their post describes.</p>
+<p>Behavior earned its place after the first run, when I realized their hook as published wasn't actually blocking. So I built the third setup, which enforces it, to test their workflow the way their post describes.</p>
 
-<p>Every earlier pass at this grid also taught me a smaller control I was missing: the strict block message can't hint at the fallback ("use grep for exact lines") or it isn't measuring the model's own choice anymore — it's measuring an instruction I wrote. The final message is Spotify's, word for word, minus only the sentence about the loophole in the setup that closes it.</p>
+<h2>Some Things Worth Remembering Before the Results</h2>
 
-<h2>Two things worth knowing before the numbers</h2>
-
-<p>Tokens, you already know. Two other mechanics decide most of what follows.</p>
+<p>Tokens, you already know. Two other mechanics matter for what's coming.</p>
 
 <ul>
-<li><b>No memory between turns.</b> The model remembers nothing on its own — not here, not in ChatGPT, not anywhere; no model works that way. Every time Claude Code asks it anything, it rebuilds the entire conversation so far — every earlier message, every file it's read, every tool result — and sends the whole thing again, fresh. A session feels continuous because Claude Code is doing that reconstruction, every turn, not because the model remembers.</li>
-<li><b>Prompt caching.</b> A discount, not a memory upgrade. Content already sent to the model in the last few minutes is billed at a tenth of the normal price on resend instead of full price. It changes what resending costs, not whether resending happens.</li>
+<li><b>No memory between turns.</b> The model itself remembers nothing on its own — not here, not in ChatGPT, not anywhere; no model works that way. Every time Claude Code asks it anything, it rebuilds the entire conversation so far — every earlier message, every file it's read, every tool result — and sends the whole thing again, fresh. A session feels continuous because Claude Code reconstructs and resends everything every turn, not because the model remembers.</li>
+<li><b>Prompt caching.</b> A discount, not a memory upgrade. If the same content was already sent to the model in the last few minutes, sending it again is billed at a tenth of the normal price instead of full price. It changes what resending costs. It doesn't change whether resending happens — that still happens on every turn, cache or no cache.</li>
 </ul>
 
-<h2>Results</h2>
+<p>We'll come back to both in the numbers — they're key to understanding what Claude actually costs.</p>
+
+<h2>Our Results</h2>
 
 <p>Across all 189 sessions, Spotify's own metric holds up: with the hook enforced, Claude read 87% fewer lines of the big files. That didn't translate to cost savings — the hook cost more than stock, not less.</p>
 
-<h3>Why an extra turn costs money even when it works</h3>
+<h3>TLDR; Why an Extra Turn Costs Money Even When It Works</h3>
 
 <p>Every turn bills for two different things, priced very differently. Resending the conversation so far is cheap — read straight from cache, at a tenth the price of a normal token. The model's fresh thinking that turn is not cached, and costs about fifty times more. A hook can only block one read at a time — it has no way to know how many extra turns, each with its own expensive round of thinking, it'll take to get the same answer a different way. Refusing a read doesn't remove that cost. It just spreads it across more turns.</p>
 
@@ -206,23 +197,23 @@ the internet." \
 
 <p>Both setups land on the same correct answer; nothing here was wasted, every tool call was reasonable. The extra turns are simply the price of finding it without ever reading the whole file.</p>
 
-<h3>The headline numbers</h3>
+<h3>The Headline Numbers</h3>
 
 <figure>
   <img src="figures/post/G-headline.png" alt="Three small-multiple bar charts, stock against the hook as shipped and as described, means per run: target-file tokens in context 6,016, 3,721, 2,919; API requests 6.1, 7.7, 9.2; cost $0.121, $0.131, $0.144.">
   <figcaption>Figure G · twenty-one tasks, three runs each</figcaption>
 </figure>
 
-<p>Overall, on the same three-dimension triangle from the start of this piece, plus the fourth dimension it earned along the way:</p>
+<p>Overall, measured against the evaluation triangle, on average:</p>
 
 <ul>
 <li><b>Performance</b> is unchanged: 100% of stock runs passed, 98% as shipped, 97% as described — three failures in 189, one of them a checklist grader on a code-generation control, not the hook.</li>
 <li><b>Cost</b> rose 8% as shipped and 19% as described, worker included; paired per task, the enforced hook's own 95% interval is +7% to +39%, which doesn't cross zero.</li>
 <li><b>Latency</b> rose with it: 6.1 turns a run for stock, 7.7 as shipped, 9.2 as described; wall time from 39 seconds to 51.</li>
-<li><b>Behavior</b>: given a neutral refusal and a skill it's never opened before, the model delegated to the worker on 7 of 96 blocks — about one in twenty — and grepped or ran a shell search around the rest, the same pattern as the needle example above.</li>
+<li><b>Behavior</b>: given a neutral refusal and a skill it's never opened before, the model delegated to the worker on 7 of 96 blocks — about one in twenty — and grepped or ran a shell search around the rest.</li>
 </ul>
 
-<h3>Same mechanism, a bigger question</h3>
+<h3>Same Mechanism, a Bigger Question</h3>
 
 <p>Traced through the actual OpenTelemetry data this time: <em>how does the broker lifecycle manager move between states?</em>, from a 770-line file. Every answer below is correct — the enforced setup is working exactly as intended, and it's still the most expensive of the three.</p>
 
@@ -231,15 +222,15 @@ the internet." \
   <figcaption>Figure F · where the money actually went, same question, from the OpenTelemetry trace</figcaption>
 </figure>
 
-<p>The file-write bucket — two cents everywhere — barely moves. What grows is the resent-conversation bucket: three requests for stock, nine for both hook setups.</p>
+<p>The file-write bucket — two cents everywhere — barely moves. The resent-conversation bucket grows: three requests for stock, nine for both hook setups.</p>
 
-<h3>What "90% fewer tokens" actually means</h3>
+<h3>What "90% Fewer Tokens" Actually Means</h3>
 
-<p>Depending on how you count it, "90% fewer tokens" is right, half right, or backwards. Spotify's own formula can't be computed for most of this grid — it needs the worker called, which happened on 0 shipped runs and only 5 of 63 described.</p>
+<p>Depending on how you count it, "90% fewer tokens" is right, half right, or backward. Spotify's own formula can't be computed for most of this grid — it needs the worker called, which happened on 0 shipped runs and only 5 of 63 described.</p>
 
 <figure>
   <img src="figures/post/table-token-comparison.png" alt="Table: three ways to count 90% fewer tokens. Lines of the target read: 450 stock, 232 as shipped (-48%), 59 as described (-87%). Target content reaching the model by any tool: 6,016 stock, 3,721 as shipped (-38%), 2,919 as described (-51%). Input tokens the frontier model was billed for: 229,697 stock, 277,146 as shipped (+21%), 324,523 as described (+41%).">
-  <figcaption>Three ways to count what "90% fewer tokens" could mean, means per run across the same 189 sessions.</figcaption>
+  <figcaption>Three ways to count what "90% fewer tokens" could mean, per run across the same 189 sessions.</figcaption>
 </figure>
 
 <ul>
@@ -248,12 +239,12 @@ the internet." \
 <li>Tokens the frontier model was actually billed for — the number on the invoice: up 21% as shipped, 41% as described. That's the one that matters.</li>
 </ul>
 
-<h3>By task type, and why</h3>
+<h3>By Task Type, and Why</h3>
 
 <p>On 12 of the 21 tasks, all three repetitions land on the same side of stock — the shape of the question explains it.</p>
 
 <ul>
-<li>A small slice of a big file (how three classes relate, which methods lack tests): cheaper with the hook every time — a targeted grep does the job a whole-file read would have.</li>
+<li>A small slice of a big file (how three classes relate, which methods lack tests): cheaper with the hook every time — a targeted grep does the job a full-file read would.</li>
 <li>Most of the file (every config key, a generated class, a precise edit): costs more every time — the content has to come in one way or another, and the block just adds turns to get there.</li>
 <li>Spotify's own four benchmark tasks land squarely in the second camp — enumerate-the-whole-file questions by construction, so the block fires most and pays off least.</li>
 </ul>
@@ -265,29 +256,33 @@ the internet." \
   <figcaption>Hook cost relative to stock, by category, paired per task.</figcaption>
 </figure>
 
-<h2>Conclusion</h2>
+<h2>In Conclusion</h2>
 
 <h3>Let Claude Be Claude</h3>
 
-<p>There's a broader case here, and it's not really about shunt specifically. In this test's own stock arm — no hook, no instructions to do it — the model already defaulted to grepping instead of reading the whole file on most needle and harm tasks. I didn't configure that. It's what Sonnet 5 already does inside Claude Code, for free, and it's the same behavior shunt's hook is trying to force with a rule.</p>
+<p>I want to be clear: this wasn't a crazy idea, and knocking Spotify isn't the point of this piece. Token spend is one of the most talked-about problems in AI right now, and Spotify did the rare, useful thing — built a fix, measured it, and published it in the open. That's the only reason a hobby blogger like me could rebuild it at all.</p>
 
-<p>That's not a fluke; it tracks with how Anthropic itself has been talking about Claude Code lately. Boris Cherny, who leads the product, has reportedly told developers to delete their CLAUDE.md, their skills, and their hooks every six months and see what the model does without them — and said the team cut roughly 80% of Claude Code's own system prompt for Opus 5, on the reasoning that a lot of what a system prompt accumulates is patches for a model that's since gotten better. I'd take that with a grain of salt if it were the only evidence — it's a vendor's own claim about their own product. But it lines up with what actually happened in my stock arm, and a hook keyed to a static proxy — file length — is betting against a target that's already moving on its own.</p>
-
-<p>None of this is a knock on Spotify for trying. Token cost is a real conversation across the whole industry right now, and the efficiency Spotify tried to hand-build with a rule is showing up anyway, piece by piece, built into the platform itself: cheaper caching at the token level, tools like MCP that let the model query a file store instead of loading the whole thing into context, defaults that already grep before they read. Testing an idea like shunt, in an environment moving that fast, was exactly the right instinct — I'd rather see more teams try things and measure them than fewer. The lesson isn't "don't build the hook." It's Boris's own point: even a technique that worked a year ago has to be retested against this year's model and harness, because neither one is standing still.</p>
-
-<h3>Claude Plugin Eval</h3>
-
-<p>Worth naming, since it shipped while this piece was in progress: Anthropic now ships <code>claude plugin eval</code>, which runs a plugin against a suite of test cases and scores it against a no-plugin baseline — the same basic comparison this whole piece is built on. What it doesn't do, as far as the docs describe it, is this piece's actual angle: break a session down turn by turn and bucket by bucket to explain why a plugin that passes its own tests can still cost more than doing nothing.</p>
-
-<p>The five things worth remembering:</p>
+<p>What changed isn't the idea. It's the ground under it. The efficiency shunt was built to force is increasingly showing up in the platform on its own, at three layers:</p>
 
 <ul>
-<li><b>The token metric is real, on its own terms.</b> With the hook enforced, Claude read 87% fewer lines of the big files — Spotify's own measure holds exactly as they defined it.</li>
-<li><b>The bill went up anyway.</b> 8% as shipped, 19% as described — Claude Code's own caching prices the resent conversation, not the file, and a block just adds turns.</li>
-<li><b>Whether a task got cheaper depended on the question, not the plugin.</b> Narrow, targeted questions got cheaper on every run; enumerate-the-whole-file questions got more expensive on every run.</li>
-<li><b>The model followed the redirect about one time in twenty.</b> A hook can block a read; it has no say over what the model tries next.</li>
-<li><b>If the goal is spend, the fix isn't a bigger hook.</b> It's watching what caching and the model's own defaults already do for free, and aiming any rule at the specific question shapes that don't benefit from them.</li>
+<li><b>In the tokens.</b> Prompt caching makes content you've already sent cost a tenth as much to send again.</li>
+<li><b>In the context window.</b> Tools like MCP servers let a model pull just what it needs from a file store instead of loading whole files into context.</li>
+<li><b>In the harness.</b> In my own stock runs — no hook, no instruction — Claude already grepped instead of reading the whole file on most needle and harm tasks.</li>
 </ul>
+
+<p>Boris Cherny, who leads Claude Code at Anthropic, has made a version of this point publicly: every six months, delete your CLAUDE.md, your skills, and your hooks, and see what the model does without them. His team reportedly cut about 80% of Claude Code's own system prompt for Opus 5 because the model no longer needed it. I'd take a vendor's word on its own product with a grain of salt — but it matches what my stock arm did.</p>
+
+<p>That's what I take "let Claude be Claude" to mean. Not "stop building" — Spotify's instinct to test was exactly right. It's that every optimization is a bet on today's model, and the bet needs rechecking every time the model and harness change. A hook that might have saved money on last year's model can cost money on this one.</p>
+
+<blockquote class="tldr">TLDR; build and test ideas like shunt — then keep retesting them, because the platform underneath keeps doing more of the work for free.</blockquote>
+
+<h3>Claude Plugin Evals</h3>
+
+<p>Speaking of letting Claude be Claude: while this sat in my drafts for a month, Anthropic beat me to it. In September it shipped <code>claude plugin eval</code>, which runs your plugin against a suite of test cases, scores each result, and — by default — runs every case again without the plugin, so you can see what the plugin actually contributes. <code>claude plugin eval init</code> will even ask you what a good result looks like and draft the test cases and graders for you. The summary shows each case's score with and without the plugin, the difference, and the cost.</p>
+
+<p>That's the same core move as this piece: plugin versus no plugin, on the same tasks, with the bill attached. Where they differ is depth. Plugin eval tells you <em>whether</em> a plugin helped and what it cost. This eval went a layer down to ask <em>why</em> — turn by turn, cache bucket by cache bucket, and what the model did right after a block. For most teams, plugin eval is the right place to start. If the cost column surprises you, that's when it's worth pulling the traces.</p>
+
+<p>If I were Spotify, that's the test I'd rerun every time a new model ships. Tokens are the number everyone's watching right now. Turns are the number on the bill.</p>
 
 <p class="byline" style="margin-top:8px">The full write-up, with the deviations table, the metrics as equations, the validation checklist, and all 189 runs, is at <a href="https://github.com/hmassa14/TurnsNotTokens">github.com/hmassa14/TurnsNotTokens</a>.</p>
 
