@@ -63,7 +63,7 @@
 <li><b>Templated code generation:</b> writing boilerplate, configs, or scaffolding, where the structure is already known.</li>
 </ul>
 
-<p>Because Claude Code resends the whole conversation on every request, any large file that enters context once stays there and gets billed again on every turn after it. Spotify didn't want to keep paying frontier prices to carry around the parts of a file nobody asked about.</p>
+<p>Spotify didn't want to keep paying frontier prices to carry around the parts of a file nobody asked about.</p>
 
 <p><b>The what:</b> To fix this, Spotify built a more deterministic workflow for these task types. It sends these requests to a smaller, cheaper model (the <em>worker</em>) to process and return the key insights to Claude as context. They chose Gemini 2.5 Flash as the worker: it takes the large file, reads it, and hands back the key context for Claude Code. They published it as a plugin called <em>shunt</em>, in their <a href="https://github.com/spotify/portal-ai-plugins/tree/b5ed620c6850f1ea7327b7cd9d0696aae0bf2d89/plugins/shunt">portal-ai-plugins</a> repository.</p>
 
@@ -221,7 +221,7 @@ the internet." \
 </figure>
 
 <ul>
-<li><b>Lines of the big file Claude read directly:</b> down 87% with the hook enforced. This is roughly what Spotify measured, and it holds up.</li>
+<li><b>Lines of the big file Claude read directly:</b> down 87% with the hook enforced. This is close to what Spotify measured.</li>
 <li><b>Anything from the big file that reached the model,</b> search results included: down 51%. Blocking a read doesn't stop Claude from searching the same file.</li>
 <li><b>Total tokens the model processed,</b> most of them the conversation being resent each turn: up 21% as shipped and 41% as described.</li>
 </ul>
@@ -230,7 +230,7 @@ the internet." \
 
 <h3>Why It Costs More</h3>
 
-<p>Remember that Claude Code resends the whole conversation every turn. Each resent token is cheap thanks to caching, but the conversation grows every turn and gets resent every turn, so it adds up. Blocking a big read does save a little: about a cent per run less spent storing files in the cache. But every block adds turns. With the hook enforced, those extra turns cost about 1.6¢ more per run in resending, 0.6¢ more in new output from the model, and 0.3¢ for the worker. The savings from blocking were smaller than the cost of the extra turns.</p>
+<p>Every turn resends the conversation, and the conversation grows every turn. Each resent token is cheap thanks to caching, but it adds up. Blocking a big read does save a little: about a cent per run less spent storing files in the cache. But every block adds turns. With the hook enforced, those extra turns cost about 1.6¢ more per run in resending, 0.6¢ more in new output from the model, and 0.3¢ for the worker. The savings from blocking were smaller than the cost of the extra turns.</p>
 
 <p>Here's what that looks like on one question: what a function called <code>ready()</code> returns, in a 1,500-line file.</p>
 
@@ -291,7 +291,7 @@ the internet." \
 
 <p>That's the same basic comparison this piece makes: plugin versus no plugin, same tasks, cost included. The difference is depth. Plugin eval tells you whether a plugin helped and what it cost. This eval went a level deeper, turn by turn, to see why. For most teams, plugin eval is the right place to start. If the cost column surprises you, that's when it's worth digging into the traces.</p>
 
-<p>If I were Spotify, I'd rerun this every time a new model ships. Everyone's watching tokens right now, but the bill is counting turns.</p>
+<p>And because it's built in, it's easy to rerun every time a new model ships. Everyone's watching tokens right now, but turns are what drive the bill.</p>
 
 <p class="byline" style="margin-top:8px">The full write-up, with the deviations table, the metrics as equations, the validation checklist, and all 189 runs, is at <a href="https://github.com/hmassa14/TurnsNotTokens">github.com/hmassa14/TurnsNotTokens</a>.</p>
 
