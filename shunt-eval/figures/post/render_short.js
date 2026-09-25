@@ -13,6 +13,8 @@ D = swap(D, 'Figure F · where the money went', 'Figure D · where the money wen
 D = swap(D, 'Same three runs as Figures D and E.', 'One question, three setups: how does the broker lifecycle manager move between states?');
 C = swap(C, ' The three charts share setups and nothing else; they are deliberately not one dual-axis chart. Detail per task is in the results tables.', '');
 D = D.replace(/>[ABC] · (stock|as shipped|as described)</g, '>$1<');
+D = D.replace(/<figcaption><b>What caching makes cheap[\s\S]*?<\/figcaption>/, '');
+if (D.includes('fifty times')) throw new Error('D note not removed');
 const out = [['short-C-headline', C], ['short-D-where-the-money-went', D]];
 (async () => {
   const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });

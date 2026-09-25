@@ -64,7 +64,7 @@ body = r'''<main>
 
 <p>That's led many cost-wary teams to start building their own token optimizers. Seeing the trend take off, I wanted to dig into one of these examples myself. A few weeks ago, Spotify published a blog post that bounced around Hacker News and Reddit about a Claude Code plugin claiming a 90% cut in tokens. So in this piece, I'm taking you with me as we rebuild it and look under the hood.</p>
 
-<blockquote class="tldr">TLDR; Spotify's number holds up. With their hook on, Claude read 87% fewer lines of big files. But the bill went up, by 8% with the plugin as published and 19% with the hook fully enforced, and the answers were just as accurate. The savings on file reading got eaten by something the plugin can't see: every extra turn Claude takes to find an answer costs money.</blockquote>
+<blockquote class="tldr">TLDR; Spotify's number holds up. With their hook enforced, Claude read 87% fewer lines of big files. But the bill went up 19%, with no measurable change in accuracy. (With the plugin exactly as published, costs rose 8%, too small to separate from chance.) Blocking a read doesn't remove the need for the information. Claude just takes more turns to get it, and every turn resends the whole conversation.</blockquote>
 
 <h2>What Spotify Built, and Why</h2>
 
@@ -178,7 +178,7 @@ the internet." \
 <li><b>Needle reads (4 tasks).</b> One fact buried in a file of 1,000 to 1,900 lines. This is the exact case Spotify's post describes (read 700 lines to check one thing), and the case their benchmark never tests.</li>
 <li><b>Their shapes at real file sizes (5 tasks).</b> The same kinds of questions as their four, but on files big enough to actually trip the 350-line threshold, which two of theirs never do.</li>
 <li><b>Harm (5 tasks).</b> Precise edits and debugging, the two task types Spotify's own post says the approach isn't for. The hook only sees a line count, so it fires on these anyway. I wanted to know if that costs anything.</li>
-<li><b>Controls (3 tasks).</b> The same shapes on small files, where the hook can't fire at all, to measure what the plugin costs just by being installed.</li>
+<li><b>Controls (3 tasks).</b> The same shapes on small files, to measure what the plugin costs just by being installed. (On one of them, Claude went looking in a neighboring 700-line file, so the hook fired there too.)</li>
 </ul>
 
 <p>I ran every task three times, interleaved by setup so time of day never lines up with one setup by coincidence: 189 sessions, about $30 at list price.</p>
@@ -209,21 +209,6 @@ the internet." \
 
 <h2>Our Results</h2>
 
-<p>Across all 189 sessions, Spotify's own metric holds up: with the hook enforced, Claude read 87% fewer lines of the big files. But that didn't turn into savings. The hook cost more than stock, not less.</p>
-
-<h3>Why an Extra Turn Costs Money, Even When It Works</h3>
-
-<p>Every turn pays for two things, and they're priced very differently. Resending the conversation so far is cheap, since it comes from the cache at a tenth of the normal price. The model's new thinking that turn isn't cached and costs about fifty times more. The hook can block a read, but it can't see how many extra turns it will take Claude to find the same answer another way. So blocking a read doesn't remove the cost. It spreads it over more turns.</p>
-
-<p>One small example: find which states a record accumulator's ready-check moves through, in an 1,100-line file.</p>
-
-<ul>
-<li><b>Stock</b> takes three turns and costs 4.5 cents: one grep (a quick text search), one read of the file, one answer.</li>
-<li><b>As described</b> takes six turns and costs 6.8 cents, 50% more. It tries to read part of the file and gets blocked, tries a different part and gets blocked again, then runs three separate greps to find the same fact.</li>
-</ul>
-
-<p>Both setups got the same correct answer, and every step was reasonable. The extra turns are just the price of finding the answer without reading the whole file.</p>
-
 <h3>The Headline Numbers</h3>
 
 <figure>
@@ -231,29 +216,18 @@ the internet." \
   <figcaption>Figure C · twenty-one tasks, three runs each</figcaption>
 </figure>
 
-<p>Here's how the three setups compare on the evaluation triangle, averaged across all tasks:</p>
+<p>Here's how the three setups compare on the evaluation triangle, averaged across all 21 tasks:</p>
 
 <ul>
-<li><b>Performance</b> was unchanged: 100% of stock runs passed, 98% as shipped, 97% as described. That's three failures out of 189, and one of those was the grader being strict on a control task, not the hook.</li>
-<li><b>Cost</b> rose 8% as shipped and 19% as described, worker included. Comparing each task against itself, the enforced hook's increase landed between 7% and 39% (95% confidence), so it isn't noise.</li>
-<li><b>Latency</b> rose too: 6.1 turns per run for stock, 7.7 as shipped, 9.2 as described. Wall time went from 39 seconds to 51.</li>
-<li><b>Behavior:</b> after a block, the model handed the file to the worker only 7 times out of 96, about one in twenty. The rest of the time it searched its way around the block.</li>
+<li><b>Performance</b> didn't change in any way I could measure: 100% of stock runs passed, 98% as shipped, and 97% as described. That's three failures out of 189, too few to say the hook hurt accuracy.</li>
+<li><b>Cost</b> went up. With the hook enforced, a run cost 19% more on average (14.4¢ versus 12.1¢). Comparing each task to itself, the increase was likely somewhere between 7% and 39%, so it's not a fluke. As shipped, cost rose 8%, but that's within what chance alone produces here: on tasks where the hook never fired, costs still moved anywhere from 37% lower to 13% higher between setups.</li>
+<li><b>Latency</b> went up with it: 6.1 turns per run for stock (a turn is one request to the model), 7.7 as shipped, and 9.2 as described. Wall time went from 39 seconds to 51.</li>
+<li><b>Behavior</b> is where the plan broke down. The enforced hook blocked a read 96 times, and only 4 of those times did the model open Spotify's skill next. In 41 it searched with grep instead. In 33 it tried reading a smaller piece of the file, which was blocked too. In 12 it ran a shell command, and several of those used <code>sed</code> to print the same lines the hook had just refused.</li>
 </ul>
 
-<h3>Same Mechanism, a Bigger Question</h3>
+<h3>Fewer Tokens Read, More Tokens Processed</h3>
 
-<p>This time, traced through the full request log: how does the broker lifecycle manager move between states? The answer is in a 770-line file. All three setups answered correctly, and the enforced setup, working exactly as intended, was still the most expensive.</p>
-
-<figure>
-  <img src="figures/post/short-D-where-the-money-went.png" alt="Stacked bar chart in cents for the three runs on the broker-lifecycle question: stock about 10 cents in 3 requests, as shipped about 17 cents in 9, as described about 15 cents in 9 including the worker. The bucket that grows in both hook runs is the re-sent conversation, not the file itself.">
-  <figcaption>Figure D · where the money actually went, same question, from the OpenTelemetry trace</figcaption>
-</figure>
-
-<p>Storing the file in the cache costs about two cents in every setup and barely changes. What grows is the cost of resending the conversation: three requests for stock, nine for both hook setups.</p>
-
-<h3>What "90% Fewer Tokens" Actually Means</h3>
-
-<p>Whether "90% fewer tokens" is true depends on what you count. Spotify's own formula only works when the worker gets called, which happened in 0 of 63 as-shipped runs and 5 of 63 as-described runs. So here are three counts that work for every run:</p>
+<p>So how can the hook cut tokens and still cost more? It depends on which tokens you count. Spotify's own formula only works when the worker gets called, which happened in 0 of 63 as-shipped runs and 5 of 63 as-described runs. So I counted three things I could measure on every run:</p>
 
 <figure>
   <img src="figures/post/table-token-comparison.png" alt="Table: three ways to count 90% fewer tokens. Lines of the target read: 450 stock, 232 as shipped (-48%), 59 as described (-87%). Target content reaching the model by any tool: 6,016 stock, 3,721 as shipped (-38%), 2,919 as described (-51%). Input tokens the frontier model was billed for: 229,697 stock, 277,146 as shipped (+21%), 324,523 as described (+41%).">
@@ -261,26 +235,50 @@ the internet." \
 </figure>
 
 <ul>
-<li>Lines of the big file Claude read directly: down 87%.</li>
-<li>Content from the big file that reached the model any way at all, search results included: down 51%.</li>
-<li>Tokens the model was actually billed for: up 21% as shipped and 41% as described. This is the number on the invoice.</li>
+<li><b>Lines of the big file Claude read directly:</b> down 87% with the hook enforced. This is roughly what Spotify measured, and it holds up.</li>
+<li><b>Anything from the big file that reached the model,</b> search results included: down 51%. Blocking a read doesn't stop Claude from searching the same file.</li>
+<li><b>Total tokens the model processed,</b> most of them the conversation being resent each turn: up 21% as shipped and 41% as described.</li>
 </ul>
 
-<h3>By Task Type, and Why</h3>
+<p>The first two are what the hook controls. The third is what drives the bill, which rose 8% and 19%. The bill rose less than the token count because most of those extra tokens are cheap, cached resends.</p>
 
-<p>On 12 of the 21 tasks, all three repetitions landed on the same side of stock. The shape of the question explains it:</p>
+<h3>Why It Costs More</h3>
+
+<p>Remember that Claude Code resends the whole conversation every turn. Each resent token is cheap thanks to caching, but the conversation grows every turn and gets resent every turn, so it adds up. Blocking a big read does save a little: about a cent per run less spent storing files in the cache. But every block adds turns. With the hook enforced, those extra turns cost about 1.6¢ more per run in resending, 0.6¢ more in new output from the model, and 0.3¢ for the worker. The savings from blocking were smaller than the cost of the extra turns.</p>
+
+<p>Here's what that looks like on one question: what a function called <code>ready()</code> returns, in a 1,500-line file.</p>
 
 <ul>
-<li>When the answer is a small slice of a big file (how three classes relate, which methods lack tests), the hook was cheaper every time. A targeted search does the job of a full read.</li>
-<li>When the answer needs most of the file (every config key, generating a class, a precise edit), it cost more every time. The content has to come in somehow, and the block just adds turns.</li>
-<li>Spotify's own four benchmark tasks fall in the second group. They ask about whole files by design, so the block fires most and pays off least.</li>
+<li><b>Stock</b> searched for the function, read the 35 lines it needed, and answered. That took about 4 turns and 5.1¢ on average.</li>
+<li><b>As described</b> searched twice, was blocked trying to read a 30-line piece, was blocked again on a 20-line piece, then searched again. That took about 6 turns and 6.8¢, 34% more for the same answer.</li>
 </ul>
 
-<p>A line-count threshold can't tell "which of these" from "all of these." That difference, not file size, decides whether a block saves money.</p>
+<p>Stock was already reading just the part it needed. The hook couldn't make that cheaper. It could only add turns.</p>
+
+<p>The same thing happens when the answer needs most of a big file. For one question (how the broker lifecycle manager moves between states, answered from a 770-line file), stock read the file and answered in about 4 turns. The hook setups took about 9 to 10 turns and cost about 45% more. Figure D breaks down one run of each by where the money went.</p>
+
+<figure>
+  <img src="figures/post/short-D-where-the-money-went.png" alt="Stacked bar chart in cents for the three runs on the broker-lifecycle question: stock about 10 cents in 3 requests, as shipped about 17 cents in 9, as described about 15 cents in 9 including the worker. The bucket that grows in both hook runs is the re-sent conversation, not the file itself.">
+  <figcaption>Figure D · where the money actually went, same question, from the OpenTelemetry trace</figcaption>
+</figure>
+
+<h3>Which Tasks Got Cheaper</h3>
+
+<p>The hook fired on 16 of the 21 tasks. Whether it saved money came down to one thing: what stock Claude would have done anyway.</p>
+
+<ul>
+<li><b>Stock read a whole big file but only needed part of it:</b> the hook saved 7% to 18% (four tasks). For example, to find which methods lack tests, stock read two whole files, 1,412 lines. With the hook, a search did the same job.</li>
+<li><b>Stock already read just a small piece:</b> the hook cost 17% to 52% more (six tasks, including the <code>ready()</code> example). The enforced hook blocks any read of a big file, even a 20-line one, so it could only add turns.</li>
+<li><b>The answer needed most of the file:</b> the hook cost 42% to 86% more (four tasks, such as listing every config key in a file). The content has to come in one way or another, and the block just adds turns.</li>
+</ul>
+
+<p>The other two tasks where it fired were a control, where Claude wandered into a big neighboring file, and one of Spotify's tasks, where a single run went off and cost 46¢ on its own.</p>
+
+<p>Of Spotify's own four benchmark tasks, one is the whole-file kind, and two never tripped the hook at all. A line-count threshold can't see any of this. It knows the file is big, but not whether Claude needs one line of it or all of it, or whether Claude was about to read the whole thing in the first place.</p>
 
 <figure>
   <img src="figures/post/table-by-category.png" alt="Table: cost change by task type, paired per task. Spotify's own four: +25% as shipped, +53% as described, cheaper on 2 and 1 of 4. Needle reads: +3%, +19%, cheaper on 1 and 1 of 4. Spotify's shapes, real sizes: +11%, +24%, cheaper on 2 and 2 of 5. Harm: +0%, +8%, cheaper on 3 and 2 of 5. Controls: +4%, +6%, cheaper on 1 and 1 of 3.">
-  <figcaption>Hook cost relative to stock, by category, paired per task.</figcaption>
+  <figcaption>Hook cost relative to stock, by category, averaged per task. Spotify's own four is pulled up by one run that started a background subagent and cost 46¢ on its own.</figcaption>
 </figure>
 
 <h2>In Conclusion</h2>
