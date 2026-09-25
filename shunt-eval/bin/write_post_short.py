@@ -64,7 +64,7 @@ body = r'''<main>
 
 <p>That's led many cost-wary teams to start building their own token optimizers. Seeing the trend take off, I wanted to dig into one of these examples myself. A few weeks ago, Spotify published a blog post that bounced around Hacker News and Reddit about a Claude Code plugin claiming a 90% cut in tokens. So in this piece, I'm taking you with me as we rebuild it and look under the hood.</p>
 
-<blockquote class="tldr">TLDR; Spotify's number holds up. With their hook enforced, Claude read 87% fewer lines of big files. But the bill went up 19%, with no measurable change in accuracy. (With the plugin exactly as published, costs rose 8%, too small to separate from chance.) Blocking a read doesn't remove the need for the information. Claude just takes more turns to get it, and every turn resends the whole conversation.</blockquote>
+<blockquote class="tldr">TLDR; Spotify's token cut is real. With their hook enforced, Claude read 87% fewer lines of big files. But the bill went up 19%, with no measurable change in accuracy. (With the plugin exactly as published, costs rose 8%, too small to separate from chance.) Blocking a read doesn't remove the need for the information. Claude just takes more turns to get it, and every turn resends the whole conversation.</blockquote>
 
 <h2>What Spotify Built, and Why</h2>
 
@@ -118,7 +118,7 @@ body = r'''<main>
 <li><b>As described:</b> the same plugin with that exception removed, so the hook blocks the way Spotify's post describes.</li>
 </ul>
 
-<p>Both hook setups use a one-turn call to Claude Haiku in place of Spotify's hosted Gemini model, since I don't have access to their internal system.</p>
+<p>Both hook setups use a one-turn call to Claude Haiku in place of Spotify's hosted Gemini model, since I don't have access to their internal system, only a Claude subscription ;).</p>
 
 <h3>Why Kafka</h3>
 
@@ -181,7 +181,7 @@ the internet." \
 <li><b>Controls (3 tasks).</b> The same shapes on small files, to measure what the plugin costs just by being installed. (On one of them, Claude went looking in a neighboring 700-line file, so the hook fired there too.)</li>
 </ul>
 
-<p>I ran every task three times, interleaved by setup so time of day never lines up with one setup by coincidence: 189 sessions, about $30 at list price.</p>
+<p>I ran every task three times, interleaved by setup so time of day never lines up with one setup by coincidence: 189 sessions, about $25 at list price.</p>
 
 <h3>Why These Metrics</h3>
 
@@ -205,9 +205,9 @@ the internet." \
 <li><b>Prompt caching.</b> A discount, not a memory. If the same content was sent to the model in the last few minutes, sending it again costs a tenth of the normal price. It changes what resending costs. It doesn't stop the resending.</li>
 </ul>
 
-<p>Keep both in mind as we get into the numbers.</p>
+<p>We'll touch on them as we jump into the numbers. But they're important concepts to keep in mind when thinking about Claude's performance.</p>
 
-<h2>Our Results</h2>
+<h2>Drumroll… Our Results</h2>
 
 <h3>The Headline Numbers</h3>
 
@@ -235,7 +235,7 @@ the internet." \
 </figure>
 
 <ul>
-<li><b>Lines of the big file Claude read directly:</b> down 87% with the hook enforced. This is close to what Spotify measured.</li>
+<li><b>Lines of the big file Claude read directly:</b> down 87% with the hook enforced. This is roughly what Spotify measured with Gemini.</li>
 <li><b>Anything from the big file that reached the model,</b> search results included: down 51%. Blocking a read doesn't stop Claude from searching the same file.</li>
 <li><b>Total tokens the model processed,</b> most of them the conversation being resent each turn: up 21% as shipped and 41% as described.</li>
 </ul>
@@ -281,7 +281,7 @@ the internet." \
   <figcaption>Hook cost relative to stock, by category, averaged per task. Spotify's own four is pulled up by one run that started a background subagent and cost 46¢ on its own.</figcaption>
 </figure>
 
-<h2>In Conclusion</h2>
+<h2>Overall…</h2>
 
 <h3>Let Claude Be Claude</h3>
 
@@ -291,7 +291,7 @@ the internet." \
 
 <ul>
 <li><b>In the tokens.</b> Prompt caching makes resending content you've already sent cost a tenth as much.</li>
-<li><b>In the context window.</b> Tools like MCP servers let a model pull just the piece of a file it needs instead of loading the whole thing.</li>
+<li><b>In the context window.</b> Claude Code no longer has to load every tool definition up front. With tool search, MCP tool definitions stay out of context until a task needs them, and Claude loads only those (<a href="https://code.claude.com/docs/en/agent-sdk/tool-search">docs</a>, <a href="https://www.anthropic.com/engineering/advanced-tool-use">Anthropic</a>).</li>
 <li><b>In the harness.</b> In my stock runs, with no hook and no instructions, Claude already searched instead of reading whole files on most needle and harm tasks.</li>
 </ul>
 
