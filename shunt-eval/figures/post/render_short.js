@@ -1,4 +1,5 @@
-// Short-post variants of Figures G and F: relettered C and D, with subtitles that stand on their own.
+// Short-post figures: A as-is, plus G and F relettered C and D with subtitles that stand on their own.
+// SCALE=4 OUT=hires node render_short.js renders large copies.
 const fs = require('fs');
 const { chromium } = require(require('path').join(require('child_process').execSync('npm root -g').toString().trim(), 'playwright'));
 const src = fs.readFileSync('post-figures.html', 'utf8');
@@ -15,14 +16,15 @@ C = swap(C, ' The three charts share setups and nothing else; they are deliberat
 D = D.replace(/>[ABC] · (stock|as shipped|as described)</g, '>$1<');
 D = D.replace(/<figcaption><b>What caching makes cheap[\s\S]*?<\/figcaption>/, '');
 if (D.includes('fifty times')) throw new Error('D note not removed');
-const out = [['short-C-headline', C], ['short-D-where-the-money-went', D]];
+const out = [['A-hook-in-the-loop', pick('fig-hook')], ['short-C-headline', C], ['short-D-where-the-money-went', D]];
+const SCALE = +(process.env.SCALE || 2), OUT = process.env.OUT || '.';
 (async () => {
   const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
-  const pg = await b.newPage({ viewport: { width: 1000, height: 600 }, deviceScaleFactor: 2 });
+  const pg = await b.newPage({ viewport: { width: 1000, height: 600 }, deviceScaleFactor: SCALE });
   for (const [name, fig] of out) {
     const html = '<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#F5F6F3}</style>' + head + '</head><body><main>' + fig + '</main></body></html>';
     await pg.setContent(html, { waitUntil: 'networkidle' });
-    await (await pg.$('figure')).screenshot({ path: `${name}.png` });
+    await (await pg.$('figure')).screenshot({ path: `${OUT}/${name}.png` });
     console.log(name);
   }
   await b.close();
